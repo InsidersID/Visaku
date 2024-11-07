@@ -4,19 +4,30 @@ import RiveRuntime
 public struct OnboardingView<Destination: View>: View {
     var destination: Destination
     @State var viewModel = OnboardingViewModel()
-    @State private var timeline: Int = 1
+    @State private var timeline = 1
+    private let riveViewModel: RiveViewModel
+    private let timelines = ["Timeline 1", "Timeline 2", "Timeline 3 new", "Timeline 4 new", "Timeline 5 new", "Timeline 6"]
     
     public init(destination: Destination) {
         self.destination = destination
+        riveViewModel = RiveViewModel(fileName: "onboarding", animationName: "Timeline 1")
     }
     
     public var body: some View {
         NavigationStack {
             GeometryReader { proxy in
                 ZStack {
-                    Color(red: 0.93, green: 0.98, blue: 0.98).ignoresSafeArea()
-                    
-                    OnboardingAnimation(timeline: $timeline)
+                    riveViewModel.view()
+                        .ignoresSafeArea()
+                        .onAppear {
+                            playCurrentTimeline()
+                        }
+                        .onTapGesture {
+                            if timeline > 1 && timeline < 6 {
+                                timeline += 1
+                                playCurrentTimeline()
+                            }
+                        }
                     
                     VStack {
                         CustomButton(text: "Skip", textColor: .black, color: .white, buttonWidth: proxy.size.width*0.1, buttonHeight: proxy.size.width*0.02, font: 16) {
@@ -44,6 +55,7 @@ public struct OnboardingView<Destination: View>: View {
                             CustomButton(text: timeline == 6 ? "Selesai" : "Mulai", textColor: .blue, color: .white, cornerRadius: 24) {
                                 if timeline < 6 {
                                     timeline += 1
+                                    playCurrentTimeline()
                                 } else {
                                     viewModel.showTabBarView = true
                                 }
@@ -62,6 +74,11 @@ public struct OnboardingView<Destination: View>: View {
                     .navigationBarBackButtonHidden()
             }
         }
+    }
+    
+    private func playCurrentTimeline() {
+        let animationName = timelines[timeline-1]
+        riveViewModel.play(animationName: animationName)
     }
 }
 
