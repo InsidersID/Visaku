@@ -17,6 +17,8 @@ class OnboardingViewModel {
             return "Foto langsung sesuai standar"
         case 5:
             return "Visaku bantu cek dokumenmu"
+        case 6:
+            return ""
         default:
             return "error"
         }
@@ -25,7 +27,7 @@ class OnboardingViewModel {
     func getOnboardingCaption(index: Int) -> String {
         switch index {
         case 1:
-            return " "
+            return ""
         case 2:
             return "Gak perlu lagi ribet isi form sendiri!"
         case 3:
@@ -34,6 +36,8 @@ class OnboardingViewModel {
             return "Visaku beri feedback saat foto"
         case 5:
             return "Gak takut ketinggalan dokumen"
+        case 6:
+            return ""
         default:
             return "error"
         }
@@ -50,6 +54,8 @@ class OnboardingViewModel {
         case 4:
             return Color(red: 0.4, green: 0.53, blue: 0.53)
         case 5:
+            return Color(red: 0.93, green: 0.98, blue: 0.98)
+        case 6:
             return Color(red: 0.93, green: 0.98, blue: 0.98)
         default:
             return Color(red: 0.93, green: 0.98, blue: 0.98)

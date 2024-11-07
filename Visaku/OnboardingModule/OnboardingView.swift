@@ -1,5 +1,4 @@
 import SwiftUI
-import UIComponentModule
 import RiveRuntime
 
 public struct OnboardingView<Destination: View>: View {
@@ -28,7 +27,7 @@ public struct OnboardingView<Destination: View>: View {
                         Spacer()
                         
                         Text(viewModel.getOnboardingTitle(index: timeline))
-                            .font(Font.custom("Poppins-Bold", size: 32))
+//                            .font(Font.custom("Inter", size: 32))
                         .multilineTextAlignment(.center)
                         .foregroundColor(viewModel.getOnboardingTextColor(index: timeline))
                         .padding(.bottom)
@@ -41,9 +40,9 @@ public struct OnboardingView<Destination: View>: View {
                                 proxy.size.height*0.5
                         )
                         
-                        if timeline == 1 || timeline == 5 {
-                            CustomButton(text: timeline == 5 ? "Selesai" : "Mulai", textColor: .blue, color: .white, cornerRadius: 24) {
-                                if timeline < 5 {
+                        if timeline == 1 || timeline == 6 {
+                            CustomButton(text: timeline == 6 ? "Selesai" : "Mulai", textColor: .blue, color: .white, cornerRadius: 24) {
+                                if timeline < 6 {
                                     timeline += 1
                                 } else {
                                     viewModel.showTabBarView = true
