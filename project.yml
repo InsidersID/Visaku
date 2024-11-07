@@ -33,7 +33,6 @@ targets:
     type: application
     platform: iOS
     sources: [Visaku, Visaku/Assets.xcassets]
-
     info:
       path: Visaku/Info.plist
       properties:
@@ -94,6 +93,7 @@ targets:
         TARGETED_DEVICE_FAMILY: 1
         PRODUCT_BUNDLE_IDENTIFIER: 'com.insiders.visaku'
         CURRENT_PROJECT_VERSION: 1
+        SUPPORTED_PLATFORMS: "iOS"
     dependencies:
       - package: UIComponentModule
       - package: RepositoryModule
