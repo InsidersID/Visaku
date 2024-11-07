@@ -10,6 +10,7 @@ public struct DocumentDetailsView: View {
     @State private var isSeeDetails: Bool = false
     public var account: AccountEntity
     @State public var status: DocumentStatus
+    @State private var passportDetailsIndex = 1
     
     public init (document: String, account: AccountEntity, status: DocumentStatus = .undone) {
         self.document = document
@@ -139,13 +140,22 @@ public struct DocumentDetailsView: View {
                         }
                     } else {
                         VStack {
-                            Spacer()
+                            Image(document == "Foto" ? "photo_checker" : "documents_folder")
+                                .resizable()
+                                .scaledToFit()
+                                .padding()
                             
-                            Text("Yuk, ambil foto terbaikmu untuk pengajuan visa. Tenang, ada guide untuk pengambilan fotonya.")
+                            Text(document != "Paspor" ? "Yuk, ambil foto terbaikmu untuk pengajuan visa. Tenang, ada guide untuk pengambilan fotonya." : passportDetailsIndex == 1 ? "Jangan lupa bawa 1 paspor dan fotokopi yang berlaku minimal 3 bulan setelah tinggal di Schengen (6 bulan untuk Spanyol)" : "Selain itu, paspor harus memiliki 2 halaman kosong, diterbitkan dalam 10 tahun terakhir, dan ditandatangani.")
                                 .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                                .padding()
                             
-                            CustomButton(text: "OK", color: .blue) {
-                                isSeeDetails = false
+                            CustomButton(text: document == "Paspor" && passportDetailsIndex == 1 ? "Selanjutnya" : "OK", color: .blue) {
+                                if document == "Paspor" && passportDetailsIndex == 1 {
+                                    passportDetailsIndex += 1
+                                } else {
+                                    isSeeDetails = false
+                                }
                             }
                             .padding()
                         }
