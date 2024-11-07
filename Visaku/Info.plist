@@ -31,44 +31,5 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Inter-Black.ttf</string>
-		<string>Inter-BlackItalic.ttf</string>
-		<string>Inter-Bold.ttf</string>
-		<string>Inter-BoldItalic.ttf</string>
-		<string>Inter-ExtraBold.ttf</string>
-		<string>Inter-ExtraBoldItalic.ttf</string>
-		<string>Inter-ExtraLight.ttf</string>
-		<string>Inter-ExtraLightItalic.ttf</string>
-		<string>Inter-Italic.ttf</string>
-		<string>Inter-Light.ttf</string>
-		<string>Inter-LightItalic.ttf</string>
-		<string>Inter-Medium.ttf</string>
-		<string>Inter-MediumItalic.ttf</string>
-		<string>Inter-Regular.ttf</string>
-		<string>Inter-SemiBold.ttf</string>
-		<string>Inter-SemiBoldItalic.ttf</string>
-		<string>Inter-Thin.ttf</string>
-		<string>Inter-ThinItalic.ttf</string>
-		<string>Poppins-Black.ttf</string>
-		<string>Poppins-BlackItalic.ttf</string>
-		<string>Poppins-Bold.ttf</string>
-		<string>Poppins-BoldItalic.ttf</string>
-		<string>Poppins-ExtraBold.ttf</string>
-		<string>Poppins-ExtraBoldItalic.ttf</string>
-		<string>Poppins-ExtraLight.ttf</string>
-		<string>Poppins-ExtraLightItalic.ttf</string>
-		<string>Poppins-Italic.ttf</string>
-		<string>Poppins-Light.ttf</string>
-		<string>Poppins-LightItalic.ttf</string>
-		<string>Poppins-Medium.ttf</string>
-		<string>Poppins-MediumItalic.ttf</string>
-		<string>Poppins-Regular.ttf</string>
-		<string>Poppins-SemiBold.ttf</string>
-		<string>Poppins-SemiBoldItalic.ttf</string>
-		<string>Poppins-Thin.ttf</string>
-		<string>Poppins-ThinItalic.ttf</string>
-	</array>
 </dict>
 </plist>
