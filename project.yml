@@ -1,0 +1,72 @@
+name: Visaku
+
+options:
+  bundleIdPrefix: com.insiders.visaku
+  createIntermediateGroups: true
+  deploymentTarget:
+    iOS: 17.0
+
+packages:
+  UIComponentModule:
+    url: https://github.com/InsidersID/UIComponentModule.git
+    branch: main
+  RepositoryModule:
+    url: https://github.com/InsidersID/RepositoryModule.git
+    branch: main
+
+targetTemplates:
+  Module:
+    type: framework
+    platform: iOS
+    deploymentTarget: 17.0
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true
+        TARGETED_DEVICE_FAMILY: 1
+        SUPPORTS_MACCATALYST: false
+
+targets:
+  Visaku:
+    type: application
+    platform: iOS
+    sources: [Visaku, Visaku/Assets.xcassets]
+
+    info:
+      path: Visaku/Info.plist
+      properties:
+        UILaunchStoryboardName: 'LaunchScreen'
+        CFBundleDisplayName: 'Test'
+        CFBundleShortVersionString: '1.0.0'
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: 1
+        PRODUCT_BUNDLE_IDENTIFIER: 'com.insiders.test'
+        CURRENT_PROJECT_VERSION: 1
+    dependencies:
+      - package: UIComponentModule
+      - package: RepositoryModule
+
+  VisakuTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: VisakuTests
+    dependencies:
+      - target: Visaku
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: 'com.insiders.visaku.tests'
+
+  VisakuUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: VisakuUITests
+    dependencies:
+      - target: Visaku
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: 'com.insiders.visaku.uitests'

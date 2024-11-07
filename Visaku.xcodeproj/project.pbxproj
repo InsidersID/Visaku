@@ -3,91 +3,118 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 54;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0ADE1013BD59447216383D27 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D87C801B0A56250EFD2E41EC /* Preview Assets.xcassets */; };
+		304E5BE7D7BC5DB20A5E586B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2B3BD56177A375801ACA0F /* ContentView.swift */; };
+		5C3235E2136D75211831A665 /* VisakuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D42C1631DFF8AACDF2F027 /* VisakuTests.swift */; };
+		7EC479A27ED9B788340F70A8 /* VisakuUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3D5AD0264A1FBF8E3A3A8F /* VisakuUITests.swift */; };
+		8367504DE654D66CE96BE4BE /* UIComponentModule in Frameworks */ = {isa = PBXBuildFile; productRef = 65A885EC130A2151007E1CC8 /* UIComponentModule */; };
+		A04F09319EA10250023B1E45 /* VisakuApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF3D8BA020BFA4A995EADB2 /* VisakuApp.swift */; };
+		B9BEA9161FA285D0CB5272FF /* RepositoryModule in Frameworks */ = {isa = PBXBuildFile; productRef = B0E71FABA94594C77B28B6E8 /* RepositoryModule */; };
+		C5311A00A497C9705AB6BEFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF541347FEC044484274A9EC /* Assets.xcassets */; };
+		D24F81F856350B31FB4F4BED /* VisakuUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FA4872278370FFBBCA096F /* VisakuUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
-		2379E7F82CDC9F73007B60E8 /* PBXContainerItemProxy */ = {
+		2AA2D228003D826374B0C6CD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 2379E7DF2CDC9F71007B60E8 /* Project object */;
+			containerPortal = 9F8EF9AB33CD301729D82E40 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 2379E7E62CDC9F71007B60E8;
+			remoteGlobalIDString = 473F5F5444E4419D59F0EF1B;
 			remoteInfo = Visaku;
 		};
-		2379E8022CDC9F73007B60E8 /* PBXContainerItemProxy */ = {
+		4D6811013CC3BB30E3BAA251 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 2379E7DF2CDC9F71007B60E8 /* Project object */;
+			containerPortal = 9F8EF9AB33CD301729D82E40 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 2379E7E62CDC9F71007B60E8;
+			remoteGlobalIDString = 473F5F5444E4419D59F0EF1B;
 			remoteInfo = Visaku;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2379E7E72CDC9F71007B60E8 /* Visaku.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Visaku.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2379E7F72CDC9F73007B60E8 /* VisakuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VisakuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2379E8012CDC9F73007B60E8 /* VisakuUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VisakuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00150947FCD45A93CD99741C /* VisakuUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = VisakuUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DF3D8BA020BFA4A995EADB2 /* VisakuApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisakuApp.swift; sourceTree = "<group>"; };
+		3F2B3BD56177A375801ACA0F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		94FA4872278370FFBBCA096F /* VisakuUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisakuUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		9AF57AD42E5640A8245ABF6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		CB3D5AD0264A1FBF8E3A3A8F /* VisakuUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisakuUITests.swift; sourceTree = "<group>"; };
+		D5D42C1631DFF8AACDF2F027 /* VisakuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisakuTests.swift; sourceTree = "<group>"; };
+		D87C801B0A56250EFD2E41EC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		EA09F890563CF6EA276272F9 /* Visaku.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Visaku.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA69F1A832DD6F1540092A7F /* VisakuTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = VisakuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF541347FEC044484274A9EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		2379E7E92CDC9F71007B60E8 /* Visaku */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Visaku;
-			sourceTree = "<group>";
-		};
-		2379E7FA2CDC9F73007B60E8 /* VisakuTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = VisakuTests;
-			sourceTree = "<group>";
-		};
-		2379E8042CDC9F73007B60E8 /* VisakuUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = VisakuUITests;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
-
 /* Begin PBXFrameworksBuildPhase section */
-		2379E7E42CDC9F71007B60E8 /* Frameworks */ = {
+		7B5A60D2D3CEA31E3BC0379D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2379E7F42CDC9F73007B60E8 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2379E7FE2CDC9F73007B60E8 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				8367504DE654D66CE96BE4BE /* UIComponentModule in Frameworks */,
+				B9BEA9161FA285D0CB5272FF /* RepositoryModule in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2379E7DE2CDC9F71007B60E8 = {
+		05144ADEF03D6AD2FC03C622 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				2379E7E92CDC9F71007B60E8 /* Visaku */,
-				2379E7FA2CDC9F73007B60E8 /* VisakuTests */,
-				2379E8042CDC9F73007B60E8 /* VisakuUITests */,
-				2379E7E82CDC9F71007B60E8 /* Products */,
+				D87C801B0A56250EFD2E41EC /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		083F64074ADC25021FD7AA7F = {
+			isa = PBXGroup;
+			children = (
+				1B0C288972331A4E2243D813 /* Visaku */,
+				4B3DA91B6D67D8B7E3EE0102 /* VisakuTests */,
+				72780543330A5A70A47C1F92 /* VisakuUITests */,
+				8EA993D4EB0AD8BA9729C24F /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		2379E7E82CDC9F71007B60E8 /* Products */ = {
+		1B0C288972331A4E2243D813 /* Visaku */ = {
 			isa = PBXGroup;
 			children = (
-				2379E7E72CDC9F71007B60E8 /* Visaku.app */,
-				2379E7F72CDC9F73007B60E8 /* VisakuTests.xctest */,
-				2379E8012CDC9F73007B60E8 /* VisakuUITests.xctest */,
+				FF541347FEC044484274A9EC /* Assets.xcassets */,
+				3F2B3BD56177A375801ACA0F /* ContentView.swift */,
+				9AF57AD42E5640A8245ABF6C /* Info.plist */,
+				1DF3D8BA020BFA4A995EADB2 /* VisakuApp.swift */,
+				05144ADEF03D6AD2FC03C622 /* Preview Content */,
+			);
+			path = Visaku;
+			sourceTree = "<group>";
+		};
+		4B3DA91B6D67D8B7E3EE0102 /* VisakuTests */ = {
+			isa = PBXGroup;
+			children = (
+				D5D42C1631DFF8AACDF2F027 /* VisakuTests.swift */,
+			);
+			path = VisakuTests;
+			sourceTree = "<group>";
+		};
+		72780543330A5A70A47C1F92 /* VisakuUITests */ = {
+			isa = PBXGroup;
+			children = (
+				CB3D5AD0264A1FBF8E3A3A8F /* VisakuUITests.swift */,
+				94FA4872278370FFBBCA096F /* VisakuUITestsLaunchTests.swift */,
+			);
+			path = VisakuUITests;
+			sourceTree = "<group>";
+		};
+		8EA993D4EB0AD8BA9729C24F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EA09F890563CF6EA276272F9 /* Visaku.app */,
+				EA69F1A832DD6F1540092A7F /* VisakuTests.xctest */,
+				00150947FCD45A93CD99741C /* VisakuUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,251 +122,159 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2379E7E62CDC9F71007B60E8 /* Visaku */ = {
+		473F5F5444E4419D59F0EF1B /* Visaku */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2379E80B2CDC9F73007B60E8 /* Build configuration list for PBXNativeTarget "Visaku" */;
+			buildConfigurationList = 6DE0F5B0BA7C1A30AED0BC72 /* Build configuration list for PBXNativeTarget "Visaku" */;
 			buildPhases = (
-				2379E7E32CDC9F71007B60E8 /* Sources */,
-				2379E7E42CDC9F71007B60E8 /* Frameworks */,
-				2379E7E52CDC9F71007B60E8 /* Resources */,
+				646CDF5608CE6C63D4CBBA63 /* Sources */,
+				1B8D314E278288A184B9168D /* Resources */,
+				7B5A60D2D3CEA31E3BC0379D /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				2379E7E92CDC9F71007B60E8 /* Visaku */,
 			);
 			name = Visaku;
 			packageProductDependencies = (
+				65A885EC130A2151007E1CC8 /* UIComponentModule */,
+				B0E71FABA94594C77B28B6E8 /* RepositoryModule */,
 			);
 			productName = Visaku;
-			productReference = 2379E7E72CDC9F71007B60E8 /* Visaku.app */;
+			productReference = EA09F890563CF6EA276272F9 /* Visaku.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2379E7F62CDC9F73007B60E8 /* VisakuTests */ = {
+		4A9D25820530A7AB9A4AAB41 /* VisakuUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2379E80E2CDC9F73007B60E8 /* Build configuration list for PBXNativeTarget "VisakuTests" */;
+			buildConfigurationList = 869AC61484709B6DD560D050 /* Build configuration list for PBXNativeTarget "VisakuUITests" */;
 			buildPhases = (
-				2379E7F32CDC9F73007B60E8 /* Sources */,
-				2379E7F42CDC9F73007B60E8 /* Frameworks */,
-				2379E7F52CDC9F73007B60E8 /* Resources */,
+				3F2717C4B99BEFB71671B6C9 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				2379E7F92CDC9F73007B60E8 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				2379E7FA2CDC9F73007B60E8 /* VisakuTests */,
-			);
-			name = VisakuTests;
-			packageProductDependencies = (
-			);
-			productName = VisakuTests;
-			productReference = 2379E7F72CDC9F73007B60E8 /* VisakuTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		2379E8002CDC9F73007B60E8 /* VisakuUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2379E8112CDC9F73007B60E8 /* Build configuration list for PBXNativeTarget "VisakuUITests" */;
-			buildPhases = (
-				2379E7FD2CDC9F73007B60E8 /* Sources */,
-				2379E7FE2CDC9F73007B60E8 /* Frameworks */,
-				2379E7FF2CDC9F73007B60E8 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				2379E8032CDC9F73007B60E8 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				2379E8042CDC9F73007B60E8 /* VisakuUITests */,
+				A34AB4C3788191B7686D65B6 /* PBXTargetDependency */,
 			);
 			name = VisakuUITests;
-			packageProductDependencies = (
-			);
 			productName = VisakuUITests;
-			productReference = 2379E8012CDC9F73007B60E8 /* VisakuUITests.xctest */;
+			productReference = 00150947FCD45A93CD99741C /* VisakuUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		58A4D6C7BF35FBD3819C5CC4 /* VisakuTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A461BE7CC93779E7BC86ABD1 /* Build configuration list for PBXNativeTarget "VisakuTests" */;
+			buildPhases = (
+				F342E62402AA8ABA5C766CEC /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F020AE92C72A6E2386E6FC01 /* PBXTargetDependency */,
+			);
+			name = VisakuTests;
+			productName = VisakuTests;
+			productReference = EA69F1A832DD6F1540092A7F /* VisakuTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		2379E7DF2CDC9F71007B60E8 /* Project object */ = {
+		9F8EF9AB33CD301729D82E40 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1610;
-				LastUpgradeCheck = 1610;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
-					2379E7E62CDC9F71007B60E8 = {
-						CreatedOnToolsVersion = 16.1;
-					};
-					2379E7F62CDC9F73007B60E8 = {
-						CreatedOnToolsVersion = 16.1;
-						TestTargetID = 2379E7E62CDC9F71007B60E8;
-					};
-					2379E8002CDC9F73007B60E8 = {
-						CreatedOnToolsVersion = 16.1;
-						TestTargetID = 2379E7E62CDC9F71007B60E8;
+					4A9D25820530A7AB9A4AAB41 = {
+						TestTargetID = 473F5F5444E4419D59F0EF1B;
 					};
 				};
 			};
-			buildConfigurationList = 2379E7E22CDC9F71007B60E8 /* Build configuration list for PBXProject "Visaku" */;
+			buildConfigurationList = EEB896F179A4F17211A824B1 /* Build configuration list for PBXProject "Visaku" */;
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				en,
 			);
-			mainGroup = 2379E7DE2CDC9F71007B60E8;
-			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
-			productRefGroup = 2379E7E82CDC9F71007B60E8 /* Products */;
+			mainGroup = 083F64074ADC25021FD7AA7F;
+			packageReferences = (
+				6295B10EFCB3C633CC059F97 /* XCRemoteSwiftPackageReference "RepositoryModule" */,
+				142B0BF465BCBCA73148CEDF /* XCRemoteSwiftPackageReference "UIComponentModule" */,
+			);
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2379E7E62CDC9F71007B60E8 /* Visaku */,
-				2379E7F62CDC9F73007B60E8 /* VisakuTests */,
-				2379E8002CDC9F73007B60E8 /* VisakuUITests */,
+				473F5F5444E4419D59F0EF1B /* Visaku */,
+				58A4D6C7BF35FBD3819C5CC4 /* VisakuTests */,
+				4A9D25820530A7AB9A4AAB41 /* VisakuUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		2379E7E52CDC9F71007B60E8 /* Resources */ = {
+		1B8D314E278288A184B9168D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2379E7F52CDC9F73007B60E8 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2379E7FF2CDC9F73007B60E8 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				C5311A00A497C9705AB6BEFE /* Assets.xcassets in Resources */,
+				0ADE1013BD59447216383D27 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		2379E7E32CDC9F71007B60E8 /* Sources */ = {
+		3F2717C4B99BEFB71671B6C9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EC479A27ED9B788340F70A8 /* VisakuUITests.swift in Sources */,
+				D24F81F856350B31FB4F4BED /* VisakuUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2379E7F32CDC9F73007B60E8 /* Sources */ = {
+		646CDF5608CE6C63D4CBBA63 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				304E5BE7D7BC5DB20A5E586B /* ContentView.swift in Sources */,
+				A04F09319EA10250023B1E45 /* VisakuApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2379E7FD2CDC9F73007B60E8 /* Sources */ = {
+		F342E62402AA8ABA5C766CEC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C3235E2136D75211831A665 /* VisakuTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		2379E7F92CDC9F73007B60E8 /* PBXTargetDependency */ = {
+		A34AB4C3788191B7686D65B6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2379E7E62CDC9F71007B60E8 /* Visaku */;
-			targetProxy = 2379E7F82CDC9F73007B60E8 /* PBXContainerItemProxy */;
+			target = 473F5F5444E4419D59F0EF1B /* Visaku */;
+			targetProxy = 4D6811013CC3BB30E3BAA251 /* PBXContainerItemProxy */;
 		};
-		2379E8032CDC9F73007B60E8 /* PBXTargetDependency */ = {
+		F020AE92C72A6E2386E6FC01 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2379E7E62CDC9F71007B60E8 /* Visaku */;
-			targetProxy = 2379E8022CDC9F73007B60E8 /* PBXContainerItemProxy */;
+			target = 473F5F5444E4419D59F0EF1B /* Visaku */;
+			targetProxy = 2AA2D228003D826374B0C6CD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		2379E8092CDC9F73007B60E8 /* Debug */ = {
+		13AB8AC42A89AA37396A8A64 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = Debug;
-		};
-		2379E80A2CDC9F73007B60E8 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -369,8 +304,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -378,186 +312,250 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				VALIDATE_PRODUCT = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
-		2379E80C2CDC9F73007B60E8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Visaku/Preview Content\"";
-				DEVELOPMENT_TEAM = BHS88Y2WBP;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.insiders.Visaku;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		2379E80D2CDC9F73007B60E8 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Visaku/Preview Content\"";
-				DEVELOPMENT_TEAM = BHS88Y2WBP;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.insiders.Visaku;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		2379E80F2CDC9F73007B60E8 /* Debug */ = {
+		3D0A8F629B76F8A0843A04EF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BHS88Y2WBP;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.insiders.VisakuTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.insiders.visaku.tests;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Visaku.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Visaku";
-			};
-			name = Debug;
-		};
-		2379E8102CDC9F73007B60E8 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BHS88Y2WBP;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.insiders.VisakuTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Visaku.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Visaku";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Visaku.app/Visaku";
 			};
 			name = Release;
 		};
-		2379E8122CDC9F73007B60E8 /* Debug */ = {
+		61D015E67E0EBE705FB5253A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BHS88Y2WBP;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.insiders.VisakuUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Visaku;
-			};
-			name = Debug;
-		};
-		2379E8132CDC9F73007B60E8 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BHS88Y2WBP;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.insiders.VisakuUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.insiders.visaku.uitests;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Visaku;
 			};
 			name = Release;
+		};
+		743F79A38BCDEB61EB79CF83 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.insiders.visaku.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Visaku.app/Visaku";
+			};
+			name = Debug;
+		};
+		8A0A7C5470A34A9DA63494A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9D4CEBCEEE91115C3DBBA876 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Visaku/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.insiders.test;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		A7F8BA0E157F1B7E97876BF5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Visaku/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.insiders.test;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		D3FCAFED04007B0F1E252716 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.insiders.visaku.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Visaku;
+			};
+			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2379E7E22CDC9F71007B60E8 /* Build configuration list for PBXProject "Visaku" */ = {
+		6DE0F5B0BA7C1A30AED0BC72 /* Build configuration list for PBXNativeTarget "Visaku" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2379E8092CDC9F73007B60E8 /* Debug */,
-				2379E80A2CDC9F73007B60E8 /* Release */,
+				A7F8BA0E157F1B7E97876BF5 /* Debug */,
+				9D4CEBCEEE91115C3DBBA876 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
-		2379E80B2CDC9F73007B60E8 /* Build configuration list for PBXNativeTarget "Visaku" */ = {
+		869AC61484709B6DD560D050 /* Build configuration list for PBXNativeTarget "VisakuUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2379E80C2CDC9F73007B60E8 /* Debug */,
-				2379E80D2CDC9F73007B60E8 /* Release */,
+				D3FCAFED04007B0F1E252716 /* Debug */,
+				61D015E67E0EBE705FB5253A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
-		2379E80E2CDC9F73007B60E8 /* Build configuration list for PBXNativeTarget "VisakuTests" */ = {
+		A461BE7CC93779E7BC86ABD1 /* Build configuration list for PBXNativeTarget "VisakuTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2379E80F2CDC9F73007B60E8 /* Debug */,
-				2379E8102CDC9F73007B60E8 /* Release */,
+				743F79A38BCDEB61EB79CF83 /* Debug */,
+				3D0A8F629B76F8A0843A04EF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
-		2379E8112CDC9F73007B60E8 /* Build configuration list for PBXNativeTarget "VisakuUITests" */ = {
+		EEB896F179A4F17211A824B1 /* Build configuration list for PBXProject "Visaku" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2379E8122CDC9F73007B60E8 /* Debug */,
-				2379E8132CDC9F73007B60E8 /* Release */,
+				8A0A7C5470A34A9DA63494A2 /* Debug */,
+				13AB8AC42A89AA37396A8A64 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		142B0BF465BCBCA73148CEDF /* XCRemoteSwiftPackageReference "UIComponentModule" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/InsidersID/UIComponentModule.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		6295B10EFCB3C633CC059F97 /* XCRemoteSwiftPackageReference "RepositoryModule" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/InsidersID/RepositoryModule.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		65A885EC130A2151007E1CC8 /* UIComponentModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 142B0BF465BCBCA73148CEDF /* XCRemoteSwiftPackageReference "UIComponentModule" */;
+			productName = UIComponentModule;
+		};
+		B0E71FABA94594C77B28B6E8 /* RepositoryModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6295B10EFCB3C633CC059F97 /* XCRemoteSwiftPackageReference "RepositoryModule" */;
+			productName = RepositoryModule;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = 2379E7DF2CDC9F71007B60E8 /* Project object */;
+	rootObject = 9F8EF9AB33CD301729D82E40 /* Project object */;
 }
