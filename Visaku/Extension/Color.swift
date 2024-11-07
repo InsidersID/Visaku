@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUICore
 
 extension Color {
     static var info1: Color = Color("info").opacity(0.1)
