@@ -95,8 +95,9 @@ public struct MainDocumentView: View {
                                 DocumentCard(height: proxy.size.height*102/798, document: "Foto", status: .undone)
                             }
                             
-                            Button {
-                                isAdditionalInfoPresented = true
+                            NavigationLink {
+                                AdditionalInformationView(account: account)
+                                    .navigationBarBackButtonHidden()
                             } label: {
                                 DocumentCard(height: proxy.size.height * 102 / 798, document: "Informasi tambahan", status: .undone)
                             }
