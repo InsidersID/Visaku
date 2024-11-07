@@ -51,6 +51,7 @@ targets:
     dependencies:
       - package: UIComponentModule
       - package: RepositoryModule
+      - package: Rive
 
   VisakuTests:
     type: bundle.unit-test
