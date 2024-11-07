@@ -35,7 +35,7 @@ struct AddProfileView<Content: View>: View {
                         .foregroundStyle(.white)
                 )
                 
-                CustomButton( text: "Buat profil", textColor: .blue, color: Color(red: 0.7, green: 0.91, blue: 0.95), buttonWidth: proxy.size.width*0.16, font: 12, cornerRadius: 16, paddingHorizontal: 0, paddingVertical: 0) {
+                CustomButton( text: "Buat profil", textColor: .blue, color: Color(red: 0.7, green: 0.91, blue: 0.95), buttonWidth: proxy.size.width*0.16, fontSize: 12, cornerRadius: 16, paddingHorizontal: 0, paddingVertical: 0) {
                     Task {
                         await profileViewModel.saveAccount()
                     }

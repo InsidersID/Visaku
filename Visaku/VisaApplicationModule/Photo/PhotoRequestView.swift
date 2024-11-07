@@ -36,11 +36,11 @@ public struct PhotoRequestView: View {
                         .foregroundColor(.white)
                         .multilineTextAlignment(.leading)
                     
-                    CustomButton(text: "Ambil foto", textColor: Color.white, color: Color.blue, font: 12, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 15) {
+                    CustomButton(text: "Ambil foto", textColor: Color.white, color: Color.blue, fontSize: 12, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 15) {
                         return
                     }
 
-                    CustomButton(text: "Upload foto", textColor: Color.blue, color: Color.blue.opacity(0), font: 12, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 15) {
+                    CustomButton(text: "Upload foto", textColor: Color.blue, color: Color.blue.opacity(0), fontSize: 12, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 15) {
                         isPhotoPickerPresented.toggle()
                     }
                     .sheet(isPresented: $isPhotoPickerPresented) {

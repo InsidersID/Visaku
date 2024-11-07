@@ -51,10 +51,10 @@ struct ItineraryDocumentSheet: View {
             )
             
             VStack(spacing: 8) {
-                CustomButton(text: "Scan Dokumen", color: .blue, font: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                CustomButton(text: "Scan Dokumen", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     // Scanning Document
                 }
-                CustomButton(text: "Upload", textColor: .blue, color: .white, font: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                CustomButton(text: "Upload", textColor: .blue, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     //Upload Document
                 }
             }

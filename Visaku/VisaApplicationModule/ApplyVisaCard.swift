@@ -31,7 +31,7 @@ struct ApplyVisaCard: View {
                     .padding(.horizontal)
                 }
                 VStack {
-                    CustomButton(text: "Mulai pengajuan", color: .blue, font: 18, cornerRadius: 10, paddingHorizontal: 80, paddingVertical: 18) {
+                    CustomButton(text: "Mulai pengajuan", color: .blue, fontSize: 18, cornerRadius: 10, paddingHorizontal: 80, paddingVertical: 18) {
                         
                     }
                 }

@@ -40,7 +40,7 @@ struct VisaApplicationHeader: View {
                             .padding()
                     }
                 }
-                CustomButton(text: "Mulai pengajuan", textColor: .blue, color: .white, font: 16, cornerRadius: 16, paddingVertical: 3) {
+                CustomButton(text: "Mulai pengajuan", textColor: .blue, color: .white, fontSize: 16, cornerRadius: 16, paddingVertical: 3) {
                     isShowChooseCountrySheet = true
                 }
                 .padding(.bottom, 10)
