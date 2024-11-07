@@ -37,10 +37,49 @@ targets:
     info:
       path: Visaku/Info.plist
       properties:
+        UIAppFonts:
+          - Inter-Black.ttf
+          - Inter-BlackItalic.ttf
+          - Inter-Bold.ttf
+          - Inter-BoldItalic.ttf
+          - Inter-ExtraBold.ttf
+          - Inter-ExtraBoldItalic.ttf
+          - Inter-ExtraLight.ttf
+          - Inter-ExtraLightItalic.ttf
+          - Inter-Italic.ttf
+          - Inter-Light.ttf
+          - Inter-LightItalic.ttf
+          - Inter-Medium.ttf
+          - Inter-MediumItalic.ttf
+          - Inter-Regular.ttf
+          - Inter-SemiBold.ttf
+          - Inter-SemiBoldItalic.ttf
+          - Inter-Thin.ttf
+          - Inter-ThinItalic.ttf
+          - Poppins-Black.ttf
+          - Poppins-BlackItalic.ttf
+          - Poppins-Bold.ttf
+          - Poppins-BoldItalic.ttf
+          - Poppins-ExtraBold.ttf
+          - Poppins-ExtraBoldItalic.ttf
+          - Poppins-ExtraLight.ttf
+          - Poppins-ExtraLightItalic.ttf
+          - Poppins-Italic.ttf
+          - Poppins-Light.ttf
+          - Poppins-LightItalic.ttf
+          - Poppins-Medium.ttf
+          - Poppins-MediumItalic.ttf
+          - Poppins-Regular.ttf
+          - Poppins-SemiBold.ttf
+          - Poppins-SemiBoldItalic.ttf
+          - Poppins-Thin.ttf
+          - Poppins-ThinItalic.ttf
         UILaunchStoryboardName: 'LaunchScreen'
+        NSCameraUsageDescription: 'Fitur kamera digunakan untuk mengambil dan memproses dokumenmu. Tenang saja, gambar dokumenmu tidak akan dikirim keluar dari perangkatmu.'
         CFBundleDisplayName: 'Test'
         CFBundleShortVersionString: '1.0.0'
-        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
         NSAppTransportSecurity:
           NSAllowsArbitraryLoads: true
     settings:
