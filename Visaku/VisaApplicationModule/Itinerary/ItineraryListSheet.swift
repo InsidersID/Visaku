@@ -85,11 +85,11 @@ struct ItineraryListSheet: View {
             
             VStack {
                 VStack(spacing: 8) {
-                    CustomButton(text: "Simpan PDF", color: .blue, font: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
+                    CustomButton(text: "Simpan PDF", color: .blue, fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
                         // Save PDF
                     }
                     
-                    CustomButton(text: "Generate Ulang",textColor: .blue, color: .white, font: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
+                    CustomButton(text: "Generate Ulang",textColor: .blue, color: .white, fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
                         // Generate Ulang
                     }
                 }

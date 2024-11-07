@@ -64,7 +64,7 @@ public struct KTPPreviewSheet: View {
                 case .success:
                     Text("KTP saved successfully").foregroundColor(.green)
                 case .idle:
-                    CustomButton(text: "Simpan", color: .blue, font: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    CustomButton(text: "Simpan", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                         Task {
                             await ktpPreviewViewModel.saveIdentityCard()
                         }
@@ -82,7 +82,7 @@ public struct KTPPreviewSheet: View {
                 case .success:
                     Text("KTP deleted successfully").foregroundColor(.green)
                 case .idle:
-                    CustomButton(text: "Hapus dokumen", textColor: .blue, color: .white, font: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    CustomButton(text: "Hapus dokumen", textColor: .blue, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                         Task {
                             await ktpPreviewViewModel.deleteIdentityCard()
                         }

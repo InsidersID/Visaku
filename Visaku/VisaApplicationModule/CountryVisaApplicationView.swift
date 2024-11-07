@@ -86,7 +86,7 @@ public struct CountryVisaApplicationView: View {
                         }
                     }
                     .padding(.horizontal)
-                    CustomButton(text: "Download", color: .blue, font: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    CustomButton(text: "Download", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                         downloadJSON()
                     }
                     .padding()
