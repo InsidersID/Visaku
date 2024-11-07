@@ -1,6 +1,4 @@
 import SwiftUI
-import ProfileModule
-import VisaApplicationModule
 
 struct TabBarView: View {
     @Environment(\.colorScheme) var colorScheme

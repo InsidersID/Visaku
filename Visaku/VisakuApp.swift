@@ -7,7 +7,6 @@
 
 import SwiftUI
 import RepositoryModule
-import OnboardingModule
 
 @main
 struct VisakuApp: App {
