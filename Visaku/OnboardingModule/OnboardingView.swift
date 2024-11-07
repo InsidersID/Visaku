@@ -1,5 +1,6 @@
 import SwiftUI
 import RiveRuntime
+import UIComponentModule
 
 public struct OnboardingView<Destination: View>: View {
     var destination: Destination
