@@ -15,7 +15,7 @@ packages:
     branch: main
   Rive:
     url: https://github.com/rive-app/rive-ios
-    from: "6.3.3"
+    from: '6.3.3'
 
 targetTemplates:
   Module:
@@ -46,7 +46,7 @@ targets:
     settings:
       base:
         TARGETED_DEVICE_FAMILY: 1
-        PRODUCT_BUNDLE_IDENTIFIER: 'com.insiders.test'
+        PRODUCT_BUNDLE_IDENTIFIER: 'com.insiders.visaku'
         CURRENT_PROJECT_VERSION: 1
     dependencies:
       - package: UIComponentModule
