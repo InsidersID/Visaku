@@ -1,3 +1,3 @@
 generate_project:
 	xcodegen generate
-	open Servisa.xcodeproj
+	open Visaku.xcodeproj
