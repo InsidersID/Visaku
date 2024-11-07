@@ -13,7 +13,7 @@ packages:
   RepositoryModule:
     url: https://github.com/InsidersID/RepositoryModule.git
     branch: main
-  Rive:
+  RiveRuntime:
     url: https://github.com/rive-app/rive-ios
     from: '6.3.3'
 
