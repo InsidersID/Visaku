@@ -1,24 +1,33 @@
+//
+//  PassportPreviewSheet.swift
+//  ProfileModule
+//
+//  Created by hendra on 20/10/24.
+//
+
 import SwiftUI
 import UIComponentModule
 import RepositoryModule
 
-public struct KTPPreviewSheet: View {
+public struct PassportPreviewSheet: View {
     @Environment(\.dismiss) var dismiss
-    @State var ktpPreviewViewModel: KTPPreviewViewModel
+    @ObservedObject var passportPreviewViewModel: PassportPreviewViewModel
     
+    // Initialize with AccountEntity
     public init(account: AccountEntity) {
-        self.ktpPreviewViewModel = KTPPreviewViewModel(account: account)
+        self.passportPreviewViewModel = PassportPreviewViewModel(account: account)
     }
     
     public var body: some View {
         VStack {
-            if let ktpImage = ktpPreviewViewModel.ktpImage {
-                Image(uiImage: ktpImage)
+            if let passportImage = passportPreviewViewModel.passportImage {
+                Image(uiImage: passportImage)
                     .resizable()
                     .frame(height: 200)
                     .cornerRadius(24)
                     .padding()
-            } else {
+            }
+            else {
                 Image(systemName: "dock.rectangle")
                     .resizable()
                     .frame(height: 200)
@@ -38,24 +47,20 @@ public struct KTPPreviewSheet: View {
             CardContainer(cornerRadius: 24) {
                 VStack {
                     Group {
-                        KeyValueRow(key: "NIK", value: $ktpPreviewViewModel.identityCard.identityId)
-                        KeyValueRow(key: "Nama", value: $ktpPreviewViewModel.identityCard.name)
-                        KeyValueRow(key: "TTL", value: $ktpPreviewViewModel.identityCard.placeDateOfBirth)
-                        KeyValueRow(key: "Negara Kelahiran", value: $ktpPreviewViewModel.identityCard.countryBorn)
-                        KeyValueRow(key: "Kewarganegaraan", value: $ktpPreviewViewModel.identityCard.nationality)
-                        KeyValuePickerRow<GenderEnum>(key: "Gender", selectedOption: $ktpPreviewViewModel.identityCard.gender)
-                        KeyValueDropdownRow(key: "Marital Status", selectedOption: $ktpPreviewViewModel.identityCard.maritalStatus)
-                        KeyValueRow(key: "Pekerjaan", value: $ktpPreviewViewModel.identityCard.job)
+                        KeyValueDropdownRow<PassportType>(key: "Passport Type", selectedOption: $passportPreviewViewModel.passport.passportType)
+                        KeyValueDropdownRow<PassportIssueType>(key: "Passport Issue Type", selectedOption: $passportPreviewViewModel.passport.passportIssueType)
+                        KeyValueRow(key: "Tempat Penerbitan", value: $passportPreviewViewModel.passport.passportIssuePlace)
+                        KeyValueDateRow(key: "Tanggal Penerbitan", dateValue: $passportPreviewViewModel.passport.issueDate)
+                        KeyValueDateRow(key: "Tanggal Kadaluarsa", dateValue: $passportPreviewViewModel.passport.expirationDate)
+                        KeyValueRow(key: "Nomor Passport", value: $passportPreviewViewModel.passport.passportNo)
                     }
                     .padding(.horizontal)
                     .padding(.vertical, 4)
                 }
             }
             
-            // Save and delete buttons
             VStack {
-                // Handle the different states of the save operation
-                switch ktpPreviewViewModel.saveIdentityCardState {
+                switch passportPreviewViewModel.savePassportState {
                 case .loading:
                     ProgressView("Saving...")
                         .padding()
@@ -64,16 +69,15 @@ public struct KTPPreviewSheet: View {
                 case .success:
                     Text("KTP saved successfully").foregroundColor(.green)
                 case .idle:
-                    CustomButton(text: "Simpan", color: .blue, font: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    CustomButton(text: "Simpan", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                         Task {
-                            await ktpPreviewViewModel.saveIdentityCard()
+                            await passportPreviewViewModel.savePassport()
                         }
-//                        dismiss()
+                        dismiss()
                     }
                 }
-
-                // Handle the different states of the delete operation
-                switch ktpPreviewViewModel.deleteIdentityCardState {
+                
+                switch passportPreviewViewModel.deletePassportState {
                 case .loading:
                     ProgressView("Deleting...")
                         .padding()
@@ -82,23 +86,24 @@ public struct KTPPreviewSheet: View {
                 case .success:
                     Text("KTP deleted successfully").foregroundColor(.green)
                 case .idle:
-                    CustomButton(text: "Hapus dokumen", textColor: .blue, color: .white, font: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    CustomButton(text: "Hapus dokumen", textColor: .blue, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                         Task {
-                            await ktpPreviewViewModel.deleteIdentityCard()
+                            await passportPreviewViewModel.deletePassport()
                         }
-//                        dismiss()
+                        dismiss()
                     }
                 }
             }
+            
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .fullScreenCover(isPresented: $ktpPreviewViewModel.isCameraOpen, content: {
-            VNDocumentCameraViewControllerRepresentable(scanResult: $ktpPreviewViewModel.ktpImage)
+        .frame(width: .infinity, height: .infinity)
+        .fullScreenCover(isPresented: $passportPreviewViewModel.isCameraOpen, content: {
+            VNDocumentCameraViewControllerRepresentable(scanResult: $passportPreviewViewModel.passportImage)
                 .ignoresSafeArea()
         })
-        .onChange(of: ktpPreviewViewModel.ktpImage) { _, newValue in
+        .onChange(of: passportPreviewViewModel.passportImage) { _, newValue in
             if let unwrappedImage = newValue {
-                ktpPreviewViewModel.processCapturedImage(unwrappedImage)
+                passportPreviewViewModel.processCapturedImage(unwrappedImage)
             } else {
                 print("No image to process")
             }
@@ -107,7 +112,7 @@ public struct KTPPreviewSheet: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
-//                    dismiss()
+                    dismiss()
                 }) {
                     Image(systemName: "x.circle")
                         .font(.title)
@@ -117,7 +122,3 @@ public struct KTPPreviewSheet: View {
         }
     }
 }
-
-//#Preview {
-//    KTPPreviewView()
-//}

@@ -25,88 +25,35 @@ public struct CountryVisaApplicationView: View {
     
     @State private var showingShareSheet = false
     @State private var fileURL: URL?
+    
     public init() {}
     
     public var body: some View {
         NavigationView {
             ZStack {
                 ScrollView {
-                    Color
-                        .clear
-                        .ignoresSafeArea(.all)
-                    Gauge(value: progress, in: 0...100) {
-                        
-                    } currentValueLabel: {
-                        VStack {
-                            Text("\(Int(progress))%")
-                            Text("Visa turis Italia")
-                                .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
-                                .font(.system(.title, design: .serif, weight: .semibold))
-                        }
-                        .foregroundStyle(.blue)
-                        .padding(.bottom, 50)
-                    }
-                    .tint(.blue)
-                    .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
+                    Color.clear.ignoresSafeArea(.all)
+                    
+                    // Extracted Progress View
+                    progressView
                     
                     Divider()
                         .padding(.bottom)
                     
-                    VStack {
-                        DocumentCard(height: 82, document: "Identitas", status: .undone)
-                            .onTapGesture {
-                                isIdentity.toggle()
-                            }
-                        DocumentCard(height: 122, document: "Form Aplikasi", status: .undone)
-                            .onTapGesture {
-                                isFormApplication.toggle()
-                            }
-                    }
-                    .padding(.horizontal)
+                    // Extracted Document Section
+                    documentSection
                     
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
-                        ForEach(applicationList, id: \.self) { application in
-                            DocumentCard(height: application == "Itinerary" ? 82 : 115, document: application, status: .undone)
-                                .onTapGesture {
-                                    switch application {
-                                    case "Tiket Pesawat":
-                                        isFlightTicket.toggle()
-                                    case "Reservasi Hotel":
-                                        isHotelReservation.toggle()
-                                    case "Asuransi Medis":
-                                        isMedicalInsurance.toggle()
-                                    case "Referensi Bank":
-                                        isBankReference.toggle()
-                                    case "Itinerary":
-                                        isItinerary.toggle()
-                                    default:
-                                        EmptyView()
-                                    }
-                                }
-                        }
-                    }
-                    .padding(.horizontal)
-                    CustomButton(text: "Download", color: .blue, font: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
-                        downloadJSON()
-                    }
-                    .padding()
+                    // Extracted Download Button
+                    downloadButton
                 }
                 
                 NotificationCard()
                     .offset(x: 40, y: 0)
-                
             }
             .navigationTitle("Pengajuan")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left.circle")
-                            .foregroundStyle(.black)
-                    }
-                }
+                leadingToolbarItem
             }
             .sheet(isPresented: $isIdentity) {
                 ProfileView()
@@ -137,35 +84,83 @@ public struct CountryVisaApplicationView: View {
         }
     }
     
+    // MARK: - Components
+
+    private var progressView: some View {
+        Gauge(value: progress, in: 0...100) { }
+            currentValueLabel: {
+                VStack {
+                    Text("\(Int(progress))%")
+                    Text("Visa turis Italia")
+                        .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
+                        .font(.system(.title, design: .serif, weight: .semibold))
+                }
+                .foregroundStyle(.blue)
+                .padding(.bottom, 50)
+            }
+            .tint(.blue)
+            .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
+    }
+    
+    private var documentSection: some View {
+        VStack {
+            DocumentCard(height: 82, document: "Identitas", status: .undone)
+                .onTapGesture { isIdentity.toggle() }
+            
+            DocumentCard(height: 122, document: "Form Aplikasi", status: .undone)
+                .onTapGesture { isFormApplication.toggle() }
+            
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
+                ForEach(applicationList, id: \.self) { application in
+                    DocumentCard(height: application == "Itinerary" ? 82 : 115, document: application, status: .undone)
+                        .onTapGesture {
+                            switch application {
+                            case "Tiket Pesawat": isFlightTicket.toggle()
+                            case "Reservasi Hotel": isHotelReservation.toggle()
+                            case "Asuransi Medis": isMedicalInsurance.toggle()
+                            case "Referensi Bank": isBankReference.toggle()
+                            case "Itinerary": isItinerary.toggle()
+                            default: break
+                            }
+                        }
+                }
+            }
+            .padding(.horizontal)
+        }
+        .padding(.horizontal)
+    }
+    
+    private var downloadButton: some View {
+        CustomButton(text: "Download", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+            downloadJSON()
+        }
+        .padding()
+    }
+    
+    private var leadingToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button { dismiss() } label: {
+                Image(systemName: "chevron.left.circle")
+                    .foregroundStyle(.black)
+            }
+        }
+    }
+    
     private func downloadJSON() {
-        // Locate the JSON file in your app bundle
-        if let bundlePath = Bundle.main.url(forResource: "visa", withExtension: "json") {
+        if let bundlePath = Bundle.main.url(forResource: "visa", withExtension: "json"),
+           let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let destinationURL = documentsURL.appendingPathComponent("visa.json")
             
-            // Get the app's document directory
-            let fileManager = FileManager.default
-            let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-            
-            // Create a destination URL in the documents directory
-            if let documentsURL = documentsURL {
-                let destinationURL = documentsURL.appendingPathComponent("visa.json")
-                
-                // Check if the file already exists in the documents directory
-                if fileManager.fileExists(atPath: destinationURL.path) {
-                    print("File already exists at \(destinationURL.path)")
+            if FileManager.default.fileExists(atPath: destinationURL.path) {
+                fileURL = destinationURL
+                showingShareSheet = true
+            } else {
+                do {
+                    try FileManager.default.copyItem(at: bundlePath, to: destinationURL)
                     fileURL = destinationURL
                     showingShareSheet = true
-                } else {
-                    do {
-                        // Copy the file from the bundle to the documents directory
-                        try fileManager.copyItem(at: bundlePath, to: destinationURL)
-                        print("File saved to \(destinationURL.path)")
-                        
-                        // Set the URL for sharing or viewing
-                        fileURL = destinationURL
-                        showingShareSheet = true
-                    } catch {
-                        print("Error copying file: \(error.localizedDescription)")
-                    }
+                } catch {
+                    print("Error copying file: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -173,6 +168,8 @@ public struct CountryVisaApplicationView: View {
         }
     }
 }
+
+// Preview and ShareSheet struct remain unchanged
 
 #Preview {
     CountryVisaApplicationView()

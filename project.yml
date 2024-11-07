@@ -37,6 +37,18 @@ targets:
     info:
       path: Visaku/Info.plist
       properties:
+        CFBundleDevelopmentRegion: "$(DEVELOPMENT_LANGUAGE)"
+        CFBundleDisplayName: "Visaku"
+        CFBundleExecutable: "$(EXECUTABLE_NAME)"
+        CFBundleIdentifier: "$(PRODUCT_BUNDLE_IDENTIFIER)"
+        CFBundleInfoDictionaryVersion: "6.0"
+        CFBundleName: "$(PRODUCT_NAME)"
+        CFBundlePackageType: "APPL"
+        CFBundleShortVersionString: "1.0.0"
+        CFBundleVersion: "1"
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+        NSCameraUsageDescription: "Fitur kamera digunakan untuk mengambil dan memproses dokumenmu. Tenang saja, gambar dokumenmu tidak akan dikirim keluar dari perangkatmu."
         UIAppFonts:
           - Inter-Black.ttf
           - Inter-BlackItalic.ttf
@@ -75,13 +87,8 @@ targets:
           - Poppins-Thin.ttf
           - Poppins-ThinItalic.ttf
         UILaunchStoryboardName: 'LaunchScreen'
-        NSCameraUsageDescription: 'Fitur kamera digunakan untuk mengambil dan memproses dokumenmu. Tenang saja, gambar dokumenmu tidak akan dikirim keluar dari perangkatmu.'
-        CFBundleDisplayName: 'Test'
-        CFBundleShortVersionString: '1.0.0'
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
-        NSAppTransportSecurity:
-          NSAllowsArbitraryLoads: true
     settings:
       base:
         TARGETED_DEVICE_FAMILY: 1

@@ -21,10 +21,7 @@ enum DeleteIdentityCardState {
 @MainActor
 @Observable
 class KTPPreviewViewModel {
-    @MainActor
     private var identityCardUseCase: IdentityCardUseCaseProtocol = IdentityCardUseCase.make()
-    
-    @MainActor
     private var accountUseCase: AccountUseCaseProtocol = AccountUseCase.make()
     
     //Navigation

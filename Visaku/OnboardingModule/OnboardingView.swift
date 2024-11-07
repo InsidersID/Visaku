@@ -20,7 +20,7 @@ public struct OnboardingView<Destination: View>: View {
                     OnboardingAnimation(timeline: $timeline)
                     
                     VStack {
-                        CustomButton(text: "Skip", textColor: .black, color: .white, buttonWidth: proxy.size.width*0.1, buttonHeight: proxy.size.width*0.02, font: 16) {
+                        CustomButton(text: "Skip", textColor: .black, color: .white, buttonWidth: proxy.size.width*0.1, buttonHeight: proxy.size.width*0.02, fontSize: 16) {
                             viewModel.showTabBarView = true
                         }
                         .frame(width: proxy.size.width*0.8, alignment: .trailing)

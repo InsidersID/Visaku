@@ -51,11 +51,11 @@ public struct PhotoResultView: View {
                     
                     Spacer()
                     
-                    CustomButton(text: "Simpan", textColor: Color.white, color: Color.blue, font: 12, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 15) {
+                    CustomButton(text: "Simpan", textColor: Color.white, color: Color.blue, fontSize: 12, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 15) {
                         return
                     }
 
-                    CustomButton(text: "Hapus foto", textColor: Color.blue, color: Color.blue.opacity(0), font: 12, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 15) {
+                    CustomButton(text: "Hapus foto", textColor: Color.blue, color: Color.blue.opacity(0), fontSize: 12, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 15) {
                         return
                     }
                     
