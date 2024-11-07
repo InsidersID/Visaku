@@ -7,7 +7,6 @@
 
 import SwiftUI
 import UIComponentModule
-import ProfileModule
 
 public struct CountryVisaApplicationView: View {
     @Environment(\.colorScheme) var colorScheme
