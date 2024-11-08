@@ -111,6 +111,12 @@ public struct MainDocumentView: View {
                 UploadDocumentsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
             })
+            .sheet(isPresented: $profileViewModel.isUploadFile) {
+                FilePicker(selectedFileURL: $profileViewModel.selectedFileURL)
+            }
+            .sheet(isPresented: $profileViewModel.isUploadImage) {
+                ImagePicker(selectedImage: $profileViewModel.selectedImage)
+            }
             .fullScreenCover(isPresented: $profileViewModel.isScanKTP, content: {
                 KTPPreviewSheet(account: account)
             })
