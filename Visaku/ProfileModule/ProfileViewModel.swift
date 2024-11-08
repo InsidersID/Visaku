@@ -1,5 +1,6 @@
 import Foundation
 import RepositoryModule
+import SwiftUI
 
 enum SaveAdditionalInformationState {
     case idle
