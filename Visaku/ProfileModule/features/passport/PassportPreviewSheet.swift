@@ -62,12 +62,12 @@ public struct PassportPreviewSheet: View {
             VStack {
                 switch passportPreviewViewModel.savePassportState {
                 case .loading:
-                    ProgressView("Saving...")
+                    ProgressView("Menyimpan...")
                         .padding()
                 case .error:
-                    Text("Error saving the KTP").foregroundColor(.red)
+                    Text("Eror menyimpan paspormu").foregroundColor(.red)
                 case .success:
-                    Text("KTP saved successfully").foregroundColor(.green)
+                    Text("Paspormu sukses tersimpan").foregroundColor(.green)
                 case .idle:
                     CustomButton(text: "Simpan", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                         Task {
@@ -79,12 +79,12 @@ public struct PassportPreviewSheet: View {
                 
                 switch passportPreviewViewModel.deletePassportState {
                 case .loading:
-                    ProgressView("Deleting...")
+                    ProgressView("Menghapus...")
                         .padding()
                 case .error:
-                    Text("Error deleting the KTP").foregroundColor(.red)
+                    Text("Eror menghapus paspor").foregroundColor(.red)
                 case .success:
-                    Text("KTP deleted successfully").foregroundColor(.green)
+                    Text("Paspormu sukses terhapus").foregroundColor(.green)
                 case .idle:
                     CustomButton(text: "Hapus dokumen", textColor: .blue, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                         Task {
