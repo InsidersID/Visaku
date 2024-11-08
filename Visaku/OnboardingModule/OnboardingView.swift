@@ -31,8 +31,10 @@ public struct OnboardingView<Destination: View>: View {
                         }
                     
                     VStack {
-                        CustomButton(text: "Skip", textColor: .black, color: .white, buttonWidth: proxy.size.width*0.1, buttonHeight: proxy.size.width*0.02, fontSize: 16) {
-                            viewModel.showTabBarView = true
+                        CustomButton(text: timeline == 1 ? "Skip" : "", textColor: .white, color: .clear, buttonWidth: proxy.size.width*0.1, buttonHeight: proxy.size.width*0.02, fontSize: 16) {
+                            if timeline == 1 {
+                                viewModel.showTabBarView = true
+                            }
                         }
                         .frame(width: proxy.size.width*0.8, alignment: .trailing)
                         
