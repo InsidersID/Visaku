@@ -147,7 +147,7 @@ public struct MainDocumentView: View {
     }
 }
 
-#Preview {
-    MainDocumentView(name: "Iqbal", account: AccountEntity(id: "1", username: "IqbalGanteng"))
-        .environment(ProfileViewModel())
-}
+//#Preview {
+//    MainDocumentView(name: "Iqbal", account: AccountEntity(id: "1", username: "IqbalGanteng", accountImage: <#Data#>))
+//        .environment(ProfileViewModel())
+//}

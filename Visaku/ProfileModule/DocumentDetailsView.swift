@@ -174,7 +174,7 @@ public struct DocumentDetailsView: View {
 #Preview {
     Text(" ")
         .sheet(isPresented: .constant(true)) {
-            DocumentDetailsView(document: "Paspor", account: AccountEntity(id: "1", username: "IqbalGanteng"))
+            DocumentDetailsView(document: "Paspor", account: AccountEntity(id: "1", username: "IqbalGanteng", accountImage: <#Data#>))
                 .presentationDragIndicator(.visible)
                 .environment(ProfileViewModel())
         }
