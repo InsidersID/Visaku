@@ -10,6 +10,7 @@ import AVFoundation
 import CoreImage
 import Combine
 import Observation
+import SwiftUI
 
 class CameraView: UIViewController, @preconcurrency AVCaptureVideoDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate {
     
@@ -30,12 +31,15 @@ class CameraView: UIViewController, @preconcurrency AVCaptureVideoDataOutputSamp
     @Published var shouldCaptureImage = false
     @Published var lightCondition: String = "N/A"
     
+    @Binding var photoImage: UIImage?
+    
     var currentCIImage: CIImage?
     
     private var cameraState: CameraState
     
-    init(cameraState: CameraState) {
+    init(cameraState: CameraState, photoImage: Binding<UIImage?>) {
         self.cameraState = cameraState
+        self._photoImage = photoImage
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -224,7 +228,6 @@ class CameraView: UIViewController, @preconcurrency AVCaptureVideoDataOutputSamp
         let offset = cameraState.offset
         let shouldCapture = shouldCaptureImage
 
-        
         Task { @MainActor in
             print("aaaaa")
             
@@ -242,6 +245,7 @@ class CameraView: UIViewController, @preconcurrency AVCaptureVideoDataOutputSamp
                 shouldCaptureImage = false
                 
                 if let capturedImage = capturePhoto(ciImage: image) {
+                    self.photoImage = capturedImage
                     print("Captured photo successfully: \(capturedImage)")
                 } else {
                     print("Failed to capture photo.")

@@ -12,13 +12,14 @@ struct CameraViewRepresentable: UIViewControllerRepresentable {
     
     typealias UIViewControllerType = CameraView
     @Binding var shouldCaptureImage: Bool
+    @Binding var photoImage: UIImage?
     
     @ObservedObject var cameraState: CameraState
     
     private let shouldCaptureImageSubject = PassthroughSubject<Bool, Never>()
     
     func makeUIViewController(context: Context) -> CameraView {
-        let controller = CameraView(cameraState: cameraState)
+        let controller = CameraView(cameraState: cameraState, photoImage: $photoImage)
         controller.setShouldCaptureImagePublisher(shouldCaptureImageSubject)
         return controller
     }
