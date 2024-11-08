@@ -31,7 +31,8 @@ public struct DocumentDetailsView: View {
                         VStack {
                             HStack {
                                 Button {
-                                    isUpload = true
+                                    profileViewModel.uploadDocument = .init(name: document)
+                                    dismiss()
                                 } label: {
                                     Image(systemName: "square.and.arrow.up.circle.fill")
                                         .imageScale(.large)
