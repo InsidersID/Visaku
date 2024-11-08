@@ -15,6 +15,7 @@ public class ProfileViewModel{
     var isScanKTP: Bool = false
     var isScanPaspor: Bool = false
     var isScanFoto: Bool = false
+    var uploadDocument: Document?
     
     var error: CustomError?
     
