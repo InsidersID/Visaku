@@ -14,24 +14,11 @@ struct CountrySelectionCard: View {
     @Binding var visaType: String
     @Binding var isShowVisaTypeSheet: Bool
     
-    let countryFlags: [String: String] = [
-        "Austria": "🇦🇹", "Belgia": "🇧🇪",
-        "Denmark": "🇩🇰", "Finland": "🇫🇮",
-        "Jerman": "🇩🇪", "Hungaria": "🇭🇺",
-        "Iceland": "🇮🇸", "Italia": "🇮🇹",
-        "Luxembourg": "🇱🇺", "Netherlands": "🇳🇱",
-        "Norway": "🇳🇴", "Poland": "🇵🇱",
-        "Portugal": "🇵🇹", "Spain": "🇪🇸",
-        "Sweden": "🇸🇪", "Switzerland": "🇨🇭",
-        "Perancis": "🇫🇷", "Republik Ceko": "🇨🇿",
-        "Yunani": "🇬🇷"
-    ]
-
     var body: some View {
         CardContainer(cornerRadius: 18) {
             
             VStack {
-                let flag = countryFlags[countryKeyword] ?? ""
+                let flag = Countries.schengenCountryFlags[countryKeyword] ?? ""
                 Text("\(countryKeyword) \(flag)")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.title)
@@ -108,8 +95,8 @@ struct DateRow: View {
 
 #Preview {
     @Previewable @State var visaType = ""
-    @Previewable @State var isShowVisaTypeSheet = true
-    let countryKeyword = "Iceland"
+    @Previewable @State var isShowVisaTypeSheet = false
+    let countryKeyword = "Italia"
     let flag = countryKeyword
     
     CountrySelectionCard(countryKeyword: countryKeyword, visaType: $visaType, isShowVisaTypeSheet: $isShowVisaTypeSheet)

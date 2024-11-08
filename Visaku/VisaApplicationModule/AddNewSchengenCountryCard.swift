@@ -10,8 +10,6 @@ import UIComponentModule
 
 struct AddNewSchengenCountryCard: View {
     @Binding var isAddNewSchengenCountry: Bool
-    let countryList: [String]
-    let schengenCountryList: [String]
     @State var isSchengenCountryChosen: Bool = false
     @Binding var countryKeyword: String
     
@@ -36,7 +34,7 @@ struct AddNewSchengenCountryCard: View {
         }
         .foregroundStyle(.secondary)
         .sheet(isPresented: $isAddNewSchengenCountry) {
-            SchengenCountrySelectionSheetView(countryList: countryList, schengenCountryList: countryList, countryKeyword: $countryKeyword, isAddNewSchengenCountry: false, isUseSheet: false)
+            SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, isAddNewSchengenCountry: false, isUseSheet: false)
                 .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
         }
@@ -48,5 +46,5 @@ struct AddNewSchengenCountryCard: View {
     @Previewable @State var isSchengenCountryChosen = false
     @Previewable @State var countryKeyword = ""
 
-    AddNewSchengenCountryCard(isAddNewSchengenCountry: $isAddNewSchengenCountry, countryList: ["italy", "jerman"], schengenCountryList: ["italy", "jerman"], isSchengenCountryChosen: isSchengenCountryChosen, countryKeyword: $countryKeyword)
+    AddNewSchengenCountryCard(isAddNewSchengenCountry: $isAddNewSchengenCountry, isSchengenCountryChosen: isSchengenCountryChosen, countryKeyword: $countryKeyword)
 }

@@ -8,17 +8,16 @@
 import SwiftUI
 
 struct SchengenCountrySelectionSheetView: View {
-    let countryList: [String]
-    let schengenCountryList: [String]
     @Binding var countryKeyword: String
     @State var isAddNewSchengenCountry: Bool = false
+    @State var countrySearchKeyword: String = ""
     var isUseSheet: Bool
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack {
-                    ForEach(schengenCountryList.filter { countryKeyword.isEmpty || $0.contains(countryKeyword) }, id: \.self) { schengenCountry in
+                    ForEach(Countries.schengenCountryList.filter { countrySearchKeyword.isEmpty || $0.contains(countrySearchKeyword) }, id: \.self) { schengenCountry in
                         Button(action: {
                             isAddNewSchengenCountry = true
                             countryKeyword = schengenCountry
@@ -34,22 +33,26 @@ struct SchengenCountrySelectionSheetView: View {
                 }
                 .padding(.horizontal)
             }
-            .searchable(text: $countryKeyword, prompt: "Cari negara")
+            .searchable(text: $countrySearchKeyword, prompt: "Cari negara")
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("Pilih negara")
             .presentationDetents([.large])
             .sheet(isPresented: $isAddNewSchengenCountry) {
-                if isUseSheet {
-                    SchengenVisaSelectionSheetView(
-                        countryList: countryList,
-                        schengenCountryList: schengenCountryList,
-                        countryKeyword: $countryKeyword,
-                        onDismiss: {
-                            isAddNewSchengenCountry = false
-                        }
-                    )
-                }
+                SchengenVisaSelectionSheetView(
+                    countryKeyword: $countryKeyword,
+                    onDismiss: {
+                        isAddNewSchengenCountry = false
+                    }
+                )
             }
         }
     }
+}
+
+#Preview {
+    @Previewable @State var countryKeyword: String = "Italia"
+    @Previewable @State var isAddNewSchengenCountry: Bool = true
+    @Previewable @State var isUseSheet: Bool = true
+    
+    SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, isAddNewSchengenCountry: isAddNewSchengenCountry, isUseSheet: isUseSheet)
 }
