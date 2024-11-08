@@ -24,7 +24,8 @@ struct UploadDocumentsView: View {
             
             HStack {
                 Button {
-                    
+                    profileViewModel.isUploadFile = true
+                    dismiss()
                 } label: {
                     ZStack {
                         Image(systemName: "circle.fill")
@@ -47,7 +48,8 @@ struct UploadDocumentsView: View {
             
             HStack {
                 Button {
-                    
+                    profileViewModel.isUploadImage = true
+                    dismiss()
                 } label: {
                     ZStack {
                         Image(systemName: "circle.fill")
