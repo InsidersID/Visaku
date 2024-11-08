@@ -42,19 +42,15 @@ class PhotoPreviewViewModel {
     init(account: AccountEntity) {
         self.account = account
         
-        if let photoData = account.accountImage {
-            self.photoImage = UIImage(data: account.accountImage ?? Data())
-            isCameraOpen = false
-        } else {
-            self.account = AccountEntity(id: UUID().uuidString, username: "Visaku", accountImage: Data())
-        }
+        self.photoImage = UIImage(data: account.image)
+        isCameraOpen = false
     }
     
     func savePhoto() async {
         do {
             savePhotoState = .loading
             if let image = photoImage, let imageData = image.pngData() {
-                account.accountImage = imageData
+                account.image = imageData
                 
                 let isSuccess: Bool
                 if account.id.isEmpty {
