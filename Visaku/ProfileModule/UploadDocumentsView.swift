@@ -6,11 +6,8 @@ struct UploadDocumentsView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(ProfileViewModel.self) var profileViewModel
     public var document: String
-    @State private var isUpload: Bool = false
-    @State private var isSeeDetails: Bool = false
     public var account: AccountEntity
     @State public var status: DocumentStatus
-    @State private var passportDetailsIndex = 1
     
     public init (document: String, account: AccountEntity, status: DocumentStatus = .undone) {
         self.document = document
@@ -27,7 +24,7 @@ struct UploadDocumentsView: View {
             
             HStack {
                 Button {
-                    isUpload = true
+                    
                 } label: {
                     ZStack {
                         Image(systemName: "circle.fill")
@@ -50,7 +47,7 @@ struct UploadDocumentsView: View {
             
             HStack {
                 Button {
-                    isUpload = true
+                    
                 } label: {
                     ZStack {
                         Image(systemName: "circle.fill")
