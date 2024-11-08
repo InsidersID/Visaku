@@ -102,6 +102,13 @@ public struct MainDocumentView: View {
                     }
                 }
             }
+            .sheet(item: $selectedDocument, content: { document in
+                DocumentDetailsView(document: document.name, account: account)
+                    .presentationDragIndicator(.visible)
+            })
+            .sheet(isPresented: $profileViewModel.isUploadKTP, content: {
+                
+            })
             .fullScreenCover(isPresented: $profileViewModel.isScanKTP, content: {
                 KTPPreviewSheet(account: account)
             })
@@ -110,10 +117,6 @@ public struct MainDocumentView: View {
             })
             .fullScreenCover(isPresented: $profileViewModel.isScanFoto, content: {
                 EmptyView()
-            })
-            .sheet(item: $selectedDocument, content: { document in
-                DocumentDetailsView(document: document.name, account: account)
-                    .presentationDragIndicator(.visible)
             })
             .toolbar {
                 ToolbarItem(placement: .principal) {
