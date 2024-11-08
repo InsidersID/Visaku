@@ -31,7 +31,8 @@ public struct DocumentDetailsView: View {
                         VStack {
                             HStack {
                                 Button {
-                                    isUpload = true
+                                    profileViewModel.uploadDocument = .init(name: document)
+                                    dismiss()
                                 } label: {
                                     Image(systemName: "square.and.arrow.up.circle.fill")
                                         .imageScale(.large)
@@ -166,7 +167,7 @@ public struct DocumentDetailsView: View {
                 .frame(width: proxy.size.width, alignment: .center)
             }
         }
-        .presentationDetents([.fraction(isUpload || isSeeDetails ? 0.7 : 0.3)])
+        .presentationDetents([.fraction(isUpload || isSeeDetails ? 0.7 : 0.35)])
     }
 }
 

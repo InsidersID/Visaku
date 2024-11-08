@@ -13,13 +13,10 @@ public struct MainDocumentView: View {
     @Environment(ProfileViewModel.self) var profileViewModel
     @State private var scanResult: UIImage?
     public var account: AccountEntity
-    @State private var isDocumentTapped: Bool
-    @State private var selectedDocument: Document?
     
-    public init(name: String, account: AccountEntity, isDocumentTapped: Bool = false) {
+    public init(name: String, account: AccountEntity) {
         self.name = name
         self.account = account
-        self.isDocumentTapped = isDocumentTapped
     }
     
     public var body: some View {
@@ -55,24 +52,21 @@ public struct MainDocumentView: View {
                         VStack(spacing: proxy.size.width*0.03) {
                             HStack(spacing: proxy.size.width*0.03) {
                                 Button {
-                                    selectedDocument = .init(name: "KTP")
-                                    isDocumentTapped = true
+                                    profileViewModel.selectedDocument = .init(name: "KTP")
                                     
                                 } label: {
                                     DocumentCard(height: proxy.size.height*102/798, document: "KTP", status: account.identityCard == nil ? .undone : .done)
                                 }
                                 
                                 Button {
-                                    selectedDocument = .init(name: "Paspor")
-                                    isDocumentTapped = true
+                                    profileViewModel.selectedDocument = .init(name: "Paspor")
                                 } label: {
                                     DocumentCard(height: proxy.size.height*102/798, document: "Paspor", status: account.passport == nil ? .undone : .done)
                                 }
                             }
                             
                             Button {
-                                selectedDocument = .init(name: "Foto")
-                                isDocumentTapped = true
+                                profileViewModel.selectedDocument = .init(name: "Foto")
                             } label: {
                                 DocumentCard(height: proxy.size.height*102/798, document: "Foto", status: .undone)
                             }
@@ -89,7 +83,7 @@ public struct MainDocumentView: View {
                         Spacer()
                         
                         Button("Hapus Profil", role: .destructive){
-                            profileViewModel.isDeleteProfile = true
+                            profileViewModel.isDeleteProfile.toggle()
                         }
                         .font(Font.system(size: 17))
                         .fontWeight(.semibold)
@@ -98,9 +92,31 @@ public struct MainDocumentView: View {
                     }
                     
                     if profileViewModel.isDeleteProfile {
-                        CustomAlert(title: "Hapus profil?", caption: "Jika dokumen dihapus, semua data akan hilang secara otomatis.", button1: "Hapus", button2: "Batal")
+                        CustomAlert(title: "Hapus profil?", caption: "Jika dokumen dihapus, semua data akan hilang secara otomatis.", button1: "Hapus", button2: "Batal") {
+                            Task {
+                                await profileViewModel.deleteAccount(account)
+                                profileViewModel.isDeleteProfile.toggle()
+                            }
+                        } action2: {
+                            profileViewModel.isDeleteProfile.toggle()
+                        }
+
                     }
                 }
+            }
+            .sheet(item: $profileViewModel.selectedDocument, content: { document in
+                DocumentDetailsView(document: document.name, account: account)
+                    .presentationDragIndicator(.visible)
+            })
+            .sheet(item: $profileViewModel.uploadDocument, content: { document in
+                UploadDocumentsView(document: document.name, account: account)
+                    .presentationDragIndicator(.visible)
+            })
+            .sheet(isPresented: $profileViewModel.isUploadFile) {
+                FilePicker(selectedFileURL: $profileViewModel.selectedFileURL)
+            }
+            .sheet(isPresented: $profileViewModel.isUploadImage) {
+                ImagePicker(selectedImage: $profileViewModel.selectedImage)
             }
             .fullScreenCover(isPresented: $profileViewModel.isScanKTP, content: {
                 KTPPreviewSheet(account: account)
@@ -110,10 +126,6 @@ public struct MainDocumentView: View {
             })
             .fullScreenCover(isPresented: $profileViewModel.isScanFoto, content: {
                 EmptyView()
-            })
-            .sheet(item: $selectedDocument, content: { document in
-                DocumentDetailsView(document: document.name, account: account)
-                    .presentationDragIndicator(.visible)
             })
             .toolbar {
                 ToolbarItem(placement: .principal) {

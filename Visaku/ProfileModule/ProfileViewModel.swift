@@ -1,5 +1,6 @@
 import Foundation
 import RepositoryModule
+import SwiftUI
 
 @MainActor
 @Observable
@@ -15,6 +16,12 @@ public class ProfileViewModel{
     var isScanKTP: Bool = false
     var isScanPaspor: Bool = false
     var isScanFoto: Bool = false
+    var selectedDocument: Document?
+    var uploadDocument: Document?
+    var isUploadFile: Bool = false
+    var isUploadImage: Bool = false
+    var selectedFileURL: URL?
+    var selectedImage: UIImage?
     
     var error: CustomError?
     
