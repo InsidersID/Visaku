@@ -36,7 +36,7 @@ public class ProfileViewModel{
     func saveAccount() async {
         do {
             isLoading = true
-            let isSuccess = try await accountUseCase.save(param: AccountEntity(id: UUID().uuidString, username: username))
+            let isSuccess = try await accountUseCase.save(param: AccountEntity(id: UUID().uuidString, username: username, image: Data()))
             if isSuccess {
                 isLoading = false
                 username = ""
