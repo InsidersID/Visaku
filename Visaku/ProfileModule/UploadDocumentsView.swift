@@ -73,6 +73,7 @@ struct UploadDocumentsView: View {
             
             HStack {
                 Button {
+                    profileViewModel.selectedDocument = .init(name: document)
                     dismiss()
                 } label: {
                     ZStack {
