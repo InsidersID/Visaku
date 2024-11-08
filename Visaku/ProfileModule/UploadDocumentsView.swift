@@ -100,7 +100,7 @@ struct UploadDocumentsView: View {
 #Preview {
     Text(" ")
         .sheet(isPresented: .constant(true)) {
-            UploadDocumentsView(document: "Paspor", account: AccountEntity(id: "1", username: "IqbalGanteng"))
+            UploadDocumentsView(document: "Paspor", account: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
                 .presentationDragIndicator(.visible)
                 .environment(ProfileViewModel())
         }
