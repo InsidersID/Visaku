@@ -72,5 +72,7 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Fitur photo gallery digunakan untuk mengambil dan memproses dokumenmu. Tenang saja, gambar dokumenmu tidak akan dikirim keluar dari perangkatmu.</string>
 </dict>
 </plist>
