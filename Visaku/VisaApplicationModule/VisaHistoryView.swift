@@ -13,19 +13,6 @@ public struct VisaHistoryView: View {
     @State private var isShowChooseCountrySheet: Bool = false
     @State private var countryKeyword: String = ""
     @State private var isSchengenCountryChosen: Bool = false
-
-    let schengenCountryList = [
-        "Austria", "Belgia", "Bulgaria", "Denmark", "Finlandia",
-        "Jerman", "Hungaria", "Iceland", "Italia",
-        "Luksemburg", "Belanda", "Norwegia", "Polandia",
-        "Portugal", "Spanyol", "Swedia", "Swiss",
-        "Perancis", "Republik Ceko", "Yunani"
-    ]
-    let countryList = [
-        "Arab Saudi", "Australia", "Bangladesh", "Bhutan",
-        "China", "Jepang", "Korea Selatan", "Pakistan",
-        "Schengen Area", "Taiwan"
-    ]
     
     public init(viewModel: VisaHistoryViewModel = VisaHistoryViewModel()) {
         self.viewModel = viewModel
@@ -47,8 +34,6 @@ public struct VisaHistoryView: View {
         .ignoresSafeArea(edges: .all)
         .sheet(isPresented: $isShowChooseCountrySheet) {
             CountrySelectionSheetView(
-                countryList: countryList,
-                schengenCountryList: schengenCountryList,
                 isSchengenCountryChosen: $isSchengenCountryChosen,
                 countryKeyword: $countryKeyword,
                 onDismiss: {
