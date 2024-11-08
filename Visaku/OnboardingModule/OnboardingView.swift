@@ -55,7 +55,7 @@ public struct OnboardingView<Destination: View>: View {
                         )
                         
                         if timeline == 1 || timeline == 6 {
-                            CustomButton(text: timeline == 6 ? "Selesai" : "Mulai", textColor: .blue, color: .white, cornerRadius: 24) {
+                            CustomButton(text: timeline == 6 ? "Selesai" : "Klik untuk mulai", textColor: timeline == 6 ? .white : .primary5, color: timeline == 6 ? .primary5 : .clear, font: "Inter-Semibold", fontSize: 17, cornerRadius: 14) {
                                 if timeline < 6 {
                                     timeline += 1
                                     playCurrentTimeline()
