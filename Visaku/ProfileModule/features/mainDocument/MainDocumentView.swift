@@ -53,21 +53,21 @@ public struct MainDocumentView: View {
                         VStack(spacing: proxy.size.width*0.03) {
                             HStack(spacing: proxy.size.width*0.03) {
                                 Button {
-                                    selectedDocument = .init(name: "KTP")
+                                    profileViewModel.selectedDocument = .init(name: "KTP")
                                     
                                 } label: {
                                     DocumentCard(height: proxy.size.height*102/798, document: "KTP", status: profileViewModel.selectedAccount?.identityCard == nil ? .undone : .done)
                                 }
                                 
                                 Button {
-                                    selectedDocument = .init(name: "Paspor")
+                                    profileViewModel.selectedDocument = .init(name: "Paspor")
                                 } label: {
                                     DocumentCard(height: proxy.size.height*102/798, document: "Paspor", status: profileViewModel.selectedAccount?.passport == nil ? .undone : .done)
                                 }
                             }
                             
                             Button {
-                                selectedDocument = .init(name: "Foto")
+                                profileViewModel.selectedDocument = .init(name: "Foto")
                             } label: {
                                 DocumentCard(height: proxy.size.height*102/798, document: "Foto", status: .undone)
                             }
@@ -103,6 +103,7 @@ public struct MainDocumentView: View {
                 }
             }
             .sheet(item: $selectedDocument, content: { document in
+            .sheet(item: $profileViewModel.selectedDocument, content: { document in
                 DocumentDetailsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
             })
