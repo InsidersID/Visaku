@@ -13,15 +13,13 @@ public struct MainDocumentView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var profileViewModel: ProfileViewModel
     @State private var scanResult: UIImage?
-    @State private var isDocumentTapped: Bool
     @State private var selectedDocument: Document?
     @State private var isAdditionalInfoPresented: Bool = false
     @State private var needsFetch: Bool = true
     
-    public init(name: String, accountId: String, isDocumentTapped: Bool = false) {
+    public init(name: String, accountId: String) {
         self.name = name
         self.accountId = accountId
-        self.isDocumentTapped = isDocumentTapped
     }
     
     public var body: some View {
@@ -56,7 +54,6 @@ public struct MainDocumentView: View {
                             HStack(spacing: proxy.size.width*0.03) {
                                 Button {
                                     selectedDocument = .init(name: "KTP")
-                                    isDocumentTapped = true
                                     
                                 } label: {
                                     DocumentCard(height: proxy.size.height*102/798, document: "KTP", status: profileViewModel.selectedAccount?.identityCard == nil ? .undone : .done)
@@ -64,7 +61,6 @@ public struct MainDocumentView: View {
                                 
                                 Button {
                                     selectedDocument = .init(name: "Paspor")
-                                    isDocumentTapped = true
                                 } label: {
                                     DocumentCard(height: proxy.size.height*102/798, document: "Paspor", status: profileViewModel.selectedAccount?.passport == nil ? .undone : .done)
                                 }
@@ -72,7 +68,6 @@ public struct MainDocumentView: View {
                             
                             Button {
                                 selectedDocument = .init(name: "Foto")
-                                isDocumentTapped = true
                             } label: {
                                 DocumentCard(height: proxy.size.height*102/798, document: "Foto", status: .undone)
                             }
