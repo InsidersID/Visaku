@@ -107,6 +107,15 @@ public struct MainDocumentView: View {
                         .navigationBarBackButtonHidden(true)
                 }
             }
+            .fullScreenCover(isPresented: $profileViewModel.isScanKTP, content: {
+                KTPPreviewSheet(account: account)
+            })
+            .fullScreenCover(isPresented: $profileViewModel.isScanPaspor, content: {
+                PassportPreviewSheet(account: account)
+            })
+            .fullScreenCover(isPresented: $profileViewModel.isScanFoto, content: {
+                EmptyView()
+            })
             .sheet(item: $selectedDocument, content: { document in
                 if let account = profileViewModel.selectedAccount {
                     DocumentDetailsView(document: document.name, account: account)
