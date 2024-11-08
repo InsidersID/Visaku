@@ -2,15 +2,13 @@ import SwiftUI
 import RepositoryModule
 import UIComponentModule
 
-public struct ProfileView<Content: View>: View {
+public struct ProfileView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject public var profileViewModel: ProfileViewModel = ProfileViewModel()
     public var isSelectProfile: Bool
-    public var planeAddName: Content
     
-    public init(isSelectProfile: Bool = false, planeAddName: Content = Text(" ")) {
+    public init(isSelectProfile: Bool = false) {
         self.isSelectProfile = isSelectProfile
-        self.planeAddName = planeAddName
     }
     
     public var body: some View {

@@ -1,13 +1,14 @@
 import SwiftUI
 import UIComponentModule
+import RiveRuntime
 
-struct AddProfileView<Content: View>: View {
+struct AddProfileView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject public var profileViewModel: ProfileViewModel
-    var planeAddName: Content
+    private let riveViewModel: RiveViewModel
     
-    init (planeAddName: Content = Text(" ")) {
-        self.planeAddName = planeAddName
+    public init() {
+        riveViewModel = RiveViewModel(fileName: "PlaneAddName")
     }
     
     var body: some View {
@@ -20,14 +21,15 @@ struct AddProfileView<Content: View>: View {
                     }
                 
                 VStack {
-                    planeAddName
+                    riveViewModel.view()
+                        .frame(height: 82)
                     
                     TextField("Masukkan namamu", text: $profileViewModel.username)
                         .multilineTextAlignment(.center)
                         .font(Font.custom("Inter", size: 16))
                         .fontWeight(.semibold)
                 }
-                .frame(height: proxy.size.height*0.19, alignment: .center)
+                .frame(height: 144, alignment: .center)
                 .background(
                     RoundedRectangle(cornerRadius: 24)
                         .foregroundStyle(.white)
@@ -40,7 +42,7 @@ struct AddProfileView<Content: View>: View {
                     profileViewModel.isAddingProfile = false
                 }
                 .padding()
-                .frame(width: proxy.size.width, height: proxy.size.height*0.19, alignment: .topTrailing)
+                .frame(width: proxy.size.width, height: 144, alignment: .topTrailing)
             }
         }
     }
