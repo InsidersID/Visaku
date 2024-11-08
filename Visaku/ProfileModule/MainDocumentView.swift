@@ -127,6 +127,6 @@ public struct MainDocumentView: View {
 }
 
 #Preview {
-    MainDocumentView(name: "Iqbal", account: AccountEntity(id: "1", username: "IqbalGanteng"))
+    MainDocumentView(name: "Iqbal", account: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
         .environment(ProfileViewModel())
 }

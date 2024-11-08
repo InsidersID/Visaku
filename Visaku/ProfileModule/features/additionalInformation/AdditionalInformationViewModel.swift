@@ -30,6 +30,7 @@ class AdditionalInformationViewModel {
     
     //Navigation
     var showJobSheet: Bool = false
+    var showBornName: Bool = false
     
     //Data
     var additionalInformation: AdditionalInformationEntity
@@ -62,36 +63,46 @@ class AdditionalInformationViewModel {
         if let additionalInformationData = account.additionalInformation {
             self.additionalInformation = additionalInformationData
         } else {
-            self.additionalInformation = AdditionalInformationEntity(id: UUID().uuidString, selectedJob: "", companyName: "", companyAddress: "", companyCity: "", companyCountry: "", companyPostalCode: "", companyFaximile: "", companyTelephone: "", companyEmail: "")
+            self.additionalInformation = AdditionalInformationEntity(id: UUID().uuidString, bornName: "a", bornCountry: "a", bornNationality: "a", addressPostalCode: "a", addressCity: "a", addressCountry: "", addressFaximile: "a", addressTelephone: "a", addressEmail: "", selectedJob: "a", companyName: "a", companyAddress: "a", companyCity: "a", companyCountry: "a", companyPostalCode: "a", companyFaximile: "a", companyTelephone: "a", companyEmail: "a")
         }
     }
     
+    @MainActor
     func saveAdditionalInformation() async {
+        saveAdditionalInformationState = .loading
         do {
-            saveAdditionalInformationState = .loading
-            if let additionalInformation = account.additionalInformation {
-                self.additionalInformation.id = additionalInformation.id
-                let isSuccess = try await additionalInformationUseCase.update(param: additionalInformation)
-                if !isSuccess {
-                    saveAdditionalInformationState = .error
-                    return
-                }
+            var isSuccess: Bool
+            if account.additionalInformation != nil {
+                print("triggered update")
+                self.additionalInformation.id = account.additionalInformation!.id
+                isSuccess = try await additionalInformationUseCase.update(param: self.additionalInformation)
             } else {
-                let isSuccess = try await additionalInformationUseCase.save(param: additionalInformation)
-                if !isSuccess {
-                    saveAdditionalInformationState = .error
-                    return
+                if !showBornName {
+                    self.additionalInformation.bornName = ""
                 }
+                isSuccess = try await additionalInformationUseCase.save(param: self.additionalInformation)
             }
             
-            account.additionalInformation = additionalInformation
-            let isAccountSaveSuccess = try await accountUseCase.update(param: account)
-            if !isAccountSaveSuccess {
+            guard isSuccess else {
                 saveAdditionalInformationState = .error
                 return
             }
+
+            account.additionalInformation = self.additionalInformation
+            let isAccountSaveSuccess = try await accountUseCase.update(param: account)
             
+            guard isAccountSaveSuccess else {
+                saveAdditionalInformationState = .error
+                return
+            }
+
+
+            if let existAccount = try await accountUseCase.fetchById(id: account.id) {
+                account = existAccount
+                print(account)
+            }
             saveAdditionalInformationState = .success
+
         } catch {
             saveAdditionalInformationState = .error
         }
@@ -107,7 +118,7 @@ class AdditionalInformationViewModel {
                 }
             }
             
-            self.additionalInformation = AdditionalInformationEntity(id: UUID().uuidString, selectedJob: "", companyName: "", companyAddress: "", companyCity: "", companyCountry: "", companyPostalCode: "", companyFaximile: "", companyTelephone: "", companyEmail: "")
+            self.additionalInformation = AdditionalInformationEntity(id: UUID().uuidString, bornName: "", bornCountry: "", bornNationality: "", addressPostalCode: "", addressCity: "", addressCountry: "", addressFaximile: "", addressTelephone: "", addressEmail: "", selectedJob: "", companyName: "", companyAddress: "", companyCity: "", companyCountry: "", companyPostalCode: "", companyFaximile: "", companyTelephone: "", companyEmail: "")
             
             deleteAdditionalInformationState = .success
         } catch {
