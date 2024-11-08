@@ -106,8 +106,9 @@ public struct MainDocumentView: View {
                 DocumentDetailsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
             })
-            .sheet(isPresented: $profileViewModel.isUploadKTP, content: {
-                
+            .sheet(item: $profileViewModel.uploadDocument, content: { document in
+                UploadDocumentsView(document: document.name, account: account)
+                    .presentationDragIndicator(.visible)
             })
             .fullScreenCover(isPresented: $profileViewModel.isScanKTP, content: {
                 KTPPreviewSheet(account: account)
