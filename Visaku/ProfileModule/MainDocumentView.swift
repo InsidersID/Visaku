@@ -102,6 +102,15 @@ public struct MainDocumentView: View {
                     }
                 }
             }
+            .fullScreenCover(isPresented: $profileViewModel.isScanKTP, content: {
+                KTPPreviewSheet(account: account)
+            })
+            .fullScreenCover(isPresented: $profileViewModel.isScanPaspor, content: {
+                PassportPreviewSheet(account: account)
+            })
+            .fullScreenCover(isPresented: $profileViewModel.isScanFoto, content: {
+                EmptyView()
+            })
             .sheet(item: $selectedDocument, content: { document in
                 DocumentDetailsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)

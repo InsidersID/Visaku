@@ -48,16 +48,18 @@ public struct DocumentDetailsView: View {
                             .padding(.horizontal)
                             
                             HStack {
-                                NavigationLink {
+                                Button {
                                     switch document {
                                     case "KTP":
-                                        KTPPreviewSheet(account: account)
+                                        profileViewModel.isScanKTP = true
                                         
                                     case "Paspor":
-                                        PassportPreviewSheet(account: account)
+                                        profileViewModel.isScanPaspor = true
                                         
+                                    case "Foto":
+                                        profileViewModel.isScanFoto = true
                                     default:
-                                        Text("Document type not handled")
+                                        dismiss()
                                     }
                                 } label: {
                                     ZStack {
