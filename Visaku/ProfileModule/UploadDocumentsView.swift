@@ -93,7 +93,7 @@ struct UploadDocumentsView: View {
             }
             .padding(.horizontal)
         }
-        .presentationDetents([.fraction(0.3)])
+        .presentationDetents([.fraction(0.35)])
     }
 }
 

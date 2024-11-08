@@ -167,7 +167,7 @@ public struct DocumentDetailsView: View {
                 .frame(width: proxy.size.width, alignment: .center)
             }
         }
-        .presentationDetents([.fraction(isUpload || isSeeDetails ? 0.7 : 0.3)])
+        .presentationDetents([.fraction(isUpload || isSeeDetails ? 0.7 : 0.35)])
     }
 }
 
