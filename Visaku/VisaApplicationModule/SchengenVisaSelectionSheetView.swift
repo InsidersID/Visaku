@@ -12,25 +12,11 @@ struct SchengenVisaSelectionSheetView: View {
     @State private var visaType: String = ""
     @State var isAddNewSchengenCountry: Bool = false
     @State var isShowVisaTypeSheet: Bool = false
+    @State var isShowChosenVisaSheet: Bool = false
     @State private var isSchengenCountryChosen: Bool = false
 
-    let countryList: [String]
-    let schengenCountryList: [String]
     @Binding var countryKeyword: String
     var onDismiss: () -> Void
-
-    let countryFlags: [String: String] = [
-        "Austria": "🇦🇹", "Belgia": "🇧🇪",
-        "Denmark": "🇩🇰", "Finland": "🇫🇮",
-        "Jerman": "🇩🇪", "Hungaria": "🇭🇺",
-        "Iceland": "🇮🇸", "Italia": "🇮🇹",
-        "Luxembourg": "🇱🇺", "Netherlands": "🇳🇱",
-        "Norway": "🇳🇴", "Poland": "🇵🇱",
-        "Portugal": "🇵🇹", "Spain": "🇪🇸",
-        "Sweden": "🇸🇪", "Switzerland": "🇨🇭",
-        "Perancis": "🇫🇷", "Republik Ceko": "🇨🇿",
-        "Yunani": "🇬🇷"
-    ]
 
     var body: some View {
         NavigationView {
@@ -65,7 +51,7 @@ struct SchengenVisaSelectionSheetView: View {
                         }
                     }
                     .padding()
-                    AddNewSchengenCountryCard(isAddNewSchengenCountry: $isAddNewSchengenCountry, countryList: countryList, schengenCountryList: schengenCountryList, isSchengenCountryChosen: isSchengenCountryChosen, countryKeyword: $countryKeyword)
+                    AddNewSchengenCountryCard(isAddNewSchengenCountry: $isAddNewSchengenCountry, isSchengenCountryChosen: isSchengenCountryChosen, countryKeyword: $countryKeyword)
                     .padding(.horizontal)
                 }
                 
@@ -90,7 +76,27 @@ struct SchengenVisaSelectionSheetView: View {
                     
                     }
                 }
-                .presentationDetents([.medium])
+                .sheet(isPresented: .constant(!visaType.isEmpty)) {
+                    VStack {
+                        VStack(spacing: 18) {
+                            VStack(spacing: 5) {
+                                Text("Visa yang kamu akan ajukan adalah")
+                                    .font(.system(size: 14))
+                                    .foregroundStyle(.secondary)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Text("Visa\(visaType) \(countryKeyword) \(Countries.schengenCountryFlags[countryKeyword] ?? "")")
+                                    .font(.system(size: 20))
+                                    .bold()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            CustomButton(text: "Selanjutnya", color: Color(.primary5)) {
+                            }
+                        }
+                        .padding()
+                    }
+                    .presentationDetents([.height(150)])
+                }
+
             }
         }
         
@@ -98,23 +104,13 @@ struct SchengenVisaSelectionSheetView: View {
 }
 
 #Preview {
-    @Previewable @State var countryKeyword: String = "Iceland"
+    @Previewable @State var countryKeyword: String = "Italia"
     let countryList = [
         "Arab Saudi", "Australia", "Bangladesh", "Bhutan",
         "China", "Jepang", "Korea Selatan", "Pakistan",
         "Schengen Area", "Taiwan"
     ]
-    let schengenCountryList = [
-        "Austria", "Belgia", "Bulgaria", "Denmark", "Finlandia",
-        "Jerman", "Hungaria", "Iceland", "Italia",
-        "Luksemburg", "Belanda", "Norwegia", "Polandia",
-        "Portugal", "Spanyol", "Swedia", "Swiss",
-        "Perancis", "Republik Ceko", "Yunani"
-    ]
-    
     SchengenVisaSelectionSheetView(
-        countryList: countryList,
-        schengenCountryList: schengenCountryList,
         countryKeyword: $countryKeyword,
         onDismiss: {
             
