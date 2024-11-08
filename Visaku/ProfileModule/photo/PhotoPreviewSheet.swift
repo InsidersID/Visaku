@@ -68,10 +68,11 @@ public struct PhotoPreviewSheet: View {
                 case .success:
                     Text("Gambar akunmu berhasil disimpan").foregroundColor(.green)
                 case .idle:
-                    CustomButton(text: "Simpan", textColor: .white, color: .primary5, font: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    CustomButton(text: "Simpan", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                         Task {
                             await photoPreviewViewModel.savePhoto()
                         }
+                        dismiss()
                     }
                 }
 
@@ -85,10 +86,11 @@ public struct PhotoPreviewSheet: View {
                 case .success:
                     Text("Gambar akunmu berhasil dihapus").foregroundColor(.green)
                 case .idle:
-                    CustomButton(text: "Foto ulang", textColor: .primary5, color: .white, font: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    CustomButton(text: "Foto ulang", textColor: .primary5, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                         Task {
                             await photoPreviewViewModel.deletePhoto()
                         }
+                        dismiss()
                     }
                 }
             }
