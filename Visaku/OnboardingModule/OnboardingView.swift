@@ -41,12 +41,14 @@ public struct OnboardingView<Destination: View>: View {
                         Spacer()
                         
                         Text(viewModel.getOnboardingTitle(index: timeline))
-//                            .font(Font.custom("Inter", size: 32))
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(viewModel.getOnboardingTextColor(index: timeline))
-                        .padding(.bottom)
+                            .font(Font.custom("Poppins-Bold", size: 32))
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(viewModel.getOnboardingTextColor(index: timeline))
+                            .padding(.bottom)
                         
                         Text(viewModel.getOnboardingCaption(index: timeline))
+                            .font(Font.custom("Poppins-Bold", size: 15))
+                            .multilineTextAlignment(.center)
                             .foregroundStyle(viewModel.getOnboardingTextColor(index: timeline))
                         
                         Spacer(minLength: timeline == 1 ?
