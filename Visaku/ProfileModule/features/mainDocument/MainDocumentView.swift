@@ -83,7 +83,7 @@ public struct MainDocumentView: View {
                         Spacer()
                         
                         Button("Hapus Profil", role: .destructive){
-                            profileViewModel.isDeleteProfile = true
+                            profileViewModel.isDeleteProfile.toggle()
                         }
                         .font(Font.system(size: 17))
                         .fontWeight(.semibold)
@@ -92,7 +92,15 @@ public struct MainDocumentView: View {
                     }
                     
                     if profileViewModel.isDeleteProfile {
-                        CustomAlert(title: "Hapus profil?", caption: "Jika dokumen dihapus, semua data akan hilang secara otomatis.", button1: "Hapus", button2: "Batal")
+                        CustomAlert(title: "Hapus profil?", caption: "Jika dokumen dihapus, semua data akan hilang secara otomatis.", button1: "Hapus", button2: "Batal") {
+                            Task {
+                                await profileViewModel.deleteAccount(account)
+                                profileViewModel.isDeleteProfile.toggle()
+                            }
+                        } action2: {
+                            profileViewModel.isDeleteProfile.toggle()
+                        }
+
                     }
                 }
             }
