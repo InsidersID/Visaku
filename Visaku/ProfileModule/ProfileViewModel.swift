@@ -12,6 +12,9 @@ public class ProfileViewModel{
     var isLoading: Bool = false
     var isError: Bool = false
     var username: String = ""
+    var isScanKTP: Bool = false
+    var isScanPaspor: Bool = false
+    var isScanFoto: Bool = false
     
     var error: CustomError?
     
