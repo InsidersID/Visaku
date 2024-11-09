@@ -52,6 +52,7 @@ public struct MainDocumentView: View {
                                     Text(name)
                                         .font(Font.custom("Inter", size: 20))
                                         .fontWeight(.semibold)
+                                        .foregroundStyle(.black)
                                     
                                     Image(systemName: "pencil")
                                 }
@@ -133,7 +134,7 @@ public struct MainDocumentView: View {
             .sheet(isPresented: $profileViewModel.isUploadFile) {
                 FilePicker(selectedFileURL: $profileViewModel.selectedFileURL)
             }
-            .fullScreenCover(isPresented: $profileViewModel.isUploadImage) {
+            .sheet(isPresented: $profileViewModel.isUploadImage) {
                 ImagePicker(selectedImage: $profileViewModel.selectedImage)
             }
             .fullScreenCover(isPresented: $profileViewModel.isScanKTP, content: {

@@ -42,8 +42,13 @@ class PhotoPreviewViewModel {
     init(account: AccountEntity) {
         self.account = account
         
-        self.photoImage = UIImage(data: account.image)
-        isCameraOpen = false
+        if self.account.image == Data() {
+            isCameraOpen = true
+        } else {
+            self.photoImage = UIImage(data: account.image)
+            isCameraOpen = false
+        }
+
     }
     
     func savePhoto() async {

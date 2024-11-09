@@ -49,6 +49,7 @@ struct CameraOverlayView: View {
 
             Button(action: {
                 shouldCaptureImage = true
+                print("Button pressed")
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     shouldCaptureImage = false
@@ -88,7 +89,7 @@ struct CameraOverlayView: View {
                             .foregroundStyle(.red)
                             .font(.system(size: 18, weight: .medium))
                     }
-                } else if cameraState.offset < -0.25 {
+                } else if cameraState.offset < -0.1 {
                     HStack {
                         Text("Cahaya terlalu gelap")
                             .foregroundStyle(.red)
