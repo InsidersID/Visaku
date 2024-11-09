@@ -90,6 +90,7 @@ public struct PhotoPreviewSheet: View {
                         Task {
                             await photoPreviewViewModel.deletePhoto()
                         }
+                        photoPreviewViewModel.isCameraOpen = true
                         dismiss()
                     }
                 }

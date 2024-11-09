@@ -12,7 +12,7 @@ import Combine
 import Observation
 import SwiftUI
 
-class CameraView: UIViewController, @preconcurrency AVCaptureVideoDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate {
+class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate {
     
     private var isAuthorized = false
     private var sessionQueue = DispatchQueue(label: "visaku.camera.session.queue", qos: .userInteractive)
@@ -31,9 +31,9 @@ class CameraView: UIViewController, @preconcurrency AVCaptureVideoDataOutputSamp
     @Published var shouldCaptureImage = false
     @Published var lightCondition: String = "N/A"
     
-    @Binding var photoImage: UIImage?
-    
     var currentCIImage: CIImage?
+    
+    @Binding var photoImage: UIImage?
     
     private var cameraState: CameraState
     
@@ -72,16 +72,13 @@ class CameraView: UIViewController, @preconcurrency AVCaptureVideoDataOutputSamp
         }
     }
     
-    
     override func viewDidLoad() {
         checkPermission()
         
-        Task { @MainActor in
+        sessionQueue.async {
             guard self.isAuthorized else { return }
-            
-            setupCamera()
+            self.setupCamera()
         }
- 
     }
     
     override func viewDidLayoutSubviews() {
@@ -90,80 +87,80 @@ class CameraView: UIViewController, @preconcurrency AVCaptureVideoDataOutputSamp
     }
     
     func setupCamera() {
-        Task { @MainActor in
-            
-            guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self,
+                let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
                 let cameraInput = try? AVCaptureDeviceInput(device: camera) else {
                     print("Camera input couldn't be created.")
                     return
                 }
             
-            captureSession = AVCaptureSession()
+            self.videoDevice = camera
             
-            captureSession.beginConfiguration()
-            captureSession.sessionPreset = .high
+            self.captureSession = AVCaptureSession()
+            
+            self.captureSession.beginConfiguration()
+            self.captureSession.sessionPreset = .high
             
             do {
-                try camera.lockForConfiguration()
-                camera.exposureMode = .continuousAutoExposure
-                camera.unlockForConfiguration()
+                try videoDevice?.lockForConfiguration()
+                videoDevice?.exposureMode = .continuousAutoExposure
+                videoDevice?.unlockForConfiguration()
             } catch {
                 print("Couldn't lock the device for configuration, due to: \(error.localizedDescription)")
             }
             
             if camera.supportsSessionPreset(.hd4K3840x2160) {
-                captureSession.sessionPreset = .hd4K3840x2160
+                self.captureSession.sessionPreset = .hd4K3840x2160
             } else {
-                captureSession.sessionPreset = .hd1920x1080
+                self.captureSession.sessionPreset = .hd1920x1080
             }
             
-            if captureSession.canAddInput(cameraInput) {
-                captureSession.addInput(cameraInput)
+            if self.captureSession.canAddInput(cameraInput) {
+                self.captureSession.addInput(cameraInput)
             } else {
                 print("Failed to add camera input")
             }
             
-            videoOutput = AVCaptureVideoDataOutput()
-            videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA]
+            self.videoOutput = AVCaptureVideoDataOutput()
+            self.videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA]
             
-            if captureSession.canAddOutput(self.videoOutput) {
-                captureSession.addOutput(self.videoOutput)
+            if self.captureSession.canAddOutput(self.videoOutput) {
+                self.captureSession.addOutput(self.videoOutput)
             } else {
                 print("Failed to add video output")
             }
             
-            videoOutput.setSampleBufferDelegate(self, queue: self.sessionQueue)
-            videoOutput.alwaysDiscardsLateVideoFrames = false
+            self.videoOutput.setSampleBufferDelegate(self, queue: self.sessionQueue)
+            self.videoOutput.alwaysDiscardsLateVideoFrames = false
             
-            if let connection = videoOutput.connection(with: .video) {
+            
+            if let connection = self.videoOutput.connection(with: .video) {
                 connection.isEnabled = true
                 print("Video connected.")
             } else {
                 print("No video connection found.")
             }
             
-            captureSession.commitConfiguration()
+            self.captureSession.commitConfiguration()
             
-            if !captureSession.isRunning {
-                captureSession.startRunning()
+            if !self.captureSession.isRunning {
+                self.captureSession.startRunning()
             }
-            
-            print("Capture session started: \(self.captureSession.isRunning)")
-            
-            self.videoDevice = camera
-            self.captureSession = captureSession
-            self.videoOutput = videoOutput
             
             self.observeExposureChanges()
             self.monitorCameraFocus()
             
-            self.setupCameraPreviewLayer()
-            self.cameraState.isCameraFeedReady = true
+            print("Capture session started: \(self.captureSession.isRunning)")
+            
+            DispatchQueue.main.async {
+                self.setupCameraPreviewLayer()
+                self.cameraState.isCameraFeedReady = true
+            }
         }
 
     }
     
-    @MainActor
     func setupCameraPreviewLayer() {
         self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.previewLayer.videoGravity = .resizeAspectFill
@@ -179,15 +176,15 @@ class CameraView: UIViewController, @preconcurrency AVCaptureVideoDataOutputSamp
         self.view.layer.insertSublayer(self.previewLayer, at: 0)
     }
     
-    @MainActor
     func monitorCameraFocus() {
         guard let camera = videoDevice else { return }
         
-        camera.addObserver(self, forKeyPath: "adjustingFocus", options: [.new, .old], context: nil)
+        DispatchQueue.main.async {
+            camera.addObserver(self, forKeyPath: "adjustingFocus", options: [.new, .old], context: nil)
+        }
         
     }
     
-    @MainActor
     func observeExposureChanges() {
         guard let device = self.videoDevice else { return }
         
@@ -195,64 +192,47 @@ class CameraView: UIViewController, @preconcurrency AVCaptureVideoDataOutputSamp
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
         if keyPath == "adjustingFocus" {
             if let camera = object as? AVCaptureDevice {
-                let isFocused = !camera.isAdjustingFocus
-                DispatchQueue.main.async { [self] in
-                    self.cameraState.isFocused = isFocused
-                    print("Camera focus state: \(self.cameraState.isFocused)")
-                }
+                cameraState.isFocused = !camera.isAdjustingFocus
+                print("Camera focus state: \(cameraState.isFocused)")
             }
         }
         
         if keyPath == "exposureTargetOffset", let device = object as? AVCaptureDevice {
-            let offset = device.exposureTargetOffset
-            DispatchQueue.main.async {
-                self.cameraState.offset = offset
-                self.updateLightCondition(offset: self.cameraState.offset)
-                print("Current light condition offset: \(self.cameraState.offset)")
-            }
+            cameraState.offset = device.exposureTargetOffset
+            updateLightCondition(offset: cameraState.offset)
+            print("Current light condition offset: \(cameraState.offset)")
         }
-        
     }
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        guard shouldCaptureImage else {
+            return
+        }
+        
+        print("aaaaa")
         guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
             print("Image buffer is nil")
             return
         }
         
         let image = CIImage(cvImageBuffer: imageBuffer)
-        let isFocused = cameraState.isFocused
-        let offset = cameraState.offset
-        let shouldCapture = shouldCaptureImage
-
-        Task { @MainActor in
-            print("aaaaa")
+        currentCIImage = image
+        print("Capture output received")
+        
+        print("isFocused: \(cameraState.isFocused), shouldCaptureImage: \(shouldCaptureImage), offset: \(cameraState.offset)")
+        
+        if cameraState.isFocused && shouldCaptureImage && cameraState.offset > -0.25 {
+            print("Button tapped 2")
+            shouldCaptureImage = false
             
-            currentCIImage = image
-            print("Capture output received")
-            
-            print("isFocused: \(cameraState.isFocused), shouldCaptureImage: \(shouldCaptureImage), offset: \(cameraState.offset)")
-            
-            guard shouldCaptureImage else {
-                return
-            }
-            
-            if cameraState.isFocused && shouldCaptureImage && cameraState.offset > -0.25 {
-                print("Button tapped 2")
-                shouldCaptureImage = false
-                
-                if let capturedImage = capturePhoto(ciImage: image) {
-                    self.photoImage = capturedImage
-                    print("Captured photo successfully: \(capturedImage)")
-                } else {
-                    print("Failed to capture photo.")
-                }
+            if let capturedImage = capturePhoto(ciImage: image) {
+                print("Captured photo successfully: \(capturedImage)")
+            } else {
+                print("Failed to capture photo.")
             }
         }
-
     }
     
     func updateLightCondition(offset: Float) {
@@ -287,15 +267,7 @@ class CameraView: UIViewController, @preconcurrency AVCaptureVideoDataOutputSamp
     }
     
     deinit {
-        Task { [weak self] in
-            guard let self = self else { return }
-            
-            DispatchQueue.main.async {
-                if let videoDevice = self.videoDevice {
-                    videoDevice.removeObserver(self, forKeyPath: "adjustingFocus")
-                    videoDevice.removeObserver(self, forKeyPath: "exposureTargetOffset")
-                }
-            }
-        }
+        videoDevice?.removeObserver(self, forKeyPath: "adjustingFocus")
+        videoDevice?.removeObserver(self, forKeyPath: "exposureTargetOffset")
     }
 }

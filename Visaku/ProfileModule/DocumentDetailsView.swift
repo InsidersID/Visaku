@@ -50,6 +50,7 @@ public struct DocumentDetailsView: View {
                             
                             HStack {
                                 Button {
+                                    dismiss()
                                     switch document {
                                     case "KTP":
                                         profileViewModel.isScanKTP = true
