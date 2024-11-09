@@ -22,14 +22,34 @@ public class ProfileViewModel{
     var isUploadImage: Bool = false
     var selectedFileURL: URL?
     var selectedImage: UIImage?
+    var accountID: String?
     
     var error: CustomError?
+    
+    init(accountID: String? = nil) {
+        self.accountID = accountID
+        if let id = accountID {
+            Task {
+                await fetchAccountByID(id)
+            }
+        }
+    }
     
     func fetchAccount() async {
         do {
             accounts = try await accountUseCase.fetch()
         } catch {
             print(error)
+        }
+    }
+    
+    func fetchAccountByID(_ id: String) async {
+        do {
+            if let account = try await accountUseCase.fetchById(id: id) {
+                self.username = account.username
+            }
+        } catch {
+            print("Error during account fetching: \(error.localizedDescription)")
         }
     }
     
@@ -70,6 +90,21 @@ public class ProfileViewModel{
         do {
             isLoading = true
             let isSuccess = try await accountUseCase.update(param: account)
+            if isSuccess {
+                isLoading = false
+                Task {
+                    await fetchAccount()
+                }
+            }
+        } catch {
+            self.error = CustomError(error.localizedDescription)
+        }
+    }
+    
+    func updateAccountUsername(_ account: AccountEntity, newUsername: String) async {
+        do {
+            isLoading = true
+            let isSuccess = try await accountUseCase.updateUsername(id: account.id, newUsername: newUsername)
             if isSuccess {
                 isLoading = false
                 Task {

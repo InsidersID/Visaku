@@ -12,6 +12,7 @@ public struct MainDocumentView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(ProfileViewModel.self) var profileViewModel
     @State private var scanResult: UIImage?
+    @State private var isShowingEditProfile = false
     public var account: AccountEntity
     
     public init(name: String, account: AccountEntity) {
@@ -35,16 +36,26 @@ public struct MainDocumentView: View {
                     
                     VStack {
                         VStack {
-                            Circle()
-                                .foregroundStyle(Color(red: 0.85, green: 0.85, blue: 0.85))
-                                .frame(width: 86, height: 86)
-                            HStack {
-                                Text(name)
-                                    .font(Font.custom("Inter", size: 20))
-                                    .fontWeight(.semibold)
-                                
-                                Image(systemName: "pencil")
+                            Button(action: {
+                                profileViewModel.selectedDocument = .init(name: "Foto")
+                            }){
+                                Circle()
+                                    .foregroundStyle(Color(red: 0.85, green: 0.85, blue: 0.85))
+                                    .frame(width: 86, height: 86)
                             }
+                            
+                            Button(action: {
+                                isShowingEditProfile = true
+                            }) {
+                                HStack {
+                                    Text(name)
+                                        .font(Font.custom("Inter", size: 20))
+                                        .fontWeight(.semibold)
+                                    
+                                    Image(systemName: "pencil")
+                                }
+                            }
+
                         }
                         
                         Spacer()
@@ -115,7 +126,7 @@ public struct MainDocumentView: View {
             .sheet(isPresented: $profileViewModel.isUploadFile) {
                 FilePicker(selectedFileURL: $profileViewModel.selectedFileURL)
             }
-            .sheet(isPresented: $profileViewModel.isUploadImage) {
+            .fullScreenCover(isPresented: $profileViewModel.isUploadImage) {
                 ImagePicker(selectedImage: $profileViewModel.selectedImage)
             }
             .fullScreenCover(isPresented: $profileViewModel.isScanKTP, content: {
@@ -125,8 +136,14 @@ public struct MainDocumentView: View {
                 PassportPreviewSheet(account: account)
             })
             .fullScreenCover(isPresented: $profileViewModel.isScanFoto, content: {
-                EmptyView()
+                PhotoPreviewSheet(account: account)
             })
+            .fullScreenCover(isPresented: $isShowingEditProfile) {
+                AddProfileView(account: account)
+                    .onAppear {
+                        profileViewModel.username = account.username
+                    }
+            }
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Profil")
@@ -147,7 +164,7 @@ public struct MainDocumentView: View {
     }
 }
 
-//#Preview {
-//    MainDocumentView(name: "Iqbal", account: AccountEntity(id: "1", username: "IqbalGanteng", accountImage: <#Data#>))
-//        .environment(ProfileViewModel())
-//}
+#Preview {
+    MainDocumentView(name: "Iqbal", account: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
+        .environment(ProfileViewModel())
+}
