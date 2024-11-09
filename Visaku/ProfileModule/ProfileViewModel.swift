@@ -41,6 +41,15 @@ public class ProfileViewModel: ObservableObject {
     
     
     
+    init(accountID: String? = nil) {
+        self.accountID = accountID
+        if let id = accountID {
+            Task {
+                await fetchAccountByID(id)
+            }
+        }
+    }
+    
     func fetchAccount() async {
         do {
             accounts = try await accountUseCase.fetch()
@@ -105,9 +114,19 @@ public class ProfileViewModel: ObservableObject {
         }
     }
     
-    func fetchAccountById(id: String) async -> AccountEntity {
-        let account = try? await accountUseCase.fetchById(id: id)
-        return account!
+    func updateAccountUsername(_ account: AccountEntity, newUsername: String) async {
+        do {
+            isLoading = true
+            let isSuccess = try await accountUseCase.updateUsername(id: account.id, newUsername: newUsername)
+            if isSuccess {
+                isLoading = false
+                Task {
+                    await fetchAccount()
+                }
+            }
+        } catch {
+            self.error = CustomError(error.localizedDescription)
+        }
     }
 }
 

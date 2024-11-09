@@ -1,5 +1,6 @@
 import SwiftUI
 import UIComponentModule
+import RepositoryModule
 import RiveRuntime
 
 struct AddProfileView: View {
@@ -7,7 +8,12 @@ struct AddProfileView: View {
     @EnvironmentObject public var profileViewModel: ProfileViewModel
     private let riveViewModel: RiveViewModel
     
-    public init() {
+    @State private var isEditing: Bool = false
+    
+    public var account: AccountEntity?
+    
+    public init(account: AccountEntity? = nil) {
+        self.account = account
         riveViewModel = RiveViewModel(fileName: "PlaneAddName")
     }
     
@@ -28,6 +34,11 @@ struct AddProfileView: View {
                         .multilineTextAlignment(.center)
                         .font(Font.custom("Inter", size: 16))
                         .fontWeight(.semibold)
+                        .onAppear {
+                            if let account = account {
+                                profileViewModel.username = account.username
+                            }
+                        }
                 }
                 .frame(height: 144, alignment: .center)
                 .background(
@@ -35,11 +46,16 @@ struct AddProfileView: View {
                         .foregroundStyle(.white)
                 )
                 
-                CustomButton( text: "Buat profil", textColor: .blue, color: Color(red: 0.7, green: 0.91, blue: 0.95), buttonWidth: proxy.size.width*0.16, fontSize: 12, cornerRadius: 16, paddingHorizontal: 0, paddingVertical: 0) {
+                CustomButton( text: isEditing ? "Ganti" : "Buat profil", textColor: .blue, color: Color(red: 0.7, green: 0.91, blue: 0.95), buttonWidth: proxy.size.width*0.24, fontSize: 12, cornerRadius: 16, paddingHorizontal: 0, paddingVertical: 0) {
                     Task {
-                        await profileViewModel.saveAccount()
+                        if let account = account {
+                            await profileViewModel.updateAccountUsername(account, newUsername: profileViewModel.username)
+                        } else {
+                            await profileViewModel.saveAccount()
+                        }
                     }
                     profileViewModel.isAddingProfile = false
+                    dismiss()
                 }
                 .padding()
                 .frame(width: proxy.size.width, height: 144, alignment: .topTrailing)

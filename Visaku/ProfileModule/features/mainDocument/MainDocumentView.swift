@@ -16,6 +16,7 @@ public struct MainDocumentView: View {
     @State private var selectedDocument: Document?
     @State private var isAdditionalInfoPresented: Bool = false
     @State private var needsFetch: Bool = true
+    @State private var isShowingEditProfile = false
     
     public init(name: String, accountId: String) {
         self.name = name
@@ -36,16 +37,26 @@ public struct MainDocumentView: View {
                     
                     VStack {
                         VStack {
-                            Circle()
-                                .foregroundStyle(Color(red: 0.85, green: 0.85, blue: 0.85))
-                                .frame(width: 86, height: 86)
-                            HStack {
-                                Text(name)
-                                    .font(Font.custom("Inter", size: 20))
-                                    .fontWeight(.semibold)
-                                
-                                Image(systemName: "pencil")
+                            Button(action: {
+                                profileViewModel.selectedDocument = .init(name: "Foto")
+                            }){
+                                Circle()
+                                    .foregroundStyle(Color(red: 0.85, green: 0.85, blue: 0.85))
+                                    .frame(width: 86, height: 86)
                             }
+                            
+                            Button(action: {
+                                isShowingEditProfile = true
+                            }) {
+                                HStack {
+                                    Text(name)
+                                        .font(Font.custom("Inter", size: 20))
+                                        .fontWeight(.semibold)
+                                    
+                                    Image(systemName: "pencil")
+                                }
+                            }
+
                         }
                         
                         Spacer()
@@ -122,7 +133,7 @@ public struct MainDocumentView: View {
             .sheet(isPresented: $profileViewModel.isUploadFile) {
                 FilePicker(selectedFileURL: $profileViewModel.selectedFileURL)
             }
-            .sheet(isPresented: $profileViewModel.isUploadImage) {
+            .fullScreenCover(isPresented: $profileViewModel.isUploadImage) {
                 ImagePicker(selectedImage: $profileViewModel.selectedImage)
             }
             .fullScreenCover(isPresented: $profileViewModel.isScanKTP, content: {
@@ -132,7 +143,7 @@ public struct MainDocumentView: View {
                 PassportPreviewSheet(account: account)
             })
             .fullScreenCover(isPresented: $profileViewModel.isScanFoto, content: {
-                EmptyView()
+                PhotoPreviewSheet(account: account)
             })
             .sheet(item: $selectedDocument, content: { document in
                 if let account = profileViewModel.selectedAccount {
@@ -140,6 +151,12 @@ public struct MainDocumentView: View {
                         .presentationDragIndicator(.visible)
                 }
             })
+            .fullScreenCover(isPresented: $isShowingEditProfile) {
+                AddProfileView(account: account)
+                    .onAppear {
+                        profileViewModel.username = account.username
+                    }
+            }
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Profil")
