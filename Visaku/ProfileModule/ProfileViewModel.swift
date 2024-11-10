@@ -132,5 +132,10 @@ public class ProfileViewModel: ObservableObject {
             self.error = CustomError(error.localizedDescription)
         }
     }
+    
+    func fetchAccountById(id: String) async -> AccountEntity {
+        let account = try? await accountUseCase.fetchById(id: id)
+        return account!
+    }
 }
 

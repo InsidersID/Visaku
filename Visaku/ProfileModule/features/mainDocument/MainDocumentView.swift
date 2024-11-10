@@ -95,9 +95,8 @@ public struct MainDocumentView: View {
                                 DocumentCard(height: proxy.size.height*102/798, document: "Foto", status: .undone)
                             }
                             
-                            NavigationLink {
-                                AdditionalInformationView(account: account)
-                                    .navigationBarBackButtonHidden()
+                            Button {
+                                isAdditionalInfoPresented = true
                             } label: {
                                 DocumentCard(height: proxy.size.height * 102 / 798, document: "Informasi tambahan", status: .undone)
                             }
@@ -144,6 +143,17 @@ public struct MainDocumentView: View {
             .sheet(item: $profileViewModel.selectedDocument, content: { document in
                 DocumentDetailsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
+            .fullScreenCover(isPresented: $isAdditionalInfoPresented) {
+                if let account = account {
+                    AdditionalInformationView(account: account)
+                        .navigationBarBackButtonHidden(true)
+                }
+            })
+            .sheet(item: $selectedDocument, content: { document in
+                if let account = account {
+                    DocumentDetailsView(document: document.name, account: account)
+                        .presentationDragIndicator(.visible)
+                }
             })
             .sheet(item: $profileViewModel.uploadDocument, content: { document in
                 UploadDocumentsView(document: document.name, account: account)
@@ -217,7 +227,7 @@ extension Notification.Name {
     static let accountImageUpdated = Notification.Name("accountImageUpdated")
 }
 #Preview {
-    MainDocumentView(name: "Iqbal", account: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
+    MainDocumentView(name: "Iqbal", accountId: UUID().uuidString)
         .environment(ProfileViewModel())
 }
 
