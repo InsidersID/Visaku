@@ -39,9 +39,19 @@ public struct MainDocumentView: View {
                             Button(action: {
                                 profileViewModel.selectedDocument = .init(name: "Foto")
                             }){
-                                Circle()
-                                    .foregroundStyle(Color(red: 0.85, green: 0.85, blue: 0.85))
-                                    .frame(width: 86, height: 86)
+                                if let accountImage = UIImage(data: account.image) {
+                                    Image(uiImage: accountImage)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 86, height: 86)
+                                        .clipShape(Circle())
+                                        .overlay(Circle().stroke(.white, lineWidth: 2))
+                                } else {
+                                    Circle()
+                                        .foregroundStyle(Color(red: 0.85, green: 0.85, blue: 0.85))
+                                        .frame(width: 86, height: 86)
+                                }
+
                             }
                             
                             Button(action: {

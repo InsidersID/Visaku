@@ -22,6 +22,7 @@ public struct PhotoPreviewSheet: View {
     
     public var body: some View {
         VStack {
+            Spacer()
             if let accountImage = photoPreviewViewModel.photoImage {
                 Image(uiImage: accountImage)
                     .resizable()
@@ -40,7 +41,7 @@ public struct PhotoPreviewSheet: View {
                                 .foregroundColor(.white)
                             
                             Text("Fotomu sepertinya dalam masalah...")
-                                .font(.title)
+                                .font(.title2)
                                 .foregroundColor(.white)
                         }
                     }
@@ -79,7 +80,7 @@ public struct PhotoPreviewSheet: View {
                 // Handle the different states of the delete operation
                 switch photoPreviewViewModel.deletePhotoState {
                 case .loading:
-                    ProgressView("Deleting...")
+                    ProgressView("Menghapus...")
                         .padding()
                 case .error:
                     Text("Eror menghapus gambar akunmu").foregroundColor(.red)
@@ -91,7 +92,6 @@ public struct PhotoPreviewSheet: View {
                             await photoPreviewViewModel.deletePhoto()
                         }
                         photoPreviewViewModel.isCameraOpen = true
-                        dismiss()
                     }
                 }
             }
@@ -99,15 +99,18 @@ public struct PhotoPreviewSheet: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .fullScreenCover(isPresented: $photoPreviewViewModel.isCameraOpen, content: {
             ZStack {
-                CameraViewRepresentable(shouldCaptureImage: $shouldCaptureImage, photoImage: $photoPreviewViewModel.photoImage, cameraState: cameraState)
+                CameraViewRepresentable(photoImage: $photoPreviewViewModel.photoImage, cameraState: cameraState, onDismiss: { dismiss() })
                     .edgesIgnoringSafeArea(.all)
                     .safeAreaInset(edge: .top) {
                         Color.clear.frame(height: Helper.getStatusBarHeight())
                     }
                 
-                CameraOverlayView(goToCamera: $photoPreviewViewModel.isCameraOpen, shouldCaptureImage: $shouldCaptureImage, cameraState: cameraState)
-                }
+                CameraOverlayView(goToCamera: $photoPreviewViewModel.isCameraOpen, cameraState: cameraState)
+            }
         })
+        .onChange(of: photoPreviewViewModel.photoImage) { newValue in
+            print("Photo image has been updated: \(String(describing: newValue))")
+        }
         .navigationTitle("Foto")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

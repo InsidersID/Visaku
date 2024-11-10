@@ -49,7 +49,7 @@ struct AddProfileView: View {
                         .foregroundStyle(.white)
                 )
                 
-                CustomButton( text: isEditing ? "Ganti" : "Buat profil", textColor: .blue, color: Color(red: 0.7, green: 0.91, blue: 0.95), buttonWidth: proxy.size.width*0.24, fontSize: 12, cornerRadius: 16, paddingHorizontal: 0, paddingVertical: 0) {
+                CustomButton( text: "Buat/ganti profil", textColor: .blue, color: Color(red: 0.7, green: 0.91, blue: 0.95), buttonWidth: proxy.size.width*0.24, fontSize: 12, cornerRadius: 16, paddingHorizontal: 0, paddingVertical: 0) {
                     Task {
                         if let account = account {
                             await profileViewModel.updateAccountUsername(account, newUsername: profileViewModel.username)
