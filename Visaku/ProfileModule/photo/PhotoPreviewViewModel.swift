@@ -71,6 +71,7 @@ class PhotoPreviewViewModel: ObservableObject {
                     return
                 }
                 
+                await ProfileViewModel.shared.fetchAccountByID(account.id)
                 print("savePhoto: Save photo success!")
                 savePhotoState = .success
             }
@@ -90,6 +91,8 @@ class PhotoPreviewViewModel: ObservableObject {
                 deletePhotoState = .error
                 return
             }
+            
+            await ProfileViewModel.shared.fetchAccountByID(account.id)
             print("savePhoto: Delete photo success!")
             deletePhotoState = .success
         } catch {

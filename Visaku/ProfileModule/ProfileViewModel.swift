@@ -6,6 +6,8 @@ import SwiftUI
 @Observable
 public class ProfileViewModel{
     
+    static let shared = ProfileViewModel()
+    
     private var accountUseCase: AccountUseCaseProtocol = AccountUseCase.make()
     var accounts: [AccountEntity]?
     var isAddingProfile: Bool = false
@@ -93,7 +95,7 @@ public class ProfileViewModel{
             if isSuccess {
                 isLoading = false
                 Task {
-                    await fetchAccount()
+                    await fetchAccountByID(account.id)
                 }
             }
         } catch {
@@ -108,7 +110,7 @@ public class ProfileViewModel{
             if isSuccess {
                 isLoading = false
                 Task {
-                    await fetchAccount()
+                    await fetchAccountByID(account.id)
                 }
             }
         } catch {
