@@ -29,7 +29,7 @@ public struct ProfileView: View {
                                         .navigationBarBackButtonHidden()
                                         .environmentObject(profileViewModel)
                                 } label: {
-                                    ProfileCard(name: account.username, isAddProfile: false)
+                                    ProfileCard(name: account.username, isAddProfile: false, imageData: account.image)
                                 }
                             }
                         }

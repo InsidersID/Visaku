@@ -106,7 +106,7 @@ public class ProfileViewModel: ObservableObject {
             if isSuccess {
                 isLoading = false
                 Task {
-                    await fetchAccount()
+                    await fetchAccountByID(account.id)
                 }
             }
         } catch {
@@ -121,7 +121,7 @@ public class ProfileViewModel: ObservableObject {
             if isSuccess {
                 isLoading = false
                 Task {
-                    await fetchAccount()
+                    await fetchAccountByID(account.id)
                 }
             }
         } catch {
