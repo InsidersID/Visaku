@@ -16,7 +16,7 @@ public struct ProfileView<Content: View>: View {
     public var body: some View {
         NavigationStack {
             ScrollView {
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16){
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                     if let accounts = profileViewModel.accounts {
                         ForEach(accounts) { account in
                             if isSelectProfile {
@@ -27,7 +27,7 @@ public struct ProfileView<Content: View>: View {
                                 }
                             } else {
                                 NavigationLink {
-                                    MainDocumentView(name: account.username, account: account)
+                                    MainDocumentView(name: account.username, accountId: account.id)
                                         .navigationBarBackButtonHidden()
                                         .environment(profileViewModel)
                                 } label: {
@@ -36,7 +36,7 @@ public struct ProfileView<Content: View>: View {
                             }
                         }
                     }
-                    if isSelectProfile {} else {
+                    if !isSelectProfile {
                         Button {
                             profileViewModel.isAddingProfile = true
                         } label: {
@@ -52,14 +52,12 @@ public struct ProfileView<Content: View>: View {
             }
             .padding(.horizontal)
             .navigationTitle("Profil")
-            .alert(isPresented: $profileViewModel.isError, error: profileViewModel.error, actions: {
-                
-            })
-            .fullScreenCover(isPresented: $profileViewModel.isAddingProfile, content: {
+            .alert(isPresented: $profileViewModel.isError, error: profileViewModel.error, actions: { })
+            .fullScreenCover(isPresented: $profileViewModel.isAddingProfile) {
                 AddProfileView(planeAddName: planeAddName)
                     .environment(profileViewModel)
                     .clearModalBackground()
-            })
+            }
         }
     }
 }
@@ -68,4 +66,3 @@ public struct ProfileView<Content: View>: View {
     ProfileView()
         .background(.gray)
 }
-

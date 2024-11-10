@@ -72,39 +72,51 @@ class AdditionalInformationViewModel {
         saveAdditionalInformationState = .loading
         do {
             var isSuccess: Bool
-            if account.additionalInformation != nil {
-                print("triggered update")
-                self.additionalInformation.id = account.additionalInformation!.id
-                isSuccess = try await additionalInformationUseCase.update(param: self.additionalInformation)
+            print("before save \(additionalInformation.id)")
+            var existingInformation: AdditionalInformationEntity?
+            if var existingInfo = account.additionalInformation {
+                // Update existing information
+                print("triggered update \(existingInfo.id)")
+                existingInformation = existingInfo
+                // Update existingInfo's properties with values from additionalInformation
+                existingInfo.bornName = additionalInformation.bornName
+                existingInfo.bornCountry = additionalInformation.bornCountry
+                existingInfo.bornNationality = additionalInformation.bornNationality
+
+                isSuccess = try await additionalInformationUseCase.update(param: existingInfo)
+                print("update successfully \(existingInfo.id)")
             } else {
+                // Prepare new information
                 if !showBornName {
                     self.additionalInformation.bornName = ""
                 }
                 isSuccess = try await additionalInformationUseCase.save(param: self.additionalInformation)
+                print("save successfully \(additionalInformation.id)")
             }
-            
+
             guard isSuccess else {
                 saveAdditionalInformationState = .error
                 return
             }
 
-            account.additionalInformation = self.additionalInformation
-            let isAccountSaveSuccess = try await accountUseCase.update(param: account)
-            
+            var updatedAccount = account
+            updatedAccount.additionalInformation = existingInformation ?? self.additionalInformation
+            let isAccountSaveSuccess = try await accountUseCase.update(param: updatedAccount)
+
             guard isAccountSaveSuccess else {
                 saveAdditionalInformationState = .error
                 return
             }
 
-
+            // Refetch the updated account
             if let existAccount = try await accountUseCase.fetchById(id: account.id) {
                 account = existAccount
-                print(account)
             }
             saveAdditionalInformationState = .success
 
         } catch {
             saveAdditionalInformationState = .error
+            print("Save failed with error: \(error)")
         }
     }
     

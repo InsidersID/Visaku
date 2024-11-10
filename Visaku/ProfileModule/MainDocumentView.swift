@@ -9,16 +9,18 @@ struct Document: Identifiable {
 
 public struct MainDocumentView: View {
     public var name: String
+    public var accountId: String
     @Environment(\.dismiss) private var dismiss
     @Environment(ProfileViewModel.self) var profileViewModel
     @State private var scanResult: UIImage?
-    public var account: AccountEntity
+    @State private var account: AccountEntity? = nil
     @State private var isDocumentTapped: Bool
     @State private var selectedDocument: Document?
+    @State private var isAdditionalInfoPresented: Bool = false
     
-    public init(name: String, account: AccountEntity, isDocumentTapped: Bool = false) {
+    public init(name: String, accountId: String, isDocumentTapped: Bool = false) {
         self.name = name
-        self.account = account
+        self.accountId = accountId
         self.isDocumentTapped = isDocumentTapped
     }
     
@@ -59,14 +61,14 @@ public struct MainDocumentView: View {
                                     isDocumentTapped = true
                                     
                                 } label: {
-                                    DocumentCard(height: proxy.size.height*102/798, document: "KTP", status: account.identityCard == nil ? .undone : .done)
+                                    DocumentCard(height: proxy.size.height*102/798, document: "KTP", status: account?.identityCard == nil ? .undone : .done)
                                 }
                                 
                                 Button {
                                     selectedDocument = .init(name: "Paspor")
                                     isDocumentTapped = true
                                 } label: {
-                                    DocumentCard(height: proxy.size.height*102/798, document: "Paspor", status: account.passport == nil ? .undone : .done)
+                                    DocumentCard(height: proxy.size.height*102/798, document: "Paspor", status: account?.passport == nil ? .undone : .done)
                                 }
                             }
                             
@@ -77,11 +79,10 @@ public struct MainDocumentView: View {
                                 DocumentCard(height: proxy.size.height*102/798, document: "Foto", status: .undone)
                             }
                             
-                            NavigationLink {
-                                AdditionalInformationView(account: account)
-                                    .navigationBarBackButtonHidden()
+                            Button {
+                                isAdditionalInfoPresented = true
                             } label: {
-                                DocumentCard(height: proxy.size.height*102/798, document: "Informasi tambahan", status: .undone)
+                                DocumentCard(height: proxy.size.height * 102 / 798, document: "Informasi tambahan", status: .undone)
                             }
                         }
                         .padding(.horizontal)
@@ -102,9 +103,17 @@ public struct MainDocumentView: View {
                     }
                 }
             }
+            .fullScreenCover(isPresented: $isAdditionalInfoPresented) {
+                if let account = account {
+                    AdditionalInformationView(account: account)
+                        .navigationBarBackButtonHidden(true)
+                }
+            }
             .sheet(item: $selectedDocument, content: { document in
-                DocumentDetailsView(document: document.name, account: account)
-                    .presentationDragIndicator(.visible)
+                if let account = account {
+                    DocumentDetailsView(document: document.name, account: account)
+                        .presentationDragIndicator(.visible)
+                }
             })
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -122,11 +131,18 @@ public struct MainDocumentView: View {
                     }
                 }
             }
+            .onAppear {
+                Task {
+                    if account == nil {
+                        account = await profileViewModel.fetchAccountById(id: accountId)
+                    }
+                }
+            }
         }
     }
 }
 
 #Preview {
-    MainDocumentView(name: "Iqbal", account: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
+    MainDocumentView(name: "Iqbal", accountId: UUID().uuidString)
         .environment(ProfileViewModel())
 }
