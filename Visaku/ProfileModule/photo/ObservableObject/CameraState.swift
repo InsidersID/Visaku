@@ -12,5 +12,8 @@ class CameraState: ObservableObject {
     @Published var offset: Float = 0.0
     @Published var isFocused: Bool = true
     @Published var isCameraFeedReady: Bool = false
+    @Published var shouldCaptureImage: Bool = false
+    
+    @Published var isTakingImage: Bool = false
 }
 

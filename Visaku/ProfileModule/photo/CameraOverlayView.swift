@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CameraOverlayView: View {
     @Binding var goToCamera: Bool
-    @Binding var shouldCaptureImage: Bool
     @ObservedObject var cameraState: CameraState
     
     var body: some View {
@@ -48,11 +47,13 @@ struct CameraOverlayView: View {
 
 
             Button(action: {
-                shouldCaptureImage = true
+                cameraState.shouldCaptureImage = true
+                cameraState.isTakingImage = true
                 print("Button pressed")
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    shouldCaptureImage = false
+                    cameraState.isTakingImage = false
+                    cameraState.shouldCaptureImage = false
                 }
             }) {
                 
@@ -95,16 +96,25 @@ struct CameraOverlayView: View {
                             .foregroundStyle(.red)
                             .font(.system(size: 18, weight: .medium))
                     }
-                } else {
-                        HStack {
-                            Text("Foto sesuai")
-                                .foregroundStyle(.black)
-                                .font(.system(size: 18, weight: .medium))
-                            
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundStyle(.green)
-                        }
+                } else if cameraState.isTakingImage {
+                    HStack {
+                        Text("Gambar lagi diambil... ")
+                            .foregroundStyle(.black)
+                            .font(.system(size: 18, weight: .medium))
+                        
+                        Image(systemName: "hourglass")
+                            .foregroundStyle(.brown)
                     }
+                } else {
+                    HStack {
+                        Text("Foto sesuai")
+                            .foregroundStyle(.black)
+                            .font(.system(size: 18, weight: .medium))
+                        
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(.green)
+                    }
+                }
                 }
             }
         }

@@ -28,7 +28,6 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
     
     private var shouldCaptureImageCancellable: AnyCancellable?
     
-    @Published var shouldCaptureImage = false
     @Published var lightCondition: String = "N/A"
     
     var currentCIImage: CIImage?
@@ -36,21 +35,17 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
     @Binding var photoImage: UIImage?
     
     private var cameraState: CameraState
+    private let onDismiss: () -> Void
     
-    init(cameraState: CameraState, photoImage: Binding<UIImage?>) {
+    init(cameraState: CameraState, photoImage: Binding<UIImage?>, onDismiss: @escaping () -> Void) {
         self.cameraState = cameraState
         self._photoImage = photoImage
+        self.onDismiss = onDismiss
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setShouldCaptureImagePublisher(_ publisher: PassthroughSubject<Bool, Never>) {
-        shouldCaptureImageCancellable = publisher.sink { [weak self] newValue in
-            self?.shouldCaptureImage = newValue
-        }
     }
     
     func checkPermission() {
@@ -162,6 +157,11 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
     }
     
     func setupCameraPreviewLayer() {
+        guard let captureSession = captureSession else {
+            print("Capture session isn't ready yet to use. Sorry!")
+            return
+        }
+        
         self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.previewLayer.videoGravity = .resizeAspectFill
         
@@ -207,7 +207,7 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
     }
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        guard shouldCaptureImage else {
+        guard cameraState.shouldCaptureImage else {
             return
         }
         
@@ -221,13 +221,16 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
         currentCIImage = image
         print("Capture output received")
         
-        print("isFocused: \(cameraState.isFocused), shouldCaptureImage: \(shouldCaptureImage), offset: \(cameraState.offset)")
+        print("isFocused: \(cameraState.isFocused), shouldCaptureImage: \(cameraState.shouldCaptureImage), offset: \(cameraState.offset)")
         
-        if cameraState.isFocused && shouldCaptureImage && cameraState.offset > -0.25 {
+        if cameraState.isFocused && cameraState.shouldCaptureImage && cameraState.offset > -0.25 {
             print("Button tapped 2")
-            shouldCaptureImage = false
             
             if let capturedImage = capturePhoto(ciImage: image) {
+                DispatchQueue.main.async {
+                    self.photoImage = capturedImage
+                }
+                onDismiss()
                 print("Captured photo successfully: \(capturedImage)")
             } else {
                 print("Failed to capture photo.")
@@ -255,7 +258,7 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
         let context = CIContext(options: nil)
         
         if let cgImage = context.createCGImage(ciImage, from: ciImage.extent) {
-            return UIImage(cgImage: cgImage)
+            return UIImage(cgImage: cgImage, scale: 1.0, orientation: .right)
         }
         
         return nil
