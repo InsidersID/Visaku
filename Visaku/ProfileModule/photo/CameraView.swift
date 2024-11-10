@@ -230,7 +230,7 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
                 DispatchQueue.main.async {
                     self.photoImage = capturedImage
                 }
-                onDismiss()
+//                onDismiss()
                 print("Captured photo successfully: \(capturedImage)")
             } else {
                 print("Failed to capture photo.")
