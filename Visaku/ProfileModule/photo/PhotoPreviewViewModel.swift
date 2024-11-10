@@ -24,8 +24,7 @@ enum DeletePhotoState  {
 }
 
 @MainActor
-@Observable
-class PhotoPreviewViewModel {
+class PhotoPreviewViewModel: ObservableObject {
     @MainActor
     private var accountUseCase: AccountUseCaseProtocol = AccountUseCase.make()
     
@@ -33,7 +32,7 @@ class PhotoPreviewViewModel {
     var isCameraOpen: Bool = true
     
     var account: AccountEntity
-    var photoImage: UIImage?
+    @Published var photoImage: UIImage?
     
     //State View
     var savePhotoState: SavePhotoState = .idle
@@ -59,19 +58,24 @@ class PhotoPreviewViewModel {
                 
                 let isSuccess: Bool
                 if account.id.isEmpty {
+                    print("savePhoto: Save photo successful with empty id")
                     isSuccess = try await accountUseCase.updateAccountImage(id: account.id, imageData: imageData)
                 } else {
+                    print("savePhoto: Save photo successful with existing id")
                     isSuccess = try await accountUseCase.save(param: account)
                 }
                 
                 if !isSuccess {
+                    print("savePhoto: Save photo failed!")
                     savePhotoState = .error
                     return
                 }
                 
+                print("savePhoto: Save photo success!")
                 savePhotoState = .success
             }
         } catch {
+            print("savePhoto: Save photo error...")
             savePhotoState = .error
         }
     }
@@ -82,12 +86,14 @@ class PhotoPreviewViewModel {
             let isSuccess = try await accountUseCase.deleteAccountImage(id: account.id)
             
             if !isSuccess {
+                print("savePhoto: Delete photo failed...")
                 deletePhotoState = .error
                 return
             }
-            
+            print("savePhoto: Delete photo success!")
             deletePhotoState = .success
         } catch {
+            print("savePhoto: Delete photo error...")
             deletePhotoState = .error
         }
     }
