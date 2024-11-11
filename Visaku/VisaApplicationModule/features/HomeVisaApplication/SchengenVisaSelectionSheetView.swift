@@ -19,7 +19,7 @@ struct SchengenVisaSelectionSheetView: View {
     var onDismiss: () -> Void
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack {
                     HStack {
@@ -89,7 +89,12 @@ struct SchengenVisaSelectionSheetView: View {
                                     .bold()
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }
-                            CustomButton(text: "Selanjutnya", color: Color(.primary5)) {
+                            NavigationLink {
+                                CountryVisaApplicationView()
+                            } label: {
+                                CustomButton(text: "Selanjutnya", color: Color(.primary5)) {
+                                    
+                                }
                             }
                         }
                         .padding()

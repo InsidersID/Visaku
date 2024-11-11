@@ -55,7 +55,7 @@ struct VisaTypeRow: View {
                     isShowVisaTypeSheet = true
                 }
                 .sheet(isPresented: $isShowVisaTypeSheet) {
-                    VisaTypeSheetView(isShowVisaTypeSheet: $isShowVisaTypeSheet, visaType: $visaType)
+                    VisaTypeSheet(isShowVisaTypeSheet: $isShowVisaTypeSheet, visaType: $visaType)
                         .presentationDragIndicator(.visible)
                         .presentationDetents([.height(280)])
                 }
