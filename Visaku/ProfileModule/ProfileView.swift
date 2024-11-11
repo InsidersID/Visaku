@@ -51,11 +51,11 @@ public struct ProfileView: View {
             .padding(.horizontal)
             .navigationTitle("Profil")
             .alert(isPresented: $profileViewModel.isError, error: profileViewModel.error, actions: { })
-            .fullScreenCover(isPresented: $profileViewModel.isAddingProfile) {
-                AddProfileView(planeAddName: planeAddName)
+            .fullScreenCover(isPresented: $profileViewModel.isAddingProfile, content: {
+                AddProfileView(isEditing: false)
                     .environmentObject(profileViewModel)
                     .clearModalBackground()
-            }
+            })
         }
     }
 }

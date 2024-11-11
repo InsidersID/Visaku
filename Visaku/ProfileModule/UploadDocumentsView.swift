@@ -4,7 +4,7 @@ import RepositoryModule
 
 struct UploadDocumentsView: View {
     @Environment(\.dismiss) var dismiss
-    @Environment(ProfileViewModel.self) var profileViewModel
+    @EnvironmentObject var profileViewModel: ProfileViewModel
     public var document: String
     @StateObject public var account: AccountEntity
     @State public var status: DocumentStatus
@@ -102,6 +102,6 @@ struct UploadDocumentsView: View {
         .sheet(isPresented: .constant(true)) {
             UploadDocumentsView(document: "Paspor", account: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
                 .presentationDragIndicator(.visible)
-                .environment(ProfileViewModel())
+                .environmentObject(ProfileViewModel())
         }
 }

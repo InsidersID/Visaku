@@ -71,7 +71,7 @@ class PhotoPreviewViewModel: ObservableObject {
                     savePhotoState = .error
                     return
                 }
-                NotificationCenter.default.post(name: .accountImageUpdated, object: account.id)
+//                NotificationCenter.default.post(name: .accountImageUpdated, object: account.id)
                 print("savePhoto: Save photo success!")
                 savePhotoState = .success
             }
@@ -91,7 +91,7 @@ class PhotoPreviewViewModel: ObservableObject {
                 deletePhotoState = .error
                 return
             }
-            await updateProfileViewModelAccount()
+//            await updateProfileViewModelAccount()
             print("savePhoto: Delete photo success!")
             deletePhotoState = .success
         } catch {
@@ -100,12 +100,12 @@ class PhotoPreviewViewModel: ObservableObject {
         }
     }
     
-    @MainActor
-    private func updateProfileViewModelAccount() async {
-        let profileViewModel = ProfileViewModel.shared
-
-        if let accounts = profileViewModel.accounts {
-            profileViewModel.accounts = accounts.map { $0.id == account.id ? account : $0 }
-        }
-    }
+//    @MainActor
+//    private func updateProfileViewModelAccount() async {
+//        let profileViewModel = ProfileViewModel.shared
+//
+//        if let accounts = profileViewModel.accounts {
+//            profileViewModel.accounts = accounts.map { $0.id == account.id ? account : $0 }
+//        }
+//    }
 }

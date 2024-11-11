@@ -19,6 +19,8 @@ enum DeleteAdditionalInformationState {
 @MainActor
 public class ProfileViewModel: ObservableObject {
     //ProfileView
+
+        var error: CustomError?
     private var accountUseCase: AccountUseCaseProtocol = AccountUseCase.make()
     
     @Published var accounts: [AccountEntity]?
@@ -27,10 +29,22 @@ public class ProfileViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isError: Bool = false
     @Published var username: String = ""
+    @Published var accountID: String?
+    
+    @Published var isScanKTP: Bool = false
+    @Published var isScanFoto: Bool = false
+    @Published var isScanPaspor: Bool = false
     
     @Published var selectedAccount: AccountEntity?
     
-    @Published var error: CustomError?
+    var uploadDocument: Document?
+
+    
+    var selectedDocument: Document?
+    var isUploadFile: Bool = false
+    var isUploadImage: Bool = false
+    var selectedFileURL: URL?
+    var selectedImage: UIImage?
     
     //AdditionalInformationView
     private var additionalInformationUseCase: AdditionalInformationUseCaseProtocol = AdditionalInformationUseCase.make()
@@ -136,6 +150,16 @@ public class ProfileViewModel: ObservableObject {
     func fetchAccountById(id: String) async -> AccountEntity {
         let account = try? await accountUseCase.fetchById(id: id)
         return account!
+    }
+    
+    func fetchAccountByID(_ id: String) async {
+        do {
+            if let account = try await accountUseCase.fetchById(id: id) {
+                self.username = account.username
+            }
+        } catch {
+            print("Error during account fetching: \(error.localizedDescription)")
+        }
     }
 }
 

@@ -48,31 +48,64 @@ public struct CountryVisaApplicationView: View {
     public init() {}
     
     public var body: some View {
+        
         NavigationView {
             ZStack {
                 ScrollView {
-                    Color.clear.ignoresSafeArea(.all)
-                    
-                    // Extracted Progress View
-                    progressView
+                    Color
+                        .clear
+                        .ignoresSafeArea(.all)
+                    Gauge(value: progress, in: 0...100) {
+                        
+                    } currentValueLabel: {
+                        VStack {
+                            Text("\(Int(progress))%")
+                            Text("Visa turis Italia")
+                                .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
+                                .font(.system(.title, design: .serif, weight: .semibold))
+                        }
+                        .foregroundStyle(.blue)
+                        .padding(.bottom, 50)
+                    }
+                    .tint(.blue)
+                    .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
                     
                     Divider()
                         .padding(.bottom)
                     
-                    // Extracted Document Section
-                    documentSection
+                    VStack {
+                        DocumentCard(height: 82, document: "Identitas", status: .undone)
+                            .onTapGesture {
+                                isIdentity.toggle()
+                            }
+                        DocumentCard(height: 122, document: "Form Aplikasi", status: .undone)
+                            .onTapGesture {
+                                isFormApplication.toggle()
+                            }
+                    }
+                    .padding(.horizontal)
                     
-                    // Extracted Download Button
-                    downloadButton
+                    DocumentRequirementsList(viewModel: viewModel)
+                    CustomButton(text: "Download", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    }
+                    .padding()
                 }
                 
                 NotificationCard()
                     .offset(x: 40, y: 0)
+                
             }
             .navigationTitle("Pengajuan")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                leadingToolbarItem
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left.circle")
+                            .foregroundStyle(.black)
+                    }
+                }
             }
             .sheet(isPresented: $isIdentity) {
                 ProfileView()
@@ -99,56 +132,68 @@ public struct CountryVisaApplicationView: View {
     }
 }
 
-// Preview and ShareSheet struct remain unchanged
-
 #Preview {
     CountryVisaApplicationView()
 }
 
 struct DocumentRequirementsList: View {
     let documents = VisaGeneralTouristDocumentType.data
-    @Binding var isMarkedStatus: [VisaGeneralTouristDocumentType: Bool]
-    
+    @ObservedObject var viewModel: CountryVisaApplicationViewModel
+    @State private var selectedDocumentType: VisaGeneralTouristDocumentType?
+
     var body: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
             ForEach(documents, id: \.self) { application in
                 DocumentCard(
                     height: 115,
                     document: application.displayName,
-                    status: .undone,
+                    status: viewModel.isMarkedStatus[application] == true ? .done : .undone,
                     requiresMarkOnly: application.requiresUpload
                 )
                 .onTapGesture {
-                    isMarkedStatus[application]?.toggle()
+                    selectedDocumentType = application
                 }
-                .sheet(isPresented: Binding(
-                    get: { isMarkedStatus[application] ?? false },
-                    set: { isMarkedStatus[application] = $0 }
-                )) {
-                    if application.requiresUpload {
-                        ActionDocumentSheet(
-                            documentType: application,
-                            isMarked: Binding(
-                                get: { isMarkedStatus[application] ?? false },
-                                set: { isMarkedStatus[application] = $0 }
-                            )
-                        )
-                        .presentationDetents([.height(356)])
-                        .presentationDragIndicator(.visible)
-                    } else {
-                        MarkOnlyDocumentSheet(
-                            documentType: application,
-                            isMarked: Binding(
-                                get: { isMarkedStatus[application] ?? false },
-                                set: { isMarkedStatus[application] = $0 }
-                            )
-                        )
-                        .presentationDetents([.height(356)])
-                        .presentationDragIndicator(.visible)
-                    }
+                .sheet(item: $selectedDocumentType) { document in
+                    DocumentSheet(
+                        documentType: document,
+                        isMarked: Binding(
+                            get: { viewModel.isMarkedStatus[document] ?? false },
+                            set: { newValue in
+                                viewModel.isMarkedStatus[document] = newValue
+                                selectedDocumentType = nil
+                            }
+                        ),
+                        viewModel: viewModel
+                    )
                 }
             }
         }
         .padding(.horizontal)
+    }
+}
+
+struct DocumentSheet: View {
+    var documentType: VisaGeneralTouristDocumentType
+    @Binding var isMarked: Bool
+    @ObservedObject var viewModel: CountryVisaApplicationViewModel
+    
+    var body: some View {
+        if documentType.requiresUpload {
+            ActionDocumentSheet(
+                documentType: documentType,
+                isMarked: $isMarked,
+                viewModel: viewModel
+            )
+            .presentationDetents([.height(356)])
+            .presentationDragIndicator(.visible)
+        } else {
+            MarkOnlyDocumentSheet(
+                documentType: documentType,
+                isMarked: $isMarked,
+                viewModel: viewModel
+            )
+            .presentationDetents([.height(356)])
+            .presentationDragIndicator(.visible)
+        }
     }
 }

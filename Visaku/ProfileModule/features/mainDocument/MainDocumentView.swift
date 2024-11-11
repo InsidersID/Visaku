@@ -9,18 +9,20 @@ struct Document: Identifiable {
 
 public struct MainDocumentView: View {
     public var name: String
-    public var accountId: String
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var profileViewModel: ProfileViewModel
     @State private var scanResult: UIImage?
-    @State private var selectedDocument: Document?
-    @State private var isAdditionalInfoPresented: Bool = false
-    @State private var needsFetch: Bool = true
     @State private var isShowingEditProfile = false
+    
+    public var accountId: String
     
     public init(name: String, accountId: String) {
         self.name = name
         self.accountId = accountId
+    }
+    
+    private var account: AccountEntity {
+        profileViewModel.accounts?.first(where: { $0.id == accountId }) ?? AccountEntity(id: accountId, username: "", image: Data())
     }
     
     public var body: some View {
@@ -60,12 +62,14 @@ public struct MainDocumentView: View {
                                 isShowingEditProfile = true
                             }) {
                                 HStack {
-                                    Text(name)
-                                        .font(Font.custom("Inter", size: 20))
-                                        .fontWeight(.semibold)
-                                        .foregroundStyle(.black)
-                                    
-                                    Image(systemName: "pencil")
+                                    if let updatedAccount = profileViewModel.getAccountByID(account.id) {
+                                        Text(updatedAccount.username)
+                                            .font(Font.custom("Inter", size: 20))
+                                            .fontWeight(.semibold)
+                                            .foregroundStyle(.black)
+                                        
+                                        Image(systemName: "pencil")
+                                    }
                                 }
                             }
 
@@ -79,13 +83,13 @@ public struct MainDocumentView: View {
                                     profileViewModel.selectedDocument = .init(name: "KTP")
                                     
                                 } label: {
-                                    DocumentCard(height: proxy.size.height*102/798, document: "KTP", status: profileViewModel.selectedAccount?.identityCard == nil ? .undone : .done)
+                                    DocumentCard(height: proxy.size.height*102/798, document: "KTP", status: account.identityCard == nil ? .undone : .done)
                                 }
                                 
                                 Button {
                                     profileViewModel.selectedDocument = .init(name: "Paspor")
                                 } label: {
-                                    DocumentCard(height: proxy.size.height*102/798, document: "Paspor", status: profileViewModel.selectedAccount?.passport == nil ? .undone : .done)
+                                    DocumentCard(height: proxy.size.height*102/798, document: "Paspor", status: account.passport == nil ? .undone : .done)
                                 }
                             }
                             
@@ -95,10 +99,11 @@ public struct MainDocumentView: View {
                                 DocumentCard(height: proxy.size.height*102/798, document: "Foto", status: .undone)
                             }
                             
-                            Button {
-                                isAdditionalInfoPresented = true
+                            NavigationLink {
+                                AddOnInformationView()
+                                    .navigationBarBackButtonHidden()
                             } label: {
-                                DocumentCard(height: proxy.size.height * 102 / 798, document: "Informasi tambahan", status: .undone)
+                                DocumentCard(height: proxy.size.height*102/798, document: "Informasi tambahan", status: .undone)
                             }
                         }
                         .padding(.horizontal)
@@ -126,34 +131,11 @@ public struct MainDocumentView: View {
 
                     }
                 }
-            }
-            .fullScreenCover(isPresented: $isAdditionalInfoPresented) {
-                if let account = profileViewModel.selectedAccount {
-                    AdditionalInformationView(account: account)
-                        .navigationBarBackButtonHidden(true)
-                }
-            }
-            .onReceive(NotificationCenter.default.publisher(for: .accountImageUpdated)) { notification in
-                Task {
-                    if let updatedAccountID = notification.object as? String, updatedAccountID == account.id {
-                        await profileViewModel.fetchAccountByID(account.id)
-                    }
-                }
+                
             }
             .sheet(item: $profileViewModel.selectedDocument, content: { document in
                 DocumentDetailsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
-            .fullScreenCover(isPresented: $isAdditionalInfoPresented) {
-                if let account = profileViewModel.selectedAccount {
-                    AdditionalInformationView(account: account)
-                        .navigationBarBackButtonHidden(true)
-                }
-            })
-            .sheet(item: $selectedDocument, content: { document in
-                if let account = profileViewModel.selectedAccount {
-                    DocumentDetailsView(document: document.name, account: account)
-                        .presentationDragIndicator(.visible)
-                }
             })
             .sheet(item: $profileViewModel.uploadDocument, content: { document in
                 UploadDocumentsView(document: document.name, account: account)
@@ -174,14 +156,8 @@ public struct MainDocumentView: View {
             .fullScreenCover(isPresented: $profileViewModel.isScanFoto, content: {
                 PhotoPreviewSheet(account: account)
             })
-            .sheet(item: $selectedDocument, content: { document in
-                if let account = profileViewModel.selectedAccount {
-                    DocumentDetailsView(document: document.name, account: account)
-                        .presentationDragIndicator(.visible)
-                }
-            })
             .fullScreenCover(isPresented: $isShowingEditProfile) {
-                AddProfileView(account: account)
+                AddProfileView(account: account, isEditing: true)
                     .onAppear {
                         profileViewModel.username = account.username
                     }
@@ -202,36 +178,10 @@ public struct MainDocumentView: View {
                     }
                 }
             }
-            .onAppear {
-                if needsFetch {
-                    Task {
-                        print("trigger fetch")
-                        profileViewModel.selectedAccount = await profileViewModel.fetchAccountById(id: accountId)
-                        needsFetch = false
-                    }
-                }
-            }
-            .onDisappear {
-                needsFetch = true
-                print("onDisappear")
-            }
         }
     }
 }
 
-#Preview {
-    MainDocumentView(name: "Iqbal", accountId: UUID().uuidString)
-        .environmentObject(ProfileViewModel())
-}
-extension Notification.Name {
-    static let accountImageUpdated = Notification.Name("accountImageUpdated")
-}
-#Preview {
-    MainDocumentView(name: "Iqbal", accountId: UUID().uuidString)
-        .environmentObject(ProfileViewModel())
-}
-
-//#Preview {
-//    MainDocumentView(name: "Iqbal", accountId: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
-//        .environment(ProfileViewModel())
+//extension Notification.Name {
+//    static let accountImageUpdated = Notification.Name("accountImageUpdated")
 //}
