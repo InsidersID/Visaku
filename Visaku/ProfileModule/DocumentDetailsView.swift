@@ -8,13 +8,13 @@ public struct DocumentDetailsView: View {
     public var document: String
     @State private var isUpload: Bool = false
     @State private var isSeeDetails: Bool = false
-    public var account: AccountEntity
+    @StateObject public var account: AccountEntity
     @State public var status: DocumentStatus
     @State private var passportDetailsIndex = 1
     
-    public init (document: String, account: AccountEntity, status: DocumentStatus = .undone) {
+    public init (document: String, account: AccountEntity? = nil, status: DocumentStatus = .undone) {
         self.document = document
-        self.account = account
+        self._account = StateObject(wrappedValue: account ?? AccountEntity(id: "", username: "", image: Data()))
         self.status = status
     }
     

@@ -10,6 +10,7 @@ import RepositoryModule
 import UIKit
 import VisionKit
 import Vision
+import SwiftUI
 
 enum SavePassportState {
     case idle
@@ -35,7 +36,7 @@ class PassportPreviewViewModel: ObservableObject {
     
     //Data
     @Published var passport: PassportEntity
-    @Published var account: AccountEntity
+    @StateObject public var account: AccountEntity
     @Published var passportImage: UIImage?
     
     //Navigation
@@ -45,10 +46,10 @@ class PassportPreviewViewModel: ObservableObject {
     @Published var savePassportState: SavePassportState = .idle
     @Published var deletePassportState: DeletePassportState = .idle
     
-    init(account: AccountEntity) {
-        self.account = account
+    init(account: AccountEntity? = nil) {
+        self._account = StateObject(wrappedValue: account ?? AccountEntity(id: "", username: "", image: Data()))
         
-        if let passportData = account.passport {
+        if let account = account, let passportData = account.passport {
             self.passport = passportData
             self.passportImage = UIImage(data: passportData.image)
             isCameraOpen = false
