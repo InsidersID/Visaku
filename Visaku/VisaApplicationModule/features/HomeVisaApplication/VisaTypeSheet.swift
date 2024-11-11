@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct VisaTypeSheetView: View {
+struct VisaTypeSheet: View {
     @Binding var isShowVisaTypeSheet: Bool
     @Binding var visaType: String
 
@@ -48,5 +48,5 @@ struct VisaTypeSheetView: View {
     @Previewable @State var isShowVisaTypeSheet = true
     @Previewable @State var visaType = ""
 
-    VisaTypeSheetView(isShowVisaTypeSheet: $isShowVisaTypeSheet, visaType: $visaType)
+    VisaTypeSheet(isShowVisaTypeSheet: $isShowVisaTypeSheet, visaType: $visaType)
 }
