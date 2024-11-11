@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct CountrySelectionSheetView: View {
-    let countryList: [String]
-    let schengenCountryList: [String]
     @Binding var isSchengenCountryChosen: Bool
     @Binding var countryKeyword: String
     var onDismiss: () -> Void
@@ -18,7 +16,7 @@ struct CountrySelectionSheetView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
-                    ForEach(countryList.filter { countryKeyword.isEmpty || $0.contains(countryKeyword) }, id: \.self) { country in
+                    ForEach(Countries.countryList.filter { countryKeyword.isEmpty || $0.contains(countryKeyword) }, id: \.self) { country in
                         Button(action: {
                             if country == "Schengen Area" {
                                 isSchengenCountryChosen = true
@@ -59,7 +57,7 @@ struct CountrySelectionSheetView: View {
             .padding(.horizontal)
         }
         .sheet(isPresented: $isSchengenCountryChosen) {
-            SchengenCountrySelectionSheetView(countryList: countryList, schengenCountryList: schengenCountryList, countryKeyword: $countryKeyword, isUseSheet: false)
+            SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, isUseSheet: false)
                 .presentationDragIndicator(.visible)
         }
     }

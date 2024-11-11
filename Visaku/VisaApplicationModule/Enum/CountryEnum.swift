@@ -149,6 +149,7 @@ struct CountryData {
     let name: String
     let png: String
     let visaTypes: [VisaType]
+    let flagEmoji: String
 }
 
 public enum Country: String, Codable, CaseIterable {
@@ -158,6 +159,7 @@ public enum Country: String, Codable, CaseIterable {
     var data: CountryData {
         let flagImage = rawValue.replacingOccurrences(of: " ", with: "-") + "-flag.png"
         let visaTypes: [VisaType]
+        let flagEmoji: String
         
         // Define Visa and required documents for Italy
         switch self {
@@ -185,6 +187,7 @@ public enum Country: String, Codable, CaseIterable {
                     )
                 )
             ]
+            flagEmoji = "🇮🇹"
         case .germany:
             let businessVisaDocuments = VisaDocumentRequirements(
                 primaryDocuments: PrimaryGeneralTouristDocumentType.data,
@@ -210,9 +213,10 @@ public enum Country: String, Codable, CaseIterable {
                     documentRequirements: tourismVisaDocuments
                 )
             ]
+            flagEmoji = "🇩🇪"
         }
         
-        return CountryData(name: rawValue.capitalized, png: flagImage, visaTypes: visaTypes)
+        return CountryData(name: rawValue.capitalized, png: flagImage, visaTypes: visaTypes, flagEmoji: flagEmoji)
     }
     
     static var data: [CountryData] {
@@ -220,3 +224,35 @@ public enum Country: String, Codable, CaseIterable {
     }
 }
 
+public enum Countries {
+    
+    static let countryList: [String] = [
+        "Arab Saudi", "Australia", "Bangladesh", "Bhutan",
+        "China", "Jepang", "Korea Selatan", "Pakistan",
+        "Schengen Area", "Taiwan"
+    ]
+    
+    static let schengenCountryList: [String] = [
+        "Austria", "Belgia", "Bulgaria", "Denmark", "Finlandia",
+        "Jerman", "Hungaria", "Islandia", "Italia",
+        "Luxemburg", "Belanda", "Norwegia", "Polandia",
+        "Portugal", "Spanyol", "Swedia", "Swiss",
+        "Prancis", "Republik Ceko", "Yunani"
+    ]
+
+    static let schengenCountryFlags: [String: String] = [
+        "Austria": "🇦🇹", "Belgia": "🇧🇪",
+        "Bulgaria": "🇧🇬", "Denmark": "🇩🇰", "Finlandia": "🇫🇮",
+        "Jerman": "🇩🇪", "Hungaria": "🇭🇺",
+        "Islandia": "🇮🇸", "Italia": "🇮🇹",
+        "Luxemburg": "🇱🇺", "Belanda": "🇳🇱",
+        "Norwegia": "🇳🇴", "Polandia": "🇵🇱",
+        "Portugal": "🇵🇹", "Spanyol": "🇪🇸",
+        "Swedia": "🇸🇪", "Swiss": "🇨🇭",
+        "Prancis": "🇫🇷", "Republik Ceko": "🇨🇿", "Yunani": "🇬🇷"
+    ]
+    
+    static func isSchengenCountry(_ country: String) -> Bool {
+        return schengenCountryList.contains(country)
+    }
+}
