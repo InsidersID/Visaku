@@ -14,13 +14,14 @@ struct VisaApplicationHeader: View {
     var body: some View {
         VStack {
             VStack {
-                HStack {
+                VStack {
                     VStack(alignment: .leading, spacing: 0) {
-                        Text("Mau traveling ke \nmana?")
+                        Text("Mau traveling \nke mana?")
                             .font(.system(size: 24))
                             .bold()
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.top, 20)
                             .padding(.horizontal)
                             .lineLimit(nil)
                             .fixedSize(horizontal: false, vertical: true)
@@ -33,25 +34,32 @@ struct VisaApplicationHeader: View {
                             .lineLimit(nil)
                             .fixedSize(horizontal: false, vertical: true)
                     }
-                    VStack {
-                        Rectangle()
-                            .foregroundStyle(.white)
-                            .frame(width: 100, height: 100)
-                            .padding()
-                    }
                 }
-                CustomButton(text: "Mulai pengajuan", textColor: .blue, color: .white, fontSize: 16, cornerRadius: 16, paddingVertical: 3) {
+                CustomButton(text: "Mulai pengajuan", textColor: Color(.primary5), color: .white, fontSize: 16, cornerRadius: 16, paddingVertical: 12) {
                     isShowChooseCountrySheet = true
                 }
-                .padding(.bottom, 10)
+                .padding(.vertical, 10)
+                .padding(.horizontal)
             }
-            .padding(.top,30)
-            .padding(.bottom, 6)
-            .padding()
+            .padding(.top, 60)
+            .padding(.bottom, 50)
+            .padding(.horizontal)
+            .background(
+                Image("homeVisaApplication")
+                    .resizable()
+                    .scaledToFill()
+                    .padding(.top, 20)
+                    .padding(.trailing, 25)
+                )
         }
-        .background(.blue)
+        .background(Color(.primary4))
         .cornerRadius(24)
+
     }
 }
 
+#Preview {
+    @Previewable @State var isShowChooseCountrySheet: Bool = false
+    VisaApplicationHeader(isShowChooseCountrySheet: $isShowChooseCountrySheet)
+}
 
