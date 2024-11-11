@@ -40,7 +40,8 @@ public struct MainDocumentView: View {
                             Button(action: {
                                 profileViewModel.selectedDocument = .init(name: "Foto")
                             }){
-                                if let accountImage = UIImage(data: account.image) {
+                                if let updatedAccount = profileViewModel.getAccountByID(account.id),
+                                   let accountImage = UIImage(data: updatedAccount.image) {
                                     Image(uiImage: accountImage)
                                         .resizable()
                                         .scaledToFill()
@@ -132,7 +133,13 @@ public struct MainDocumentView: View {
                         .navigationBarBackButtonHidden(true)
                 }
             }
-            .sheet(item: $selectedDocument, content: { document in
+            .onReceive(NotificationCenter.default.publisher(for: .accountImageUpdated)) { notification in
+                Task {
+                    if let updatedAccountID = notification.object as? String, updatedAccountID == account.id {
+                        await profileViewModel.fetchAccountByID(account.id)
+                    }
+                }
+            }
             .sheet(item: $profileViewModel.selectedDocument, content: { document in
                 DocumentDetailsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
@@ -205,3 +212,11 @@ public struct MainDocumentView: View {
     MainDocumentView(name: "Iqbal", accountId: UUID().uuidString)
         .environmentObject(ProfileViewModel())
 }
+extension Notification.Name {
+    static let accountImageUpdated = Notification.Name("accountImageUpdated")
+}
+
+//#Preview {
+//    MainDocumentView(name: "Iqbal", accountId: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
+//        .environment(ProfileViewModel())
+//}
