@@ -21,7 +21,7 @@ public struct ProfileView: View {
                                 Button {
                                     dismiss()
                                 } label: {
-                                    ProfileCard(name: account.username)
+                                    ProfileCard(name: account.username, imageData: account.image)
                                 }
                             } else {
                                 NavigationLink {
@@ -29,7 +29,7 @@ public struct ProfileView: View {
                                         .navigationBarBackButtonHidden()
                                         .environment(profileViewModel)
                                 } label: {
-                                    ProfileCard(name: account.username, isAddProfile: false)
+                                    ProfileCard(name: account.username, isAddProfile: false, imageData: account.image)
                                 }
                             }
                         }

@@ -12,6 +12,7 @@ public struct MainDocumentView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(ProfileViewModel.self) var profileViewModel
     @State private var scanResult: UIImage?
+    @State private var isShowingEditProfile = false
     public var account: AccountEntity
     
     public init(name: String, account: AccountEntity) {
@@ -35,16 +36,37 @@ public struct MainDocumentView: View {
                     
                     VStack {
                         VStack {
-                            Circle()
-                                .foregroundStyle(Color(red: 0.85, green: 0.85, blue: 0.85))
-                                .frame(width: 86, height: 86)
-                            HStack {
-                                Text(name)
-                                    .font(Font.custom("Inter", size: 20))
-                                    .fontWeight(.semibold)
-                                
-                                Image(systemName: "pencil")
+                            Button(action: {
+                                profileViewModel.selectedDocument = .init(name: "Foto")
+                            }){
+                                if let accountImage = UIImage(data: account.image) {
+                                    Image(uiImage: accountImage)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 86, height: 86)
+                                        .clipShape(Circle())
+                                        .overlay(Circle().stroke(.white, lineWidth: 2))
+                                } else {
+                                    Circle()
+                                        .foregroundStyle(Color(red: 0.85, green: 0.85, blue: 0.85))
+                                        .frame(width: 86, height: 86)
+                                }
+
                             }
+                            
+                            Button(action: {
+                                isShowingEditProfile = true
+                            }) {
+                                HStack {
+                                    Text(name)
+                                        .font(Font.custom("Inter", size: 20))
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(.black)
+                                    
+                                    Image(systemName: "pencil")
+                                }
+                            }
+
                         }
                         
                         Spacer()
@@ -125,8 +147,14 @@ public struct MainDocumentView: View {
                 PassportPreviewSheet(account: account)
             })
             .fullScreenCover(isPresented: $profileViewModel.isScanFoto, content: {
-                EmptyView()
+                PhotoPreviewSheet(account: account)
             })
+            .fullScreenCover(isPresented: $isShowingEditProfile) {
+                AddProfileView(account: account)
+                    .onAppear {
+                        profileViewModel.username = account.username
+                    }
+            }
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Profil")
@@ -148,6 +176,6 @@ public struct MainDocumentView: View {
 }
 
 #Preview {
-    MainDocumentView(name: "Iqbal", account: AccountEntity(id: "1", username: "IqbalGanteng"))
+    MainDocumentView(name: "Iqbal", account: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
         .environment(ProfileViewModel())
 }

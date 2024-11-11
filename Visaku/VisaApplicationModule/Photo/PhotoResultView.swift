@@ -55,7 +55,7 @@ public struct PhotoResultView: View {
                         return
                     }
 
-                    CustomButton(text: "Hapus foto", textColor: Color.blue, color: Color.blue.opacity(0), fontSize: 12, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 15) {
+                    CustomButton(text: "Foto ulang", textColor: Color.blue, color: Color.blue.opacity(0), fontSize: 12, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 15) {
                         return
                     }
                     

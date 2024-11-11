@@ -57,12 +57,12 @@ public struct KTPPreviewSheet: View {
                 // Handle the different states of the save operation
                 switch ktpPreviewViewModel.saveIdentityCardState {
                 case .loading:
-                    ProgressView("Saving...")
+                    ProgressView("Menyimpan...")
                         .padding()
                 case .error:
-                    Text("Error saving the KTP").foregroundColor(.red)
+                    Text("Eror menyimpan KTP-mu").foregroundColor(.red)
                 case .success:
-                    Text("KTP saved successfully").foregroundColor(.green)
+                    Text("KTP-mu sukses tersimpan").foregroundColor(.green)
                 case .idle:
                     CustomButton(text: "Simpan", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                         Task {
@@ -75,12 +75,12 @@ public struct KTPPreviewSheet: View {
                 // Handle the different states of the delete operation
                 switch ktpPreviewViewModel.deleteIdentityCardState {
                 case .loading:
-                    ProgressView("Deleting...")
+                    ProgressView("Menghapus...")
                         .padding()
                 case .error:
-                    Text("Error deleting the KTP").foregroundColor(.red)
+                    Text("Eror menghapus KTP-mu").foregroundColor(.red)
                 case .success:
-                    Text("KTP deleted successfully").foregroundColor(.green)
+                    Text("KTP-mu sukses terhapus").foregroundColor(.green)
                 case .idle:
                     CustomButton(text: "Hapus dokumen", textColor: .blue, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                         Task {

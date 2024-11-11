@@ -50,6 +50,7 @@ public struct DocumentDetailsView: View {
                             
                             HStack {
                                 Button {
+                                    dismiss()
                                     switch document {
                                     case "KTP":
                                         profileViewModel.isScanKTP = true
@@ -174,7 +175,7 @@ public struct DocumentDetailsView: View {
 #Preview {
     Text(" ")
         .sheet(isPresented: .constant(true)) {
-            DocumentDetailsView(document: "Paspor", account: AccountEntity(id: "1", username: "IqbalGanteng"))
+            DocumentDetailsView(document: "Paspor", account: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
                 .presentationDragIndicator(.visible)
                 .environment(ProfileViewModel())
         }

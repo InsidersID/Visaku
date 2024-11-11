@@ -11,20 +11,20 @@ import Combine
 struct CameraViewRepresentable: UIViewControllerRepresentable {
     
     typealias UIViewControllerType = CameraView
-    @Binding var shouldCaptureImage: Bool
+    @Binding var photoImage: UIImage?
     
     @ObservedObject var cameraState: CameraState
     
     private let shouldCaptureImageSubject = PassthroughSubject<Bool, Never>()
+    var onDismiss: () -> Void
     
     func makeUIViewController(context: Context) -> CameraView {
-        let controller = CameraView(cameraState: cameraState)
-        controller.setShouldCaptureImagePublisher(shouldCaptureImageSubject)
+        let controller = CameraView(cameraState: cameraState, photoImage: $photoImage, onDismiss: onDismiss)
         return controller
     }
     
     func updateUIViewController(_ uiViewController: CameraView, context: Context) {
-        shouldCaptureImageSubject.send(shouldCaptureImage)
+        
     }
     
     func makeCoordinator() -> Coordinator {

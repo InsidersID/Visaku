@@ -6,6 +6,8 @@ import SwiftUI
 @Observable
 public class ProfileViewModel{
     
+    static let shared = ProfileViewModel()
+    
     private var accountUseCase: AccountUseCaseProtocol = AccountUseCase.make()
     var accounts: [AccountEntity]?
     var isAddingProfile: Bool = false
@@ -22,8 +24,18 @@ public class ProfileViewModel{
     var isUploadImage: Bool = false
     var selectedFileURL: URL?
     var selectedImage: UIImage?
+    var accountID: String?
     
     var error: CustomError?
+    
+    init(accountID: String? = nil) {
+        self.accountID = accountID
+        if let id = accountID {
+            Task {
+                await fetchAccountByID(id)
+            }
+        }
+    }
     
     func fetchAccount() async {
         do {
@@ -33,10 +45,20 @@ public class ProfileViewModel{
         }
     }
     
+    func fetchAccountByID(_ id: String) async {
+        do {
+            if let account = try await accountUseCase.fetchById(id: id) {
+                self.username = account.username
+            }
+        } catch {
+            print("Error during account fetching: \(error.localizedDescription)")
+        }
+    }
+    
     func saveAccount() async {
         do {
             isLoading = true
-            let isSuccess = try await accountUseCase.save(param: AccountEntity(id: UUID().uuidString, username: username))
+            let isSuccess = try await accountUseCase.save(param: AccountEntity(id: UUID().uuidString, username: username, image: Data()))
             if isSuccess {
                 isLoading = false
                 username = ""
@@ -73,7 +95,22 @@ public class ProfileViewModel{
             if isSuccess {
                 isLoading = false
                 Task {
-                    await fetchAccount()
+                    await fetchAccountByID(account.id)
+                }
+            }
+        } catch {
+            self.error = CustomError(error.localizedDescription)
+        }
+    }
+    
+    func updateAccountUsername(_ account: AccountEntity, newUsername: String) async {
+        do {
+            isLoading = true
+            let isSuccess = try await accountUseCase.updateUsername(id: account.id, newUsername: newUsername)
+            if isSuccess {
+                isLoading = false
+                Task {
+                    await fetchAccountByID(account.id)
                 }
             }
         } catch {
