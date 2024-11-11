@@ -4,7 +4,7 @@ import UIComponentModule
 
 public struct ProfileView<Content: View>: View {
     @Environment(\.dismiss) private var dismiss
-    @State public var profileViewModel: ProfileViewModel = ProfileViewModel()
+    @StateObject public var profileViewModel: ProfileViewModel = ProfileViewModel()
     public var isSelectProfile: Bool
     public var planeAddName: Content
     
@@ -29,7 +29,7 @@ public struct ProfileView<Content: View>: View {
                                 NavigationLink {
                                     MainDocumentView(name: account.username, accountId: account.id)
                                         .navigationBarBackButtonHidden()
-                                        .environment(profileViewModel)
+                                        .environmentObject(profileViewModel)
                                 } label: {
                                     ProfileCard(name: account.username, isAddProfile: false)
                                 }
@@ -55,7 +55,7 @@ public struct ProfileView<Content: View>: View {
             .alert(isPresented: $profileViewModel.isError, error: profileViewModel.error, actions: { })
             .fullScreenCover(isPresented: $profileViewModel.isAddingProfile) {
                 AddProfileView(planeAddName: planeAddName)
-                    .environment(profileViewModel)
+                    .environmentObject(profileViewModel)
                     .clearModalBackground()
             }
         }

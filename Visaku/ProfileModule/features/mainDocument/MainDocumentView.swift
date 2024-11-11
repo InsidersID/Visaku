@@ -11,12 +11,12 @@ public struct MainDocumentView: View {
     public var name: String
     public var accountId: String
     @Environment(\.dismiss) private var dismiss
-    @Environment(ProfileViewModel.self) var profileViewModel
+    @EnvironmentObject var profileViewModel: ProfileViewModel
     @State private var scanResult: UIImage?
-    @State private var account: AccountEntity? = nil
     @State private var isDocumentTapped: Bool
     @State private var selectedDocument: Document?
     @State private var isAdditionalInfoPresented: Bool = false
+    @State private var needsFetch: Bool = true
     
     public init(name: String, accountId: String, isDocumentTapped: Bool = false) {
         self.name = name
@@ -25,8 +25,6 @@ public struct MainDocumentView: View {
     }
     
     public var body: some View {
-        @Bindable var profileViewModel = profileViewModel
-        
         NavigationView {
             GeometryReader { proxy in
                 ZStack {
@@ -61,14 +59,14 @@ public struct MainDocumentView: View {
                                     isDocumentTapped = true
                                     
                                 } label: {
-                                    DocumentCard(height: proxy.size.height*102/798, document: "KTP", status: account?.identityCard == nil ? .undone : .done)
+                                    DocumentCard(height: proxy.size.height*102/798, document: "KTP", status: profileViewModel.selectedAccount?.identityCard == nil ? .undone : .done)
                                 }
                                 
                                 Button {
                                     selectedDocument = .init(name: "Paspor")
                                     isDocumentTapped = true
                                 } label: {
-                                    DocumentCard(height: proxy.size.height*102/798, document: "Paspor", status: account?.passport == nil ? .undone : .done)
+                                    DocumentCard(height: proxy.size.height*102/798, document: "Paspor", status: profileViewModel.selectedAccount?.passport == nil ? .undone : .done)
                                 }
                             }
                             
@@ -104,13 +102,13 @@ public struct MainDocumentView: View {
                 }
             }
             .fullScreenCover(isPresented: $isAdditionalInfoPresented) {
-                if let account = account {
+                if let account = profileViewModel.selectedAccount {
                     AdditionalInformationView(account: account)
                         .navigationBarBackButtonHidden(true)
                 }
             }
             .sheet(item: $selectedDocument, content: { document in
-                if let account = account {
+                if let account = profileViewModel.selectedAccount {
                     DocumentDetailsView(document: document.name, account: account)
                         .presentationDragIndicator(.visible)
                 }
@@ -132,11 +130,17 @@ public struct MainDocumentView: View {
                 }
             }
             .onAppear {
-                Task {
-                    if account == nil {
-                        account = await profileViewModel.fetchAccountById(id: accountId)
+                if needsFetch {
+                    Task {
+                        print("trigger fetch")
+                        profileViewModel.selectedAccount = await profileViewModel.fetchAccountById(id: accountId)
+                        needsFetch = false
                     }
                 }
+            }
+            .onDisappear {
+                needsFetch = true
+                print("onDisappear")
             }
         }
     }
@@ -144,5 +148,5 @@ public struct MainDocumentView: View {
 
 #Preview {
     MainDocumentView(name: "Iqbal", accountId: UUID().uuidString)
-        .environment(ProfileViewModel())
+        .environmentObject(ProfileViewModel())
 }

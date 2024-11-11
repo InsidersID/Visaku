@@ -4,7 +4,7 @@ import RepositoryModule
 
 public struct DocumentDetailsView: View {
     @Environment(\.dismiss) var dismiss
-    @Environment(ProfileViewModel.self) var profileViewModel
+    @EnvironmentObject var profileViewModel: ProfileViewModel
     public var document: String
     @State private var isUpload: Bool = false
     @State private var isSeeDetails: Bool = false
@@ -163,6 +163,6 @@ public struct DocumentDetailsView: View {
         .sheet(isPresented: .constant(true)) {
             DocumentDetailsView(document: "Paspor", account: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
                 .presentationDragIndicator(.visible)
-                .environment(ProfileViewModel())
+                .environmentObject(ProfileViewModel())
         }
 }

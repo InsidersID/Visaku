@@ -5,6 +5,7 @@ import RepositoryModule
 struct AdditionalInformationView: View {
     @State private var hasDifferentBirthName: Bool? = nil
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var profileViewModel: ProfileViewModel
     @State var additionalInformationViewModel: AdditionalInformationViewModel
     
     public init(account: AccountEntity) {
@@ -102,6 +103,7 @@ struct AdditionalInformationView: View {
                     CustomButton(text: "Selanjutnya", color: Color.primary5) {
                         Task {
                             await additionalInformationViewModel.saveAdditionalInformation()
+                            profileViewModel.selectedAccount = additionalInformationViewModel.account
                         }
                         dismiss()
                     }

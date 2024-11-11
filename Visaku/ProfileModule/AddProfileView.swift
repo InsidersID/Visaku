@@ -3,7 +3,7 @@ import UIComponentModule
 
 struct AddProfileView<Content: View>: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(ProfileViewModel.self) public var profileViewModel
+    @EnvironmentObject public var profileViewModel: ProfileViewModel
     var planeAddName: Content
     
     init (planeAddName: Content = Text(" ")) {
@@ -11,8 +11,6 @@ struct AddProfileView<Content: View>: View {
     }
     
     var body: some View {
-        @Bindable var profileViewModel =  profileViewModel
-        
         GeometryReader { proxy in
             ZStack {
                 Color.black.opacity(0.75)
@@ -50,5 +48,5 @@ struct AddProfileView<Content: View>: View {
 
 #Preview {
     AddProfileView()
-        .environment(ProfileViewModel())
+        .environmentObject(ProfileViewModel())
 }

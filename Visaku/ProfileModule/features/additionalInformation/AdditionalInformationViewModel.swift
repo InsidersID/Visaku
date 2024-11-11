@@ -8,34 +8,19 @@
 import Foundation
 import RepositoryModule
 
-enum SaveAdditionalInformationState {
-    case idle
-    case loading
-    case error
-    case success
-}
-
-enum DeleteAdditionalInformationState {
-    case idle
-    case loading
-    case error
-    case success
-}
-
 @MainActor
-@Observable
-class AdditionalInformationViewModel {
+class AdditionalInformationViewModel: ObservableObject {
     private var additionalInformationUseCase: AdditionalInformationUseCaseProtocol = AdditionalInformationUseCase.make()
     private var accountUseCase: AccountUseCaseProtocol = AccountUseCase.make()
     
     //Navigation
-    var showJobSheet: Bool = false
-    var showBornName: Bool = false
+    @Published var showJobSheet: Bool = false
+    @Published var showBornName: Bool = false
     
     //Data
-    var additionalInformation: AdditionalInformationEntity
-    var account: AccountEntity
-    let jobOptions = [
+    @Published var additionalInformation: AdditionalInformationEntity
+    @Published var account: AccountEntity
+    @Published var jobOptions = [
         "Petani", "Arsitek", "Pengrajin", "Profesi Hukum (hakim/jaksa)",
         "Seniman", "Bankir", "Dealer", "Eksekutif Bisnis", "Pemimpin Agama/Religius",
         "Pengemudi", "Peneliti", "Guru", "Karyawan", "Politikus", "IT",
@@ -46,7 +31,7 @@ class AdditionalInformationViewModel {
         "Eksekutif Perusahaan", "Beberapa macam"
     ]
     
-    var searchJobQuery: String = ""
+    @Published var searchJobQuery: String = ""
     
     var filteredJobs: [String] {
         jobOptions.filter { job in
@@ -55,8 +40,8 @@ class AdditionalInformationViewModel {
     }
     
     //State View
-    var saveAdditionalInformationState: SaveAdditionalInformationState = .idle
-    var deleteAdditionalInformationState: DeleteAdditionalInformationState = .idle
+    @Published var saveAdditionalInformationState: SaveAdditionalInformationState = .idle
+    @Published var deleteAdditionalInformationState: DeleteAdditionalInformationState = .idle
     
     init(account: AccountEntity) {
         self.account = account
@@ -72,52 +57,50 @@ class AdditionalInformationViewModel {
         saveAdditionalInformationState = .loading
         do {
             var isSuccess: Bool
-            print("before save \(additionalInformation.id)")
-            var existingInformation: AdditionalInformationEntity?
-            if var existingInfo = account.additionalInformation {
-                // Update existing information
-                print("triggered update \(existingInfo.id)")
-                existingInformation = existingInfo
-                // Update existingInfo's properties with values from additionalInformation
-                existingInfo.bornName = additionalInformation.bornName
-                existingInfo.bornCountry = additionalInformation.bornCountry
-                existingInfo.bornNationality = additionalInformation.bornNationality
-
-                isSuccess = try await additionalInformationUseCase.update(param: existingInfo)
-                print("update successfully \(existingInfo.id)")
+            if var existingAdditionalInformation = account.additionalInformation {
+                isSuccess = try await updateAdditionalInformationData()
             } else {
-                // Prepare new information
-                if !showBornName {
-                    self.additionalInformation.bornName = ""
-                }
-                isSuccess = try await additionalInformationUseCase.save(param: self.additionalInformation)
-                print("save successfully \(additionalInformation.id)")
+                isSuccess = try await saveAdditionalInformationData()
             }
-
-            guard isSuccess else {
+            
+            if !isSuccess {
                 saveAdditionalInformationState = .error
                 return
-            }
-
-            var updatedAccount = account
-            updatedAccount.additionalInformation = existingInformation ?? self.additionalInformation
-            let isAccountSaveSuccess = try await accountUseCase.update(param: updatedAccount)
-
-            guard isAccountSaveSuccess else {
-                saveAdditionalInformationState = .error
-                return
-            }
-
-            // Refetch the updated account
-            if let existAccount = try await accountUseCase.fetchById(id: account.id) {
-                account = existAccount
             }
             saveAdditionalInformationState = .success
-
+            await updateUIData()
         } catch {
             saveAdditionalInformationState = .error
             print("Save failed with error: \(error)")
         }
+    }
+    
+    private func updateUIData() async {
+        do {
+            let account = try await accountUseCase.fetchById(id: account.id)
+            if let additionalInformation = account?.additionalInformation {
+                self.additionalInformation = additionalInformation
+            }
+        } catch {
+            print("error: \(error)")
+        }
+    }
+    
+    private func saveAdditionalInformationData() async throws -> Bool {
+        let isSuccess = try await additionalInformationUseCase.save(param: additionalInformation)
+        if !isSuccess {
+            return false
+        }
+        account.additionalInformation = additionalInformation
+        return try await accountUseCase.update(param: account)
+    }
+    
+    private func updateAdditionalInformationData() async throws -> Bool {
+        if let existingAdditionalInformation = account.additionalInformation {
+            additionalInformation.id = existingAdditionalInformation.id
+            return try await additionalInformationUseCase.update(param: additionalInformation)
+        }
+        return false
     }
     
     func deleteAdditionalInformation() async {
