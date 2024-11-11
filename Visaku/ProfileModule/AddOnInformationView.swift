@@ -30,11 +30,14 @@ public struct AddOnInformationView: View {
                     Spacer()
                 }
                 
-                Rectangle()
-                    .scaledToFit()
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 60)
-                    .padding(.bottom)
+//                Rectangle()
+//                    .scaledToFit()
+//                    .foregroundStyle(.secondary)
+//                    .padding(.horizontal, 60)
+//                    .padding(.bottom)
+                VStack {
+                    Image("applicationForm")
+                }
                 
                 CardContainer(cornerRadius: 16) {
                     HStack {
