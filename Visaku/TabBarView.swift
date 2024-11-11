@@ -4,7 +4,7 @@ struct TabBarView: View {
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         TabView {
-            CountryVisaApplicationView()
+            VisaHistoryView()
                 .tabItem {
                     Label("Visaku", systemImage: "pencil.line")
                 }
