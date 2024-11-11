@@ -37,6 +37,10 @@ public class ProfileViewModel{
         }
     }
     
+    func getAccountByID(_ id: String) -> AccountEntity? {
+        return accounts?.first(where: { $0.id == id })
+    }
+    
     func fetchAccount() async {
         do {
             accounts = try await accountUseCase.fetch()

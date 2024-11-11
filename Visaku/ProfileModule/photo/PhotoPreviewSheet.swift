@@ -73,6 +73,7 @@ public struct PhotoPreviewSheet: View {
                         CustomButton(text: "Simpan", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                             Task {
                                 await photoPreviewViewModel.savePhoto()
+                                await ProfileViewModel.shared.fetchAccountByID(photoPreviewViewModel.account.id)
                             }
                             dismiss()
                         }
