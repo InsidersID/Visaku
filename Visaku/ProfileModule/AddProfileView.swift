@@ -9,11 +9,10 @@ struct AddProfileView: View {
     private let riveViewModel: RiveViewModel
     
     @State private var isEditing: Bool = false
-    
-    public var account: AccountEntity?
+    @StateObject public var account: AccountEntity
     
     public init(account: AccountEntity? = nil) {
-        self.account = account
+        self._account = StateObject(wrappedValue: account ?? AccountEntity(id: "", username: "", image: Data()))
         riveViewModel = RiveViewModel(fileName: "PlaneAddName")
     }
     
@@ -38,9 +37,7 @@ struct AddProfileView: View {
                         .font(Font.custom("Inter", size: 16))
                         .fontWeight(.semibold)
                         .onAppear {
-                            if let account = account {
-                                profileViewModel.username = account.username
-                            }
+                            profileViewModel.username = account.username
                         }
                 }
                 .frame(height: 144, alignment: .center)
@@ -51,10 +48,10 @@ struct AddProfileView: View {
                 
                 CustomButton( text: "Buat/ganti profil", textColor: .blue, color: Color(red: 0.7, green: 0.91, blue: 0.95), buttonWidth: proxy.size.width*0.24, fontSize: 12, cornerRadius: 16, paddingHorizontal: 0, paddingVertical: 0) {
                     Task {
-                        if let account = account {
-                            await profileViewModel.updateAccountUsername(account, newUsername: profileViewModel.username)
-                        } else {
+                        if account.id.isEmpty {
                             await profileViewModel.saveAccount()
+                        } else {
+                            await profileViewModel.updateAccountUsername(account, newUsername: profileViewModel.username) 
                         }
                     }
                     profileViewModel.isAddingProfile = false

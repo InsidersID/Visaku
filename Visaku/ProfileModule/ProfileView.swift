@@ -25,7 +25,7 @@ public struct ProfileView: View {
                                 }
                             } else {
                                 NavigationLink {
-                                    MainDocumentView(name: account.username, account: account)
+                                    MainDocumentView(name: account.username, accountId: account.id)
                                         .navigationBarBackButtonHidden()
                                         .environment(profileViewModel)
                                 } label: {

@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import RepositoryModule
 import UIKit
 import VisionKit
@@ -19,7 +20,6 @@ enum DeleteIdentityCardState {
 }
 
 @MainActor
-@Observable
 class KTPPreviewViewModel {
     @MainActor
     private var identityCardUseCase: IdentityCardUseCaseProtocol = IdentityCardUseCase.make()
@@ -32,17 +32,17 @@ class KTPPreviewViewModel {
     
     //Data
     var identityCard: IdentityCardEntity
-    var account: AccountEntity
+    @StateObject public var account: AccountEntity
     var ktpImage: UIImage?
     
     //State View
     var saveIdentityCardState: SaveIdentityCardState = .idle
     var deleteIdentityCardState: DeleteIdentityCardState = .idle
     
-    init(account: AccountEntity) {
-        self.account = account
+    init(account: AccountEntity? = nil) {
+        self._account = StateObject(wrappedValue: account ?? AccountEntity(id: "", username: "", image: Data()))
         
-        if let identityCardData = account.identityCard {
+        if let account = account, let identityCardData = account.identityCard {
             self.identityCard = identityCardData
             self.ktpImage = UIImage(data: identityCardData.image)
             isCameraOpen = false

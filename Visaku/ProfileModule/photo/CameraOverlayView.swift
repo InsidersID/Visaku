@@ -49,6 +49,7 @@ struct CameraOverlayView: View {
             Button(action: {
                 cameraState.shouldCaptureImage = true
                 cameraState.isTakingImage = true
+                goToCamera.toggle()
                 print("Button pressed")
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {

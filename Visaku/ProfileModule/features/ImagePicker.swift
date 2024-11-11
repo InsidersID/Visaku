@@ -15,13 +15,15 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
         
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-            parent.presentationMode.wrappedValue.dismiss()
             
             // Check for results and load the selected image
             if let result = results.first, result.itemProvider.canLoadObject(ofClass: UIImage.self) {
                 result.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
                     DispatchQueue.main.async {
-                        self.parent.selectedImage = image as? UIImage
+                        if let selectedImage = image as? UIImage {
+                            self.parent.selectedImage = selectedImage
+                        }
+                        self.parent.presentationMode.wrappedValue.dismiss()
                     }
                 }
             }

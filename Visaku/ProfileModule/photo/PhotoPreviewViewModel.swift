@@ -8,6 +8,7 @@
 import Foundation
 import RepositoryModule
 import UIKit
+import SwiftUI
 
 enum SavePhotoState {
     case idle
@@ -31,20 +32,20 @@ class PhotoPreviewViewModel: ObservableObject {
     //Navigation
     var isCameraOpen: Bool = true
     
-    var account: AccountEntity
+    @StateObject public var account: AccountEntity
     @Published var photoImage: UIImage?
     
     //State View
     var savePhotoState: SavePhotoState = .idle
     var deletePhotoState: DeletePhotoState = .idle
     
-    init(account: AccountEntity) {
-        self.account = account
+    init(account: AccountEntity? = nil) {
+        self._account = StateObject(wrappedValue: account ?? AccountEntity(id: "", username: "", image: Data()))
         
-        if self.account.image == Data() {
+        if account?.image == Data() {
             isCameraOpen = true
         } else {
-            self.photoImage = UIImage(data: account.image)
+            self.photoImage = UIImage(data: account?.image ?? Data())
             isCameraOpen = false
         }
 
@@ -70,8 +71,7 @@ class PhotoPreviewViewModel: ObservableObject {
                     savePhotoState = .error
                     return
                 }
-                
-                await ProfileViewModel.shared.fetchAccountByID(account.id)
+                NotificationCenter.default.post(name: .accountImageUpdated, object: account.id)
                 print("savePhoto: Save photo success!")
                 savePhotoState = .success
             }
@@ -91,8 +91,7 @@ class PhotoPreviewViewModel: ObservableObject {
                 deletePhotoState = .error
                 return
             }
-            
-            await ProfileViewModel.shared.fetchAccountByID(account.id)
+            await updateProfileViewModelAccount()
             print("savePhoto: Delete photo success!")
             deletePhotoState = .success
         } catch {
@@ -101,4 +100,12 @@ class PhotoPreviewViewModel: ObservableObject {
         }
     }
     
+    @MainActor
+    private func updateProfileViewModelAccount() async {
+        let profileViewModel = ProfileViewModel.shared
+
+        if let accounts = profileViewModel.accounts {
+            profileViewModel.accounts = accounts.map { $0.id == account.id ? account : $0 }
+        }
+    }
 }

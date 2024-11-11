@@ -13,11 +13,16 @@ public struct MainDocumentView: View {
     @Environment(ProfileViewModel.self) var profileViewModel
     @State private var scanResult: UIImage?
     @State private var isShowingEditProfile = false
-    public var account: AccountEntity
     
-    public init(name: String, account: AccountEntity) {
+    public var accountId: String
+    
+    public init(name: String, accountId: String) {
         self.name = name
-        self.account = account
+        self.accountId = accountId
+    }
+    
+    private var account: AccountEntity {
+        profileViewModel.accounts?.first(where: { $0.id == accountId }) ?? AccountEntity(id: accountId, username: "", image: Data())
     }
     
     public var body: some View {
@@ -39,7 +44,8 @@ public struct MainDocumentView: View {
                             Button(action: {
                                 profileViewModel.selectedDocument = .init(name: "Foto")
                             }){
-                                if let accountImage = UIImage(data: account.image) {
+                                if let updatedAccount = profileViewModel.getAccountByID(account.id),
+                                   let accountImage = UIImage(data: updatedAccount.image) {
                                     Image(uiImage: accountImage)
                                         .resizable()
                                         .scaledToFill()
@@ -126,6 +132,13 @@ public struct MainDocumentView: View {
                     }
                 }
             }
+            .onReceive(NotificationCenter.default.publisher(for: .accountImageUpdated)) { notification in
+                Task {
+                    if let updatedAccountID = notification.object as? String, updatedAccountID == account.id {
+                        await profileViewModel.fetchAccountByID(account.id)
+                    }
+                }
+            }
             .sheet(item: $profileViewModel.selectedDocument, content: { document in
                 DocumentDetailsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
@@ -175,7 +188,11 @@ public struct MainDocumentView: View {
     }
 }
 
-#Preview {
-    MainDocumentView(name: "Iqbal", account: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
-        .environment(ProfileViewModel())
+extension Notification.Name {
+    static let accountImageUpdated = Notification.Name("accountImageUpdated")
 }
+
+//#Preview {
+//    MainDocumentView(name: "Iqbal", accountId: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
+//        .environment(ProfileViewModel())
+//}

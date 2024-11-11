@@ -13,7 +13,8 @@ public struct CountryVisaApplicationView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = CountryVisaApplicationViewModel()
     @State private var progress: Double = 10
-    var applicationList: [String] = ["Tiket Pesawat", "Reservasi Hotel", "Asuransi Medis", "Referensi Bank", "Itinerary"]
+//    var applicationList: [String] = ["Tiket Pesawat", "Reservasi Hotel", "Asuransi Medis", "Referensi Bank", "Itinerary"]
+    
     
     @State var isIdentity: Bool = false
     @State var isFormApplication: Bool = false
@@ -22,9 +23,28 @@ public struct CountryVisaApplicationView: View {
     @State var isMedicalInsurance: Bool = false
     @State var isBankReference: Bool = false
     @State var isItinerary: Bool = false
+    @State var isPassport: Bool = false
+    @State var isFotokopiKartuKeluarga: Bool = false
     
-    @State private var showingShareSheet = false
-    @State private var fileURL: URL?
+    //Mark
+    @State var isFotokopiKartuKeluargaMarked: Bool = false
+    
+    @State private var isMarkedStatus: [VisaGeneralTouristDocumentType: Bool] = [
+        .fotokopiKartuKeluarga: false,
+        .kartuKeluargaAsli: false,
+        .fotokopiAktaKelahiranAtauSuratNikah: false,
+        .paspor: false,
+        .fotokopiPaspor: false,
+        .pasFoto: false,
+        .asuransiKesehatanPerjalanan: false,
+        .buktiPemesananAkomodasi: false,
+        .buktiPenerbangan: false,
+        .intineraryLengkap: false,
+        .rekeningKoranPribadi: false,
+        .sponsor: false,
+        .buktiKeuangan: false
+    ]
+
     public init() {}
     
     public var body: some View {
@@ -64,30 +84,8 @@ public struct CountryVisaApplicationView: View {
                     }
                     .padding(.horizontal)
                     
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
-                        ForEach(applicationList, id: \.self) { application in
-                            DocumentCard(height: application == "Itinerary" ? 82 : 115, document: application, status: .undone)
-                                .onTapGesture {
-                                    switch application {
-                                    case "Tiket Pesawat":
-                                        isFlightTicket.toggle()
-                                    case "Reservasi Hotel":
-                                        isHotelReservation.toggle()
-                                    case "Asuransi Medis":
-                                        isMedicalInsurance.toggle()
-                                    case "Referensi Bank":
-                                        isBankReference.toggle()
-                                    case "Itinerary":
-                                        isItinerary.toggle()
-                                    default:
-                                        EmptyView()
-                                    }
-                                }
-                        }
-                    }
-                    .padding(.horizontal)
+                    DocumentRequirementsList(isMarkedStatus: $isMarkedStatus)
                     CustomButton(text: "Download", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
-                        downloadJSON()
                     }
                     .padding()
                 }
@@ -129,47 +127,6 @@ public struct CountryVisaApplicationView: View {
             .sheet(isPresented: $isItinerary) {
                 ItineraryListSheet()
             }
-            .sheet(isPresented: $showingShareSheet) {
-                if let fileURL = fileURL {
-                    ShareSheet(activityItems: [fileURL])
-                }
-            }
-        }
-    }
-    
-    private func downloadJSON() {
-        // Locate the JSON file in your app bundle
-        if let bundlePath = Bundle.main.url(forResource: "visa", withExtension: "json") {
-            
-            // Get the app's document directory
-            let fileManager = FileManager.default
-            let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
-            
-            // Create a destination URL in the documents directory
-            if let documentsURL = documentsURL {
-                let destinationURL = documentsURL.appendingPathComponent("visa.json")
-                
-                // Check if the file already exists in the documents directory
-                if fileManager.fileExists(atPath: destinationURL.path) {
-                    print("File already exists at \(destinationURL.path)")
-                    fileURL = destinationURL
-                    showingShareSheet = true
-                } else {
-                    do {
-                        // Copy the file from the bundle to the documents directory
-                        try fileManager.copyItem(at: bundlePath, to: destinationURL)
-                        print("File saved to \(destinationURL.path)")
-                        
-                        // Set the URL for sharing or viewing
-                        fileURL = destinationURL
-                        showingShareSheet = true
-                    } catch {
-                        print("Error copying file: \(error.localizedDescription)")
-                    }
-                }
-            }
-        } else {
-            print("File not found in the bundle.")
         }
     }
 }
@@ -178,14 +135,50 @@ public struct CountryVisaApplicationView: View {
     CountryVisaApplicationView()
 }
 
-struct ShareSheet: UIViewControllerRepresentable {
-    var activityItems: [Any]
-
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        return UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-    }
-
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
-        // No update needed
+struct DocumentRequirementsList: View {
+    let documents = VisaGeneralTouristDocumentType.data
+    @Binding var isMarkedStatus: [VisaGeneralTouristDocumentType: Bool]
+    
+    var body: some View {
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
+            ForEach(documents, id: \.self) { application in
+                DocumentCard(
+                    height: 115,
+                    document: application.displayName,
+                    status: .undone,
+                    requiresMarkOnly: application.requiresUpload
+                )
+                .onTapGesture {
+                    isMarkedStatus[application]?.toggle()
+                }
+                .sheet(isPresented: Binding(
+                    get: { isMarkedStatus[application] ?? false },
+                    set: { isMarkedStatus[application] = $0 }
+                )) {
+                    if application.requiresUpload {
+                        ActionDocumentSheet(
+                            documentType: application,
+                            isMarked: Binding(
+                                get: { isMarkedStatus[application] ?? false },
+                                set: { isMarkedStatus[application] = $0 }
+                            )
+                        )
+                        .presentationDetents([.height(356)])
+                        .presentationDragIndicator(.visible)
+                    } else {
+                        MarkOnlyDocumentSheet(
+                            documentType: application,
+                            isMarked: Binding(
+                                get: { isMarkedStatus[application] ?? false },
+                                set: { isMarkedStatus[application] = $0 }
+                            )
+                        )
+                        .presentationDetents([.height(356)])
+                        .presentationDragIndicator(.visible)
+                    }
+                }
+            }
+        }
+        .padding(.horizontal)
     }
 }
