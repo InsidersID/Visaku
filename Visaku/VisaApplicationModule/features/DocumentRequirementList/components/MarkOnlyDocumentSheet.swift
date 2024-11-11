@@ -10,6 +10,7 @@ import SwiftUI
 struct MarkOnlyDocumentSheet: View {
     var documentType: VisaGeneralTouristDocumentType
     @Binding var isMarked: Bool
+    @ObservedObject var viewModel: CountryVisaApplicationViewModel
     @State private var showDocumentDetail = false
     
     var body: some View {
@@ -20,39 +21,34 @@ struct MarkOnlyDocumentSheet: View {
                 .frame(maxWidth: .infinity, alignment: Alignment(horizontal: .center, vertical: .top))
             
             VStack(alignment: .leading, spacing: 24) {
-                if isMarked {
+                Button(action: {
+                    isMarked.toggle()
+                    viewModel.isMarkedStatus[documentType] = isMarked
+                    print("isMarked toggled: \(isMarked)")
+                    print("isMarkedStatus in ViewModel: \(viewModel.isMarkedStatus[documentType] ?? false)")
+                }) {
                     HStack {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundStyle(.green)
-                            .font(.system(size: 16))
-                        Text("Tandai selesai")
-                            .font(.system(size: 16))
+                        Image(systemName: isMarked ? "x.circle.fill": "checkmark.circle.fill")
+                            .foregroundStyle(isMarked ? .red : .green)
+                            .font(.system(size: 24))
+                        
+                        Text(isMarked ? "Tandai belum selesai" : "Tandai selesai")
+                            .font(.system(size: 24))
+                            .foregroundStyle(.black)
                     }
-                    .onTapGesture {
-                        isMarked.toggle()
-                    }
-                } else {
-                    HStack {
-                        Image(systemName: "x.circle.fill")
-                            .foregroundStyle(.red)
-                            .font(.system(size: 16))
-                        Text("Tandai belum selesai")
-                            .font(.system(size: 16))
-                    }
-                    .onTapGesture {
-                        isMarked.toggle()
-                    }
+                    .contentShape(Rectangle())
                 }
                 
-                HStack {
-                    Image(systemName: "eye.circle.fill")
-                        .foregroundStyle(.blue)
-                        .font(.system(size: 16))
-                    Text("Lihat ketentuan")
-                        .font(.system(size: 16))
-                }
-                .onTapGesture {
+                Button(action: {
                     showDocumentDetail = true
+                }) {
+                    HStack {
+                        Image(systemName: "eye.circle.fill")
+                            .foregroundStyle(.blue)
+                            .font(.system(size: 24))
+                        Text("Lihat ketentuan")
+                            .font(.system(size: 24))
+                    }
                 }
             }
             .padding(.bottom, 20)
@@ -71,5 +67,16 @@ struct MarkOnlyDocumentSheet: View {
 
 #Preview {
     @Previewable @State var isMarked: Bool = false
-    MarkOnlyDocumentSheet(documentType: .asuransiKesehatanPerjalanan, isMarked: $isMarked)
+    let mockViewModel = CountryVisaApplicationViewModel(
+            isMarkedStatus: [
+                .asuransiKesehatanPerjalanan: false,
+                .fotokopiPaspor: true
+            ]
+        )
+
+    ActionDocumentSheet(
+        documentType: .asuransiKesehatanPerjalanan,
+        isMarked: $isMarked,
+        viewModel: mockViewModel
+    )
 }

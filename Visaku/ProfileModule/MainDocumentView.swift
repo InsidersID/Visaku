@@ -64,12 +64,14 @@ public struct MainDocumentView: View {
                                 isShowingEditProfile = true
                             }) {
                                 HStack {
-                                    Text(name)
-                                        .font(Font.custom("Inter", size: 20))
-                                        .fontWeight(.semibold)
-                                        .foregroundStyle(.black)
-                                    
-                                    Image(systemName: "pencil")
+                                    if let updatedAccount = profileViewModel.getAccountByID(account.id) {
+                                        Text(updatedAccount.username)
+                                            .font(Font.custom("Inter", size: 20))
+                                            .fontWeight(.semibold)
+                                            .foregroundStyle(.black)
+                                        
+                                        Image(systemName: "pencil")
+                                    }
                                 }
                             }
 
@@ -163,7 +165,7 @@ public struct MainDocumentView: View {
                 PhotoPreviewSheet(account: account)
             })
             .fullScreenCover(isPresented: $isShowingEditProfile) {
-                AddProfileView(account: account)
+                AddProfileView(account: account, isEditing: true)
                     .onAppear {
                         profileViewModel.username = account.username
                     }

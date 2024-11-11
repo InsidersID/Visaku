@@ -10,6 +10,7 @@ import SwiftUI
 struct ActionDocumentSheet: View {
     var documentType: VisaGeneralTouristDocumentType
     @Binding var isMarked: Bool
+    @ObservedObject var viewModel: CountryVisaApplicationViewModel
     @State private var showDocumentDetail = false
     
     var body: some View {
@@ -20,42 +21,46 @@ struct ActionDocumentSheet: View {
                 .frame(maxWidth: .infinity, alignment: Alignment(horizontal: .center, vertical: .top))
             
             VStack(alignment: .leading, spacing: 24) {
-                if isMarked {
+                Button(action: {
+                    isMarked.toggle()
+                    viewModel.isMarkedStatus[documentType] = isMarked
+                    print("isMarked toggled: \(isMarked)")
+                    print("isMarkedStatus in ViewModel: \(viewModel.isMarkedStatus[documentType] ?? false)")
+                }) {
                     HStack {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundStyle(.green)
-                        Text("Tandai selesai")
+                        Image(systemName: isMarked ? "x.circle.fill": "checkmark.circle.fill")
+                            .foregroundStyle(isMarked ? .red : .green)
+                            .font(.system(size: 24))
+                        
+                        Text(isMarked ? "Tandai belum selesai": "Tandai selesai")
+                            .font(.system(size: 24))
+                            .foregroundStyle(.black)
                     }
-                    .onTapGesture {
-                        isMarked.toggle()
-                    }
-                } else {
-                    HStack {
-                        Image(systemName: "x.circle.fill")
-                            .foregroundStyle(.red)
-                        Text("Tandai belum selesai")
-                    }
-                    .onTapGesture {
-                        isMarked.toggle()
-                    }
+                    .contentShape(Rectangle())
                 }
                 
                 HStack {
                     Image(systemName: "square.and.arrow.up.circle.fill")
                         .foregroundStyle(.blue)
+                        .font(.system(size: 24))
                     Text("Upload dari device")
+                        .font(.system(size: 24))
                 }
                 
                 HStack {
                     Image(systemName: "camera.circle.fill")
                         .foregroundStyle(.blue)
+                        .font(.system(size: 24))
                     Text("Scan dokumen")
+                        .font(.system(size: 24))
                 }
                 
                 HStack {
                     Image(systemName: "eye.circle.fill")
                         .foregroundStyle(.blue)
+                        .font(.system(size: 24))
                     Text("Lihat ketentuan")
+                        .font(.system(size: 24))
                 }
                 .onTapGesture {
                     showDocumentDetail = true
@@ -77,5 +82,16 @@ struct ActionDocumentSheet: View {
 
 #Preview {
     @Previewable @State var isMarked: Bool = false
-    ActionDocumentSheet(documentType: .asuransiKesehatanPerjalanan, isMarked: $isMarked)
+    let mockViewModel = CountryVisaApplicationViewModel(
+            isMarkedStatus: [
+                .asuransiKesehatanPerjalanan: false,
+                .fotokopiPaspor: true
+            ]
+        )
+
+    ActionDocumentSheet(
+        documentType: .asuransiKesehatanPerjalanan,
+        isMarked: $isMarked,
+        viewModel: mockViewModel
+    )
 }

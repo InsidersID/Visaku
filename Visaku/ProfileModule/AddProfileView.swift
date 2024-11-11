@@ -11,14 +11,14 @@ struct AddProfileView: View {
     @State private var isEditing: Bool = false
     @StateObject public var account: AccountEntity
     
-    public init(account: AccountEntity? = nil) {
+    public init(account: AccountEntity? = nil, isEditing: Bool = false) {
         self._account = StateObject(wrappedValue: account ?? AccountEntity(id: "", username: "", image: Data()))
+        self._isEditing = State(initialValue: isEditing)
         riveViewModel = RiveViewModel(fileName: "PlaneAddName")
     }
     
     var body: some View {
         @Bindable var profileViewModel =  profileViewModel
-        let isEditing = !profileViewModel.username.isEmpty
         
         GeometryReader { proxy in
             ZStack {
@@ -46,12 +46,12 @@ struct AddProfileView: View {
                         .foregroundStyle(.white)
                 )
                 
-                CustomButton( text: "Buat/ganti profil", textColor: .blue, color: Color(red: 0.7, green: 0.91, blue: 0.95), buttonWidth: proxy.size.width*0.24, fontSize: 12, cornerRadius: 16, paddingHorizontal: 0, paddingVertical: 0) {
+                CustomButton( text: isEditing ? "Ganti profil" : "Buat profil", textColor: .blue, color: Color(red: 0.7, green: 0.91, blue: 0.95), buttonWidth: proxy.size.width*0.24, fontSize: 12, cornerRadius: 16, paddingHorizontal: 0, paddingVertical: 0) {
                     Task {
-                        if account.id.isEmpty {
-                            await profileViewModel.saveAccount()
+                        if isEditing {
+                            await profileViewModel.updateAccountUsername(account, newUsername: profileViewModel.username)
                         } else {
-                            await profileViewModel.updateAccountUsername(account, newUsername: profileViewModel.username) 
+                            await profileViewModel.saveAccount()
                         }
                     }
                     profileViewModel.isAddingProfile = false

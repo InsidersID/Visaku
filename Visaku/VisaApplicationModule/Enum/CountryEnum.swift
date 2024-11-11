@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum VisaGeneralTouristDocumentType: String {
+public enum VisaGeneralTouristDocumentType: String, Identifiable {
     case fotokopiKartuKeluarga
     case kartuKeluargaAsli
     case fotokopiAktaKelahiranAtauSuratNikah
@@ -21,6 +21,10 @@ public enum VisaGeneralTouristDocumentType: String {
     case rekeningKoranPribadi
     case sponsor
     case buktiKeuangan
+    
+    public var id: String {
+        return self.rawValue
+    }
 
     // Properties to determine requirements
     var requiresUpload: Bool {

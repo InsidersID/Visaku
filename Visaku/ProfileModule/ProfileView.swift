@@ -54,7 +54,7 @@ public struct ProfileView: View {
                 
             })
             .fullScreenCover(isPresented: $profileViewModel.isAddingProfile, content: {
-                AddProfileView()
+                AddProfileView(isEditing: false)
                     .environment(profileViewModel)
                     .clearModalBackground()
             })
