@@ -20,7 +20,6 @@ enum DeleteIdentityCardState {
 }
 
 @MainActor
-@Observable
 class KTPPreviewViewModel {
     private var identityCardUseCase: IdentityCardUseCaseProtocol = IdentityCardUseCase.make()
     private var accountUseCase: AccountUseCaseProtocol = AccountUseCase.make()
