@@ -144,13 +144,13 @@ public struct MainDocumentView: View {
                 DocumentDetailsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
             .fullScreenCover(isPresented: $isAdditionalInfoPresented) {
-                if let account = account {
+                if let account = profileViewModel.selectedAccount {
                     AdditionalInformationView(account: account)
                         .navigationBarBackButtonHidden(true)
                 }
             })
             .sheet(item: $selectedDocument, content: { document in
-                if let account = account {
+                if let account = profileViewModel.selectedAccount {
                     DocumentDetailsView(document: document.name, account: account)
                         .presentationDragIndicator(.visible)
                 }
@@ -228,7 +228,7 @@ extension Notification.Name {
 }
 #Preview {
     MainDocumentView(name: "Iqbal", accountId: UUID().uuidString)
-        .environment(ProfileViewModel())
+        .environmentObject(ProfileViewModel())
 }
 
 //#Preview {
