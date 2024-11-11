@@ -73,18 +73,18 @@ struct EmptyStateView: View {
     var body: some View {
         VStack(spacing: 8) {
             Spacer()
-            Rectangle()
-                .foregroundStyle(.gray)
-                .frame(width: 100, height: 100)
-                .opacity(0.5)
-                .padding(4)
-            Text("Belum ada data.")
-                .font(.system(size: 20))
-                .bold()
-            Text("Yuk, ajukan visa tujuanmu di Visaku\nsekarang!")
-                .font(.system(size: 14))
-                .multilineTextAlignment(.center)
-                .opacity(0.75)
+            VStack {
+                Image("emptyFile")
+                Text("Belum ada data.")
+                    .font(.system(size: 20))
+                    .bold()
+                Text("Yuk, ajukan visa tujuanmu di Visaku\nsekarang!")
+                    .font(.system(size: 14))
+                    .multilineTextAlignment(.center)
+                    .opacity(0.75)
+            }
+            .padding(.bottom, 70)
+            .padding(.horizontal)
             Spacer()
         }
     }
