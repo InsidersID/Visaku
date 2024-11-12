@@ -8,14 +8,15 @@ struct TabBarView: View {
         TabView(selection: $selectedTab) {
             VisaHistoryView()
                 .tabItem {
-                    Label("Visaku", systemImage: "pencil.line")
+                    Image(systemName: "pencil.line")
+                    Text("Visaku")
                 }
                 .tag(0)
                 
             ProfileView()
                 .tabItem {
-                    Label("Profil", systemImage: "person.crop.circle.fill")
-                        .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
+                    Image(systemName: "person")
+                    Text("Profil")
                 }
                 .tag(1)
         }
