@@ -37,6 +37,10 @@ public struct AddOnInformationView: View {
 //                    .padding(.bottom)
                 VStack {
                     Image("applicationForm")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 250, height: 200)
+                        .padding()
                 }
                 
                 CardContainer(cornerRadius: 16) {

@@ -18,6 +18,10 @@ struct ApplicationFormView: View {
             ScrollView {
                 VStack {
                     Image("applicationForm")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 250, height: 200)
+                        .padding()
                     VStack {
                         Text("Informasi bepergian")
                             .font(.system(size: 20))
