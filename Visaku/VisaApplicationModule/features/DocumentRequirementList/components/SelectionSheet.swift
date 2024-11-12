@@ -1,28 +1,30 @@
 //
-//  CountrySelectionSheetView.swift
-//  VisaApplicationModule
+//  SelectionSheet.swift
+//  Visaku
 //
-//  Created by Nur Nisrina on 04/11/24.
+//  Created by Nur Nisrina on 12/11/24.
 //
 
 import SwiftUI
-import Foundation
 
-struct CountrySelectionSheetView: View {
-    @EnvironmentObject var viewModel: VisaHistoryViewModel
+struct SelectionSheet<Item: Hashable>: View {
+    @Binding var isPresented: Bool
+    @Binding var searchKeyword: String
+    var items: [Item]
+    var itemText: (Item) -> String
+    var onItemSelected: (Item) -> Void
     var onDismiss: () -> Void
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
-                    ForEach(Countries.countryList.filter { viewModel.countryKeyword.isEmpty || $0.contains(viewModel.countryKeyword) }, id: \.self) { country in
+                    ForEach(items.filter { searchKeyword.isEmpty || itemText($0).contains(searchKeyword) }, id: \.self) { item in
                         Button(action: {
-                            if country == "Schengen Area" {
-                                viewModel.isSchengenCountryChosen = true
-                            }
+                            onItemSelected(item)
+                            isPresented = false
                         }) {
-                            Text(country)
+                            Text(itemText(item))
                                 .font(.title3)
                                 .foregroundStyle(.black)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -31,19 +33,21 @@ struct CountrySelectionSheetView: View {
                         }
                     }
                 }
-                .searchable(text: $viewModel.countryKeyword, prompt: "Search")
+                .searchable(text: $searchKeyword, prompt: "Search")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
-                        Text("Pilih negara")
+                        Text("Pilih Item")
                             .font(.headline)
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: {
                             onDismiss()
+                            isPresented = false
                         }) {
                             Image(systemName: "xmark")
                                 .font(.system(size: 16))
+                                .bold()
                                 .padding(10)
                                 .background(Circle().fill(Color.white))
                                 .foregroundColor(.black)
@@ -55,14 +59,25 @@ struct CountrySelectionSheetView: View {
             }
             .padding(.horizontal)
         }
-        .sheet(isPresented: $viewModel.isSchengenCountryChosen) {
-            SchengenCountrySelectionSheetView()
-                .presentationDragIndicator(.visible)
-                .environmentObject(viewModel)
-        }
     }
 }
 
+#Preview {
+    @Previewable @State var isSheetPresented = true
+    @Previewable @State var searchKeyword = ""
+    @Previewable @State var selectedItem = ""
 
+    let countries = ["USA", "Canada", "Mexico", "Schengen Area", "Australia", "Japan"]
 
-
+    SelectionSheet(
+        isPresented: $isSheetPresented,
+        searchKeyword: $searchKeyword,
+        items: countries,
+        itemText: { $0 },
+        onItemSelected: { selected in
+            selectedItem = selected
+        },
+        onDismiss: {
+        }
+    )
+}
