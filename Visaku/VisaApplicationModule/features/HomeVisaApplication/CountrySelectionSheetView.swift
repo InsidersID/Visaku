@@ -12,6 +12,7 @@ struct CountrySelectionSheetView: View {
     @Binding var isSchengenCountryChosen: Bool
     @Binding var countryKeyword: String
     @Binding var visaType: String
+    @Binding var isShowCountryApplicationView: Bool
     var onDismiss: () -> Void
 
     var body: some View {
@@ -57,8 +58,9 @@ struct CountrySelectionSheetView: View {
             }
             .padding(.horizontal)
         }
+        
         .sheet(isPresented: $isSchengenCountryChosen) {
-            SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, visaType: $visaType, isUseSheet: false)
+            SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, visaType: $visaType, isShowCountryApplicationView: $isShowCountryApplicationView, isUseSheet: false)
                 .presentationDragIndicator(.visible)
         }
     }
