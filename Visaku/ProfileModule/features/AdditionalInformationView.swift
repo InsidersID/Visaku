@@ -214,6 +214,7 @@ struct RadioButton: View {
             HStack {
                 Image(systemName: isSelected ? "largecircle.fill.circle" : "circle")
                     .foregroundColor(isSelected ? .blue : .gray)
+                    .padding(.vertical, 0)
                 Text(label)
                     .foregroundColor(.black)
             }
@@ -222,18 +223,19 @@ struct RadioButton: View {
     }
 }
 
-struct ExpandableRadioButton: View {
+public struct ExpandableRadioButton: View {
     let title: String
     let options: [String]
     @Binding var selection: Bool?
 
     @State private var isExpanded: Bool = true
 
-    var body: some View {
+    public var body: some View {
         CardContainer(cornerRadius: 12) {
             VStack(spacing: 16) {
                 HStack {
                     Text(title)
+                        .foregroundStyle(.secondary)
                     Spacer()
                     Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
                 }
@@ -245,6 +247,7 @@ struct ExpandableRadioButton: View {
                 
                 if isExpanded {
                     VStack(alignment: .leading) {
+                        Divider()
                         RadioButton(label: options[0], isSelected: selection == true) {
                             selection = true
                             isExpanded = false
@@ -264,7 +267,7 @@ struct ExpandableRadioButton: View {
         }
     }
 
-    private var selectedOption: String {
+    public var selectedOption: String {
         if selection == true {
             return options[0]
         } else if selection == false {

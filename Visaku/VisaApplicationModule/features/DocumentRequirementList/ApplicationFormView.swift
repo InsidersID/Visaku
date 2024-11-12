@@ -9,6 +9,10 @@ import SwiftUI
 import UIComponentModule
 
 struct ApplicationFormView: View {
+    @State private var arrivalCountry: String? = ""
+    @State private var visaPurpose: String? = ""
+    @State private var additionalVisaPurpose: String? = ""
+
     var body: some View {
         NavigationView {
             ScrollView {
@@ -21,27 +25,16 @@ struct ApplicationFormView: View {
                             .bold()
                             .opacity(0.8)
                         VStack {
-                            
-                            CardContainer(cornerRadius: 18) {
-                                ScrollView {
-                                    Text("Negara yang menjadi titik masuk pertama Anda ke wilayah Schengen")
-                                        .foregroundStyle(.secondary)
-                                    ForEach(Countries.schengenCountryList, id: \.self) { schengenCountry in
-                                        VStack {
-                                            Divider()
-                                            VStack {
-                                                Text(schengenCountry)
-                                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                                    .opacity(0.8)
-                                            }
-                                            .padding(.horizontal)
-                                        }
-                                        
-                                    }
-                                }
+                            ExpandableSelection(title: "Negara yang menjadi titik masuk pertama Anda ke wilayah Schengen", options: Countries.schengenCountryList, mode: .single, singleSelection: $arrivalCountry, multipleSelection: .constant([]))
+                            ExpandableSelection(title: "Tujuan utama perjalanan Anda ke wilayah Schengen", options: ["Turis/Wisata","Budaya", "Alasan Kesehatan", "Transit bandara", "Bisnis", "Olahraga", "Belajar", "Kunjungan Keluarga", "Kunjungan official", "Transit", "Tujuan lainnya"], mode: .single, singleSelection: $visaPurpose, multipleSelection: .constant([]))
+                            if visaPurpose == "Tujuan lainnya" {
+                                ExpandableSelection(title: "Tujuan lainnya", options: ["Undangan", "Pekerjaan pribadi", "Penelitian", "Pekerjaan maritim", "Pekerjaan hiburan", "Pekerjaan Olahraga"], mode: .single, singleSelection: $visaPurpose, multipleSelection: .constant([]))
+                            }
+                            ExpandableSelection(title: "Tujuan tambahan selain tujuan utama perjalanan yang perlu dicantumkan", options: ["Turis/Wisata","Budaya", "Alasan Kesehatan", "Transit bandara", "Bisnis", "Olahraga", "Belajar", "Kunjungan Keluarga", "Kunjungan official", "Transit", "Tujuan lainnya"], mode: .single, singleSelection: $additionalVisaPurpose, multipleSelection: .constant([]))
+                            if additionalVisaPurpose == "Tujuan lainnyaa" {
+                                ExpandableSelection(title: "Tujuan lainnya", options: ["Undangan", "Pekerjaan pribadi", "Penelitian", "Pekerjaan maritim", "Pekerjaan hiburan", "Pekerjaan Olahraga"], mode: .single, singleSelection: $additionalVisaPurpose, multipleSelection: .constant([]))
                             }
                         }
-                        
                     }
                     .padding()
                 }
@@ -69,7 +62,6 @@ struct ApplicationFormView: View {
             }
         }
     }
-        
 }
 
 #Preview {
