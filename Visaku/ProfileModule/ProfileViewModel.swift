@@ -28,6 +28,15 @@ public class ProfileViewModel{
     
     var error: CustomError?
     
+    var identifiableSelectedImage: IdentifiableImage? {
+        get {
+            selectedImage != nil ? IdentifiableImage(image: selectedImage!) : nil
+        }
+        set {
+            selectedImage = newValue?.image
+        }
+    }
+    
     init(accountID: String? = nil) {
         self.accountID = accountID
         if let id = accountID {

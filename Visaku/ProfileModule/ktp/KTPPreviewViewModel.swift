@@ -73,6 +73,7 @@ class KTPPreviewViewModel: ObservableObject {
                 }
                 
                 account.identityCard = identityCard
+                
                 let isAccountSaveSuccess = try await accountUseCase.update(param: account)
                 if !isAccountSaveSuccess {
                     saveIdentityCardState = .error
@@ -99,6 +100,8 @@ class KTPPreviewViewModel: ObservableObject {
             self.ktpImage = nil
             
             account.identityCard = nil
+            
+            
             let isAccountSaveSuccess = try await accountUseCase.update(param: account)
             if !isAccountSaveSuccess {
                 deleteIdentityCardState = .error

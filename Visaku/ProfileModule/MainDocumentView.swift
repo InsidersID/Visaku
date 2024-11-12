@@ -2,7 +2,7 @@ import SwiftUI
 import RepositoryModule
 import UIComponentModule
 
-struct Document: Identifiable {
+struct Document: Identifiable, Equatable {
     let id = UUID()
     let name: String
 }
@@ -153,7 +153,11 @@ public struct MainDocumentView: View {
                 FilePicker(selectedFileURL: $profileViewModel.selectedFileURL)
             }
             .sheet(isPresented: $profileViewModel.isUploadImage) {
-                ImagePicker(selectedImage: $profileViewModel.selectedImage)
+                ImagePicker(selectedImage: $profileViewModel.identifiableSelectedImage, documentType:
+                        profileViewModel.selectedDocument == .init(name: "KTP") ? .ktp :
+                        profileViewModel.selectedDocument == .init(name: "Paspor") ? .paspor :
+                        profileViewModel.selectedDocument == .init(name: "Foto") ? .personalPhoto : .paspor
+                    )
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             }
