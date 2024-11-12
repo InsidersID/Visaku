@@ -54,6 +54,7 @@ struct VisaTypeRow: View {
                 Spacer()
                 Image(systemName: "chevron.down")
             }
+            .contentShape(Rectangle())
             .onTapGesture {
                 isShowVisaTypeSheet = true
             }
@@ -88,8 +89,9 @@ struct DateRow: View {
                         .bold()
                 }
                 Spacer()
-                Image(systemName: "chevron.down")
+                Image(systemName: viewModel.showCalendar ? "chevron.up" : "chevron.down")
             }
+            .contentShape(Rectangle())
             Divider()
         }
     }
