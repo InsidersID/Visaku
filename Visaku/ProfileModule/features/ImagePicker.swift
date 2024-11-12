@@ -1,10 +1,13 @@
 import SwiftUI
+import RepositoryModule
 import PhotosUI
 
 // Step 1: ImagePicker Struct
 struct ImagePicker: UIViewControllerRepresentable {
-    @Binding var selectedImage: UIImage?
+    @Binding var selectedImage: IdentifiableImage?
+    var documentType: AllDocumentType
     @Environment(\.presentationMode) var presentationMode
+    
     
     // Step 2: Coordinator to handle user selection
     class Coordinator: NSObject, PHPickerViewControllerDelegate {
@@ -21,7 +24,7 @@ struct ImagePicker: UIViewControllerRepresentable {
                 result.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
                     DispatchQueue.main.async {
                         if let selectedImage = image as? UIImage {
-                            self.parent.selectedImage = selectedImage
+                            self.parent.selectedImage = IdentifiableImage(image: selectedImage)
                         }
                         self.parent.presentationMode.wrappedValue.dismiss()
                     }
@@ -51,13 +54,16 @@ struct ImagePicker: UIViewControllerRepresentable {
 
 // Main View to Show the Image Picker and Display Image
 struct ImagePickerView: View {
-    @State private var selectedImage: UIImage?
-    @State private var isPickerPresented = false
+    @State var selectedImage: IdentifiableImage?
+    @State var isPickerPresented = false
+    
+    @ObservedObject var account: AccountEntity
+    var documentType: AllDocumentType
     
     var body: some View {
         VStack {
-            if let selectedImage = selectedImage {
-                Image(uiImage: selectedImage)
+            if let image = selectedImage?.image {
+                Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 200, height: 200)
@@ -70,13 +76,25 @@ struct ImagePickerView: View {
                 isPickerPresented = true
             }
             .padding()
-            .sheet(isPresented: $isPickerPresented) {
-                ImagePicker(selectedImage: $selectedImage)
+            .sheet(isPresented: $isPickerPresented, content: {
+                ImagePicker(selectedImage: $selectedImage, documentType: documentType)
+            })
+            .sheet(item: $selectedImage) { _ in
+                switch documentType {
+                case .paspor:
+                    PassportPreviewSheet(account: account)
+                case .ktp:
+                    KTPPreviewSheet(account: account)
+                case .personalPhoto:
+                    PhotoPreviewSheet(account: account)
+                default:
+                    PassportPreviewSheet(account: account)
+                }
             }
         }
     }
 }
 
 #Preview {
-    ImagePickerView()
+    ImagePickerView(account: AccountEntity(id: UUID().uuidString, username: "Andi", image: Data()), documentType: .ktp)
 }

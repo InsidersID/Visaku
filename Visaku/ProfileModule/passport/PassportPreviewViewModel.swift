@@ -80,6 +80,7 @@ class PassportPreviewViewModel: ObservableObject {
                 }
                 
                 account.passport = passport
+                
                 let isAccountSaveSuccess = try await accountUseCase.update(param: account)
                 if !isAccountSaveSuccess {
                     savePassportState = .error
@@ -116,6 +117,7 @@ class PassportPreviewViewModel: ObservableObject {
             self.passportImage = nil
             
             account.passport = nil
+            
             let isAccountSaveSuccess = try await accountUseCase.update(param: account)
             if !isAccountSaveSuccess {
                 deletePassportState = .error
