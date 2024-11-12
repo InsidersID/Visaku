@@ -5,6 +5,9 @@
 //  Created by hendra on 12/11/24.
 //
 
+import Foundation
+import RepositoryModule
+
 public enum VisaType: String, CaseIterable {
     case turis
     case pelajar
@@ -12,9 +15,9 @@ public enum VisaType: String, CaseIterable {
     
     var displayName: String {
         switch self {
-        case .turis: return "Tourism"
-        case .pelajar: return "Student"
-        case .bisnis: return "Business"
+        case .turis: return "turis"
+        case .pelajar: return "pelajar"
+        case .bisnis: return "bisnis"
         }
     }
 }
@@ -22,14 +25,6 @@ public enum VisaType: String, CaseIterable {
 public struct CountrySpecificRequirement {
     let name: String
     let description: String
-}
-
-struct VisaRequirement {
-    let type: VisaGeneralTouristDocumentType
-    let displayName: String
-    let description: String
-    let requiresUpload: Bool
-    let isOptionalUpload: Bool
 }
 
 extension VisaGeneralTouristDocumentType {
@@ -46,12 +41,9 @@ extension VisaGeneralTouristDocumentType {
             )
         }
 
-        // Add country-specific requirements if available
         if visaType == .turis, let specificRequirements = countrySpecificRequirements[country] {
             for customRequirement in specificRequirements {
-                // Check if this specific requirement is already included based on its type
                 if !requirements.contains(where: { $0.displayName == customRequirement.displayName }) {
-                    // Add the custom requirement
                     requirements.append(customRequirement)
                 }
             }
@@ -64,7 +56,7 @@ extension VisaGeneralTouristDocumentType {
 let countrySpecificRequirements: [String: [VisaRequirement]] = [
     "Italia": [
         VisaRequirement(
-            type: .buktiKeuangan, // Same as general but more specific in description
+            type: .buktiKeuangan,
             displayName: "Surat Keterangan Keuangan",
             description: "Selain rekening koran, diperlukan surat referensi dari bank sebagai bukti tambahan mengenai stabilitas keuangan untuk mendukung pengajuan visa.",
             requiresUpload: true,
