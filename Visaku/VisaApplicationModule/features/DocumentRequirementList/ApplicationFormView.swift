@@ -59,12 +59,11 @@ struct ApplicationFormView: View {
                     SectionView(
                         title: "Tempat tinggal di negara selain negara yang menjadi kewarganegaraannya saat ini",
                         content: {
-                            ExpandableSelection(title: "Apakah Anda mempunyai tempat tinggal di negara lain selain di negara asal kewarganegaraan Anda sekarang?", options: ["Yes", "No"], mode: .single, singleSelection: $hasOtherResidence, multipleSelection: .constant([]))
-                            if hasOtherResidence == "Yes" {
+                            ExpandableSelection(title: "Apakah Anda mempunyai tempat tinggal di negara lain selain di negara asal kewarganegaraan Anda sekarang?", options: ["Ya", "Tidak"], mode: .single, singleSelection: $hasOtherResidence, multipleSelection: .constant([]))
+                            if hasOtherResidence == "Ya" {
                                 CustomFormField(title: "Jenis izin tinggal atau dokumen setara yang dimiliki di negara tersebut", text: $residenceType)
                                 CustomFormField(title: "Nomor izin tinggal atau dokumen setara", text: $residenceNumber)
-                                
-                                DatePicker("Tanggal kadaluarsa dokumen izin tinggal", selection: Binding($residenceExpiryDate, replacingNilWith: Date()), displayedComponents: .date)
+                                CustomDateField(title: "Tanggal kadaluarsa dokumen izin tinggal", date: $residenceExpiryDate)
                             }
                         }
                     )
@@ -83,23 +82,23 @@ struct ApplicationFormView: View {
                             }
                             ExpandableSelection(title: "Jumlah Anda berencana memasuki wilayah Schengen selama periode visa yang diajukan", options: ["Satu kali", "Dua kali", "Beberapa kali"], mode: .single, singleSelection: $visaEntryCount, multipleSelection: .constant([]))
                             CustomFormField(title: "Jumlah hari tinggal di negara Schengen", text: $stayDuration, keyboardType: .numbersAndPunctuation)
-                            ExpandableSelection(title: "Apakah Anda telah mendapatkan visa Schengen dalam tiga tahun terakhir?", options: ["Yes", "No"], mode: .single, singleSelection: $hasPreviousVisa, multipleSelection: .constant([]))
-                            if hasPreviousVisa == "Yes" {
-                                ExpandableSelection(title: "Apakah Anda mengetahui nomor atau detail sticker visa Schengen yang pernah diterbitkan untuk Anda?", options: ["Yes", "No"], mode: .single, singleSelection: $previousVisaDetails, multipleSelection: .constant([]))
-                                if previousVisaDetails == "Yes" {
-                                    DatePicker("Tanggal penerbitan visa Schengen Anda dimulai", selection: Binding($previousVisaIssueDate, replacingNilWith: Date()), displayedComponents: .date)
-                                    DatePicker("Tanggal kadaluarsa visa Schengen Anda dimulai", selection: Binding($previousVisaExpiryDate, replacingNilWith: Date()), displayedComponents: .date)
+                            ExpandableSelection(title: "Apakah Anda telah mendapatkan visa Schengen dalam tiga tahun terakhir?", options: ["Ya", "Tidak"], mode: .single, singleSelection: $hasPreviousVisa, multipleSelection: .constant([]))
+                            if hasPreviousVisa == "Ya" {
+                                ExpandableSelection(title: "Apakah Anda mengetahui nomor atau detail sticker visa Schengen yang pernah diterbitkan untuk Anda?", options: ["Ya", "Tidak"], mode: .single, singleSelection: $previousVisaDetails, multipleSelection: .constant([]))
+                                if previousVisaDetails == "Ya" {
+                                    CustomDateField(title: "Tanggal penerbitan visa Schengen Anda dimulai", date: $previousVisaIssueDate)
+                                    CustomDateField(title: "Tanggal kadaluarsa visa Schengen Anda dimulai", date: $previousVisaExpiryDate)
                                 }
                             }
-                            ExpandableSelection(title: "Apakah Anda pernah memberikan sidik jari sebelumnya untuk keperluan aplikasi visa Schengen?", options: ["Yes", "No"], mode: .single, singleSelection: $providedFingerprint, multipleSelection: .constant([]))
-                            if providedFingerprint == "Yes" {
-                                DatePicker("Tanggal pengumpulan sidik jari", selection: Binding($fingerprintDate, replacingNilWith: Date()), displayedComponents: .date)
+                            ExpandableSelection(title: "Apakah Anda pernah memberikan sidik jari sebelumnya untuk keperluan aplikasi visa Schengen?", options: ["Ya", "Tidak"], mode: .single, singleSelection: $providedFingerprint, multipleSelection: .constant([]))
+                            if providedFingerprint == "Ya" {
+                                CustomDateField(title: "Tanggal pengumpulan sidik jari", date: $fingerprintDate)
                                 CustomFormField(title: "Jika diketahui, berikan nomor atau detail sticker visa terkait", text: $fingerprintVisaDetails)
                                 CustomFormField(title: "Tempat ijin memasuki negara terakhir pada Schengen diterbitkan", text: $lastSchengenEntryPlace)
-                                DatePicker("Tanggal ijin tersebut diterbitkan", selection: Binding($lastSchengenEntryDate, replacingNilWith: Date()), displayedComponents: .date)
-                                DatePicker("Tanggal ijin tersebut kadaluarsa", selection: Binding($lastSchengenExitDate, replacingNilWith: Date()), displayedComponents: .date)
-                                DatePicker("Tanggal kedatangan pada area Schengen", selection: Binding($arrivalDate, replacingNilWith: Date()), displayedComponents: .date)
-                                DatePicker("Tanggal kepulangan dari area Schengen", selection: Binding($departureDate, replacingNilWith: Date()), displayedComponents: .date)
+                                CustomDateField(title: "Tanggal ijin tersebut diterbitkan",  date: $lastSchengenEntryDate)
+                                CustomDateField(title: "Tanggal ijin tersebut kadaluarsa", date: $lastSchengenExitDate)
+                                CustomDateField(title: "Tanggal kedatangan pada area Schengen", date: $arrivalDate)
+                                CustomDateField(title: "Tanggal kepulangan dari area Schengen", date: $departureDate)
                             }
                         }
                     )
@@ -116,7 +115,7 @@ struct ApplicationFormView: View {
                         content: {
                             CustomFormField(title: "Nama belakang keluarga yang merupakan warga negara UE, EEA, atau CH", text: $euFamilyLastName)
                             CustomFormField(title: "Nama keluarga yang merupakan warga negara UE, EEA, atau CH", text: $euFamilyFirstName)
-                            DatePicker("Tanggal lahir keluarga yang merupakan warga negara UE, EEA, atau C", selection: Binding($euFamilyBirthDate, replacingNilWith: Date()), displayedComponents: .date)
+                            CustomDateField(title: "Tanggal lahir keluarga yang merupakan warga negara UE, EEA, atau C", date: $euFamilyBirthDate)
                             CustomFormField(title: "Kebangsaan keluarga yang merupakan warga negara UE, EEA, atau CH", text: $euFamilyNationality)
                             CustomFormField(title: "Nomor dokumen perjalanan atau NIK keluarga yang merupakan warga negara UE, EEA, atau CH", text: $euFamilyDocumentNumber)
                             ExpandableSelection(title: "Hubungan dengan keluarga yang merupakan warga negara UE, EEA, atau CH", options: ["Pasangan", "Anak", "Cucu", "Kemitraan terdaftar", "Lainnya, tolong sebutkan"], mode: .single, singleSelection: $euFamilyRelation, multipleSelection: .constant([]))
@@ -166,7 +165,8 @@ struct SectionView<Content: View>: View {
                 .opacity(0.8)
             content
         }
-        .padding()
+        .padding(.vertical, 8)
+        .padding(.horizontal)
     }
 }
 
