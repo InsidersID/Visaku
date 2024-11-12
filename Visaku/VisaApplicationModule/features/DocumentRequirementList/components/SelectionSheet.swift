@@ -19,7 +19,7 @@ struct SelectionSheet<Item: Hashable>: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
-                    ForEach(items.filter { searchKeyword.isEmpty || itemText($0).contains(searchKeyword) }, id: \.self) { item in
+                    ForEach(filteredItems, id: \.self) { item in
                         Button(action: {
                             onItemSelected(item)
                             isPresented = false
@@ -33,32 +33,36 @@ struct SelectionSheet<Item: Hashable>: View {
                         }
                     }
                 }
-                .searchable(text: $searchKeyword, prompt: "Search")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("Pilih Item")
-                            .font(.headline)
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: {
-                            onDismiss()
-                            isPresented = false
-                        }) {
-                            Image(systemName: "xmark")
-                                .font(.system(size: 16))
-                                .bold()
-                                .padding(10)
-                                .background(Circle().fill(Color.white))
-                                .foregroundColor(.black)
-                                .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-                        }
+                .padding(.horizontal)
+            }
+            .searchable(text: $searchKeyword, prompt: "Search")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Pilih Item")
+                        .font(.headline)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        onDismiss()
+                        isPresented = false
+                    }) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 16))
+                            .bold()
+                            .padding(10)
+                            .background(Circle().fill(Color.white))
+                            .foregroundColor(.black)
+                            .overlay(Circle().stroke(Color.gray, lineWidth: 1))
                     }
                 }
-                .presentationDetents([.medium])
             }
-            .padding(.horizontal)
+            .presentationDetents([.medium])
         }
+    }
+
+    private var filteredItems: [Item] {
+        items.filter { searchKeyword.isEmpty || itemText($0).localizedCaseInsensitiveContains(searchKeyword) }
     }
 }
 
@@ -67,12 +71,10 @@ struct SelectionSheet<Item: Hashable>: View {
     @Previewable @State var searchKeyword = ""
     @Previewable @State var selectedItem = ""
 
-    let countries = ["USA", "Canada", "Mexico", "Schengen Area", "Australia", "Japan"]
-
     SelectionSheet(
         isPresented: $isSheetPresented,
         searchKeyword: $searchKeyword,
-        items: countries,
+        items: Countries.schengenCountryList,
         itemText: { $0 },
         onItemSelected: { selected in
             selectedItem = selected
