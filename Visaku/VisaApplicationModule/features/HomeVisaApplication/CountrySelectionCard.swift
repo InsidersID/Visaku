@@ -51,18 +51,19 @@ struct VisaTypeRow: View {
                         .padding(.top, 0.5)
                         .bold()
                 }
-                .onTapGesture {
-                    isShowVisaTypeSheet = true
-                }
-                .sheet(isPresented: $isShowVisaTypeSheet) {
-                    VisaTypeSheet(isShowVisaTypeSheet: $isShowVisaTypeSheet, visaType: $visaType)
-                        .presentationDragIndicator(.visible)
-                        .presentationDetents([.height(280)])
-                        .environmentObject(viewModel)
-                }
                 Spacer()
                 Image(systemName: "chevron.down")
             }
+            .onTapGesture {
+                isShowVisaTypeSheet = true
+            }
+            .sheet(isPresented: $isShowVisaTypeSheet) {
+                VisaTypeSheet(isShowVisaTypeSheet: $isShowVisaTypeSheet, visaType: $visaType)
+                    .presentationDragIndicator(.visible)
+                    .presentationDetents([.height(280)])
+                    .environmentObject(viewModel)
+            }
+            
             Divider()
         }
     }
