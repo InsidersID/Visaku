@@ -17,6 +17,7 @@ public class VisaHistoryViewModel: ObservableObject {
     @Published var visaType: String = ""
     @Published var visaTypeIsEmpty: Bool = false
     @Published var isShowCountryApplicationView = false
+    @Published var showCalendar: Bool = false
     @Published var startDate: Date?
     @Published var endDate: Date?
     

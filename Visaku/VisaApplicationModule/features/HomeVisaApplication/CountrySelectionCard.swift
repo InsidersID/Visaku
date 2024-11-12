@@ -73,7 +73,9 @@ struct VisaTypeRow: View {
 
 struct DateRow: View {
     let label: String
-    @Binding var text: String
+    @Binding var date: Date?
+    
+    @EnvironmentObject var viewModel: VisaHistoryViewModel
 
     var body: some View {
         VStack {
