@@ -35,7 +35,7 @@ public struct ExpandableSelection: View {
     
     public var body: some View {
         CardContainer(cornerRadius: 12) {
-            VStack(spacing: 16) {
+            VStack(spacing: 12) {
                 HStack {
                     Text(title)
                         .foregroundStyle(.secondary)
@@ -139,6 +139,46 @@ struct CustomCheckbox: View {
             }
         }
         .buttonStyle(PlainButtonStyle())
+    }
+}
+
+public struct CustomFormField: View {
+    let title: String
+    @Binding var text: String
+    @State var isExpanded: Bool = true
+    var keyboardType: UIKeyboardType = .default
+
+    public var body: some View {
+        CardContainer(cornerRadius: 12) {
+            VStack(spacing: 12) {
+                HStack {
+                    Text(title)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .onTapGesture {
+                    isExpanded.toggle()
+                }
+                if isExpanded {
+                    TextField(title, text: $text)
+                        .keyboardType(keyboardType)
+                        .padding()
+                        .background(Color.gray.opacity(0.1))
+                        .cornerRadius(8)
+                        .foregroundColor(.black)
+                        .font(.body)
+                        .onSubmit {
+                            isExpanded = false
+                        }
+                } else {
+                    Text(text)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+        }
     }
 }
 
