@@ -17,12 +17,13 @@ public struct ExpandableSelection: View {
     let title: String
     let options: [String]
     let mode: SelectionMode
-
+    
     @Binding var singleSelection: String?
     @Binding var multipleSelection: [String]
 
-    @State private var isExpanded: Bool = false
+    @State private var isExpanded: Bool
     @State private var isDisplaySheet: Bool = false
+    @State private var searchKeyword: String = ""
     
     public init(title: String, options: [String], mode: SelectionMode, singleSelection: Binding<String?>, multipleSelection: Binding<[String]>) {
         self.title = title
@@ -36,38 +37,12 @@ public struct ExpandableSelection: View {
     public var body: some View {
         CardContainer(cornerRadius: 12) {
             VStack(spacing: 12) {
-                HStack {
-                    Text(title)
-                        .foregroundStyle(.secondary)
-                    Spacer()
-                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .onTapGesture {
-                    isExpanded.toggle()
+                ExpandableHeader(title: title, isExpanded: $isExpanded) {
                     isDisplaySheet = isExpanded && options.count >= 6
                 }
                 
                 if isExpanded && options.count < 6 {
-                    VStack(alignment: .leading) {
-                        ForEach(options, id: \.self) { option in
-                            Divider()
-                            if mode == .single {
-                                CustomRadioButton(label: option, isSelected: singleSelection == option) {
-                                    singleSelection = option
-                                    isExpanded = false
-                                }
-                            } else if mode == .multiple {
-                                CustomCheckbox(label: option, isSelected: multipleSelection.contains(option)) {
-                                    if multipleSelection.contains(option) {
-                                        multipleSelection.removeAll { $0 == option }
-                                    } else {
-                                        multipleSelection.append(option)
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    OptionsListView(options: options, mode: mode, singleSelection: $singleSelection, multipleSelection: $multipleSelection, isExpanded: $isExpanded)
                 } else if !selectedOptionsText.isEmpty {
                     Text(selectedOptionsText)
                         .bold()
@@ -78,7 +53,7 @@ public struct ExpandableSelection: View {
         .sheet(isPresented: $isDisplaySheet) {
             SelectionSheet(
                 isPresented: $isDisplaySheet,
-                searchKeyword: .constant(""),
+                searchKeyword: $searchKeyword,
                 items: options,
                 itemText: { $0 },
                 onItemSelected: { selected in
@@ -97,11 +72,17 @@ public struct ExpandableSelection: View {
         }
     }
     
-    public var selectedOptionsText: String {
+    private var selectedOptionsText: String {
+        mode == .single ? (singleSelection ?? "") : multipleSelection.joined(separator: ", ")
+    }
+    
+    private func handleSelection(_ selected: String) {
         if mode == .single {
-            return singleSelection ?? ""
+            singleSelection = selected
+        } else if let index = multipleSelection.firstIndex(of: selected) {
+            multipleSelection.remove(at: index)
         } else {
-            return multipleSelection.joined(separator: ", ")
+            multipleSelection.append(selected)
         }
     }
 }
@@ -112,15 +93,7 @@ struct CustomRadioButton: View {
     let action: () -> Void
     
     var body: some View {
-        Button(action: action) {
-            HStack {
-                Image(systemName: isSelected ? "record.circle.fill" : "circle")
-                    .foregroundColor(isSelected ? .blue : .gray)
-                Text(label)
-                    .foregroundColor(.black)
-            }
-        }
-        .buttonStyle(PlainButtonStyle())
+        SelectionButton(label: label, icon: isSelected ? "record.circle.fill" : "circle", action: action)
     }
 }
 
@@ -130,10 +103,149 @@ struct CustomCheckbox: View {
     let action: () -> Void
     
     var body: some View {
+        SelectionButton(label: label, icon: isSelected ? "checkmark.square.fill" : "square", action: action)
+    }
+}
+
+public struct CustomFormField: View {
+    let title: String
+    @Binding var text: String
+    @State private var isExpanded: Bool = true
+    var keyboardType: UIKeyboardType = .default
+
+    public var body: some View {
+        CardContainer(cornerRadius: 12) {
+            VStack(spacing: 12) {
+                ExpandableHeader(title: title, isExpanded: $isExpanded)
+                
+                if isExpanded {
+                    TextFieldView(text: $text, title: title, keyboardType: keyboardType) {
+                        isExpanded = false
+                    }
+                } else {
+                    Text(text)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+        }
+    }
+}
+
+public struct CustomDateField: View {
+    let title: String
+    @Binding var date: Date?
+    @State private var isExpanded: Bool = false
+    
+    public var body: some View {
+        CardContainer(cornerRadius: 12) {
+            VStack(spacing: 12) {
+                ExpandableHeader(title: title, isExpanded: $isExpanded)
+                
+                if isExpanded {
+                    DatePickerView(date: $date) {
+                        isExpanded = false
+                    }
+                } else {
+                    if date != nil {
+                        Text(dateDisplayText)
+                            .bold()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+            }
+        }
+    }
+    
+    private var dateDisplayText: String {
+        date.map { DateFormatter.localizedString(from: $0, dateStyle: .medium, timeStyle: .none) } ?? ""
+    }
+}
+
+struct ExpandableHeader: View {
+    let title: String
+    @Binding var isExpanded: Bool
+    var onTap: (() -> Void)? = nil
+    
+    var body: some View {
+        HStack {
+            Text(title)
+                .foregroundStyle(.secondary)
+            Spacer()
+            Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .onTapGesture {
+            isExpanded.toggle()
+            onTap?()
+        }
+    }
+}
+
+struct OptionsListView: View {
+    let options: [String]
+    let mode: SelectionMode
+    @Binding var singleSelection: String?
+    @Binding var multipleSelection: [String]
+    @Binding var isExpanded: Bool
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            ForEach(options, id: \.self) { option in
+                Divider()
+                if mode == .single {
+                    CustomRadioButton(label: option, isSelected: singleSelection == option) {
+                        singleSelection = option
+                        isExpanded = false
+                    }
+                } else {
+                    CustomCheckbox(label: option, isSelected: multipleSelection.contains(option)) {
+                        if multipleSelection.contains(option) {
+                            multipleSelection.removeAll { $0 == option }
+                        } else {
+                            multipleSelection.append(option)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct DatePickerView: View {
+    @Binding var date: Date?
+    var onDateSelected: () -> Void
+
+    var body: some View {
+        DatePicker(
+            "",
+            selection: Binding(
+                get: { date ?? Date() },
+                set: { newDate in
+                    date = newDate
+                    onDateSelected()
+                }
+            ),
+            displayedComponents: .date
+        )
+        .datePickerStyle(.graphical)
+        .labelsHidden()
+        .padding()
+        .background(Color.gray.opacity(0.1))
+        .cornerRadius(8)
+    }
+}
+
+struct SelectionButton: View {
+    let label: String
+    let icon: String
+    let action: () -> Void
+    
+    var body: some View {
         Button(action: action) {
             HStack {
-                Image(systemName: isSelected ? "checkmark.square.fill" : "square")
-                    .foregroundColor(isSelected ? .blue : .gray)
+                Image(systemName: icon)
+                    .foregroundColor(icon == "circle" || icon == "square" ? .gray : .blue)
                 Text(label)
                     .foregroundColor(.black)
             }
@@ -142,43 +254,21 @@ struct CustomCheckbox: View {
     }
 }
 
-public struct CustomFormField: View {
-    let title: String
+struct TextFieldView: View {
     @Binding var text: String
-    @State var isExpanded: Bool = true
-    var keyboardType: UIKeyboardType = .default
-
-    public var body: some View {
-        CardContainer(cornerRadius: 12) {
-            VStack(spacing: 12) {
-                HStack {
-                    Text(title)
-                        .foregroundStyle(.secondary)
-                    Spacer()
-                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .onTapGesture {
-                    isExpanded.toggle()
-                }
-                if isExpanded {
-                    TextField(title, text: $text)
-                        .keyboardType(keyboardType)
-                        .padding()
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(8)
-                        .foregroundColor(.black)
-                        .font(.body)
-                        .onSubmit {
-                            isExpanded = false
-                        }
-                } else {
-                    Text(text)
-                        .bold()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            }
-        }
+    let title: String
+    let keyboardType: UIKeyboardType
+    let onCommit: () -> Void
+    
+    var body: some View {
+        TextField(title, text: $text)
+            .keyboardType(keyboardType)
+            .padding()
+            .background(Color.gray.opacity(0.1))
+            .cornerRadius(8)
+            .foregroundColor(.black)
+            .font(.body)
+            .onSubmit(onCommit)
     }
 }
 
