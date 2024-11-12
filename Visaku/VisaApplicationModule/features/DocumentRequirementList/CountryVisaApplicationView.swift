@@ -79,7 +79,7 @@ public struct CountryVisaApplicationView: View {
                             .onTapGesture {
                                 isIdentity.toggle()
                             }
-                        NavigationLink(destination: ApplicationFormView()) {
+                        NavigationLink(destination: ApplicationFormView(viewModel: viewModel)) {
                             DocumentCard(height: 122, document: "Form Aplikasi", status: .undone)
                         }
                         

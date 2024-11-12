@@ -9,6 +9,9 @@ import SwiftUI
 import UIComponentModule
 
 struct ApplicationFormView: View {
+    @ObservedObject var viewModel: CountryVisaApplicationViewModel
+    @Environment(\.dismiss) var dismiss
+
     @State private var hasOtherResidence: String? = ""
     @State private var residenceType: String = ""
     @State private var residenceNumber: String = ""
@@ -134,7 +137,7 @@ struct ApplicationFormView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    
+                    dismiss()
                 } label: {
                     Image(systemName: "xmark")
                         .font(.system(size: 16))
@@ -180,5 +183,5 @@ extension Binding {
 }
 
 #Preview {
-    ApplicationFormView()
+    ApplicationFormView(viewModel: CountryVisaApplicationViewModel())
 }
