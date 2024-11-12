@@ -43,7 +43,7 @@ struct CountrySelectionSheetView: View {
                             onDismiss()
                         }) {
                             Image(systemName: "xmark")
-                                .font(.system(size: 16))
+                                .font(.custom("Inter-SemiBold", size: 17))
                                 .padding(10)
                                 .background(Circle().fill(Color.white))
                                 .foregroundColor(.black)

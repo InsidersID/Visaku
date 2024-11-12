@@ -52,7 +52,7 @@ struct ApplicationSection: View {
     var body: some View {
         VStack(spacing: 0) {
             Text(title)
-                .font(.system(size: 20))
+                .font(.custom("Inter-SemiBold", size: 20))
                 .bold()
                 .opacity(0.5)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -72,21 +72,21 @@ struct EmptyStateView: View {
     var body: some View {
         VStack(spacing: 8) {
             Spacer()
-            VStack(spacing: 8) {
+            VStack(spacing: 5) {
                 Image("emptyFile")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 100, height: 100)
                     .padding()
                 Text("Belum ada data.")
-                    .font(.system(size: 20))
+                    .font(.custom("Inter-Bold", size: 20))
                     .bold()
                 Text("Yuk, ajukan visa tujuanmu ")
-                    .font(.system(size: 14))
+                    .font(.custom("Inter-Regular", size: 16))
                     .multilineTextAlignment(.center)
                     .opacity(0.75)
                 Text("di Visaku sekarang!")
-                    .font(.system(size: 14))
+                    .font(.custom("Inter-Regular", size: 16))
                     .multilineTextAlignment(.center)
                     .opacity(0.75)
             }

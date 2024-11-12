@@ -15,11 +15,11 @@ struct ChoosenVisaSheetView: View {
         VStack {
             VStack(spacing: 8) {
                 Text("Visa yang kamu akan ajukan adalah")
-                    .font(.system(size: 14))
+                    .font(.custom("Inter-Regular", size: 14))
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Text("Visa \(choosenVisaType) \(choosenCountry)")
-                    .font(.system(size: 20))
+                    .font(.custom("Inter-SemiBold", size: 20))
                     .bold()
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
