@@ -8,14 +8,24 @@ struct TabBarView: View {
         TabView(selection: $selectedTab) {
             VisaHistoryView()
                 .tabItem {
-                    Image(systemName: "pencil.line")
+                    if selectedTab == 0 {
+                        Image("visaku_tab_logo")
+                    } else {
+                        Image(systemName: "pencil.line")
+                            .imageScale(.small)
+                    }
                     Text("Visaku")
                 }
                 .tag(0)
                 
             ProfileView()
                 .tabItem {
-                    Image(systemName: "person")
+                    if selectedTab == 1 {
+                        Image("profil_tab_logo")
+                    } else {
+                        Image(systemName: "person")
+                            .imageScale(.small)
+                    }
                     Text("Profil")
                 }
                 .tag(1)
