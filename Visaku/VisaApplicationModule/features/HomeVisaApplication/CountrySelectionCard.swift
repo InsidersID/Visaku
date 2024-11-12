@@ -23,8 +23,14 @@ struct CountrySelectionCard: View {
                     .bold()
                 VStack {
                     VisaTypeRow(visaType: $viewModel.visaType, isShowVisaTypeSheet: $viewModel.isShowVisaTypeSheet)
-                    DateRow(label: "Berangkat", text: $viewModel.visaType)
-                    DateRow(label: "Pulang", text: $viewModel.visaType)
+                    
+                    DateRow(label: "Berangkat", date: $viewModel.startDate)
+                    
+                    if viewModel.showCalendar {
+                        DatePickerCalendar(startDate: $viewModel.startDate, endDate: $viewModel.endDate)
+                    }
+                    
+                    DateRow(label: "Pulang", date: $viewModel.endDate)
                 }
                 .padding(.vertical, 5)
             }
@@ -44,25 +50,30 @@ struct VisaTypeRow: View {
                 VStack(alignment: .leading) {
                     Text("Jenis visa")
                         .foregroundStyle(.secondary)
-                        .font(.system(size: 14))
+                        .font(.custom("Inter-Regular", size: 14))
                     Text("\(visaType == "" ? "" : "Visa \(visaType)")")
-                        .font(.system(size: 16))
+                        .font(.custom("Inter-SemiBold", size: 16))
                         .padding(.bottom, 10)
                         .padding(.top, 0.5)
-                        .bold()
                 }
-                .onTapGesture {
-                    isShowVisaTypeSheet = true
-                }
-                .sheet(isPresented: $isShowVisaTypeSheet) {
-                    VisaTypeSheet(isShowVisaTypeSheet: $isShowVisaTypeSheet, visaType: $visaType)
-                        .presentationDragIndicator(.visible)
-                        .presentationDetents([.height(280)])
-                        .environmentObject(viewModel)
-                }
+                
                 Spacer()
+                
                 Image(systemName: "chevron.down")
             }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                if viewModel.startDate != nil && viewModel.endDate != nil {
+                    isShowVisaTypeSheet = true
+                }
+            }
+            .sheet(isPresented: $isShowVisaTypeSheet) {
+                VisaTypeSheet(isShowVisaTypeSheet: $isShowVisaTypeSheet, visaType: $visaType)
+                    .presentationDragIndicator(.visible)
+                    .presentationDetents([.height(280)])
+                    .environmentObject(viewModel)
+            }
+            
             Divider()
         }
     }
@@ -71,7 +82,9 @@ struct VisaTypeRow: View {
 
 struct DateRow: View {
     let label: String
-    @Binding var text: String
+    @Binding var date: Date?
+    
+    @EnvironmentObject var viewModel: VisaHistoryViewModel
 
     var body: some View {
         VStack {
@@ -79,16 +92,23 @@ struct DateRow: View {
                 VStack(alignment: .leading) {
                     Text(label)
                         .foregroundStyle(.secondary)
-                        .font(.system(size: 14))
-                    Text("")
-                        .font(.system(size: 16))
+                        .font(.custom("Inter-Regular", size: 14))
+                    Text(date?.formatted(date: .abbreviated, time: .omitted) ?? "")
+                        .font(.custom("Inter-SemiBold", size: 16))
                         .padding(.bottom, 10)
                         .padding(.top, 0.5)
                         .bold()
                 }
+                
                 Spacer()
-                Image(systemName: "chevron.down")
+                
+                Image(systemName: viewModel.showCalendar ? "chevron.up" : "chevron.down")
             }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                viewModel.showCalendar.toggle()
+            }
+            
             Divider()
         }
     }
