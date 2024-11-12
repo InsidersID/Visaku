@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SchengenCountrySelectionSheetView: View {
     @Binding var countryKeyword: String
+    @Binding var visaType: String
     @State var isAddNewSchengenCountry: Bool = false
     @State var countrySearchKeyword: String = ""
     var isUseSheet: Bool
@@ -39,7 +40,7 @@ struct SchengenCountrySelectionSheetView: View {
             .presentationDetents([.large])
             .sheet(isPresented: $isAddNewSchengenCountry) {
                 SchengenVisaSelectionSheetView(
-                    countryKeyword: $countryKeyword,
+                    visaType: $visaType, countryKeyword: $countryKeyword,
                     onDismiss: {
                         isAddNewSchengenCountry = false
                     }
@@ -51,8 +52,9 @@ struct SchengenCountrySelectionSheetView: View {
 
 #Preview {
     @Previewable @State var countryKeyword: String = "Italia"
+    @Previewable @State var visaType: String = "turis"
     @Previewable @State var isAddNewSchengenCountry: Bool = true
     @Previewable @State var isUseSheet: Bool = true
     
-    SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, isAddNewSchengenCountry: isAddNewSchengenCountry, isUseSheet: isUseSheet)
+    SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, visaType: $visaType, isAddNewSchengenCountry: isAddNewSchengenCountry, isUseSheet: isUseSheet)
 }

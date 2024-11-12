@@ -13,6 +13,7 @@ public struct VisaHistoryView: View {
     @State private var isShowChooseCountrySheet: Bool = false
     @State private var countryKeyword: String = ""
     @State private var isSchengenCountryChosen: Bool = false
+    @State private var visaType: String = ""
     
     public init(viewModel: VisaHistoryViewModel = VisaHistoryViewModel()) {
         self.viewModel = viewModel
@@ -21,7 +22,7 @@ public struct VisaHistoryView: View {
     public var body: some View {
         VStack {
             VisaApplicationHeader(isShowChooseCountrySheet: $isShowChooseCountrySheet)
-
+            
             if viewModel.hasData {
                 ScrollView {
                     ApplicationSection(title: "Belum selesai", counter: 4)
@@ -31,17 +32,34 @@ public struct VisaHistoryView: View {
                 EmptyStateView()
             }
         }
+        .onChange(of: !countryKeyword.isEmpty && !visaType.isEmpty) { hasBoth, previousHasBoth in
+            if previousHasBoth {
+                print("Requirements for the visa for \(countryKeyword) with visa type \(visaType) are:")
+                let visaTypeEnum = VisaType.init(rawValue: visaType)
+                if let visaType = visaTypeEnum {
+                    let requirementsForItaly = VisaGeneralTouristDocumentType.getRequirements(for: visaType, in: countryKeyword)
+                    
+                    print("Visa Requirements for Italia:")
+                    for requirement in requirementsForItaly {
+                        print("- \(requirement.displayName): \(requirement.description)")
+                    }
+                }
+                
+
+            }
+        }
         .ignoresSafeArea(edges: .all)
         .sheet(isPresented: $isShowChooseCountrySheet) {
             CountrySelectionSheetView(
                 isSchengenCountryChosen: $isSchengenCountryChosen,
                 countryKeyword: $countryKeyword,
+                visaType: $visaType,
                 onDismiss: {
                     isShowChooseCountrySheet = false
                 }
             )
             .presentationDragIndicator(.visible)
-
+            
         }
     }
 }

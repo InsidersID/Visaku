@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct CountrySelectionSheetView: View {
     @Binding var isSchengenCountryChosen: Bool
     @Binding var countryKeyword: String
+    @Binding var visaType: String
     var onDismiss: () -> Void
 
     var body: some View {
@@ -49,7 +51,6 @@ struct CountrySelectionSheetView: View {
                                 .foregroundColor(.black)
                                 .overlay(Circle().stroke(Color.gray, lineWidth: 1))
                         }
-                    
                     }
                 }
                 .presentationDetents([.medium])
@@ -57,10 +58,12 @@ struct CountrySelectionSheetView: View {
             .padding(.horizontal)
         }
         .sheet(isPresented: $isSchengenCountryChosen) {
-            SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, isUseSheet: false)
+            SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, visaType: $visaType, isUseSheet: false)
                 .presentationDragIndicator(.visible)
         }
     }
 }
+
+
 
 

@@ -135,12 +135,6 @@ public enum ItalyTouristDocument: String {
     }
 }
 
-struct VisaType: Identifiable, Equatable {
-    let id: UUID = UUID()
-    let name: String
-    let value: String
-    let documentRequirements: VisaDocumentRequirements
-}
 
 struct VisaDocumentRequirements: Equatable {
     let primaryDocuments: [PrimaryGeneralTouristDocumentType]
@@ -156,77 +150,77 @@ struct CountryData {
     let flagEmoji: String
 }
 
-public enum Country: String, Codable, CaseIterable {
-    case italy
-    case germany
-    
-    var data: CountryData {
-        let flagImage = rawValue.replacingOccurrences(of: " ", with: "-") + "-flag.png"
-        let visaTypes: [VisaType]
-        let flagEmoji: String
-        
-        // Define Visa and required documents for Italy
-        switch self {
-        case .italy:
-            let tourismVisaDocuments = VisaDocumentRequirements(
-                primaryDocuments: PrimaryGeneralTouristDocumentType.data,
-                itineraryDocuments: ItineraryGeneralTouristDocumentType.data,
-                financialDocuments: FinancialGeneralTouristDocumentType.data,
-                countrySpecificDocuments: ItalyTouristDocument.data.map { $0.rawValue }
-            )
-            visaTypes = [
-                VisaType(
-                    name: "Tourism",
-                    value: "turis",
-                    documentRequirements: tourismVisaDocuments
-                ),
-                VisaType(
-                    name: "Business",
-                    value: "bisnis",
-                    documentRequirements: VisaDocumentRequirements(
-                        primaryDocuments: [],
-                        itineraryDocuments: [],
-                        financialDocuments: [],
-                        countrySpecificDocuments: []
-                    )
-                )
-            ]
-            flagEmoji = "🇮🇹"
-        case .germany:
-            let businessVisaDocuments = VisaDocumentRequirements(
-                primaryDocuments: PrimaryGeneralTouristDocumentType.data,
-                itineraryDocuments: ItineraryGeneralTouristDocumentType.data,
-                financialDocuments: FinancialGeneralTouristDocumentType.data,
-                countrySpecificDocuments: []
-            )
-            let tourismVisaDocuments = VisaDocumentRequirements(
-                primaryDocuments: PrimaryGeneralTouristDocumentType.data,
-                itineraryDocuments: ItineraryGeneralTouristDocumentType.data,
-                financialDocuments: FinancialGeneralTouristDocumentType.data,
-                countrySpecificDocuments: []
-            )
-            visaTypes = [
-                VisaType(
-                    name: "Business",
-                    value: "bisnis",
-                    documentRequirements: businessVisaDocuments
-                ),
-                VisaType(
-                    name: "Tourism",
-                    value: "turis",
-                    documentRequirements: tourismVisaDocuments
-                )
-            ]
-            flagEmoji = "🇩🇪"
-        }
-        
-        return CountryData(name: rawValue.capitalized, png: flagImage, visaTypes: visaTypes, flagEmoji: flagEmoji)
-    }
-    
-    static var data: [CountryData] {
-        return Country.allCases.map { $0.data }
-    }
-}
+//public enum Country: String, Codable, CaseIterable {
+//    case italy
+//    case germany
+//    
+//    var data: CountryData {
+//        let flagImage = rawValue.replacingOccurrences(of: " ", with: "-") + "-flag.png"
+//        let visaTypes: [VisaType]
+//        let flagEmoji: String
+//        
+//        // Define Visa and required documents for Italy
+//        switch self {
+//        case .italy:
+//            let tourismVisaDocuments = VisaDocumentRequirements(
+//                primaryDocuments: PrimaryGeneralTouristDocumentType.data,
+//                itineraryDocuments: ItineraryGeneralTouristDocumentType.data,
+//                financialDocuments: FinancialGeneralTouristDocumentType.data,
+//                countrySpecificDocuments: ItalyTouristDocument.data.map { $0.rawValue }
+//            )
+//            visaTypes = [
+//                VisaType(
+//                    name: "Tourism",
+//                    value: "turis",
+//                    documentRequirements: tourismVisaDocuments
+//                ),
+//                VisaType(
+//                    name: "Business",
+//                    value: "bisnis",
+//                    documentRequirements: VisaDocumentRequirements(
+//                        primaryDocuments: [],
+//                        itineraryDocuments: [],
+//                        financialDocuments: [],
+//                        countrySpecificDocuments: []
+//                    )
+//                )
+//            ]
+//            flagEmoji = "🇮🇹"
+//        case .germany:
+//            let businessVisaDocuments = VisaDocumentRequirements(
+//                primaryDocuments: PrimaryGeneralTouristDocumentType.data,
+//                itineraryDocuments: ItineraryGeneralTouristDocumentType.data,
+//                financialDocuments: FinancialGeneralTouristDocumentType.data,
+//                countrySpecificDocuments: []
+//            )
+//            let tourismVisaDocuments = VisaDocumentRequirements(
+//                primaryDocuments: PrimaryGeneralTouristDocumentType.data,
+//                itineraryDocuments: ItineraryGeneralTouristDocumentType.data,
+//                financialDocuments: FinancialGeneralTouristDocumentType.data,
+//                countrySpecificDocuments: []
+//            )
+//            visaTypes = [
+//                VisaType(
+//                    name: "Business",
+//                    value: "bisnis",
+//                    documentRequirements: businessVisaDocuments
+//                ),
+//                VisaType(
+//                    name: "Tourism",
+//                    value: "turis",
+//                    documentRequirements: tourismVisaDocuments
+//                )
+//            ]
+//            flagEmoji = "🇩🇪"
+//        }
+//        
+//        return CountryData(name: rawValue.capitalized, png: flagImage, visaTypes: visaTypes, flagEmoji: flagEmoji)
+//    }
+//    
+//    static var data: [CountryData] {
+//        return Country.allCases.map { $0.data }
+//    }
+//}
 
 public enum Countries {
     

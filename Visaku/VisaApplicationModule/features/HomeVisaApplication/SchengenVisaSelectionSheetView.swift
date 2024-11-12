@@ -9,7 +9,7 @@ import SwiftUI
 import UIComponentModule
 
 struct SchengenVisaSelectionSheetView: View {
-    @State private var visaType: String = ""
+    @Binding var visaType: String
     @State var isAddNewSchengenCountry: Bool = false
     @State var isShowVisaTypeSheet: Bool = false
     @State var isShowChosenVisaSheet: Bool = false
@@ -51,7 +51,7 @@ struct SchengenVisaSelectionSheetView: View {
                         }
                     }
                     .padding()
-                    AddNewSchengenCountryCard(isAddNewSchengenCountry: $isAddNewSchengenCountry, isSchengenCountryChosen: isSchengenCountryChosen, countryKeyword: $countryKeyword)
+                    AddNewSchengenCountryCard(visaType: $visaType, isAddNewSchengenCountry: $isAddNewSchengenCountry, isSchengenCountryChosen: isSchengenCountryChosen, countryKeyword: $countryKeyword)
                     .padding(.horizontal)
                 }
                 
@@ -110,13 +110,14 @@ struct SchengenVisaSelectionSheetView: View {
 
 #Preview {
     @Previewable @State var countryKeyword: String = "Italia"
+    @Previewable @State var visaType: String = "turis"
     let countryList = [
         "Arab Saudi", "Australia", "Bangladesh", "Bhutan",
         "China", "Jepang", "Korea Selatan", "Pakistan",
         "Schengen Area", "Taiwan"
     ]
     SchengenVisaSelectionSheetView(
-        countryKeyword: $countryKeyword,
+        visaType: $visaType, countryKeyword: $countryKeyword,
         onDismiss: {
             
         }
