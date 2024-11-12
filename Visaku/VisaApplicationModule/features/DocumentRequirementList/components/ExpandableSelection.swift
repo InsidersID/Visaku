@@ -17,12 +17,13 @@ public struct ExpandableSelection: View {
     let title: String
     let options: [String]
     let mode: SelectionMode
-
+    
     @Binding var singleSelection: String?
     @Binding var multipleSelection: [String]
 
     @State private var isExpanded: Bool
     @State private var isDisplaySheet: Bool = false
+    @State private var searchKeyword: String = ""
     
     public init(title: String, options: [String], mode: SelectionMode, singleSelection: Binding<String?>, multipleSelection: Binding<[String]>) {
         self.title = title
@@ -52,10 +53,20 @@ public struct ExpandableSelection: View {
         .sheet(isPresented: $isDisplaySheet) {
             SelectionSheet(
                 isPresented: $isDisplaySheet,
-                searchKeyword: .constant(""),
+                searchKeyword: $searchKeyword,
                 items: options,
                 itemText: { $0 },
-                onItemSelected: handleSelection,
+                onItemSelected: { selected in
+                    if mode == .single {
+                        singleSelection = selected
+                    } else {
+                        if multipleSelection.contains(selected) {
+                            multipleSelection.removeAll { $0 == selected }
+                        } else {
+                            multipleSelection.append(selected)
+                        }
+                    }
+                },
                 onDismiss: { isExpanded = false }
             )
         }
