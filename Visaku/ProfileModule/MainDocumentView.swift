@@ -182,7 +182,7 @@ public struct MainDocumentView: View {
                 ToolbarItem(placement: .principal) {
                     Text("Profil")
                         .foregroundStyle(.white)
-                        .font(Font.custom("Inter", size: 17))
+                        .font(Font.custom("Inter-SemiBold", size: 24))
                         .fontWeight(.semibold)
                 }
                 ToolbarItem(placement: .topBarLeading) {
@@ -190,7 +190,10 @@ public struct MainDocumentView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "chevron.left.circle")
+                            .resizable()
+                            .frame(width: 40, height: 40)
                             .foregroundStyle(.white)
+                            .fontWeight(.light)
                     }
                 }
             }
