@@ -50,14 +50,15 @@ struct VisaTypeRow: View {
                 VStack(alignment: .leading) {
                     Text("Jenis visa")
                         .foregroundStyle(.secondary)
-                        .font(.system(size: 14))
+                        .font(.custom("Inter-Regular", size: 14))
                     Text("\(visaType == "" ? "" : "Visa \(visaType)")")
-                        .font(.system(size: 16))
+                        .font(.custom("Inter-SemiBold", size: 16))
                         .padding(.bottom, 10)
                         .padding(.top, 0.5)
-                        .bold()
                 }
+                
                 Spacer()
+                
                 Image(systemName: "chevron.down")
             }
             .contentShape(Rectangle())
@@ -89,9 +90,9 @@ struct DateRow: View {
                 VStack(alignment: .leading) {
                     Text(label)
                         .foregroundStyle(.secondary)
-                        .font(.system(size: 14))
+                        .font(.custom("Inter-Regular", size: 14))
                     Text("")
-                        .font(.system(size: 16))
+                        .font(.custom("Inter-SemiBold", size: 16))
                         .padding(.bottom, 10)
                         .padding(.top, 0.5)
                         .bold()
