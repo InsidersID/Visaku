@@ -16,9 +16,11 @@ struct SchengenVisaSelectionSheetView: View {
         NavigationStack{
             ScrollView {
                 VStack {
-                    HStack {
+                    HStack(spacing: 24) {
                         Image("schengenMap")
-                            .font(.system(size: 100))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 110, height: 150)
                         VStack(spacing: 8) {
                             Text("Kenapa visa Schengen harus ditentukan?")
                                 .font(.system(size: 21))
