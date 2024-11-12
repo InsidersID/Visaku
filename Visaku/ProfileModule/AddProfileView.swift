@@ -61,6 +61,7 @@ struct AddProfileView: View {
                 .frame(width: proxy.size.width, height: 144, alignment: .topTrailing)
             }
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 
