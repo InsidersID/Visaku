@@ -63,7 +63,9 @@ struct VisaTypeRow: View {
             }
             .contentShape(Rectangle())
             .onTapGesture {
-                isShowVisaTypeSheet = true
+                if viewModel.startDate != nil && viewModel.endDate != nil {
+                    isShowVisaTypeSheet = true
+                }
             }
             .sheet(isPresented: $isShowVisaTypeSheet) {
                 VisaTypeSheet(isShowVisaTypeSheet: $isShowVisaTypeSheet, visaType: $visaType)
