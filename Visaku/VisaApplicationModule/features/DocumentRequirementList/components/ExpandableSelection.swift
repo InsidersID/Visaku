@@ -70,7 +70,7 @@ public struct ExpandableSelection: View {
                     }
                 } else if !selectedOptionsText.isEmpty {
                     Text(selectedOptionsText)
-                        .fontWeight(.bold)
+                        .bold()
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
