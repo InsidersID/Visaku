@@ -23,13 +23,13 @@ struct SchengenVisaSelectionSheetView: View {
                             .frame(width: 110, height: 150)
                         VStack(spacing: 8) {
                             Text("Kenapa visa Schengen harus ditentukan?")
-                                .font(.system(size: 21))
+                                .font(.custom("Inter-Bold", size: 20))
                                 .bold()
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .lineLimit(nil)
                                 .fixedSize(horizontal: false, vertical: true)
                             Text("Kamu bisa masuk menggunakan satu visa yang sama untuk beberapa negara Uni Eropa.")
-                                .font(.system(size: 15))
+                                .font(.custom("Inter-Regular", size: 15))
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .lineLimit(nil)
                                 .fixedSize(horizontal: false, vertical: true)
@@ -40,7 +40,7 @@ struct SchengenVisaSelectionSheetView: View {
                     Divider()
                     VStack {
                         Text("Daftar negara terpilih")
-                            .font(.title2)
+                            .font(.custom("Inter-Bold", size: 19))
                             .bold()
                             .frame(maxWidth: .infinity, alignment: .leading)
                         ForEach(1..<2) { countryItem in
@@ -59,7 +59,7 @@ struct SchengenVisaSelectionSheetView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Penentuan visa Schengen")
-                        .font(.system(size: 18))
+                        .font(.custom("Inter-SemiBold", size: 17))
                         .bold()
                         
                 }
@@ -68,9 +68,8 @@ struct SchengenVisaSelectionSheetView: View {
                         onDismiss()
                     }) {
                         Image(systemName: "xmark")
-                            .font(.system(size: 14))
+                            .font(.custom("Inter-SemiBold", size: 17))
                             .padding(10)
-                            .bold()
                             .background(Circle().fill(Color.white))
                             .foregroundColor(.black)
                             .overlay(Circle().stroke(Color.gray, lineWidth: 1))
@@ -82,16 +81,16 @@ struct SchengenVisaSelectionSheetView: View {
                     VStack(spacing: 18) {
                         VStack(spacing: 5) {
                             Text("Visa yang kamu akan ajukan adalah")
-                                .font(.system(size: 14))
+                                .font(.custom("Inter-Regular", size: 16))
                                 .foregroundStyle(.secondary)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             Text("Visa \(viewModel.visaType) \(viewModel.countryKeyword)  \(Countries.schengenCountryFlags[viewModel.countryKeyword] ?? "")")
-                                .font(.system(size: 20))
+                                .font(.custom("Inter-Regular", size: 20))
                                 .bold()
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         
-                        CustomButton(text: "Selanjutnya", color: Color(.primary5)) {
+                        CustomButton(text: "Selanjutnya", color: Color(.primary5), font: "Inter-SemiBold", fontSize: 20) {
                             viewModel.navigateToCountryApplicationView()
                         }
                     }

@@ -20,7 +20,7 @@ struct ApplicationFormView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 250, height: 200)
-                        .padding()
+                        .padding(.top, -40)
 
                     SectionView(
                         title: "Tempat tinggal di negara selain negara yang menjadi kewarganegaraannya saat ini",
@@ -95,7 +95,7 @@ struct ApplicationFormView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("Form aplikasi")
-                    .font(.system(size: 24))
+                    .font(.custom("Inter-SemiBold", size: 24))
                     .bold()
             }
             ToolbarItem(placement: .topBarTrailing) {
@@ -103,8 +103,7 @@ struct ApplicationFormView: View {
                     dismiss()
                 } label: {
                     Image(systemName: "xmark")
-                        .font(.system(size: 16))
-                        .padding(10)
+                        .font(.custom("Inter-SemiBold", size: 17))                        .padding(10)
                         .background(Circle().fill(Color.white))
                         .foregroundColor(.black)
                         .overlay(Circle().stroke(Color.gray, lineWidth: 1))
@@ -126,7 +125,7 @@ struct SectionView<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(title)
-                .font(.system(size: 20))
+                .font(.custom("Inter-SemiBold", size: 20))
                 .bold()
                 .opacity(0.8)
             content

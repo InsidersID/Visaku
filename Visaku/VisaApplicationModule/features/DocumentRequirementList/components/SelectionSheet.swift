@@ -48,8 +48,7 @@ struct SelectionSheet<Item: Hashable>: View {
                         isPresented = false
                     }) {
                         Image(systemName: "xmark")
-                            .font(.system(size: 16))
-                            .bold()
+                            .font(.custom("Inter-SemiBold", size: 17))
                             .padding(10)
                             .background(Circle().fill(Color.white))
                             .foregroundColor(.black)
