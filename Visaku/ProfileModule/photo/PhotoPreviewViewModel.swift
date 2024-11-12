@@ -113,4 +113,9 @@ class PhotoPreviewViewModel: ObservableObject {
             profileViewModel.accounts = accounts.map { $0.id == account.id ? account : $0 }
         }
     }
+    
+    func updatePhotoImage(_ image: UIImage) {
+        self.photoImage = image
+        NotificationCenter.default.post(name: .accountImageUpdated, object: self.account.id)
+    }
 }

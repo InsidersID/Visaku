@@ -15,6 +15,9 @@ public struct CountryVisaApplicationView: View {
     @State private var progress: Double = 10
 //    var applicationList: [String] = ["Tiket Pesawat", "Reservasi Hotel", "Asuransi Medis", "Referensi Bank", "Itinerary"]
     
+    var countrySelected: String
+    var visaType: String
+    
     
     @State var isIdentity: Bool = false
     @State var isFormApplication: Bool = false
@@ -44,8 +47,6 @@ public struct CountryVisaApplicationView: View {
         .sponsor: false,
         .buktiKeuangan: false
     ]
-
-    public init() {}
     
     public var body: some View {
         
@@ -110,6 +111,18 @@ public struct CountryVisaApplicationView: View {
                     }
                 }
             }
+            .onAppear {
+                print("Requirements for the visa for \(countrySelected) with visa type \(visaType) are:")
+                let visaTypeEnum = VisaType.init(rawValue: visaType)
+                if let visaType = visaTypeEnum {
+                    let requirementsForItaly = VisaGeneralTouristDocumentType.getRequirements(for: visaType, in: countrySelected)
+                    
+                    print("Visa Requirements for Italia:")
+                    for requirement in requirementsForItaly {
+                        print("- \(requirement.displayName): \(requirement.description)")
+                    }
+                }
+            }
             .sheet(isPresented: $isIdentity) {
                 ProfileView()
             }
@@ -136,7 +149,7 @@ public struct CountryVisaApplicationView: View {
 }
 
 #Preview {
-    CountryVisaApplicationView()
+    CountryVisaApplicationView(countrySelected: "Italia", visaType: "turis")
 }
 
 struct DocumentRequirementsList: View {

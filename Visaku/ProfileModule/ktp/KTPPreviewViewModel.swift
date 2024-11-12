@@ -98,6 +98,13 @@ class KTPPreviewViewModel: ObservableObject {
             self.identityCard = IdentityCardEntity(id: UUID().uuidString, identityId: "", name: "", placeDateOfBirth: "", gender: .male, address: "", countryBorn: "", nationality: "", maritalStatus: .single, job: "", image: Data())
             self.ktpImage = nil
             
+            account.identityCard = nil
+            let isAccountSaveSuccess = try await accountUseCase.update(param: account)
+            if !isAccountSaveSuccess {
+                deleteIdentityCardState = .error
+                return
+            }
+            
             deleteIdentityCardState = .success
         } catch {
             deleteIdentityCardState = .error
@@ -126,6 +133,12 @@ class KTPPreviewViewModel: ObservableObject {
             
             DispatchQueue.main.async {
                 self.extractIdentityCardData(from: recognizedTextByPosition)
+                if let imageData = image.pngData() {
+                    self.identityCard.image = imageData
+                    self.ktpImage = image
+                } else {
+                    print("Failed to convert UIImage to Data")
+                }
             }
         }
         

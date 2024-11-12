@@ -96,10 +96,11 @@ public struct PhotoPreviewSheet: View {
                             CustomButton(text: "Foto ulang", textColor: .primary5, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                                 Task {
                                     await photoPreviewViewModel.deletePhoto()
-                                    await ProfileViewModel.shared.fetchAccountByID(photoPreviewViewModel.account.id)
                                     DispatchQueue.main.async {
-                                        photoPreviewViewModel.isCameraOpen = true
-                                    }
+                                         photoPreviewViewModel.photoImage = nil
+                                         photoPreviewViewModel.isCameraOpen = true
+                                         photoPreviewViewModel.deletePhotoState = .idle
+                                     }
                                 }
                             }
                         }
@@ -110,6 +111,9 @@ public struct PhotoPreviewSheet: View {
             }
             .onChange(of: photoPreviewViewModel.photoImage) { newValue in
                 print("Photo image has been updated: \(String(describing: newValue))")
+            }
+            .onDisappear {
+                NotificationCenter.default.post(name: .accountImageUpdated, object: photoPreviewViewModel.account.id)
             }
             .navigationTitle("Foto")
             .navigationBarTitleDisplayMode(.inline)

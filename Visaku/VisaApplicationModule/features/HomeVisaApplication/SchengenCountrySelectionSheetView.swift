@@ -8,20 +8,15 @@
 import SwiftUI
 
 struct SchengenCountrySelectionSheetView: View {
-    @Binding var countryKeyword: String
-    @Binding var visaType: String
-    @State var isAddNewSchengenCountry: Bool = false
-    @State var countrySearchKeyword: String = ""
-    var isUseSheet: Bool
-
+    @EnvironmentObject var viewModel: VisaHistoryViewModel
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack {
-                    ForEach(Countries.schengenCountryList.filter { countrySearchKeyword.isEmpty || $0.contains(countrySearchKeyword) }, id: \.self) { schengenCountry in
+                    ForEach(Countries.schengenCountryList.filter { viewModel.countrySearchKeyword.isEmpty || $0.contains(viewModel.countrySearchKeyword) }, id: \.self) { schengenCountry in
                         Button(action: {
-                            isAddNewSchengenCountry = true
-                            countryKeyword = schengenCountry
+                            viewModel.isAddNewSchengenCountry = true
+                            viewModel.countryKeyword = schengenCountry
                         }) {
                             Text(schengenCountry)
                                 .font(.title3)
@@ -34,27 +29,24 @@ struct SchengenCountrySelectionSheetView: View {
                 }
                 .padding(.horizontal)
             }
-            .searchable(text: $countrySearchKeyword, prompt: "Cari negara")
+            .searchable(text: $viewModel.countrySearchKeyword, prompt: "Cari negara")
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("Pilih negara")
             .presentationDetents([.large])
-            .sheet(isPresented: $isAddNewSchengenCountry) {
+            .sheet(isPresented: $viewModel.isAddNewSchengenCountry) {
                 SchengenVisaSelectionSheetView(
-                    visaType: $visaType, countryKeyword: $countryKeyword,
                     onDismiss: {
-                        isAddNewSchengenCountry = false
+                        viewModel.isAddNewSchengenCountry = false
                     }
                 )
+                .environmentObject(viewModel)
             }
         }
     }
 }
 
 #Preview {
-    @Previewable @State var countryKeyword: String = "Italia"
-    @Previewable @State var visaType: String = "turis"
-    @Previewable @State var isAddNewSchengenCountry: Bool = true
-    @Previewable @State var isUseSheet: Bool = true
-    
-    SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, visaType: $visaType, isAddNewSchengenCountry: isAddNewSchengenCountry, isUseSheet: isUseSheet)
+
+    SchengenCountrySelectionSheetView()
+        .environmentObject(VisaHistoryViewModel())
 }

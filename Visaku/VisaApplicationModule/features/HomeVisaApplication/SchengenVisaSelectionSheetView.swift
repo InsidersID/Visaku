@@ -9,21 +9,15 @@ import SwiftUI
 import UIComponentModule
 
 struct SchengenVisaSelectionSheetView: View {
-    @Binding var visaType: String
-    @State var isAddNewSchengenCountry: Bool = false
-    @State var isShowVisaTypeSheet: Bool = false
-    @State var isShowChosenVisaSheet: Bool = false
-    @State private var isSchengenCountryChosen: Bool = false
-
-    @Binding var countryKeyword: String
+    @EnvironmentObject var viewModel: VisaHistoryViewModel
     var onDismiss: () -> Void
-
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack{
             ScrollView {
                 VStack {
                     HStack {
-                        Image(systemName: "map")
+                        Image("schengenMap")
                             .font(.system(size: 100))
                         VStack(spacing: 8) {
                             Text("Kenapa visa Schengen harus ditentukan?")
@@ -38,6 +32,7 @@ struct SchengenVisaSelectionSheetView: View {
                                 .lineLimit(nil)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
+                        
                     }
                     .padding()
                     Divider()
@@ -47,61 +42,60 @@ struct SchengenVisaSelectionSheetView: View {
                             .bold()
                             .frame(maxWidth: .infinity, alignment: .leading)
                         ForEach(1..<2) { countryItem in
-                            CountrySelectionCard(countryKeyword: countryKeyword, visaType: $visaType, isShowVisaTypeSheet: $isShowVisaTypeSheet)
+                            CountrySelectionCard()
+                                .environmentObject(viewModel)
                         }
                     }
                     .padding()
-                    AddNewSchengenCountryCard(visaType: $visaType, isAddNewSchengenCountry: $isAddNewSchengenCountry, isSchengenCountryChosen: isSchengenCountryChosen, countryKeyword: $countryKeyword)
-                    .padding(.horizontal)
+                    AddNewSchengenCountryCard()
+                        .padding(.horizontal)
+                        .environmentObject(viewModel)
                 }
-                
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("Penentuan visa Schengen")
-                            .font(.system(size: 18))
+            }
+            .scrollContentBackground(.hidden)
+            .padding(.top, -40)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Penentuan visa Schengen")
+                        .font(.system(size: 18))
+                        .bold()
+                        
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        onDismiss()
+                    }) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 14))
+                            .padding(10)
                             .bold()
+                            .background(Circle().fill(Color.white))
+                            .foregroundColor(.black)
+                            .overlay(Circle().stroke(Color.gray, lineWidth: 1))
                     }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: {
-                            onDismiss()
-                        }) {
-                            Image(systemName: "xmark")
+                }
+            }
+            .sheet(isPresented: $viewModel.visaTypeIsEmpty) {
+                VStack {
+                    VStack(spacing: 18) {
+                        VStack(spacing: 5) {
+                            Text("Visa yang kamu akan ajukan adalah")
                                 .font(.system(size: 14))
-                                .padding(10)
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Text("Visa \(viewModel.visaType) \(viewModel.countryKeyword)  \(Countries.schengenCountryFlags[viewModel.countryKeyword] ?? "")")
+                                .font(.system(size: 20))
                                 .bold()
-                                .background(Circle().fill(Color.white))
-                                .foregroundColor(.black)
-                                .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
-                    
-                    }
-                }
-                .sheet(isPresented: .constant(!visaType.isEmpty)) {
-                    VStack {
-                        VStack(spacing: 18) {
-                            VStack(spacing: 5) {
-                                Text("Visa yang kamu akan ajukan adalah")
-                                    .font(.system(size: 14))
-                                    .foregroundStyle(.secondary)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                Text("Visa\(visaType) \(countryKeyword) \(Countries.schengenCountryFlags[countryKeyword] ?? "")")
-                                    .font(.system(size: 20))
-                                    .bold()
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                            NavigationLink {
-                                CountryVisaApplicationView()
-                            } label: {
-                                CustomButton(text: "Selanjutnya", color: Color(.primary5)) {
-                                    
-                                }
-                            }
+                        
+                        CustomButton(text: "Selanjutnya", color: Color(.primary5)) {
+                            viewModel.navigateToCountryApplicationView()
                         }
-                        .padding()
                     }
-                    .presentationDetents([.height(150)])
+                    .padding()
                 }
-
+                .presentationDetents([.height(150)])
             }
         }
         
@@ -117,9 +111,10 @@ struct SchengenVisaSelectionSheetView: View {
         "Schengen Area", "Taiwan"
     ]
     SchengenVisaSelectionSheetView(
-        visaType: $visaType, countryKeyword: $countryKeyword,
+        
         onDismiss: {
             
         }
     )
+    .environmentObject(VisaHistoryViewModel())
 }

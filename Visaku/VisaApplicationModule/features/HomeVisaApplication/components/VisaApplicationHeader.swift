@@ -9,7 +9,7 @@ import SwiftUI
 import UIComponentModule
 
 struct VisaApplicationHeader: View {
-    @Binding var isShowChooseCountrySheet: Bool
+    @EnvironmentObject var viewModel: VisaHistoryViewModel
 
     var body: some View {
         VStack {
@@ -36,7 +36,7 @@ struct VisaApplicationHeader: View {
                     }
                 }
                 CustomButton(text: "Mulai pengajuan", textColor: Color(.primary5), color: .white, fontSize: 16, cornerRadius: 16, paddingVertical: 12) {
-                    isShowChooseCountrySheet = true
+                    viewModel.isShowChooseCountrySheet = true
                 }
                 .padding(.vertical, 10)
                 .padding(.horizontal)
@@ -59,7 +59,7 @@ struct VisaApplicationHeader: View {
 }
 
 #Preview {
-    @Previewable @State var isShowChooseCountrySheet: Bool = false
-    VisaApplicationHeader(isShowChooseCountrySheet: $isShowChooseCountrySheet)
+    VisaApplicationHeader()
+        .environmentObject(VisaHistoryViewModel())
 }
 

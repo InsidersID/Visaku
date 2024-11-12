@@ -9,57 +9,38 @@ import SwiftUI
 import UIComponentModule
 
 public struct VisaHistoryView: View {
-    @State var viewModel: VisaHistoryViewModel
-    @State private var isShowChooseCountrySheet: Bool = false
-    @State private var countryKeyword: String = ""
-    @State private var isSchengenCountryChosen: Bool = false
-    @State private var visaType: String = ""
-    
-    public init(viewModel: VisaHistoryViewModel = VisaHistoryViewModel()) {
-        self.viewModel = viewModel
-    }
+    @StateObject var viewModel: VisaHistoryViewModel = VisaHistoryViewModel()
     
     public var body: some View {
-        VStack {
-            VisaApplicationHeader(isShowChooseCountrySheet: $isShowChooseCountrySheet)
-            
-            if viewModel.hasData {
-                ScrollView {
-                    ApplicationSection(title: "Belum selesai", counter: 4)
-                    ApplicationSection(title: "Riwayat", counter: 3)
-                }
-            } else {
-                EmptyStateView()
-            }
-        }
-        .onChange(of: !countryKeyword.isEmpty && !visaType.isEmpty) { hasBoth, previousHasBoth in
-            if previousHasBoth {
-                print("Requirements for the visa for \(countryKeyword) with visa type \(visaType) are:")
-                let visaTypeEnum = VisaType.init(rawValue: visaType)
-                if let visaType = visaTypeEnum {
-                    let requirementsForItaly = VisaGeneralTouristDocumentType.getRequirements(for: visaType, in: countryKeyword)
-                    
-                    print("Visa Requirements for Italia:")
-                    for requirement in requirementsForItaly {
-                        print("- \(requirement.displayName): \(requirement.description)")
-                    }
-                }
+        NavigationStack {
+            VStack {
+                VisaApplicationHeader()
+                    .environmentObject(viewModel)
                 
-
-            }
-        }
-        .ignoresSafeArea(edges: .all)
-        .sheet(isPresented: $isShowChooseCountrySheet) {
-            CountrySelectionSheetView(
-                isSchengenCountryChosen: $isSchengenCountryChosen,
-                countryKeyword: $countryKeyword,
-                visaType: $visaType,
-                onDismiss: {
-                    isShowChooseCountrySheet = false
+                if viewModel.hasData {
+                    ScrollView {
+                        ApplicationSection(title: "Belum selesai", counter: 4)
+                        ApplicationSection(title: "Riwayat", counter: 3)
+                    }
+                } else {
+                    EmptyStateView()
                 }
-            )
-            .presentationDragIndicator(.visible)
-            
+            }
+            .ignoresSafeArea(edges: .all)
+            .sheet(isPresented: $viewModel.isShowChooseCountrySheet) {
+                CountrySelectionSheetView(
+                    onDismiss: {
+                        viewModel.isShowChooseCountrySheet = false
+                    }
+                )
+                .environmentObject(viewModel)
+                .presentationDragIndicator(.visible)
+                
+            }
+            .navigationDestination(isPresented: $viewModel.isShowCountryApplicationView) {
+                CountryVisaApplicationView(countrySelected: viewModel.countryKeyword, visaType: viewModel.visaType)
+                    .navigationBarBackButtonHidden()
+            }
         }
     }
 }
@@ -111,4 +92,5 @@ struct EmptyStateView: View {
 
 #Preview {
     VisaHistoryView()
+        .environmentObject(VisaHistoryViewModel())
 }
