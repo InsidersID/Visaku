@@ -24,5 +24,7 @@ struct TabBarView: View {
 }
 
 #Preview {
-    TabBarView()
+    NavigationStack {
+        TabBarView()
+    }
 }
