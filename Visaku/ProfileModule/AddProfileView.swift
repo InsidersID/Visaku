@@ -37,7 +37,7 @@ struct AddProfileView: View {
                         .font(Font.custom("Inter", size: 16))
                         .fontWeight(.semibold)
                         .onAppear {
-                            profileViewModel.username = account.username
+                            profileViewModel.username = account.username.capitalized
                         }
                 }
                 .frame(height: 144, alignment: .center)
