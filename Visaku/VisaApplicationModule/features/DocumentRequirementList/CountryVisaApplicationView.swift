@@ -70,14 +70,14 @@ public struct CountryVisaApplicationView: View {
                         .onTapGesture {
                             isItinerary.toggle()
                         }
-                    DocumentCard(height: 128, document: "Form aplikasi", status: .undone)
-                        .padding(.horizontal)
-                        .onTapGesture {
-                            isFormApplication.toggle()
-                        }
                     CustomButton(text: "Print semua", color: .primary5,font: "Inter-SemiBold", fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    VStack {
+                        NavigationLink(destination: ApplicationFormView(viewModel: viewModel)) {
+                            DocumentCard(height: 122, document: "Form Aplikasi", status: .undone)
+                        }
+                        
                     }
-                    .padding()
+                    .padding(.horizontal)
                 }
                 
                 NotificationCard()

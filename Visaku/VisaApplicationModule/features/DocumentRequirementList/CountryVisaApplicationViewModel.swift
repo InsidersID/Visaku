@@ -40,6 +40,7 @@ public class CountryVisaApplicationViewModel: ObservableObject {
         guard let requirements = trip?.visaRequirements else { return 0 }
         let markedCount = requirements.filter { $0.isMarked }.count
         return (Double(markedCount) / Double(requirements.count)) * 100
+
     // Form data properties
     @Published var hasOtherResidence: String? = ""
     @Published var residenceType: String = ""
