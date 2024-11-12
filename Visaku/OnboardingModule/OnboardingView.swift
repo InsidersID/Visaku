@@ -36,6 +36,7 @@ public struct OnboardingView<Destination: View>: View {
                                 viewModel.showTabBarView = true
                             }
                         }
+                        .contentShape(Rectangle())
                         .frame(width: proxy.size.width*0.8, alignment: .trailing)
                         
                         Spacer()
