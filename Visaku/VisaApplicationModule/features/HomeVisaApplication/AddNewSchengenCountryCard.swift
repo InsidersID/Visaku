@@ -9,17 +9,14 @@ import SwiftUI
 import UIComponentModule
 
 struct AddNewSchengenCountryCard: View {
-    @Binding var visaType: String
-    @Binding var isAddNewSchengenCountry: Bool
-    @State var isSchengenCountryChosen: Bool = false
-    @Binding var countryKeyword: String
-    @Binding var isShowCountryApplicationView: Bool
+    @EnvironmentObject var viewModel: VisaHistoryViewModel
+    @State var isAddNewSchengenCountry: Bool = false
     
     var body: some View {
         CardContainer(cornerRadius: 18) {
             Button(action: {
-                isAddNewSchengenCountry = true
-                countryKeyword = ""
+                viewModel.isAddNewSchengenCountry = true
+                viewModel.countryKeyword = ""
             }, label: {
                 HStack {
                     Text("Tambah negara")
@@ -36,19 +33,17 @@ struct AddNewSchengenCountryCard: View {
         }
         .foregroundStyle(.secondary)
         .sheet(isPresented: $isAddNewSchengenCountry) {
-            SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, visaType: $visaType, isShowCountryApplicationView: $isShowCountryApplicationView, isUseSheet: false)
+            SchengenCountrySelectionSheetView()
                 .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
+                .environmentObject(viewModel)
         }
     }
 }
 
 #Preview {
-    @Previewable @State var isAddNewSchengenCountry = false
-    @Previewable @State var isSchengenCountryChosen = false
-    @Previewable @State var isShowCountryApplicationView: Bool = false
-    @Previewable @State var countryKeyword = ""
-    @Previewable @State var visaType: String = ""
-
-    AddNewSchengenCountryCard(visaType: $visaType, isAddNewSchengenCountry: $isAddNewSchengenCountry, isSchengenCountryChosen: isSchengenCountryChosen, countryKeyword: $countryKeyword, isShowCountryApplicationView: $isShowCountryApplicationView)
+    AddNewSchengenCountryCard()
+        .presentationDetents([.large])
+        .presentationDragIndicator(.visible)
+        .environmentObject(VisaHistoryViewModel())
 }

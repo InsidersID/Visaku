@@ -10,23 +10,21 @@ import UIComponentModule
 
 struct CountrySelectionCard: View {
     
-    let countryKeyword: String
-    @Binding var visaType: String
-    @Binding var isShowVisaTypeSheet: Bool
+    @EnvironmentObject var viewModel: VisaHistoryViewModel
     
     var body: some View {
         CardContainer(cornerRadius: 18) {
             
             VStack {
-                let flag = Countries.schengenCountryFlags[countryKeyword] ?? ""
-                Text("\(countryKeyword) \(flag)")
+                let flag = Countries.schengenCountryFlags[viewModel.countryKeyword] ?? ""
+                Text("\(viewModel.countryKeyword) \(flag)")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.title)
                     .bold()
                 VStack {
-                    VisaTypeRow(visaType: $visaType, isShowVisaTypeSheet: $isShowVisaTypeSheet)
-                    DateRow(label: "Berangkat", text: $visaType)
-                    DateRow(label: "Pulang", text: $visaType)
+                    VisaTypeRow(visaType: $viewModel.visaType, isShowVisaTypeSheet: $viewModel.isShowVisaTypeSheet)
+                    DateRow(label: "Berangkat", text: $viewModel.visaType)
+                    DateRow(label: "Pulang", text: $viewModel.visaType)
                 }
                 .padding(.vertical, 5)
             }
@@ -37,6 +35,8 @@ struct CountrySelectionCard: View {
 struct VisaTypeRow: View {
     @Binding var visaType: String
     @Binding var isShowVisaTypeSheet: Bool
+    
+    @EnvironmentObject var viewModel: VisaHistoryViewModel
 
     var body: some View {
         VStack {
@@ -58,6 +58,7 @@ struct VisaTypeRow: View {
                     VisaTypeSheet(isShowVisaTypeSheet: $isShowVisaTypeSheet, visaType: $visaType)
                         .presentationDragIndicator(.visible)
                         .presentationDetents([.height(280)])
+                        .environmentObject(viewModel)
                 }
                 Spacer()
                 Image(systemName: "chevron.down")
@@ -99,5 +100,6 @@ struct DateRow: View {
     let countryKeyword = "Italia"
     let flag = countryKeyword
     
-    CountrySelectionCard(countryKeyword: countryKeyword, visaType: $visaType, isShowVisaTypeSheet: $isShowVisaTypeSheet)
+    CountrySelectionCard()
+        .environmentObject(VisaHistoryViewModel())
 }

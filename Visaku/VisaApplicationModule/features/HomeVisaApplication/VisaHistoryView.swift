@@ -9,21 +9,13 @@ import SwiftUI
 import UIComponentModule
 
 public struct VisaHistoryView: View {
-    @State var viewModel: VisaHistoryViewModel
-    @State private var isShowChooseCountrySheet: Bool = false
-    @State private var countryKeyword: String = ""
-    @State private var isSchengenCountryChosen: Bool = false
-    @State private var visaType: String = ""
-    @State private var isShowCountryApplicationView = false
-    
-    public init(viewModel: VisaHistoryViewModel = VisaHistoryViewModel()) {
-        self.viewModel = viewModel
-    }
+    @StateObject var viewModel: VisaHistoryViewModel = VisaHistoryViewModel()
     
     public var body: some View {
         NavigationStack {
             VStack {
-                VisaApplicationHeader(isShowChooseCountrySheet: $isShowChooseCountrySheet)
+                VisaApplicationHeader()
+                    .environmentObject(viewModel)
                 
                 if viewModel.hasData {
                     ScrollView {
@@ -35,20 +27,18 @@ public struct VisaHistoryView: View {
                 }
             }
             .ignoresSafeArea(edges: .all)
-            .sheet(isPresented: $isShowChooseCountrySheet) {
+            .sheet(isPresented: $viewModel.isShowChooseCountrySheet) {
                 CountrySelectionSheetView(
-                    isSchengenCountryChosen: $isSchengenCountryChosen,
-                    countryKeyword: $countryKeyword,
-                    visaType: $visaType, isShowCountryApplicationView: $isShowCountryApplicationView,
                     onDismiss: {
-                        isShowChooseCountrySheet = false
+                        viewModel.isShowChooseCountrySheet = false
                     }
                 )
+                .environmentObject(viewModel)
                 .presentationDragIndicator(.visible)
                 
             }
-            .navigationDestination(isPresented: $isShowCountryApplicationView) {
-                CountryVisaApplicationView(countrySelected: countryKeyword, visaType: visaType)
+            .navigationDestination(isPresented: $viewModel.isShowCountryApplicationView) {
+                CountryVisaApplicationView(countrySelected: viewModel.countryKeyword, visaType: viewModel.visaType)
                     .navigationBarBackButtonHidden()
             }
         }
@@ -102,4 +92,5 @@ struct EmptyStateView: View {
 
 #Preview {
     VisaHistoryView()
+        .environmentObject(VisaHistoryViewModel())
 }

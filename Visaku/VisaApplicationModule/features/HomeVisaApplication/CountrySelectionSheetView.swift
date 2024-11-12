@@ -9,20 +9,17 @@ import SwiftUI
 import Foundation
 
 struct CountrySelectionSheetView: View {
-    @Binding var isSchengenCountryChosen: Bool
-    @Binding var countryKeyword: String
-    @Binding var visaType: String
-    @Binding var isShowCountryApplicationView: Bool
+    @EnvironmentObject var viewModel: VisaHistoryViewModel
     var onDismiss: () -> Void
 
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
-                    ForEach(Countries.countryList.filter { countryKeyword.isEmpty || $0.contains(countryKeyword) }, id: \.self) { country in
+                    ForEach(Countries.countryList.filter { viewModel.countryKeyword.isEmpty || $0.contains(viewModel.countryKeyword) }, id: \.self) { country in
                         Button(action: {
                             if country == "Schengen Area" {
-                                isSchengenCountryChosen = true
+                                viewModel.isSchengenCountryChosen = true
                             }
                         }) {
                             Text(country)
@@ -34,7 +31,7 @@ struct CountrySelectionSheetView: View {
                         }
                     }
                 }
-                .searchable(text: $countryKeyword, prompt: "Search")
+                .searchable(text: $viewModel.countryKeyword, prompt: "Search")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
@@ -58,10 +55,10 @@ struct CountrySelectionSheetView: View {
             }
             .padding(.horizontal)
         }
-        
-        .sheet(isPresented: $isSchengenCountryChosen) {
-            SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, visaType: $visaType, isShowCountryApplicationView: $isShowCountryApplicationView, isUseSheet: false)
+        .sheet(isPresented: $viewModel.isSchengenCountryChosen) {
+            SchengenCountrySelectionSheetView()
                 .presentationDragIndicator(.visible)
+                .environmentObject(viewModel)
         }
     }
 }

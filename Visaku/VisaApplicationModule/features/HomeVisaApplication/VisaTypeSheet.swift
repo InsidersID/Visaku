@@ -10,6 +10,8 @@ import SwiftUI
 struct VisaTypeSheet: View {
     @Binding var isShowVisaTypeSheet: Bool
     @Binding var visaType: String
+    
+    @EnvironmentObject var viewModel: VisaHistoryViewModel
 
     let visaTypes = [
         "turis", "pelajar", "bisnis",
@@ -22,6 +24,7 @@ struct VisaTypeSheet: View {
                     Button(action: {
                         visaType = type
                         isShowVisaTypeSheet = false
+                        viewModel.visaTypeIsEmpty = true
                     }) {
                         Text("Visa \(type)")
                             .font(.system(size: 17))
