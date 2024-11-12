@@ -35,7 +35,7 @@ struct SelectionSheet<Item: Hashable>: View {
                 }
                 .padding(.horizontal)
             }
-            .searchable(text: $searchKeyword, prompt: "Search")
+            .searchable(text: $searchKeyword, prompt: "Cari")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {

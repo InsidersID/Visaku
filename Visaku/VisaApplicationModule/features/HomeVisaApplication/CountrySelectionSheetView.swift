@@ -31,7 +31,7 @@ struct CountrySelectionSheetView: View {
                         }
                     }
                 }
-                .searchable(text: $viewModel.countryKeyword, prompt: "Search")
+                .searchable(text: $viewModel.countryKeyword, prompt: "Cari")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
