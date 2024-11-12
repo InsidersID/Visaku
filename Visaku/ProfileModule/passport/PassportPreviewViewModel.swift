@@ -102,8 +102,25 @@ class PassportPreviewViewModel: ObservableObject {
                 }
             }
             
-            self.passport = PassportEntity(id: UUID().uuidString, passportType: .regular, passportIssueType: .passportPolycarbonate, passportIssuePlace: "", issueDate: Date(), expirationDate: Date(), passportNo: "", image: Data())
+            self.passport = PassportEntity(
+                id: UUID().uuidString,
+                passportType: .regular,
+                passportIssueType: .passportPolycarbonate,
+                passportIssuePlace: "",
+                issueDate: Date(),
+                expirationDate: Date(),
+                passportNo: "",
+                image: Data()
+            )
+            
             self.passportImage = nil
+            
+            account.passport = nil
+            let isAccountSaveSuccess = try await accountUseCase.update(param: account)
+            if !isAccountSaveSuccess {
+                deletePassportState = .error
+                return
+            }
             
             deletePassportState = .success
         } catch {
@@ -133,6 +150,13 @@ class PassportPreviewViewModel: ObservableObject {
 
             DispatchQueue.main.async {
                 self.extractPassportData(from: recognizedTextByPosition)
+                
+                if let imageData = image.pngData() {
+                    self.passport.image = imageData
+                    self.passportImage = image
+                } else {
+                    print("Failed to convert UIImage to Data")
+                }
             }
         }
 
