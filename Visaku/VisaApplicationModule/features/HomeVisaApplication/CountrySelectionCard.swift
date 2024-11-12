@@ -90,10 +90,16 @@ struct DateRow: View {
                         .padding(.top, 0.5)
                         .bold()
                 }
+                
                 Spacer()
+                
                 Image(systemName: viewModel.showCalendar ? "chevron.up" : "chevron.down")
             }
             .contentShape(Rectangle())
+            .onTapGesture {
+                viewModel.showCalendar.toggle()
+            }
+            
             Divider()
         }
     }
