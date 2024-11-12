@@ -42,14 +42,13 @@ struct VisaApplicationHeader: View {
                 .padding(.horizontal)
             }
             .padding(.top, 60)
-            .padding(.bottom, 50)
+            .padding(.bottom, 35)
             .padding(.horizontal)
             .background(
                 Image("homeVisaApplication")
                     .resizable()
                     .scaledToFill()
                     .padding(.top, 20)
-                    .padding(.trailing, 25)
                 )
         }
         .background(Color(.primary4))
