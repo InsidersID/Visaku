@@ -58,9 +58,13 @@ public struct CountryVisaApplicationView: View {
                     Divider()
                         .padding(.bottom)
                     
-                    DocumentCard(height: 82, document: "Identitas", status: .undone)
-                        .onTapGesture {
-                            isIdentity.toggle()
+                    VStack {
+                        DocumentCard(height: 82, document: "Identitas", status: .undone)
+                            .onTapGesture {
+                                isIdentity.toggle()
+                            }
+                        NavigationLink(destination: ApplicationFormView(viewModel: viewModel)) {
+                            DocumentCard(height: 122, document: "Form Aplikasi", status: .undone)
                         }
                         .padding(.horizontal)
                     DocumentRequirementsList()
