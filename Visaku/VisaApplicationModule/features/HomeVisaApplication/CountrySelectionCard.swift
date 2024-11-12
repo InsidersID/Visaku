@@ -91,7 +91,7 @@ struct DateRow: View {
                     Text(label)
                         .foregroundStyle(.secondary)
                         .font(.custom("Inter-Regular", size: 14))
-                    Text("")
+                    Text(date?.formatted(date: .abbreviated, time: .omitted) ?? "")
                         .font(.custom("Inter-SemiBold", size: 16))
                         .padding(.bottom, 10)
                         .padding(.top, 0.5)
