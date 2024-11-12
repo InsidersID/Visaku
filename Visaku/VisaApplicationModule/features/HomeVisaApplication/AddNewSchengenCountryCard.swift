@@ -13,6 +13,7 @@ struct AddNewSchengenCountryCard: View {
     @Binding var isAddNewSchengenCountry: Bool
     @State var isSchengenCountryChosen: Bool = false
     @Binding var countryKeyword: String
+    @Binding var isShowCountryApplicationView: Bool
     
     var body: some View {
         CardContainer(cornerRadius: 18) {
@@ -35,7 +36,7 @@ struct AddNewSchengenCountryCard: View {
         }
         .foregroundStyle(.secondary)
         .sheet(isPresented: $isAddNewSchengenCountry) {
-            SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, visaType: $visaType, isAddNewSchengenCountry: false, isUseSheet: false)
+            SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, visaType: $visaType, isShowCountryApplicationView: $isShowCountryApplicationView, isUseSheet: false)
                 .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
         }
@@ -45,8 +46,9 @@ struct AddNewSchengenCountryCard: View {
 #Preview {
     @Previewable @State var isAddNewSchengenCountry = false
     @Previewable @State var isSchengenCountryChosen = false
+    @Previewable @State var isShowCountryApplicationView: Bool = false
     @Previewable @State var countryKeyword = ""
     @Previewable @State var visaType: String = ""
 
-    AddNewSchengenCountryCard(visaType: $visaType, isAddNewSchengenCountry: $isAddNewSchengenCountry, isSchengenCountryChosen: isSchengenCountryChosen, countryKeyword: $countryKeyword)
+    AddNewSchengenCountryCard(visaType: $visaType, isAddNewSchengenCountry: $isAddNewSchengenCountry, isSchengenCountryChosen: isSchengenCountryChosen, countryKeyword: $countryKeyword, isShowCountryApplicationView: $isShowCountryApplicationView)
 }

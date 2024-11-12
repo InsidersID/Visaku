@@ -11,6 +11,7 @@ struct SchengenCountrySelectionSheetView: View {
     @Binding var countryKeyword: String
     @Binding var visaType: String
     @State var isAddNewSchengenCountry: Bool = false
+    @Binding var isShowCountryApplicationView: Bool
     @State var countrySearchKeyword: String = ""
     var isUseSheet: Bool
 
@@ -40,7 +41,7 @@ struct SchengenCountrySelectionSheetView: View {
             .presentationDetents([.large])
             .sheet(isPresented: $isAddNewSchengenCountry) {
                 SchengenVisaSelectionSheetView(
-                    visaType: $visaType, countryKeyword: $countryKeyword,
+                    visaType: $visaType, isShowCountryApplicationView: $isShowCountryApplicationView, countryKeyword: $countryKeyword,
                     onDismiss: {
                         isAddNewSchengenCountry = false
                     }
@@ -53,8 +54,9 @@ struct SchengenCountrySelectionSheetView: View {
 #Preview {
     @Previewable @State var countryKeyword: String = "Italia"
     @Previewable @State var visaType: String = "turis"
-    @Previewable @State var isAddNewSchengenCountry: Bool = true
+    @Previewable @State var isAddNewSchengenCountry: Bool = false
+    @Previewable @State var isShowCountryApplicationView: Bool = true
     @Previewable @State var isUseSheet: Bool = true
     
-    SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, visaType: $visaType, isAddNewSchengenCountry: isAddNewSchengenCountry, isUseSheet: isUseSheet)
+    SchengenCountrySelectionSheetView(countryKeyword: $countryKeyword, visaType: $visaType, isAddNewSchengenCountry: isAddNewSchengenCountry, isShowCountryApplicationView: $isShowCountryApplicationView, isUseSheet: isUseSheet)
 }
