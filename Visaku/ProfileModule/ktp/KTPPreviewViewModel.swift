@@ -20,7 +20,7 @@ enum DeleteIdentityCardState {
 }
 
 @MainActor
-class KTPPreviewViewModel {
+class KTPPreviewViewModel: ObservableObject {
     @MainActor
     private var identityCardUseCase: IdentityCardUseCaseProtocol = IdentityCardUseCase.make()
     
@@ -28,16 +28,16 @@ class KTPPreviewViewModel {
     private var accountUseCase: AccountUseCaseProtocol = AccountUseCase.make()
     
     //Navigation
-    var isCameraOpen: Bool = true
+    @Published var isCameraOpen: Bool = true
     
     //Data
-    var identityCard: IdentityCardEntity
+    @Published var identityCard: IdentityCardEntity
     @StateObject public var account: AccountEntity
-    var ktpImage: UIImage?
+    @Published var ktpImage: UIImage?
     
     //State View
-    var saveIdentityCardState: SaveIdentityCardState = .idle
-    var deleteIdentityCardState: DeleteIdentityCardState = .idle
+    @Published var saveIdentityCardState: SaveIdentityCardState = .idle
+    @Published var deleteIdentityCardState: DeleteIdentityCardState = .idle
     
     init(account: AccountEntity? = nil) {
         self._account = StateObject(wrappedValue: account ?? AccountEntity(id: "", username: "", image: Data()))
