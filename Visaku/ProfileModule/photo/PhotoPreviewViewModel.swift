@@ -100,6 +100,11 @@ class PhotoPreviewViewModel: ObservableObject {
         }
     }
     
+    func handleSuccess() async {
+        self.photoImage = nil
+        await ProfileViewModel.shared.fetchAccountByID(self.account.id)
+    }
+    
     @MainActor
     private func updateProfileViewModelAccount() async {
         let profileViewModel = ProfileViewModel.shared

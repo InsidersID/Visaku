@@ -22,7 +22,7 @@ public struct PhotoPreviewSheet: View {
     
     public var body: some View {
         NavigationStack {
-            ScrollView {
+            ScrollView(.vertical, showsIndicators: true) {
                 VStack {
                     Spacer()
                     if let accountImage = photoPreviewViewModel.photoImage {
@@ -69,7 +69,11 @@ public struct PhotoPreviewSheet: View {
                         case .error:
                             Text("Eror menyimpan gambar akunmu").foregroundColor(.red)
                         case .success:
-                            Text("Gambar akunmu berhasil disimpan").foregroundColor(.green)
+                            Text("Gambar akunmu berhasil disimpan")
+                                .foregroundColor(.green)
+                                .task {
+                                await photoPreviewViewModel.handleSuccess()
+                            }
                         case .idle:
                             CustomButton(text: "Simpan", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                                 Task {
@@ -92,15 +96,31 @@ public struct PhotoPreviewSheet: View {
                             CustomButton(text: "Foto ulang", textColor: .primary5, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                                 Task {
                                     await photoPreviewViewModel.deletePhoto()
+                                    await ProfileViewModel.shared.fetchAccountByID(photoPreviewViewModel.account.id)
+                                    DispatchQueue.main.async {
+                                        photoPreviewViewModel.isCameraOpen = true
+                                    }
                                 }
-                                photoPreviewViewModel.isCameraOpen = true
                             }
                         }
                     }
                 }
                 .padding(.bottom, 16)
+                .frame(maxWidth: .infinity)
             }
-            .frame(maxWidth: .infinity)
+            .onChange(of: photoPreviewViewModel.photoImage) { newValue in
+                print("Photo image has been updated: \(String(describing: newValue))")
+            }
+            .navigationTitle("Foto")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarRole(.navigationStack)
+            .navigationBarItems(trailing: Button(action: {
+                dismiss()
+            }) {
+                Image(systemName: "x.circle")
+                    .font(.title)
+                    .foregroundColor(.blue)
+            })
             .fullScreenCover(isPresented: $photoPreviewViewModel.isCameraOpen, content: {
                 ZStack {
                     CameraViewRepresentable(photoImage: $photoPreviewViewModel.photoImage, cameraState: cameraState, onDismiss: { dismiss() })
@@ -112,22 +132,9 @@ public struct PhotoPreviewSheet: View {
                     CameraOverlayView(goToCamera: $photoPreviewViewModel.isCameraOpen, cameraState: cameraState)
                 }
             })
-            .onChange(of: photoPreviewViewModel.photoImage) { newValue in
-                print("Photo image has been updated: \(String(describing: newValue))")
-            }
-            .navigationTitle("Foto")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        dismiss()
-                    }) {
-                        Image(systemName: "x.circle")
-                            .font(.title)
-                            .foregroundColor(.blue)
-                    }
-                }
-            }
         }
+        
+        
     }
 }
 
