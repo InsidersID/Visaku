@@ -23,8 +23,14 @@ struct CountrySelectionCard: View {
                     .bold()
                 VStack {
                     VisaTypeRow(visaType: $viewModel.visaType, isShowVisaTypeSheet: $viewModel.isShowVisaTypeSheet)
-                    DateRow(label: "Berangkat", text: $viewModel.visaType)
-                    DateRow(label: "Pulang", text: $viewModel.visaType)
+                    
+                    DateRow(label: "Berangkat", date: $viewModel.startDate)
+                    
+                    if viewModel.showCalendar {
+                        DatePickerCalendar(startDate: $viewModel.startDate, endDate: $viewModel.endDate)
+                    }
+                    
+                    DateRow(label: "Pulang", date: $viewModel.endDate)
                 }
                 .padding(.vertical, 5)
             }
