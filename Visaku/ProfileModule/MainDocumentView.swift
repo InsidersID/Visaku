@@ -152,15 +152,15 @@ public struct MainDocumentView: View {
             .sheet(isPresented: $profileViewModel.isUploadFile) {
                 FilePicker(selectedFileURL: $profileViewModel.selectedFileURL)
             }
-            .sheet(isPresented: $profileViewModel.isUploadImage) {
-                ImagePicker(selectedImage: $profileViewModel.identifiableSelectedImage, documentType:
-                        profileViewModel.selectedDocument == .init(name: "KTP") ? .ktp :
-                        profileViewModel.selectedDocument == .init(name: "Paspor") ? .paspor :
-                        profileViewModel.selectedDocument == .init(name: "Foto") ? .personalPhoto : .paspor
-                    )
-                    .presentationDetents([.medium, .large])
-                    .presentationDragIndicator(.visible)
-            }
+//            .sheet(isPresented: $profileViewModel.isUploadImage) {
+//                ImagePicker(selectedImage: $profileViewModel.identifiableSelectedImage, documentType:
+//                        profileViewModel.selectedDocument == .init(name: "KTP") ? .ktp :
+//                        profileViewModel.selectedDocument == .init(name: "Paspor") ? .paspor :
+//                        profileViewModel.selectedDocument == .init(name: "Foto") ? .personalPhoto : .paspor
+//                    )
+//                    .presentationDetents([.medium, .large])
+//                    .presentationDragIndicator(.visible)
+//            }
             .sheet(isPresented: $profileViewModel.isScanKTP, content: {
                 KTPPreviewSheet(account: account)
                     .presentationDetents([.medium, .large])

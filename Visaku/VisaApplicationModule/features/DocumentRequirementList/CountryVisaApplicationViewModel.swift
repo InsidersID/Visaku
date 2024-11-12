@@ -13,34 +13,14 @@ enum TripState {
 public class CountryVisaApplicationViewModel: ObservableObject {
     private var tripUseCase: TripUseCaseProtocol = TripUseCase.make()
     
-//    @Published var isMarkedStatus: [VisaGeneralTouristDocumentType: Bool] = [:]
     @Published var trip: TripEntity?
-    
-    // Initialize with optional isMarkedStatus dictionary
-//    init(isMarkedStatus: [VisaGeneralTouristDocumentType: Bool] = [:]) {
-//        self.isMarkedStatus = isMarkedStatus
-//    }
     
     var completionPercentage: Double {
         guard let requirements = trip?.visaRequirements else { return 0 }
         let markedCount = requirements.filter { $0.isMarked }.count
         return (Double(markedCount) / Double(requirements.count)) * 100
-    @Published var applicationDocuments: ApplicationDocuments?
-    @Published var isMarkedStatus: [VisaGeneralTouristDocumentType: Bool] = [:]
+    }
     
-//    @Published var isMarkedStatus: [VisaGeneralTouristDocumentType: Bool] = [:]
-    @Published var trip: TripEntity?
-    
-    // Initialize with optional isMarkedStatus dictionary
-//    init(isMarkedStatus: [VisaGeneralTouristDocumentType: Bool] = [:]) {
-//        self.isMarkedStatus = isMarkedStatus
-//    }
-    
-    var completionPercentage: Double {
-        guard let requirements = trip?.visaRequirements else { return 0 }
-        let markedCount = requirements.filter { $0.isMarked }.count
-        return (Double(markedCount) / Double(requirements.count)) * 100
-
     // Form data properties
     @Published var hasOtherResidence: String? = ""
     @Published var residenceType: String = ""
@@ -78,10 +58,6 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     @Published var euFamilyNationality: String = ""
     @Published var euFamilyDocumentNumber: String = ""
     @Published var euFamilyRelation: String? = ""
-    
-    init(isMarkedStatus: [VisaGeneralTouristDocumentType: Bool]) {
-        self.isMarkedStatus = isMarkedStatus
-    }
     
     public func saveTripData(visaType: String, countrySelected: String) {
         guard trip == nil else { return }

@@ -47,22 +47,16 @@ public struct CountryVisaApplicationView: View {
                         }
                         .tint(.blue)
                         .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
-                        .onChange(of: viewModel.completionPercentage) { newValue, oldValue in
-                            print(Int(oldValue))
-                        }
-                        
-                        // Separate text from the gauge itself
-                        
                     }
                     
                     Divider()
                         .padding(.bottom)
                     
                     DocumentCard(height: 82, document: "Identitas", status: .undone)
+                        .padding(.horizontal)
                         .onTapGesture {
                             isIdentity.toggle()
                         }
-                        .padding(.horizontal)
                     DocumentRequirementsList()
                         .environmentObject(viewModel)
                     DocumentCard(height: 114, document: "Itinerary", status: .undone)
@@ -70,43 +64,43 @@ public struct CountryVisaApplicationView: View {
                         .onTapGesture {
                             isItinerary.toggle()
                         }
-                    CustomButton(text: "Print semua", color: .primary5,font: "Inter-SemiBold", fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
-                    VStack {
-                        NavigationLink(destination: ApplicationFormView(viewModel: viewModel)) {
-                            DocumentCard(height: 122, document: "Form Aplikasi", status: .undone)
+                    DocumentCard(height: 128, document: "Form Aplikasi", status: .undone)
+                        .padding(.horizontal)
+                        .onTapGesture {
+                            isFormApplication.toggle()
                         }
-                        
+                    CustomButton(text: "Print semua", color: .primary5,font: "Inter-SemiBold", fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     }
-                    .padding(.horizontal)
+                    
+                    NotificationCard()
+                        .offset(x: 40, y: 0)
+                    
                 }
-                
-                NotificationCard()
-                    .offset(x: 40, y: 0)
-                
-            }
-            .navigationTitle("Pengajuan")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left.circle")
-                            .foregroundStyle(.black)
+                .navigationTitle("Pengajuan")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "chevron.left.circle")
+                                .foregroundStyle(.black)
+                        }
                     }
                 }
-            }
-            .onAppear {
-                viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected)
-            }
-            .sheet(isPresented: $isIdentity) {
-                ProfileView()
-            }
-            .sheet(isPresented: $isItinerary) {
-                ItineraryListSheet()
-            }
-            .sheet(isPresented: $isFormApplication) {
-                Text("Form Aplikasi")
+                .onAppear {
+                    viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected)
+                }
+                .sheet(isPresented: $isIdentity) {
+                    ProfileView()
+                }
+                .sheet(isPresented: $isItinerary) {
+                    ItineraryListSheet()
+                }
+                .sheet(isPresented: $isFormApplication) {
+                    ApplicationFormView()
+                        .environmentObject(viewModel)
+                }
             }
         }
     }

@@ -9,7 +9,7 @@ import SwiftUI
 import UIComponentModule
 
 struct ApplicationFormView: View {
-    @ObservedObject var viewModel: CountryVisaApplicationViewModel
+    @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -33,11 +33,11 @@ struct ApplicationFormView: View {
                             }
                         }
                     )
-
+                    
                     SectionView(
                         title: "Informasi bepergian",
                         content: {
-//                            ExpandableSelection(title: "Negara yang menjadi titik masuk pertama Anda ke wilayah Schengen", options: Countries.schengenCountryList, mode: .single, singleSelection: $viewModel.lastSchengenEntryCountry, multipleSelection: .constant([]))
+                            //                            ExpandableSelection(title: "Negara yang menjadi titik masuk pertama Anda ke wilayah Schengen", options: Countries.schengenCountryList, mode: .single, singleSelection: $viewModel.lastSchengenEntryCountry, multipleSelection: .constant([]))
                             ExpandableSelection(title: "Tujuan utama perjalanan Anda ke wilayah Schengen", options: ["Turis/Wisata", "Budaya", "Alasan Kesehatan", "Transit bandara", "Bisnis", "Olahraga", "Belajar", "Kunjungan Keluarga", "Kunjungan official", "Transit", "Tipe lainnya"], mode: .single, singleSelection: $viewModel.mainTravelPurpose, multipleSelection: .constant([]))
                             if viewModel.mainTravelPurpose == "Tipe lainnya" {
                                 ExpandableSelection(title: "Tipe lainnya", options: ["Undangan", "Pekerjaan pribadi", "Penelitian", "Pekerjaan maritim", "Pekerjaan hiburan", "Pekerjaan Olahraga"], mode: .single, singleSelection: $viewModel.mainTravelPurpose, multipleSelection: .constant([]))
@@ -116,12 +116,12 @@ struct ApplicationFormView: View {
 struct SectionView<Content: View>: View {
     var title: String
     var content: Content
-
+    
     init(title: String, @ViewBuilder content: () -> Content) {
         self.title = title
         self.content = content()
     }
-
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text(title)
@@ -145,5 +145,6 @@ extension Binding {
 }
 
 #Preview {
-    ApplicationFormView(viewModel: CountryVisaApplicationViewModel())
+    ApplicationFormView()
+        .environmentObject(CountryVisaApplicationViewModel())
 }
