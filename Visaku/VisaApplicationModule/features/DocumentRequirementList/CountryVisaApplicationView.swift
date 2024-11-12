@@ -7,46 +7,21 @@
 
 import SwiftUI
 import UIComponentModule
+import RepositoryModule
 
 public struct CountryVisaApplicationView: View {
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = CountryVisaApplicationViewModel()
-    @State private var progress: Double = 10
-//    var applicationList: [String] = ["Tiket Pesawat", "Reservasi Hotel", "Asuransi Medis", "Referensi Bank", "Itinerary"]
     
     var countrySelected: String
     var visaType: String
     
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.dismiss) private var dismiss
+    @StateObject private var viewModel = CountryVisaApplicationViewModel()
+    @State private var progress: Double = 0
     
     @State var isIdentity: Bool = false
-    @State var isFormApplication: Bool = false
-    @State var isFlightTicket: Bool = false
-    @State var isHotelReservation: Bool = false
-    @State var isMedicalInsurance: Bool = false
-    @State var isBankReference: Bool = false
     @State var isItinerary: Bool = false
-    @State var isPassport: Bool = false
-    @State var isFotokopiKartuKeluarga: Bool = false
-    
-    //Mark
-    @State var isFotokopiKartuKeluargaMarked: Bool = false
-    
-    @State private var isMarkedStatus: [VisaGeneralTouristDocumentType: Bool] = [
-        .fotokopiKartuKeluarga: false,
-        .kartuKeluargaAsli: false,
-        .fotokopiAktaKelahiranAtauSuratNikah: false,
-        .paspor: false,
-        .fotokopiPaspor: false,
-        .pasFoto: false,
-        .asuransiKesehatanPerjalanan: false,
-        .buktiPemesananAkomodasi: false,
-        .buktiPenerbangan: false,
-        .intineraryLengkap: false,
-        .rekeningKoranPribadi: false,
-        .sponsor: false,
-        .buktiKeuangan: false
-    ]
+    @State var isFormApplication: Bool = false
     
     public var body: some View {
         
@@ -56,41 +31,51 @@ public struct CountryVisaApplicationView: View {
                     Color
                         .clear
                         .ignoresSafeArea(.all)
-                    Gauge(value: progress, in: 0...100) {
-                        
-                    } currentValueLabel: {
-                        VStack {
-                            Text("\(Int(progress))%")
-                            Text("Visa turis Italia")
-                                .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
-                                .font(.system(.title, design: .serif, weight: .semibold))
+                    
+                    VStack {
+                        Gauge(value: viewModel.completionPercentage, in: 0...100) {
+                            
+                        } currentValueLabel: {
+                            VStack {
+                                Text("\(Int(viewModel.completionPercentage))%")
+                                Text("Visa \(visaType) \(countrySelected)")
+                                    .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
+                                    .font(.system(.title, design: .serif, weight: .semibold))
+                            }
+                            .foregroundStyle(.blue)
+                            .padding(.bottom, 50)
                         }
-                        .foregroundStyle(.blue)
-                        .padding(.bottom, 50)
+                        .tint(.blue)
+                        .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
+                        .onChange(of: viewModel.completionPercentage) { newValue, oldValue in
+                            print(Int(oldValue))
+                        }
+                        
+                        // Separate text from the gauge itself
+                        
                     }
-                    .tint(.blue)
-                    .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
                     
                     Divider()
                         .padding(.bottom)
                     
-                    VStack {
-                        DocumentCard(height: 82, document: "Identitas", status: .undone)
-                            .onTapGesture {
-                                isIdentity.toggle()
-                            }
-                        NavigationLink(destination: ApplicationFormView()) {
-                            DocumentCard(height: 122, document: "Form Aplikasi", status: .undone)
+                    DocumentCard(height: 82, document: "Identitas", status: .undone)
+                        .onTapGesture {
+                            isIdentity.toggle()
                         }
-                        DocumentCard(height: 122, document: "Form Aplikasi", status: .undone)
-                            .onTapGesture {
-                                isFormApplication.toggle()
-                            }
-                    }
-                    .padding(.horizontal)
-                    
-                    DocumentRequirementsList(viewModel: viewModel)
-                    CustomButton(text: "Download", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                        .padding(.horizontal)
+                    DocumentRequirementsList()
+                        .environmentObject(viewModel)
+                    DocumentCard(height: 114, document: "Itinerary", status: .undone)
+                        .padding(.horizontal)
+                        .onTapGesture {
+                            isItinerary.toggle()
+                        }
+                    DocumentCard(height: 128, document: "Form aplikasi", status: .undone)
+                        .padding(.horizontal)
+                        .onTapGesture {
+                            isFormApplication.toggle()
+                        }
+                    CustomButton(text: "Print semua", color: .primary5,font: "Inter-SemiBold", fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     }
                     .padding()
                 }
@@ -112,37 +97,16 @@ public struct CountryVisaApplicationView: View {
                 }
             }
             .onAppear {
-                print("Requirements for the visa for \(countrySelected) with visa type \(visaType) are:")
-                let visaTypeEnum = VisaType.init(rawValue: visaType)
-                if let visaType = visaTypeEnum {
-                    let requirementsForItaly = VisaGeneralTouristDocumentType.getRequirements(for: visaType, in: countrySelected)
-                    
-                    print("Visa Requirements for Italia:")
-                    for requirement in requirementsForItaly {
-                        print("- \(requirement.displayName): \(requirement.description)")
-                    }
-                }
+                viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected)
             }
             .sheet(isPresented: $isIdentity) {
                 ProfileView()
             }
-            .sheet(isPresented: $isFormApplication) {
-                Text("Form Application")
-            }
-            .sheet(isPresented: $isFlightTicket) {
-                Text("Flight Ticket")
-            }
-            .sheet(isPresented: $isHotelReservation) {
-                Text("Hotel Reservation")
-            }
-            .sheet(isPresented: $isMedicalInsurance) {
-                Text("Medical Insurance")
-            }
-            .sheet(isPresented: $isBankReference) {
-                Text("Bank Reference")
-            }
             .sheet(isPresented: $isItinerary) {
                 ItineraryListSheet()
+            }
+            .sheet(isPresented: $isFormApplication) {
+                Text("Form Aplikasi")
             }
         }
     }
@@ -153,34 +117,37 @@ public struct CountryVisaApplicationView: View {
 }
 
 struct DocumentRequirementsList: View {
-    let documents = VisaGeneralTouristDocumentType.data
-    @ObservedObject var viewModel: CountryVisaApplicationViewModel
-    @State private var selectedDocumentType: VisaGeneralTouristDocumentType?
-
+    @State private var selectedDocument: VisaRequirement?
+    @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
+    
     var body: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
-            ForEach(documents, id: \.self) { application in
-                DocumentCard(
-                    height: 115,
-                    document: application.displayName,
-                    status: viewModel.isMarkedStatus[application] == true ? .done : .undone,
-                    requiresMarkOnly: application.requiresUpload
-                )
-                .onTapGesture {
-                    selectedDocumentType = application
-                }
-                .sheet(item: $selectedDocumentType) { document in
-                    DocumentSheet(
-                        documentType: document,
-                        isMarked: Binding(
-                            get: { viewModel.isMarkedStatus[document] ?? false },
-                            set: { newValue in
-                                viewModel.isMarkedStatus[document] = newValue
-                                selectedDocumentType = nil
-                            }
-                        ),
-                        viewModel: viewModel
+            if let visaRequirements = viewModel.trip?.visaRequirements {
+                ForEach(visaRequirements.indices, id: \.self) { index in
+                    DocumentCard(
+                        height: 115,
+                        document: visaRequirements[index].displayName,
+                        status: visaRequirements[index].isMarked ? .done : .undone,
+                        requiresMarkOnly: visaRequirements[index].requiresUpload
                     )
+                    .onTapGesture {
+                        selectedDocument = visaRequirements[index]
+                    }
+                    .sheet(item: $selectedDocument) { document in
+                        DocumentSheet(
+                            documentType: document,
+                            isMarked: Binding(
+                                get: { document.isMarked },
+                                set: { newValue in
+                                    if let index = visaRequirements.firstIndex(where: { $0.id == document.id }) {
+                                        viewModel.trip?.visaRequirements?[index].isMarked = newValue
+                                    }
+                                    selectedDocument = nil
+                                }
+                            )
+                        )
+                        .environmentObject(viewModel)
+                    }
                 }
             }
         }
@@ -189,27 +156,28 @@ struct DocumentRequirementsList: View {
 }
 
 struct DocumentSheet: View {
-    var documentType: VisaGeneralTouristDocumentType
+    var documentType: VisaRequirement
     @Binding var isMarked: Bool
-    @ObservedObject var viewModel: CountryVisaApplicationViewModel
+    @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
     
     var body: some View {
         if documentType.requiresUpload {
             ActionDocumentSheet(
                 documentType: documentType,
-                isMarked: $isMarked,
-                viewModel: viewModel
+                isMarked: $isMarked
             )
             .presentationDetents([.height(356)])
             .presentationDragIndicator(.visible)
+            .environmentObject(viewModel)
         } else {
             MarkOnlyDocumentSheet(
                 documentType: documentType,
-                isMarked: $isMarked,
-                viewModel: viewModel
+                isMarked: $isMarked
             )
             .presentationDetents([.height(356)])
             .presentationDragIndicator(.visible)
+            .environmentObject(viewModel)
         }
     }
 }
+

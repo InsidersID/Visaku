@@ -8,7 +8,7 @@ struct TabBarView: View {
                 .tabItem {
                     Label("Visaku", systemImage: "pencil.line")
                 }
-                
+
             ProfileView()
                 .tabItem {
                     Label("Profil", systemImage: "person.crop.circle.fill")
