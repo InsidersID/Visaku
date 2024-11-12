@@ -147,16 +147,18 @@ public struct CustomDateField: View {
                         isExpanded = false
                     }
                 } else {
-                    Text(dateDisplayText)
-                        .bold()
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if date != nil {
+                        Text(dateDisplayText)
+                            .bold()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
             }
         }
     }
     
     private var dateDisplayText: String {
-        date.map { DateFormatter.localizedString(from: $0, dateStyle: .medium, timeStyle: .none) } ?? "Select Date"
+        date.map { DateFormatter.localizedString(from: $0, dateStyle: .medium, timeStyle: .none) } ?? ""
     }
 }
 
