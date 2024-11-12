@@ -154,15 +154,23 @@ public struct MainDocumentView: View {
             }
             .sheet(isPresented: $profileViewModel.isUploadImage) {
                 ImagePicker(selectedImage: $profileViewModel.selectedImage)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
             }
-            .fullScreenCover(isPresented: $profileViewModel.isScanKTP, content: {
+            .sheet(isPresented: $profileViewModel.isScanKTP, content: {
                 KTPPreviewSheet(account: account)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
             })
-            .fullScreenCover(isPresented: $profileViewModel.isScanPaspor, content: {
+            .sheet(isPresented: $profileViewModel.isScanPaspor, content: {
                 PassportPreviewSheet(account: account)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
             })
-            .fullScreenCover(isPresented: $profileViewModel.isScanFoto, content: {
+            .sheet(isPresented: $profileViewModel.isScanFoto, content: {
                 PhotoPreviewSheet(account: account)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
             })
             .fullScreenCover(isPresented: $isShowingEditProfile) {
                 AddProfileView(account: account, isEditing: true)
