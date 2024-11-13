@@ -18,6 +18,7 @@ public struct CountryVisaApplicationView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = CountryVisaApplicationViewModel()
     @State private var progress: Double = 0
+    @State private var isShowPrintSheet = false
     
     @State var isIdentity: Bool = false
     @State var isItinerary: Bool = false
@@ -40,7 +41,7 @@ public struct CountryVisaApplicationView: View {
                                 Text("\(Int(viewModel.completionPercentage))%")
                                 Text("Visa \(visaType) \(countrySelected)")
                                     .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
-                                    .font(.system(.title, design: .serif, weight: .semibold))
+                                    .font(.custom("Inter-Medium", size: 20))
                             }
                             .foregroundStyle(.blue)
                             .padding(.bottom, 50)
@@ -64,14 +65,16 @@ public struct CountryVisaApplicationView: View {
                         .onTapGesture {
                             isItinerary.toggle()
                         }
-                    DocumentCard(height: 128, document: "Form Aplikasi", status: .undone)
-                        .padding(.horizontal)
-                        .onTapGesture {
-                            isFormApplication.toggle()
-                        }
-                    CustomButton(text: "Print semua", color: .primary5,font: "Inter-SemiBold", fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    NavigationLink(destination: ApplicationFormView().environmentObject(viewModel)) {
+                        DocumentCard(height: 128, document: "Form Aplikasi", status: .undone)
+                            .padding(.horizontal)
                     }
                     
+                    CustomButton(text: "Batalkan Pengajuan", textColor: .danger4, color: .clear, font: "Inter-SemiBold", fontSize: 17) {
+                        
+                    }
+                    .padding()
+                
                     NotificationCard()
                         .offset(x: 40, y: 0)
                     
@@ -91,16 +94,27 @@ public struct CountryVisaApplicationView: View {
                 .onAppear {
                     viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected)
                 }
+                .onChange(of: viewModel.completionPercentage) {
+                    if viewModel.completionPercentage == 100 {
+                        isShowPrintSheet = true
+                    }
+                }
                 .sheet(isPresented: $isIdentity) {
                     ProfileView()
                 }
                 .sheet(isPresented: $isItinerary) {
                     ItineraryListSheet()
                 }
-                .sheet(isPresented: $isFormApplication) {
-                    ApplicationFormView()
-                        .environmentObject(viewModel)
+                .sheet(isPresented: $isShowPrintSheet) {
+                    CustomButton(text: "Print semua", color: .primary5, font: "Inter-SemiBold", fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    }
+                    .padding()
+                    .presentationDetents([.height(100)])
                 }
+                //                .sheet(isPresented: $isFormApplication) {
+                //                    ApplicationFormView()
+                //                        .environmentObject(viewModel)
+                //                }
             }
         }
     }
