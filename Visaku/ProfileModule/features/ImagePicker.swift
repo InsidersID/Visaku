@@ -13,11 +13,11 @@ struct ImagePicker: UIViewControllerRepresentable {
     class Coordinator: NSObject, PHPickerViewControllerDelegate {
         
         let parent: ImagePicker
-        
+
         init(parent: ImagePicker) {
             self.parent = parent
         }
-        
+
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
                 picker.dismiss(animated: true)
 
@@ -45,18 +45,18 @@ struct ImagePicker: UIViewControllerRepresentable {
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
     }
-    
+
     // Step 4: Creating the PHPickerViewController
     func makeUIViewController(context: Context) -> PHPickerViewController {
         var config = PHPickerConfiguration()
         config.filter = .images
         config.selectionLimit = 1
-        
+
         let picker = PHPickerViewController(configuration: config)
         picker.delegate = context.coordinator
         return picker
     }
-    
+
     func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {}
 }
 
@@ -71,7 +71,7 @@ struct ImagePickerView: View {
     
     @ObservedObject var account: AccountEntity
     var documentType: AllDocumentType
-    
+
     var body: some View {
         VStack {
             if let image = selectedImage?.image {

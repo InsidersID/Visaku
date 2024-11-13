@@ -27,7 +27,7 @@ struct VisaTypeSheet: View {
                         viewModel.visaTypeIsEmpty = true
                     }) {
                         Text("Visa \(type)")
-                            .font(.system(size: 17))
+                            .font(.custom("Inter-SemiBold", size: 17))
                             .foregroundStyle(.black)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()

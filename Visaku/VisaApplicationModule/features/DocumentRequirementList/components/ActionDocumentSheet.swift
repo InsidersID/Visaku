@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import RepositoryModule
 
 struct ActionDocumentSheet: View {
-    var documentType: VisaGeneralTouristDocumentType
+    var documentType: VisaRequirement
     @Binding var isMarked: Bool
-    @ObservedObject var viewModel: CountryVisaApplicationViewModel
     @State private var showDocumentDetail = false
+    @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -23,17 +24,14 @@ struct ActionDocumentSheet: View {
             VStack(alignment: .leading, spacing: 24) {
                 Button(action: {
                     isMarked.toggle()
-                    viewModel.isMarkedStatus[documentType] = isMarked
-                    print("isMarked toggled: \(isMarked)")
-                    print("isMarkedStatus in ViewModel: \(viewModel.isMarkedStatus[documentType] ?? false)")
                 }) {
                     HStack {
                         Image(systemName: isMarked ? "x.circle.fill": "checkmark.circle.fill")
                             .foregroundStyle(isMarked ? .red : .green)
-                            .font(.system(size: 24))
+                            .font(.custom("Inter-Regular", size: 16))
                         
                         Text(isMarked ? "Tandai belum selesai": "Tandai selesai")
-                            .font(.system(size: 24))
+                            .font(.custom("Inter-Regular", size: 16))
                             .foregroundStyle(.black)
                     }
                     .contentShape(Rectangle())
@@ -42,25 +40,25 @@ struct ActionDocumentSheet: View {
                 HStack {
                     Image(systemName: "square.and.arrow.up.circle.fill")
                         .foregroundStyle(.blue)
-                        .font(.system(size: 24))
+                        .font(.custom("Inter-Regular", size: 16))
                     Text("Upload dari device")
-                        .font(.system(size: 24))
+                        .font(.custom("Inter-Regular", size: 16))
                 }
                 
                 HStack {
                     Image(systemName: "camera.circle.fill")
                         .foregroundStyle(.blue)
-                        .font(.system(size: 24))
+                        .font(.custom("Inter-Regular", size: 16))
                     Text("Scan dokumen")
-                        .font(.system(size: 24))
+                        .font(.custom("Inter-Regular", size: 16))
                 }
                 
                 HStack {
                     Image(systemName: "eye.circle.fill")
                         .foregroundStyle(.blue)
-                        .font(.system(size: 24))
+                        .font(.custom("Inter-Regular", size: 16))
                     Text("Lihat ketentuan")
-                        .font(.system(size: 24))
+                        .font(.custom("Inter-Regular", size: 16))
                 }
                 .onTapGesture {
                     showDocumentDetail = true
@@ -80,18 +78,13 @@ struct ActionDocumentSheet: View {
     }
 }
 
-#Preview {
-    @Previewable @State var isMarked: Bool = false
-    let mockViewModel = CountryVisaApplicationViewModel(
-            isMarkedStatus: [
-                .asuransiKesehatanPerjalanan: false,
-                .fotokopiPaspor: true
-            ]
-        )
-
-    ActionDocumentSheet(
-        documentType: .asuransiKesehatanPerjalanan,
-        isMarked: $isMarked,
-        viewModel: mockViewModel
-    )
-}
+//#Preview {
+//    @Previewable @State var isMarked: Bool = false
+//    let mockViewModel = CountryVisaApplicationViewModel()
+//
+//    ActionDocumentSheet(
+//        documentType: .asuransiKesehatanPerjalanan,
+//        isMarked: $isMarked
+//    )
+//    .environmentObject(mockViewModel)
+//}
