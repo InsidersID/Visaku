@@ -26,14 +26,14 @@ public struct CountryVisaApplicationView: View {
     
     public var body: some View {
         
-        NavigationView {
+        NavigationStack {
             ZStack {
                 ScrollView {
                     Color
                         .clear
                         .ignoresSafeArea(.all)
-                    
                     VStack {
+                        
                         Gauge(value: viewModel.completionPercentage, in: 0...100) {
                             
                         } currentValueLabel: {
@@ -77,6 +77,7 @@ public struct CountryVisaApplicationView: View {
                 
                     NotificationCard()
                         .offset(x: 40, y: 0)
+                    .padding(.horizontal)
                     
                 }
                 .navigationTitle("Pengajuan")
@@ -115,6 +116,13 @@ public struct CountryVisaApplicationView: View {
                 //                    ApplicationFormView()
                 //                        .environmentObject(viewModel)
                 //                }
+                .fullScreenCover(isPresented: $isFormApplication) {
+                    ApplicationFormView()
+                        .environmentObject(viewModel)
+                }
+                
+                NotificationCard()
+                    .offset(x: 40, y: 0)
             }
         }
     }

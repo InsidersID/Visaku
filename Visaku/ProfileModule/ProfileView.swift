@@ -12,11 +12,13 @@ public struct ProfileView: View {
     }
     
     public var body: some View {
+        @Bindable var profileViewModel =  profileViewModel
+
         NavigationStack {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16){
                     if let accounts = profileViewModel.accounts {
-                        ForEach(accounts) { account in
+                        ForEach(accounts, id: \.id) { account in
                             if isSelectProfile {
                                 Button {
                                     dismiss()
