@@ -13,9 +13,15 @@ public struct PassportPreviewSheet: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var passportPreviewViewModel: PassportPreviewViewModel
     
-    // Initialize with AccountEntity
-    public init(account: AccountEntity) {
+    public init(account: AccountEntity, selectedImage: UIImage? = nil) {
         self.passportPreviewViewModel = PassportPreviewViewModel(account: account)
+        
+        if let unwrappedImage = selectedImage {
+            self.passportPreviewViewModel.passportImage = unwrappedImage
+            self.passportPreviewViewModel.processCapturedImage(unwrappedImage)
+         } else {
+             print("No image to process from ImagePicker, waiting for camera scan.")
+         }
     }
     
     public var body: some View {

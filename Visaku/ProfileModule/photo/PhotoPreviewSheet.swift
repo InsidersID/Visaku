@@ -16,8 +16,9 @@ public struct PhotoPreviewSheet: View {
     
     @StateObject private var cameraState = CameraState()
     
-    public init(account: AccountEntity) {
+    public init(account: AccountEntity, photoImage: UIImage? = nil) {
         self._photoPreviewViewModel = StateObject(wrappedValue: PhotoPreviewViewModel(account: account))
+        self.photoPreviewViewModel.photoImage = photoImage
     }
     
     public var body: some View {

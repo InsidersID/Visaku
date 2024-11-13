@@ -69,7 +69,7 @@ public struct PhotoRequestView: View {
     }
 }
 
-public struct IdentifiableImage: Identifiable {
+public struct IdentifiableImage: Identifiable, Equatable {
     public var id = UUID()
     public var image: UIImage
 }

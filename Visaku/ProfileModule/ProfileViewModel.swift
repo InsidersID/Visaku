@@ -4,7 +4,7 @@ import SwiftUI
 
 @MainActor
 @Observable
-public class ProfileViewModel{
+public class ProfileViewModel {
     
     static let shared = ProfileViewModel()
     

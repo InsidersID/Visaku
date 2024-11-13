@@ -6,11 +6,12 @@ import PhotosUI
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var selectedImage: IdentifiableImage?
     var documentType: AllDocumentType
-    @Environment(\.presentationMode) var presentationMode
-    
+    var onDocumentTypeSelected: ((AllDocumentType) -> Void)?
+//    @Environment(\.presentationMode) var presentationMode
     
     // Step 2: Coordinator to handle user selection
     class Coordinator: NSObject, PHPickerViewControllerDelegate {
+        
         let parent: ImagePicker
         
         init(parent: ImagePicker) {
@@ -18,20 +19,27 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
         
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-            
-            // Check for results and load the selected image
-            if let result = results.first, result.itemProvider.canLoadObject(ofClass: UIImage.self) {
-                result.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
-                    DispatchQueue.main.async {
-                        if let selectedImage = image as? UIImage {
-                            self.parent.selectedImage = IdentifiableImage(image: selectedImage)
+                picker.dismiss(animated: true)
+
+                guard let firstResult = results.first else {
+                    print("No image selected")
+                    return
+                }
+
+                firstResult.itemProvider.loadObject(ofClass: UIImage.self) { (object, error) in
+                    if let error = error {
+                        print("Failed to load image: \(error)")
+                        return
+                    }
+
+                    if let image = object as? UIImage {
+                        DispatchQueue.main.async {
+                            self.parent.selectedImage = IdentifiableImage(image: image)
                         }
-                        self.parent.presentationMode.wrappedValue.dismiss()
                     }
                 }
             }
         }
-    }
     
     // Step 3: Creating the Coordinator
     func makeCoordinator() -> Coordinator {
@@ -54,8 +62,12 @@ struct ImagePicker: UIViewControllerRepresentable {
 
 // Main View to Show the Image Picker and Display Image
 struct ImagePickerView: View {
-    @State var selectedImage: IdentifiableImage?
+    @Binding var selectedImage: IdentifiableImage?
     @State var isPickerPresented = false
+    
+    @State var isKTPPreviewPresentedFromPicker = false
+    @State var isPassportPreviewPresentedFromPicker = false
+    @State var isPhotoPreviewPresentedFromPicker = false
     
     @ObservedObject var account: AccountEntity
     var documentType: AllDocumentType
@@ -68,33 +80,52 @@ struct ImagePickerView: View {
                     .scaledToFit()
                     .frame(width: 200, height: 200)
             } else {
-                Text("No image selected")
+                Text("Belum ada gambar, upload dulu ya:(")
+                    .font(Font.custom("Inter", size: 20))
                     .foregroundColor(.gray)
             }
             
-            Button("Select Image") {
+            Button("Select image") {
                 isPickerPresented = true
             }
             .padding()
             .sheet(isPresented: $isPickerPresented, content: {
                 ImagePicker(selectedImage: $selectedImage, documentType: documentType)
             })
-            .sheet(item: $selectedImage) { _ in
-                switch documentType {
-                case .paspor:
-                    PassportPreviewSheet(account: account)
-                case .ktp:
-                    KTPPreviewSheet(account: account)
-                case .personalPhoto:
-                    PhotoPreviewSheet(account: account)
-                default:
-                    PassportPreviewSheet(account: account)
-                }
+           .onChange(of: selectedImage) { newImage in
+                print("Selected image: \(String(describing: newImage))")
+               
+               if (newImage?.image) != nil {
+                   if documentType == .ktp {
+                       isKTPPreviewPresentedFromPicker = true
+                   } else if documentType == .paspor {
+                       isPassportPreviewPresentedFromPicker = true
+                   } else if documentType == .personalPhoto {
+                       isPassportPreviewPresentedFromPicker = true
+                   } else {
+                       isKTPPreviewPresentedFromPicker = true
+                   }
+               }
             }
+           .sheet(isPresented: $isKTPPreviewPresentedFromPicker) {
+               if let uiImage = selectedImage?.image {
+                   KTPPreviewSheet(account: account, selectedImage: uiImage)
+               }
+           }
+           .sheet(isPresented: $isPassportPreviewPresentedFromPicker) {
+               if let uiImage = selectedImage?.image {
+                   PassportPreviewSheet(account: account, selectedImage: uiImage)
+               }
+           }
+           .sheet(isPresented: $isPhotoPreviewPresentedFromPicker) {
+               if let uiImage = selectedImage?.image {
+                   PhotoPreviewSheet(account: account, photoImage: uiImage)
+               }
+           }
         }
     }
 }
 
-#Preview {
-    ImagePickerView(account: AccountEntity(id: UUID().uuidString, username: "Andi", image: Data()), documentType: .ktp)
-}
+//#Preview {
+//    ImagePickerView(selectedImage: <#Binding<IdentifiableImage?>#>, account: AccountEntity(id: UUID().uuidString, username: "Andi", image: Data()), documentType: .ktp)
+//}

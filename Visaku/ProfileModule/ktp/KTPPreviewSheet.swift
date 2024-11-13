@@ -6,8 +6,15 @@ public struct KTPPreviewSheet: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var ktpPreviewViewModel: KTPPreviewViewModel
     
-    public init(account: AccountEntity) {
+    public init(account: AccountEntity, selectedImage: UIImage? = nil) {
         self.ktpPreviewViewModel = KTPPreviewViewModel(account: account)
+        
+        if let unwrappedImage = selectedImage {
+             self.ktpPreviewViewModel.ktpImage = unwrappedImage
+             self.ktpPreviewViewModel.processCapturedImage(unwrappedImage)
+         } else {
+             print("No image to process from ImagePicker, waiting for camera scan.")
+         }
     }
     
     public var body: some View {

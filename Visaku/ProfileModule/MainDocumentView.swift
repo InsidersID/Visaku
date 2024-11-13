@@ -153,10 +153,10 @@ public struct MainDocumentView: View {
                 FilePicker(selectedFileURL: $profileViewModel.selectedFileURL)
             }
             .sheet(isPresented: $profileViewModel.isUploadImage) {
-                ImagePicker(selectedImage: $profileViewModel.identifiableSelectedImage, documentType:
-                        profileViewModel.selectedDocument == .init(name: "KTP") ? .ktp :
-                        profileViewModel.selectedDocument == .init(name: "Paspor") ? .paspor :
-                        profileViewModel.selectedDocument == .init(name: "Foto") ? .personalPhoto : .paspor
+                ImagePickerView(selectedImage: $profileViewModel.identifiableSelectedImage, account: account, documentType:
+                                    profileViewModel.selectedDocument == .init(name: "KTP") ? .ktp :
+                                    profileViewModel.selectedDocument == .init(name: "Paspor") ? .paspor :
+                                    profileViewModel.selectedDocument == .init(name: "Foto") ? .personalPhoto : .ktp
                     )
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)

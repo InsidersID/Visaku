@@ -21,6 +21,7 @@ public enum AllDocumentType: String, Identifiable {
     case rekeningKoranPribadi
     case sponsor
     case buktiKeuangan
+    case none
     
     public var id: String {
         return self.rawValue
