@@ -17,8 +17,11 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     
     var completionPercentage: Double {
         guard let requirements = trip?.visaRequirements else { return 0 }
-        let markedCount = requirements.filter { $0.isMarked }.count
-        return (Double(markedCount) / Double(requirements.count)) * 100
+        
+        let requiredDocuments = requirements.filter { $0.type != .sponsor }
+        let markedCount = requiredDocuments.filter { $0.isMarked }.count
+        
+        return requiredDocuments.isEmpty ? 0 : (Double(markedCount) / Double(requiredDocuments.count)) * 100
     }
     
     // Form data properties

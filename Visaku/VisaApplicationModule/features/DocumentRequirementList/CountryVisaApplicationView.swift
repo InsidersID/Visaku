@@ -25,14 +25,14 @@ public struct CountryVisaApplicationView: View {
     
     public var body: some View {
         
-        NavigationView {
+        NavigationStack {
             ZStack {
                 ScrollView {
                     Color
                         .clear
                         .ignoresSafeArea(.all)
-                    
                     VStack {
+                        
                         Gauge(value: viewModel.completionPercentage, in: 0...100) {
                             
                         } currentValueLabel: {
@@ -71,9 +71,7 @@ public struct CountryVisaApplicationView: View {
                         }
                     CustomButton(text: "Print semua", color: .primary5,font: "Inter-SemiBold", fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     }
-                    
-                    NotificationCard()
-                        .offset(x: 40, y: 0)
+                    .padding(.horizontal)
                     
                 }
                 .navigationTitle("Pengajuan")
@@ -97,10 +95,13 @@ public struct CountryVisaApplicationView: View {
                 .sheet(isPresented: $isItinerary) {
                     ItineraryListSheet()
                 }
-                .sheet(isPresented: $isFormApplication) {
+                .fullScreenCover(isPresented: $isFormApplication) {
                     ApplicationFormView()
                         .environmentObject(viewModel)
                 }
+                
+                NotificationCard()
+                    .offset(x: 40, y: 0)
             }
         }
     }
