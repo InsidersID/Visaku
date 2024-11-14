@@ -34,10 +34,14 @@ struct AddProfileView: View {
                     
                     TextField("Masukkan namamu", text: $profileViewModel.username)
                         .multilineTextAlignment(.center)
+                        .textInputAutocapitalization(.words)
                         .font(Font.custom("Inter", size: 16))
                         .fontWeight(.semibold)
                         .onAppear {
                             profileViewModel.username = account.username
+                        }
+                        .onChange(of: profileViewModel.username) { newValue in
+                            profileViewModel.username = newValue.capitalized
                         }
                 }
                 .frame(height: 144, alignment: .center)
@@ -46,7 +50,7 @@ struct AddProfileView: View {
                         .foregroundStyle(.white)
                 )
                 
-                CustomButton( text: isEditing ? "Ganti profil" : "Buat profil", textColor: .blue, color: Color(red: 0.7, green: 0.91, blue: 0.95), buttonWidth: proxy.size.width*0.24, fontSize: 12, cornerRadius: 16, paddingHorizontal: 0, paddingVertical: 0) {
+                CustomButton( text: isEditing ? "Ganti profil" : "Buat profil", textColor: profileViewModel.username.isEmpty ? .white : .primary5, color: profileViewModel.username.isEmpty ? Color(red: 0.71, green: 0.71, blue: 0.71) : Color(red: 0.7, green: 0.91, blue: 0.95), buttonWidth: 64, buttonHeight: 30, font: "Inter-SemiBold", fontSize: 12, cornerRadius: 16, paddingHorizontal: 0, paddingVertical: 0) {
                     Task {
                         if isEditing {
                             await profileViewModel.updateAccountUsername(account, newUsername: profileViewModel.username)
@@ -57,10 +61,12 @@ struct AddProfileView: View {
                     profileViewModel.isAddingProfile = false
                     dismiss()
                 }
+                .disabled(profileViewModel.username.isEmpty)
                 .padding()
                 .frame(width: proxy.size.width, height: 144, alignment: .topTrailing)
             }
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 

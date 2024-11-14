@@ -16,7 +16,7 @@ public struct ProfileView: View {
 
         NavigationStack {
             ScrollView {
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16){
+                LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20){
                     if let accounts = profileViewModel.accounts {
                         ForEach(accounts, id: \.id) { account in
                             if isSelectProfile {
@@ -44,13 +44,14 @@ public struct ProfileView: View {
                         }
                     }
                 }
+                .padding(.horizontal)
+                .padding(.top)
             }
             .onAppear {
                 Task {
                     await profileViewModel.fetchAccount()
                 }
             }
-            .padding(.horizontal)
             .navigationTitle("Profil")
             .alert(isPresented: $profileViewModel.isError, error: profileViewModel.error, actions: {
                 
