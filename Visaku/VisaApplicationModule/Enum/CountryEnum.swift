@@ -47,12 +47,12 @@ struct VisaDocumentRequirements: Equatable {
     let countrySpecificDocuments: [String]
 }
 
-struct CountryData {
-    let name: String
-    let png: String
-    let visaTypes: [VisaType]
-    let flagEmoji: String
-}
+//struct CountryData {
+//    let name: String
+//    let png: String
+//    let visaTypes: [VisaType]
+//    let flagEmoji: String
+//}
 
 //public enum Country: String, Codable, CaseIterable {
 //    case italy

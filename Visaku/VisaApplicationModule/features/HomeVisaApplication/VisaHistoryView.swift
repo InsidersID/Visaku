@@ -20,7 +20,9 @@ public struct VisaHistoryView: View {
                 if viewModel.hasData {
                     ScrollView {
                         ApplicationSection(title: "Belum selesai", counter: 4)
+                            .environmentObject(viewModel)
                         ApplicationSection(title: "Riwayat", counter: 3)
+                            .environmentObject(viewModel)
                     }
                 } else {
                     EmptyStateView()
@@ -38,7 +40,7 @@ public struct VisaHistoryView: View {
                 
             }
             .navigationDestination(isPresented: $viewModel.isShowCountryApplicationView) {
-                CountryVisaApplicationView(countrySelected: viewModel.countryKeyword, visaType: viewModel.visaType)
+                CountryVisaApplicationView(countrySelected: viewModel.countryKeyword, visaType: viewModel.visaType, countries: [.init(name: viewModel.countryKeyword, startDate: .now, endDate: .now)])
                     .navigationBarBackButtonHidden()
             }
         }
@@ -56,13 +58,14 @@ struct ApplicationSection: View {
                 .bold()
                 .opacity(0.5)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal)
+                .padding(12)
             
             ForEach(0..<counter, id: \.self) { _ in
                 VisaApplicationCard(visaType: "turis", country: "itali", countries: ["italy", "jerman"], visaProgressPercentage: 75, visaProgressColor: .pink) {
                     print("Card clicked")
                 }
-                .padding()
+                .padding(.horizontal)
+                .padding(.vertical, 4)
             }
         }
     }

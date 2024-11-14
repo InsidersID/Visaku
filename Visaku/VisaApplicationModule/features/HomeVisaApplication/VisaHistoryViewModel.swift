@@ -6,10 +6,19 @@
 //
 
 import Foundation
-
+import RepositoryModule
 
 public class VisaHistoryViewModel: ObservableObject {
-    public var hasData: Bool = false
+    @MainActor
+    private var tripUseCase: TripUseCaseProtocol = TripUseCase.make()
+    
+    public var hasData: Bool = true
+    
+    @Published var fetchVisaHistoryCompleted: fetchDataState = .idle
+    @Published var fetchVisaHistoryUncompleted: fetchDataState = .idle
+    
+    @Published var tripCompleteList: [TripData]?
+    @Published var tripuncompleteList: [TripData]?
     
     @Published var isShowChooseCountrySheet: Bool = false
     @Published var countryKeyword: String = ""
@@ -44,5 +53,36 @@ public class VisaHistoryViewModel: ObservableObject {
         })
     }
     
+    @MainActor
+    private func fetchVisaHistory(isCompleted: Bool) async throws -> [TripData]? {
+        do {
+            return try await tripUseCase.fetch(isCompleted: isCompleted)
+        } catch {
+            throw error
+        }
+    }
     
+    func fetchVisaHistoryCompletedData() {
+        fetchVisaHistoryCompleted = .loading
+        Task {
+            do {
+                tripCompleteList = try await fetchVisaHistory(isCompleted: true)
+                fetchVisaHistoryCompleted = .success
+            } catch {
+                fetchVisaHistoryCompleted = .error
+            }
+        }
+    }
+    
+    func fetchVisaHistoryInProgressData() {
+        fetchVisaHistoryUncompleted = .loading
+        Task {
+            do {
+                tripuncompleteList = try await fetchVisaHistory(isCompleted: false)
+                fetchVisaHistoryUncompleted = .success
+            } catch {
+                fetchVisaHistoryUncompleted = .error
+            }
+        }
+    }
 }

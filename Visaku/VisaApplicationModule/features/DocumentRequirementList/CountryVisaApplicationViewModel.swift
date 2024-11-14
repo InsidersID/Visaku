@@ -99,9 +99,9 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     @Published var euFamilyDocumentNumber: String = ""
     @Published var euFamilyRelation: String? = ""
     
-    public func saveTripData(visaType: String, countrySelected: String) {
+    public func saveTripData(visaType: String, countrySelected: String, countries: [CountryData]) {
         guard trip == nil else { return }
-        var newTrip = TripEntity(id: UUID().uuidString, visaType: visaType, country: countrySelected)
+        var newTrip = TripEntity(id: UUID().uuidString, visaType: visaType, country: countrySelected, contries: countries)
         if let visaTypeEnum = VisaType(rawValue: visaType) {
             let requirementsForCountry = VisaGeneralTouristDocumentType.getRequirements(for: visaTypeEnum, in: countrySelected)
             newTrip.visaRequirements = requirementsForCountry
