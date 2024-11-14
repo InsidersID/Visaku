@@ -8,8 +8,12 @@ struct VisaApplicationFinishedView: View {
             ZStack {
                 Color(red: 0.8, green: 0.91, blue: 0.97).ignoresSafeArea()
                 
+                RiveViewModel(fileName: "Clouds").view()
+                    .offset(x:0, y:-90)
+                    .scaleEffect(1.35)
+                
                 RiveViewModel(fileName: "ProgressBar").view()
-                    .offset(x:0, y:-100)
+                    .offset(x:0, y:-90)
                     .scaleEffect(1.35)
                 
                 VStack {
