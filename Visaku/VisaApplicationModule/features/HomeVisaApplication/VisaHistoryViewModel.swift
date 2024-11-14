@@ -8,17 +8,21 @@
 import Foundation
 import RepositoryModule
 
+
 public class VisaHistoryViewModel: ObservableObject {
     @MainActor
     private var tripUseCase: TripUseCaseProtocol = TripUseCase.make()
-    
-    public var hasData: Bool = true
-    
+
     @Published var fetchVisaHistoryCompleted: fetchDataState = .idle
     @Published var fetchVisaHistoryUncompleted: fetchDataState = .idle
     
-    @Published var tripCompleteList: [TripData]?
-    @Published var tripuncompleteList: [TripData]?
+    @Published var tripCompleteList: [TripEntity]?
+    @Published var tripUncompleteList: [TripEntity]?
+    
+    var hasData: Bool {
+        // Check if either list is not nil and has elements
+        (tripCompleteList?.isEmpty ?? true) == false || (tripUncompleteList?.isEmpty ?? true) == false
+    }
     
     @Published var isShowChooseCountrySheet: Bool = false
     @Published var countryKeyword: String = ""
@@ -54,7 +58,7 @@ public class VisaHistoryViewModel: ObservableObject {
     }
     
     @MainActor
-    private func fetchVisaHistory(isCompleted: Bool) async throws -> [TripData]? {
+    private func fetchVisaHistory(isCompleted: Bool) async throws -> [TripEntity]? {
         do {
             return try await tripUseCase.fetch(isCompleted: isCompleted)
         } catch {
@@ -66,10 +70,16 @@ public class VisaHistoryViewModel: ObservableObject {
         fetchVisaHistoryCompleted = .loading
         Task {
             do {
-                tripCompleteList = try await fetchVisaHistory(isCompleted: true)
-                fetchVisaHistoryCompleted = .success
+                let data = try await fetchVisaHistory(isCompleted: true)
+                
+                DispatchQueue.main.async {
+                    self.tripCompleteList = data
+                    self.fetchVisaHistoryCompleted = .success
+                }
             } catch {
-                fetchVisaHistoryCompleted = .error
+                DispatchQueue.main.async {
+                    self.fetchVisaHistoryCompleted = .error
+                }
             }
         }
     }
@@ -78,10 +88,15 @@ public class VisaHistoryViewModel: ObservableObject {
         fetchVisaHistoryUncompleted = .loading
         Task {
             do {
-                tripuncompleteList = try await fetchVisaHistory(isCompleted: false)
-                fetchVisaHistoryUncompleted = .success
+                let data = try await fetchVisaHistory(isCompleted: false)
+                DispatchQueue.main.async {
+                    self.tripUncompleteList = data
+                    self.fetchVisaHistoryUncompleted = .success
+                }
             } catch {
-                fetchVisaHistoryUncompleted = .error
+                DispatchQueue.main.async {
+                    self.fetchVisaHistoryUncompleted = .error
+                }
             }
         }
     }

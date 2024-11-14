@@ -19,14 +19,19 @@ public struct VisaHistoryView: View {
                 
                 if viewModel.hasData {
                     ScrollView {
-                        ApplicationSection(title: "Belum selesai", counter: 4)
+                        ApplicationSection(title: "Belum selesai")
                             .environmentObject(viewModel)
-                        ApplicationSection(title: "Riwayat", counter: 3)
+                        ApplicationSection(title: "Riwayat")
                             .environmentObject(viewModel)
                     }
                 } else {
                     EmptyStateView()
                 }
+            }
+            .onAppear {
+                viewModel.fetchVisaHistoryInProgressData()
+                viewModel.fetchVisaHistoryCompletedData()
+                
             }
             .ignoresSafeArea(edges: .all)
             .sheet(isPresented: $viewModel.isShowChooseCountrySheet) {
@@ -48,8 +53,8 @@ public struct VisaHistoryView: View {
 }
 
 struct ApplicationSection: View {
+    @EnvironmentObject var viewModel: VisaHistoryViewModel
     let title: String
-    let counter: Int
     
     var body: some View {
         VStack(spacing: 0) {
@@ -60,12 +65,52 @@ struct ApplicationSection: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(12)
             
-            ForEach(0..<counter, id: \.self) { _ in
-                VisaApplicationCard(visaType: "turis", country: "itali", countries: ["italy", "jerman"], visaProgressPercentage: 75, visaProgressColor: .pink) {
-                    print("Card clicked")
+//            VisaApplicationCard(visaType: "turis", country: "itali", countries: ["italy", "jerman"], visaProgressPercentage: 75, visaProgressColor: .pink) {
+//                print("Card clicked")
+//            }
+//            .padding(.horizontal)
+//            .padding(.vertical, 4)
+            if title == "Belum selesai" {
+//                VisaApplicationCard(visaType: "turis", country: "itali", countries: ["italy", "jerman"], visaProgressPercentage: 75, visaProgressColor: .pink) {
+//                        print("Card clicked")
+//                    }
+//                    .padding(.horizontal)
+//                    .padding(.vertical, 4)
+                switch viewModel.fetchVisaHistoryUncompleted {
+                case .idle:
+                    Text("Idle")
+                case .loading:
+                    ProgressView()
+                case .error:
+                    Text("Something wrong")
+                case .success:
+                    if let visaHistoryUncompleted = viewModel.tripUncompleteList{
+                        ForEach(visaHistoryUncompleted) { trip in
+                            let tripData = TripDataUIModel(from: trip)
+                            VisaApplicationCard(visaType: tripData.visaType, country: tripData.country, countries: tripData.countries, visaProgressPercentage: tripData.percentage, visaProgressColor: .red, createdAt: tripData.date) {
+                                print("trigger card")
+                            }
+                        }
+                    }
                 }
-                .padding(.horizontal)
-                .padding(.vertical, 4)
+            } else if title == "Selesai" {
+                switch viewModel.fetchVisaHistoryCompleted {
+                case .idle:
+                    Text("Idle")
+                case .loading:
+                    ProgressView()
+                case .error:
+                    Text("Something wrong")
+                case .success:
+                    if let visaHistoryCompleted = viewModel.tripCompleteList{
+                        ForEach(visaHistoryCompleted) { trip in
+                            let tripData = TripDataUIModel(from: trip)
+                            VisaApplicationCard(visaType: tripData.visaType, country: tripData.country, countries: tripData.countries, visaProgressPercentage: tripData.percentage, visaProgressColor: .green, createdAt: tripData.date) {
+                                print("trigger card")
+                            }
+                        }
+                    }
+                }
             }
         }
     }
