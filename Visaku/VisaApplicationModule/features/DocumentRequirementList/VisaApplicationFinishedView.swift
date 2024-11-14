@@ -4,53 +4,42 @@ import RiveRuntime
 
 struct VisaApplicationFinishedView: View {
     var body: some View {
-        ZStack {
-            Color(red: 0.8, green: 0.91, blue: 0.97).ignoresSafeArea()
-            
-            VStack {
-                Spacer()
+        GeometryReader { proxy in
+            ZStack {
+                Color(red: 0.8, green: 0.91, blue: 0.97).ignoresSafeArea()
                 
-//                ZStack {
-                Gauge(value: 100, in: 0...100) {
+                RiveViewModel(fileName: "ProgressBar").view()
+                    .offset(x:0, y:-100)
+                    .scaleEffect(1.35)
+                
+                VStack {
+                    Spacer(minLength: proxy.size.height*0.6)
                     
-                } currentValueLabel: {
-                    VStack {
-                        Text("\(Int(100))%")
-                        Text("Visa turis Italia")
-                            .foregroundStyle(.black)
-                            .font(.custom("Inter-SemiBold", size: 28))
+                    Text("Kamu sudah siap!")
+                        .font(.custom("Inter-SemiBold", size: 24))
+                        .padding(.bottom)
+                    
+                    Text("Dengan itinerary, kedutaan jadi tahu kamu punya tujuan jelas dan nggak berencana tinggal lebih lama dari yang diizinkan.")
+                        .font(.custom("Inter-Regular", size: 15))
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal)
+                        .multilineTextAlignment(.center)
+                    
+                    Spacer()
+                    
+                    Divider()
+                    
+                    CustomButton(text: "Selesai", textColor: .white, color: .primary5, font: "Inter-SemiBold") {
+                        
                     }
-                    .foregroundStyle(.blue)
-                    .padding(.bottom, 50)
-                }
-                .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
-//                }
-                
-                Text("Kamu sudah siap!")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .padding(.bottom)
-                
-                Text("Dengan itinerary, kedutaan jadi tahu kamu punya tujuan jelas dan nggak berencana tinggal lebih lama dari yang diizinkan.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
                     .padding(.horizontal)
-                    .multilineTextAlignment(.center)
-                
-                Spacer()
-                
-                Divider()
-                
-                CustomButton(text: "Selesai", textColor: .blue, color: .white) {
-                    
+                    .padding(.bottom)
                 }
-                .padding(.horizontal)
-                .padding(.bottom)
+                
+                RiveViewModel(fileName: "PlaneAnimation").view()
+                    .offset(x: 0, y: 0)
+                    .scaleEffect(0.8)
             }
-            
-            
-            RiveViewModel(fileName: "PlaneAnimation").view()
-                .offset(x: 0, y: 30)
         }
     }
 }
