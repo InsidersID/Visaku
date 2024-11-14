@@ -19,6 +19,7 @@ struct TabBarView: View {
                 .tag(0)
                 
             ProfileView()
+                .navigationTitle("Profil")
                 .tabItem {
                     if selectedTab == 1 {
                         Image("profil_tab_logo")
