@@ -10,21 +10,21 @@ struct VisaApplicationFinishedView: View {
             VStack {
                 Spacer()
                 
-                ZStack {
-                    Gauge(value: 100, in: 0...100) {
-                        
-                    } currentValueLabel: {
-                        VStack {
-                            Text("\(Int(100))%")
-                            Text("Visa turis Italia")
-                                .foregroundStyle(.black)
-                                .font(.custom("Inter-SemiBold", size: 28))
-                        }
-                        .foregroundStyle(.blue)
-                        .padding(.bottom, 50)
+//                ZStack {
+                Gauge(value: 100, in: 0...100) {
+                    
+                } currentValueLabel: {
+                    VStack {
+                        Text("\(Int(100))%")
+                        Text("Visa turis Italia")
+                            .foregroundStyle(.black)
+                            .font(.custom("Inter-SemiBold", size: 28))
                     }
-                    .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
+                    .foregroundStyle(.blue)
+                    .padding(.bottom, 50)
                 }
+                .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
+//                }
                 
                 Text("Kamu sudah siap!")
                     .font(.title2)
