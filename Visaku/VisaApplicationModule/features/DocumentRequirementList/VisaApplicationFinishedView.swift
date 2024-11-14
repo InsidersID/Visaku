@@ -1,5 +1,6 @@
 import SwiftUI
 import UIComponentModule
+import RiveRuntime
 
 struct VisaApplicationFinishedView: View {
     var body: some View {
@@ -46,6 +47,10 @@ struct VisaApplicationFinishedView: View {
                 .padding(.horizontal)
                 .padding(.bottom)
             }
+            
+            
+            RiveViewModel(fileName: "PlaneAnimation").view()
+                .offset(x: 0, y: 30)
         }
     }
 }
