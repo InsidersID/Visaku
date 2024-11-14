@@ -44,6 +44,7 @@ public struct ProfileView: View {
                         }
                     }
                 }
+                .padding(.top)
             }
             .onAppear {
                 Task {
