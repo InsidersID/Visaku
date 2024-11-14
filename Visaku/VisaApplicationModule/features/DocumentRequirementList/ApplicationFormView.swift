@@ -37,7 +37,7 @@ struct ApplicationFormView: View {
                     SectionView(
                         title: "Informasi bepergian",
                         content: {
-                            //                            ExpandableSelection(title: "Negara yang menjadi titik masuk pertama Anda ke wilayah Schengen", options: Countries.schengenCountryList, mode: .single, singleSelection: $viewModel.lastSchengenEntryCountry, multipleSelection: .constant([]))
+                            ExpandableSelection(title: "Negara yang menjadi titik masuk pertama Anda ke wilayah Schengen", options: Countries.schengenCountryList, mode: .single, singleSelection: $viewModel.lastSchengenEntryCountry, multipleSelection: .constant([]))
                             ExpandableSelection(title: "Tujuan utama perjalanan Anda ke wilayah Schengen", options: ["Turis/Wisata", "Budaya", "Alasan Kesehatan", "Transit bandara", "Bisnis", "Olahraga", "Belajar", "Kunjungan Keluarga", "Kunjungan official", "Transit", "Tipe lainnya"], mode: .single, singleSelection: $viewModel.mainTravelPurpose, multipleSelection: .constant([]))
                             if viewModel.mainTravelPurpose == "Tipe lainnya" {
                                 ExpandableSelection(title: "Tipe lainnya", options: ["Undangan", "Pekerjaan pribadi", "Penelitian", "Pekerjaan maritim", "Pekerjaan hiburan", "Pekerjaan Olahraga"], mode: .single, singleSelection: $viewModel.mainTravelPurpose, multipleSelection: .constant([]))
@@ -65,6 +65,19 @@ struct ApplicationFormView: View {
                                 CustomDateField(title: "Tanggal ijin tersebut kadaluarsa", date: $viewModel.lastSchengenExitDate)
                                 CustomDateField(title: "Tanggal kedatangan pada area Schengen", date: $viewModel.arrivalDate)
                                 CustomDateField(title: "Tanggal kepulangan dari area Schengen", date: $viewModel.departureDate)
+                            }
+                        }
+                    )
+                    SectionView(
+                        title: "Detail undangan",
+                        content: {
+                            ExpandableSelection(title: "Tipe undangan", options: ["Hotel", "Diundang oleh orang", "Invitation (perusahaan atau organisasi)"], mode: .single, singleSelection: $viewModel.invitationType, multipleSelection: .constant([]))
+                            if viewModel.invitationType == "Hotel" {
+                                HotelDetailsSection()
+                            } else if viewModel.invitationType == "Diundang oleh orang" {
+                                PersonalInvitationSection()
+                            } else if viewModel.invitationType == "Invitation (perusahaan atau organisasi)" {
+                                CompanyInvitationSection()
                             }
                         }
                     )
@@ -132,6 +145,65 @@ struct SectionView<Content: View>: View {
         }
         .padding(.vertical, 8)
         .padding(.horizontal)
+    }
+}
+
+struct HotelDetailsSection: View {
+    @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
+
+    var body: some View {
+        Group {
+            CustomFormField(title: "Nama hotel", text: $viewModel.hotelName)
+            CustomFormField(title: "Alamat hotel", text: $viewModel.hotelAddress)
+            CustomFormField(title: "Kode pos hotel tempat Anda menginap", text: $viewModel.hotelPostalCode)
+            CustomFormField(title: "Kota hotel tempat Anda menginap", text: $viewModel.hotelCity)
+            CustomFormField(title: "Provinsi hotel tempat Anda menginap", text: $viewModel.hotelProvince)
+            CustomFormField(title: "Nomor telepon hotel tempat Anda menginap", text: $viewModel.hotelPhoneNumber)
+            CustomFormField(title: "Nomor fax hotel", text: $viewModel.hotelFaxNumber)
+            CustomFormField(title: "Email hotel", text: $viewModel.hotelEmail)
+        }
+    }
+}
+
+struct PersonalInvitationSection: View {
+    @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
+
+    var body: some View {
+        Group {
+            CustomFormField(title: "Nama depan orang yang mengundang", text: $viewModel.inviterFirstName)
+            CustomFormField(title: "Nama belakang orang yang mengundang", text: $viewModel.inviterLastName)
+            CustomDateField(title: "Tanggal lahir orang yang mengundang", date: $viewModel.inviterDOB)
+            CustomFormField(title: "Alamat orang yang mengundang", text: $viewModel.inviterAddress)
+            CustomFormField(title: "Kode pos alamat orang yang mengundang", text: $viewModel.inviterPostalCode)
+            CustomFormField(title: "Kota orang yang mengundang", text: $viewModel.inviterCity)
+            CustomFormField(title: "Provinsi orang yang mengundang", text: $viewModel.inviterProvince)
+            CustomFormField(title: "Nomor telepon orang yang mengundang", text: $viewModel.inviterPhoneNumber)
+            CustomFormField(title: "Nomor fax orang yang mengundang", text: $viewModel.inviterFaxNumber)
+            CustomFormField(title: "Email orang yang mengundang", text: $viewModel.inviterEmail)
+        }
+    }
+}
+
+struct CompanyInvitationSection: View {
+    @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
+
+    var body: some View {
+        Group {
+            CustomFormField(title: "Nama perusahaan yang mengundang", text: $viewModel.companyName)
+            CustomFormField(title: "Alamat perusahaan yang mengundang", text: $viewModel.companyAddress)
+            CustomFormField(title: "Kode pos perusahaan yang mengundang", text: $viewModel.companyPostalCode)
+            CustomFormField(title: "Kota perusahaan yang mengundang", text: $viewModel.companyCity)
+            CustomFormField(title: "Provinsi perusahaan yang mengundang", text: $viewModel.companyProvince)
+            CustomFormField(title: "Nomor telepon perusahaan yang mengundang", text: $viewModel.companyPhoneNumber)
+            CustomFormField(title: "Nomor fax perusahaan yang mengundang", text: $viewModel.companyFaxNumber)
+            CustomFormField(title: "Email perusahaan yang mengundang", text: $viewModel.companyEmail)
+            CustomFormField(title: "Nama depan penanggung jawab", text: $viewModel.companyRepresentativeFirstName)
+            CustomFormField(title: "Nama belakang penanggung jawab", text: $viewModel.companyRepresentativeLastName)
+            CustomFormField(title: "Alamat penanggung jawab", text: $viewModel.companyRepresentativeAddress)
+            CustomFormField(title: "Nomor telepon penanggung jawab", text: $viewModel.companyRepresentativePhoneNumber)
+            CustomFormField(title: "Nomor fax penanggung jawab", text: $viewModel.companyRepresentativeFaxNumber)
+            CustomFormField(title: "Email penanggung jawab", text: $viewModel.companyRepresentativeEmail)
+        }
     }
 }
 
