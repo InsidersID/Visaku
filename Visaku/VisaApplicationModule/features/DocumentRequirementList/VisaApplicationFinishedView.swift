@@ -17,10 +17,7 @@ struct VisaApplicationFinishedView: View {
                             Text("\(Int(100))%")
                             Text("Visa turis Italia")
                                 .foregroundStyle(.black)
-                                .font(
-                                    Font.custom("Inter", size: 28)
-                                        .weight(.semibold)
-                                )
+                                .font(.custom("Inter-SemiBold", size: 28))
                         }
                         .foregroundStyle(.blue)
                         .padding(.bottom, 50)
