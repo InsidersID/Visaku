@@ -14,7 +14,7 @@ struct AddProfileView: View {
     public init(account: AccountEntity? = nil, isEditing: Bool = false) {
         self._account = StateObject(wrappedValue: account ?? AccountEntity(id: "", username: "", image: Data()))
         self._isEditing = State(initialValue: isEditing)
-        riveViewModel = RiveViewModel(fileName: "PlaneAddName")
+        riveViewModel = RiveViewModel(fileName: "AddProfile")
     }
     
     var body: some View {
