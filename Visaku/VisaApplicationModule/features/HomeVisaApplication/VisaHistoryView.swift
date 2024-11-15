@@ -13,21 +13,22 @@ public struct VisaHistoryView: View {
     
     public var body: some View {
         NavigationStack {
-            VStack {
-                VisaApplicationHeader()
-                    .environmentObject(viewModel)
-                
-                if viewModel.hasData {
-                    ScrollView {
+            ScrollView {
+                VStack {
+                    VisaApplicationHeader()
+                        .environmentObject(viewModel)
+                    
+                    if viewModel.hasData {
+                        
                         ApplicationSection(title: "Belum selesai")
                             .padding(.horizontal, 20)
                             .environmentObject(viewModel)
                         ApplicationSection(title: "Riwayat")
                             .padding(.horizontal, 20)
                             .environmentObject(viewModel)
+                    } else {
+                        EmptyStateView()
                     }
-                } else {
-                    EmptyStateView()
                 }
             }
             .onAppear {
