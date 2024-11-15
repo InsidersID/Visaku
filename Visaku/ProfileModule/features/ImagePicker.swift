@@ -61,70 +61,70 @@ struct ImagePicker: UIViewControllerRepresentable {
 }
 
 // Main View to Show the Image Picker and Display Image
-struct ImagePickerView: View {
-    @Binding var selectedImage: IdentifiableImage?
-    @State var isPickerPresented = false
-    
-    @State var isKTPPreviewPresentedFromPicker = false
-    @State var isPassportPreviewPresentedFromPicker = false
-    @State var isPhotoPreviewPresentedFromPicker = false
-    
-    @ObservedObject var account: AccountEntity
-    var documentType: AllDocumentType
-
-    var body: some View {
-        VStack {
-            if let image = selectedImage?.image {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200, height: 200)
-            } else {
-                Text("Belum ada gambar, upload dulu ya:(")
-                    .font(Font.custom("Inter", size: 20))
-                    .foregroundColor(.gray)
-            }
-            
-            Button("Select image") {
-                isPickerPresented = true
-            }
-            .padding()
-            .sheet(isPresented: $isPickerPresented, content: {
-                ImagePicker(selectedImage: $selectedImage, documentType: documentType)
-            })
-           .onChange(of: selectedImage) { newImage in
-                print("Selected image: \(String(describing: newImage))")
-               
-               if (newImage?.image) != nil {
-                   if documentType == .ktp {
-                       isKTPPreviewPresentedFromPicker = true
-                   } else if documentType == .paspor {
-                       isPassportPreviewPresentedFromPicker = true
-                   } else if documentType == .personalPhoto {
-                       isPassportPreviewPresentedFromPicker = true
-                   } else {
-                       isKTPPreviewPresentedFromPicker = true
-                   }
-               }
-            }
-           .sheet(isPresented: $isKTPPreviewPresentedFromPicker) {
-               if let uiImage = selectedImage?.image {
-                   KTPPreviewSheet(account: account, selectedImage: uiImage)
-               }
-           }
-           .sheet(isPresented: $isPassportPreviewPresentedFromPicker) {
-               if let uiImage = selectedImage?.image {
-                   PassportPreviewSheet(account: account, selectedImage: uiImage)
-               }
-           }
-           .sheet(isPresented: $isPhotoPreviewPresentedFromPicker) {
-               if let uiImage = selectedImage?.image {
-                   PhotoPreviewSheet(account: account, photoImage: uiImage)
-               }
-           }
-        }
-    }
-}
+//struct ImagePickerView: View {
+//    @Binding var selectedImage: IdentifiableImage?
+//    @State var isPickerPresented = false
+//    
+//    @State var isKTPPreviewPresentedFromPicker = false
+//    @State var isPassportPreviewPresentedFromPicker = false
+//    @State var isPhotoPreviewPresentedFromPicker = false
+//    
+//    @ObservedObject var account: AccountEntity
+//    var documentType: AllDocumentType
+//
+//    var body: some View {
+//        VStack {
+//            if let image = selectedImage?.image {
+//                Image(uiImage: image)
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(width: 200, height: 200)
+//            } else {
+//                Text("Belum ada gambar, upload dulu ya:(")
+//                    .font(Font.custom("Inter", size: 20))
+//                    .foregroundColor(.gray)
+//            }
+//            
+//            Button("Select image") {
+//                isPickerPresented = true
+//            }
+//            .padding()
+//            .sheet(isPresented: $isPickerPresented, content: {
+//                ImagePicker(selectedImage: $selectedImage, documentType: documentType)
+//            })
+//           .onChange(of: selectedImage) { newImage in
+//                print("Selected image: \(String(describing: newImage))")
+//               
+//               if (newImage?.image) != nil {
+//                   if documentType == .ktp {
+//                       isKTPPreviewPresentedFromPicker = true
+//                   } else if documentType == .paspor {
+//                       isPassportPreviewPresentedFromPicker = true
+//                   } else if documentType == .personalPhoto {
+//                       isPassportPreviewPresentedFromPicker = true
+//                   } else {
+//                       isKTPPreviewPresentedFromPicker = true
+//                   }
+//               }
+//            }
+//           .sheet(isPresented: $isKTPPreviewPresentedFromPicker) {
+//               if let uiImage = selectedImage?.image {
+//                   KTPPreviewSheet(account: account, selectedImage: uiImage, origin: .)
+//               }
+//           }
+//           .sheet(isPresented: $isPassportPreviewPresentedFromPicker) {
+//               if let uiImage = selectedImage?.image {
+//                   PassportPreviewSheet(account: account, selectedImage: uiImage)
+//               }
+//           }
+//           .sheet(isPresented: $isPhotoPreviewPresentedFromPicker) {
+//               if let uiImage = selectedImage?.image {
+//                   PhotoPreviewSheet(account: account, photoImage: uiImage)
+//               }
+//           }
+//        }
+//    }
+//}
 
 //#Preview {
 //    ImagePickerView(selectedImage: <#Binding<IdentifiableImage?>#>, account: AccountEntity(id: UUID().uuidString, username: "Andi", image: Data()), documentType: .ktp)

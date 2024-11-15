@@ -24,6 +24,11 @@ enum DeletePhotoState  {
     case success
 }
 
+public enum PhotoPreviewOrigin: Equatable {
+    case cameraScanner
+    case imagePicker
+}
+
 @MainActor
 class PhotoPreviewViewModel: ObservableObject {
     @MainActor

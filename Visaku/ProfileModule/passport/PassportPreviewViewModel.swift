@@ -26,6 +26,11 @@ enum DeletePassportState {
     case success
 }
 
+public enum PassportPreviewOrigin: Equatable {
+    case cameraScanner
+    case imagePicker
+}
+
 @MainActor
 class PassportPreviewViewModel: ObservableObject {
     @MainActor

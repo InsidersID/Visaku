@@ -13,8 +13,11 @@ public struct PassportPreviewSheet: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var passportPreviewViewModel: PassportPreviewViewModel
     
-    public init(account: AccountEntity, selectedImage: UIImage? = nil) {
+    var origin: PassportPreviewOrigin
+    
+    public init(account: AccountEntity, selectedImage: UIImage? = nil, origin: PassportPreviewOrigin) {
         self.passportPreviewViewModel = PassportPreviewViewModel(account: account)
+        self.origin = origin
         
         if let unwrappedImage = selectedImage {
             self.passportPreviewViewModel.passportImage = unwrappedImage
@@ -22,6 +25,10 @@ public struct PassportPreviewSheet: View {
          } else {
              print("No image to process from ImagePicker, waiting for camera scan.")
          }
+        
+        if self.origin == .imagePicker {
+            passportPreviewViewModel.isCameraOpen = false
+        }
     }
     
     public var body: some View {

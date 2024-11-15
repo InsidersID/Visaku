@@ -21,7 +21,12 @@ public class ProfileViewModel {
     var selectedDocument: Document?
     var uploadDocument: Document?
     var isUploadFile: Bool = false
-    var isUploadImage: Bool = false
+    
+    var isUploadImageForKTP: Bool = false
+    var isUploadImageForPassport: Bool = false
+    var isUploadImageForFoto: Bool = false
+    var isUploadImageForOthers: Bool = false
+    
     var selectedFileURL: URL?
     var selectedImage: UIImage?
     var accountID: String?
