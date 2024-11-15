@@ -12,11 +12,19 @@ struct CountrySelectionSheetView: View {
     @EnvironmentObject var viewModel: VisaHistoryViewModel
     var onDismiss: () -> Void
 
+    private var filteredCountries: [String] {
+        if viewModel.countryKeyword.isEmpty {
+            return Countries.countryList
+        } else {
+            return Countries.countryList.filter { $0.contains(viewModel.countryKeyword) }
+        }
+    }
+
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
-                    ForEach(Countries.countryList.filter { viewModel.countryKeyword.isEmpty || $0.contains(viewModel.countryKeyword) }, id: \.self) { country in
+                    ForEach(filteredCountries, id: \.self) { country in
                         Button(action: {
                             if country == "Schengen Area" {
                                 viewModel.isSchengenCountryChosen = true

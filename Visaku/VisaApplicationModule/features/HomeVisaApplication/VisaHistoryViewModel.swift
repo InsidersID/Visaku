@@ -20,19 +20,34 @@ public class VisaHistoryViewModel: ObservableObject {
     @Published var tripUncompleteList: [TripEntity]?
     
     var hasData: Bool {
-        // Check if either list is not nil and has elements
         (tripCompleteList?.isEmpty ?? true) == false || (tripUncompleteList?.isEmpty ?? true) == false
     }
     
     @Published var isShowChooseCountrySheet: Bool = false
+    @Published var countries: [CountryData] = []
+    var countryVisa: String {
+        guard let longestCountry = countries.max(by: { ($0.endDate?.timeIntervalSince($0.startDate ?? Date()) ?? 0) <
+            ($1.endDate?.timeIntervalSince($1.startDate ?? Date()) ?? 0) })
+        else {
+            return ""
+        }
+        return longestCountry.name
+    }
     @Published var countryKeyword: String = ""
     @Published var isSchengenCountryChosen: Bool = false
     @Published var visaType: String = ""
     @Published var visaTypeIsEmpty: Bool = false
+    var areAllCountriesFilledAndVisaTypeIsEmpty: Bool {
+        let areAllCountriesValid = countries.allSatisfy { country in
+            !(country.name.isEmpty || country.startDate == nil || country.endDate == nil)
+        }
+        print("trigger all countries valid")
+        print("\(areAllCountriesValid && visaTypeIsEmpty)")
+        return areAllCountriesValid && visaTypeIsEmpty
+    }
+    @Published var showContinueSheet: Bool = false
+
     @Published var isShowCountryApplicationView = false
-    @Published var showCalendar: Bool = false
-    @Published var startDate: Date?
-    @Published var endDate: Date?
     
     //SchengenCountrySelectionSheetView
     @Published var countrySearchKeyword : String = ""

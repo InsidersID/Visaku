@@ -7,30 +7,32 @@
 
 import SwiftUI
 import UIComponentModule
+import RepositoryModule
 
 struct CountrySelectionCard: View {
-    
+    @State var showCalendar: Bool = false
+    @Binding var countryData: CountryData
     @EnvironmentObject var viewModel: VisaHistoryViewModel
     
     var body: some View {
         CardContainer(cornerRadius: 18) {
-            
             VStack {
-                let flag = Countries.schengenCountryFlags[viewModel.countryKeyword] ?? ""
-                Text("\(viewModel.countryKeyword) \(flag)")
+                let flag = Countries.schengenCountryFlags[countryData.name] ?? ""
+                Text("\(countryData.name) \(flag)")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.title)
                     .bold()
+                
                 VStack {
                     VisaTypeRow(visaType: $viewModel.visaType, isShowVisaTypeSheet: $viewModel.isShowVisaTypeSheet)
                     
-                    DateRow(label: "Berangkat", date: $viewModel.startDate)
+                    DateRow(label: "Berangkat", showCalendar: $showCalendar, date: $countryData.startDate)
                     
-                    if viewModel.showCalendar {
-                        DatePickerCalendar(startDate: $viewModel.startDate, endDate: $viewModel.endDate)
+                    if showCalendar {
+                        DatePickerCalendar(startDate: $countryData.startDate, endDate: $countryData.endDate)
                     }
                     
-                    DateRow(label: "Pulang", date: $viewModel.endDate)
+                    DateRow(label: "Pulang", showCalendar: $showCalendar, date: $countryData.endDate)
                 }
                 .padding(.vertical, 5)
             }
@@ -63,9 +65,7 @@ struct VisaTypeRow: View {
             }
             .contentShape(Rectangle())
             .onTapGesture {
-                if viewModel.startDate != nil && viewModel.endDate != nil {
-                    isShowVisaTypeSheet = true
-                }
+                isShowVisaTypeSheet = true
             }
             .sheet(isPresented: $isShowVisaTypeSheet) {
                 VisaTypeSheet(isShowVisaTypeSheet: $isShowVisaTypeSheet, visaType: $visaType)
@@ -82,6 +82,7 @@ struct VisaTypeRow: View {
 
 struct DateRow: View {
     let label: String
+    @Binding var showCalendar: Bool
     @Binding var date: Date?
     
     @EnvironmentObject var viewModel: VisaHistoryViewModel
@@ -102,11 +103,11 @@ struct DateRow: View {
                 
                 Spacer()
                 
-                Image(systemName: viewModel.showCalendar ? "chevron.up" : "chevron.down")
+                Image(systemName: showCalendar ? "chevron.up" : "chevron.down")
             }
             .contentShape(Rectangle())
             .onTapGesture {
-                viewModel.showCalendar.toggle()
+                showCalendar.toggle()
             }
             
             Divider()
@@ -115,11 +116,8 @@ struct DateRow: View {
 }
 
 #Preview {
-    @Previewable @State var visaType = ""
-    @Previewable @State var isShowVisaTypeSheet = false
-    let countryKeyword = "Italia"
-    let flag = countryKeyword
+    @Previewable @State var countryData = CountryData(name: "Italia")
     
-    CountrySelectionCard()
+    CountrySelectionCard(countryData: $countryData)
         .environmentObject(VisaHistoryViewModel())
 }
