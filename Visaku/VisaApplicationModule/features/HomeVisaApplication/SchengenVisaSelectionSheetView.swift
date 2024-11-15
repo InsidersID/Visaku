@@ -76,9 +76,11 @@ struct SchengenVisaSelectionSheetView: View {
                     }
                 }
             }
-            .onChange(of: viewModel.areAllCountriesFilledAndVisaTypeIsEmpty) { newValue in
-                print("trigger")
+            .onChange(of: viewModel.areAllCountriesFilledAndVisaTypeIsEmpty) {
                 viewModel.showContinueSheet = true
+            }
+            .onDisappear {
+                viewModel.countries = []
             }
             .sheet(isPresented: $viewModel.showContinueSheet) {
                 VStack {
@@ -101,9 +103,6 @@ struct SchengenVisaSelectionSheetView: View {
                     .padding()
                 }
                 .presentationDetents([.height(150)])
-                .onDisappear {
-                    viewModel.countries = []
-                }
             }
         }
         

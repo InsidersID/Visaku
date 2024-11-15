@@ -41,8 +41,6 @@ public class VisaHistoryViewModel: ObservableObject {
         let areAllCountriesValid = countries.allSatisfy { country in
             !(country.name.isEmpty || country.startDate == nil || country.endDate == nil)
         }
-        print("trigger all countries valid")
-        print("\(areAllCountriesValid && visaTypeIsEmpty)")
         return areAllCountriesValid && visaTypeIsEmpty
     }
     @Published var showContinueSheet: Bool = false

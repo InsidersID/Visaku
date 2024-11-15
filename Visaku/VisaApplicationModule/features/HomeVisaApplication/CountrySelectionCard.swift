@@ -35,7 +35,19 @@ struct CountrySelectionCard: View {
                     DateRow(label: "Pulang", showCalendar: $showCalendar, date: $countryData.endDate)
                 }
                 .padding(.vertical, 5)
+                .onChange(of: countryData.startDate) {
+                    checkAndCloseCalendar()
+                }
+                .onChange(of: countryData.endDate) {
+                    checkAndCloseCalendar()
+                }
             }
+        }
+    }
+    
+    private func checkAndCloseCalendar() {
+        if countryData.startDate != nil && countryData.endDate != nil {
+            showCalendar = false
         }
     }
 }
