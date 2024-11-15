@@ -15,8 +15,7 @@ struct AddNewSchengenCountryCard: View {
     var body: some View {
         CardContainer(cornerRadius: 18) {
             Button(action: {
-                viewModel.isAddNewSchengenCountry = true
-                viewModel.countryKeyword = ""
+                isAddNewSchengenCountry = true
             }, label: {
                 HStack {
                     Text("Tambah negara")

@@ -20,8 +20,10 @@ public struct VisaHistoryView: View {
                 if viewModel.hasData {
                     ScrollView {
                         ApplicationSection(title: "Belum selesai")
+                            .padding(.horizontal, 20)
                             .environmentObject(viewModel)
                         ApplicationSection(title: "Riwayat")
+                            .padding(.horizontal, 20)
                             .environmentObject(viewModel)
                     }
                 } else {
@@ -31,7 +33,6 @@ public struct VisaHistoryView: View {
             .onAppear {
                 viewModel.fetchVisaHistoryInProgressData()
                 viewModel.fetchVisaHistoryCompletedData()
-                
             }
             .ignoresSafeArea(edges: .all)
             .sheet(isPresented: $viewModel.isShowChooseCountrySheet) {
@@ -45,7 +46,7 @@ public struct VisaHistoryView: View {
                 
             }
             .navigationDestination(isPresented: $viewModel.isShowCountryApplicationView) {
-                CountryVisaApplicationView(countrySelected: viewModel.countryKeyword, visaType: viewModel.visaType, countries: [.init(name: viewModel.countryKeyword, startDate: .now, endDate: .now)])
+                CountryVisaApplicationView(countrySelected: viewModel.countryVisa, visaType: viewModel.visaType, countries: viewModel.countries)
                     .navigationBarBackButtonHidden()
             }
         }
@@ -57,25 +58,13 @@ struct ApplicationSection: View {
     let title: String
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 12) {
             Text(title)
                 .font(.custom("Inter-SemiBold", size: 20))
                 .bold()
                 .opacity(0.5)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(12)
-            
-//            VisaApplicationCard(visaType: "turis", country: "itali", countries: ["italy", "jerman"], visaProgressPercentage: 75, visaProgressColor: .pink) {
-//                print("Card clicked")
-//            }
-//            .padding(.horizontal)
-//            .padding(.vertical, 4)
             if title == "Belum selesai" {
-//                VisaApplicationCard(visaType: "turis", country: "itali", countries: ["italy", "jerman"], visaProgressPercentage: 75, visaProgressColor: .pink) {
-//                        print("Card clicked")
-//                    }
-//                    .padding(.horizontal)
-//                    .padding(.vertical, 4)
                 switch viewModel.fetchVisaHistoryUncompleted {
                 case .idle:
                     Text("Idle")
