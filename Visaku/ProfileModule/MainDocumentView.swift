@@ -170,7 +170,7 @@ public struct MainDocumentView: View {
                     .presentationDragIndicator(.visible)
             })
             .sheet(isPresented: $profileViewModel.isScanKTP, content: {
-                KTPPreviewSheet(account: account, origin: .cameraScanner, profileViewModel: profileViewModel)
+                KTPPreviewSheet(account: account, origin: .cameraScanner)
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
                     .environment(profileViewModel)
