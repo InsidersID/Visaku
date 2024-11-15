@@ -50,8 +50,6 @@ public class VisaHistoryViewModel: ObservableObject {
     //SchengenCountrySelectionSheetView
     @Published var countrySearchKeyword : String = ""
     @Published var isAddNewSchengenCountry: Bool = false
-    
-    //
     @Published var isShowVisaTypeSheet: Bool = false
     
     public init() {
