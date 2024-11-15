@@ -57,6 +57,19 @@ class KTPPreviewViewModel: ObservableObject {
         }
     }
     
+    private func saveIdentityData() async throws -> Bool {
+        let isSuccess = try await identityCardUseCase.save(param: identityCard)
+        account.identityCard = identityCard
+        
+        let isAccountSaveSuccess = try await accountUseCase.update(param: account)
+        return isSuccess && isAccountSaveSuccess
+    }
+    
+    private func updateIdentityData() async throws -> Bool {
+        let isSuccess = try await identityCardUseCase.update(param: identityCard)
+        return isSuccess
+    }
+    
     func saveIdentityCard() async {
         do {
             saveIdentityCardState = .loading
@@ -65,26 +78,18 @@ class KTPPreviewViewModel: ObservableObject {
                 
                 if let existingCard = account.identityCard {
                     identityCard.id = existingCard.id
-                    let isSuccess = try await identityCardUseCase.update(param: identityCard)
+                    let isSuccess = try await updateIdentityData()
                     if !isSuccess {
                         saveIdentityCardState = .error
                         return
                     }
                 } else {
-                    let isSuccess = try await identityCardUseCase.save(param: identityCard)
+                    let isSuccess = try await saveIdentityData()
                     if !isSuccess {
                         saveIdentityCardState = .error
                         return
                     }
                 }
-                
-                account.identityCard = identityCard
-                
-                let isAccountSaveSuccess = try await accountUseCase.update(param: account)
-                if !isAccountSaveSuccess {
-                    saveIdentityCardState = .error
-                }
-                
                 saveIdentityCardState = .success
             }
         } catch {
