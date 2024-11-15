@@ -50,6 +50,7 @@ public struct CountryVisaApplicationView: View {
                     .padding(.horizontal)
             }
         }
+
     }
     
     private var progressGauge: some View {

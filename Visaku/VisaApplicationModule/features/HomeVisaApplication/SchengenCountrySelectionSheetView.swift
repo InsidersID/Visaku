@@ -6,17 +6,26 @@
 //
 
 import SwiftUI
+import RepositoryModule
 
 struct SchengenCountrySelectionSheetView: View {
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var viewModel: VisaHistoryViewModel
+    @State var isAddNewSchengenCountry: Bool = false
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack {
                     ForEach(Countries.schengenCountryList.filter { viewModel.countrySearchKeyword.isEmpty || $0.contains(viewModel.countrySearchKeyword) }, id: \.self) { schengenCountry in
                         Button(action: {
-                            viewModel.isAddNewSchengenCountry = true
-                            viewModel.countryKeyword = schengenCountry
+                            if (viewModel.countries.count >= 1) {
+                                isAddNewSchengenCountry = false
+                                dismiss()
+                            }
+                            else {
+                                isAddNewSchengenCountry = true
+                            }
+                            viewModel.countries.append(CountryData(name: schengenCountry))
                         }) {
                             Text(schengenCountry)
                                 .font(.title3)
@@ -33,10 +42,10 @@ struct SchengenCountrySelectionSheetView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("Pilih negara")
             .presentationDetents([.large])
-            .sheet(isPresented: $viewModel.isAddNewSchengenCountry) {
+            .sheet(isPresented: $isAddNewSchengenCountry) {
                 SchengenVisaSelectionSheetView(
                     onDismiss: {
-                        viewModel.isAddNewSchengenCountry = false
+                        isAddNewSchengenCountry = false
                     }
                 )
                 .environmentObject(viewModel)

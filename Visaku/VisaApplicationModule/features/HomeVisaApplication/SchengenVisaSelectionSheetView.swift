@@ -43,8 +43,8 @@ struct SchengenVisaSelectionSheetView: View {
                             .font(.custom("Inter-Bold", size: 19))
                             .bold()
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        ForEach(1..<2) { countryItem in
-                            CountrySelectionCard()
+                        ForEach($viewModel.countries.indices, id: \.self) { index in
+                            CountrySelectionCard(countryData: $viewModel.countries[index])
                                 .environmentObject(viewModel)
                         }
                     }
@@ -76,7 +76,13 @@ struct SchengenVisaSelectionSheetView: View {
                     }
                 }
             }
-            .sheet(isPresented: $viewModel.visaTypeIsEmpty) {
+            .onChange(of: viewModel.areAllCountriesFilledAndVisaTypeIsEmpty) {
+                viewModel.showContinueSheet = true
+            }
+            .onDisappear {
+                viewModel.countries = []
+            }
+            .sheet(isPresented: $viewModel.showContinueSheet) {
                 VStack {
                     VStack(spacing: 18) {
                         VStack(spacing: 5) {
@@ -84,7 +90,7 @@ struct SchengenVisaSelectionSheetView: View {
                                 .font(.custom("Inter-Regular", size: 16))
                                 .foregroundStyle(.secondary)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            Text("Visa \(viewModel.visaType) \(viewModel.countryKeyword)  \(Countries.schengenCountryFlags[viewModel.countryKeyword] ?? "")")
+                            Text("Visa \(viewModel.visaType) \(viewModel.countryVisa)  \(Countries.schengenCountryFlags[viewModel.countryVisa] ?? "")")
                                 .font(.custom("Inter-Regular", size: 20))
                                 .bold()
                                 .frame(maxWidth: .infinity, alignment: .leading)

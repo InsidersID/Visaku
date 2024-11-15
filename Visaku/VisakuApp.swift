@@ -12,7 +12,7 @@ import RepositoryModule
 struct VisakuApp: App {
     var body: some Scene {
         WindowGroup {
-            OnboardingView(destination: TabBarView())
+            TabBarView()
                 .task {
                     SwiftDataContextManager()
                 }
