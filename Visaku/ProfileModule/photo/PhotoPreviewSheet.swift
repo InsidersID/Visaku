@@ -16,9 +16,16 @@ public struct PhotoPreviewSheet: View {
     
     @StateObject private var cameraState = CameraState()
     
-    public init(account: AccountEntity, photoImage: UIImage? = nil) {
+    var origin: PhotoPreviewOrigin
+    
+    public init(account: AccountEntity, photoImage: UIImage? = nil, origin: PhotoPreviewOrigin) {
+        self.origin = origin
         self._photoPreviewViewModel = StateObject(wrappedValue: PhotoPreviewViewModel(account: account))
         self.photoPreviewViewModel.photoImage = photoImage
+        
+        if self.origin == .imagePicker {
+            photoPreviewViewModel.isCameraOpen = false
+        }
     }
     
     public var body: some View {

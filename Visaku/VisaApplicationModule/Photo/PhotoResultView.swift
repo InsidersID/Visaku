@@ -28,7 +28,7 @@ public struct PhotoResultView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 14))
                             .padding()
                     } else {
-                        RoundedRectangle(cornerRadius: 14)
+                        RoundedRectangle(cornerRadius: 24)
                             .fill(Color.gray)
                             .frame(width: 300, height: 300)
                             .overlay {

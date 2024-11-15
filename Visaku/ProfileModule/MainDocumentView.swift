@@ -149,30 +149,39 @@ public struct MainDocumentView: View {
                 UploadDocumentsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
             })
-            .sheet(isPresented: $profileViewModel.isUploadFile) {
-                FilePicker(selectedFileURL: $profileViewModel.selectedFileURL)
-            }
-            .sheet(isPresented: $profileViewModel.isUploadImage) {
-                ImagePickerView(selectedImage: $profileViewModel.identifiableSelectedImage, account: account, documentType:
-                                    profileViewModel.selectedDocument == .init(name: "KTP") ? .ktp :
-                                    profileViewModel.selectedDocument == .init(name: "Paspor") ? .paspor :
-                                    profileViewModel.selectedDocument == .init(name: "Foto") ? .personalPhoto : .ktp
-                    )
+            .sheet(isPresented: $profileViewModel.isUploadImageForKTP) {
+                KTPPreviewSheet(account: account, origin: .imagePicker)
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             }
-            .sheet(isPresented: $profileViewModel.isScanKTP, content: {
-                KTPPreviewSheet(account: account)
+            .sheet(isPresented: $profileViewModel.isUploadImageForPassport, content: {
+                PassportPreviewSheet(account: account, origin: .imagePicker)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+            })
+            .sheet(isPresented: $profileViewModel.isUploadImageForFoto, content: {
+                PhotoPreviewSheet(account: account, origin: .imagePicker)
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             })
             .sheet(isPresented: $profileViewModel.isScanPaspor, content: {
-                PassportPreviewSheet(account: account)
+                PassportPreviewSheet(account: account, origin: .cameraScanner)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+            })
+            .sheet(isPresented: $profileViewModel.isScanKTP, content: {
+                KTPPreviewSheet(account: account, origin: .cameraScanner, profileViewModel: profileViewModel)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+                    .environment(profileViewModel)
+            })
+            .sheet(isPresented: $profileViewModel.isScanPaspor, content: {
+                PassportPreviewSheet(account: account, origin: .cameraScanner)
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             })
             .sheet(isPresented: $profileViewModel.isScanFoto, content: {
-                PhotoPreviewSheet(account: account)
+                PhotoPreviewSheet(account: account, origin: .cameraScanner)
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             })

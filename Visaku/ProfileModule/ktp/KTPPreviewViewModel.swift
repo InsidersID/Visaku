@@ -19,6 +19,11 @@ enum DeleteIdentityCardState {
     case success
 }
 
+public enum KTPPreviewOrigin: Equatable {
+    case cameraScanner
+    case imagePicker
+}
+
 @MainActor
 class KTPPreviewViewModel: ObservableObject {
     @MainActor
@@ -28,7 +33,7 @@ class KTPPreviewViewModel: ObservableObject {
     private var accountUseCase: AccountUseCaseProtocol = AccountUseCase.make()
     
     //Navigation
-    @Published var isCameraOpen: Bool = true
+    @Published var isCameraOpen: Bool = false
     
     //Data
     @Published var identityCard: IdentityCardEntity
@@ -38,6 +43,7 @@ class KTPPreviewViewModel: ObservableObject {
     //State View
     @Published var saveIdentityCardState: SaveIdentityCardState = .idle
     @Published var deleteIdentityCardState: DeleteIdentityCardState = .idle
+    
     
     init(account: AccountEntity? = nil) {
         self._account = StateObject(wrappedValue: account ?? AccountEntity(id: "", username: "", image: Data()))
