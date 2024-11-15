@@ -58,6 +58,7 @@ struct ActionDocumentSheet: View {
                         .foregroundStyle(.blue)
                         .font(.custom("Inter-Regular", size: 16))
                     Text("Lihat ketentuan")
+                        .foregroundStyle(.black)
                         .font(.custom("Inter-Regular", size: 16))
                 }
                 .onTapGesture {

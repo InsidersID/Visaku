@@ -81,6 +81,7 @@ struct SchengenVisaSelectionSheetView: View {
             }
             .onDisappear {
                 viewModel.countries = []
+                viewModel.visaType = ""
             }
             .sheet(isPresented: $viewModel.showContinueSheet) {
                 VStack {
