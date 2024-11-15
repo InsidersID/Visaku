@@ -96,7 +96,8 @@ struct ApplicationSection: View {
                         ForEach(visaHistoryCompleted) { trip in
                             let tripData = TripDataUIModel(from: trip)
                             VisaApplicationCard(visaType: tripData.visaType, country: tripData.country, countries: tripData.countries, visaProgressPercentage: tripData.percentage, visaProgressColor: .green, createdAt: tripData.date) {
-                                print("trigger card")
+                                CountryVisaApplicationView(countrySelected: viewModel.countryVisa, visaType: viewModel.visaType, countries: viewModel.countries)
+                                    .navigationBarBackButtonHidden()
                             }
                         }
                     }
