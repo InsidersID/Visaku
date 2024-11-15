@@ -261,7 +261,7 @@ struct TextFieldView: View {
     let onCommit: () -> Void
     
     var body: some View {
-        TextField(title, text: $text)
+        TextField(text == "" ? "Jawaban" : text, text: $text)
             .keyboardType(keyboardType)
             .padding()
             .background(Color.gray.opacity(0.1))
@@ -277,7 +277,8 @@ struct TextFieldView: View {
     @Previewable @State var yesNoSelection: String? = nil
     @Previewable @State var singleOptionSelection: String? = nil
     @Previewable @State var multipleSelections: [String] = []
-    
+    @Previewable @State var customForm: String = ""
+
     VStack {
         ExpandableSelection(
             title: "Yes or No Question",
@@ -302,5 +303,7 @@ struct TextFieldView: View {
             singleSelection: .constant(nil),
             multipleSelection: $multipleSelections
         )
+        
+        CustomFormField(title: "yhu", text: $customForm)
     }
 }

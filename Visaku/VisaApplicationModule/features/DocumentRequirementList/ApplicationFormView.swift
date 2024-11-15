@@ -20,7 +20,6 @@ struct ApplicationFormView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 250, height: 200)
-                        .padding(.top, -40)
 
                     SectionView(
                         title: "Tempat tinggal di negara selain negara yang menjadi kewarganegaraannya saat ini",
