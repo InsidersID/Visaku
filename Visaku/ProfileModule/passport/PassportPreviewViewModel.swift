@@ -63,6 +63,18 @@ class PassportPreviewViewModel: ObservableObject {
         }
     }
     
+    func savePassportData() async throws -> Bool {
+        let isSuccess = try await passportUseCase.save(param: passport)
+        account.passport = passport
+        let isAccountSaveSuccess = try await accountUseCase.update(param: account)
+        return isSuccess && isAccountSaveSuccess
+    }
+    
+    func updatePassportData() async throws -> Bool {
+        let isSuccess = try await passportUseCase.update(param: passport)
+        return isSuccess
+    }
+    
     func savePassport() async {
         do {
             savePassportState = .loading
@@ -71,26 +83,18 @@ class PassportPreviewViewModel: ObservableObject {
                 
                 if let existingPassport = account.passport {
                     passport.id = existingPassport.id
-                    let isSuccess = try await passportUseCase.update(param: passport)
+                    let isSuccess = try await updatePassportData()
                     if !isSuccess {
                         savePassportState = .error
                         return
                     }
                 } else {
-                    let isSuccess = try await passportUseCase.save(param: passport)
+                    let isSuccess = try await savePassportData()
                     if !isSuccess {
                         savePassportState = .error
                         return
                     }
                 }
-                
-                account.passport = passport
-                
-                let isAccountSaveSuccess = try await accountUseCase.update(param: account)
-                if !isAccountSaveSuccess {
-                    savePassportState = .error
-                }
-                
                 savePassportState = .success
             }
         } catch {

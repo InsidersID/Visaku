@@ -36,9 +36,26 @@ public struct CountryVisaApplicationView: View {
                         cancelButton
                     }
                 }
-                .navigationTitle("Pengajuan")
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbar { backButton }
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text("Pengajuan")
+                            .font(.custom("Inter-SemiBold", size: 24))
+                    }
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: {
+                            dismiss()
+                        }) {
+                            Image(systemName: "chevron.backward")
+                                .font(.custom("Inter-SemiBold", size: 17))
+                                .padding(10)
+                                .background(Circle().fill(Color.white))
+                                .foregroundColor(.black)
+                                .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                        }
+                    }
+                }
+//                .toolbar { backButton }
                 .onAppear { viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries) }
                 .onChange(of: viewModel.completionPercentage) { completionHandler($0) }
                 .sheet(isPresented: $isIdentity) { ProfileView() }
