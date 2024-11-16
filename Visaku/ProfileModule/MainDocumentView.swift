@@ -12,7 +12,6 @@ public struct MainDocumentView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(ProfileViewModel.self) var profileViewModel
     @State private var scanResult: UIImage?
-    @State private var isShowingEditProfile = false
     
     public var accountId: String
     
@@ -61,7 +60,7 @@ public struct MainDocumentView: View {
                             }
                             
                             Button(action: {
-                                isShowingEditProfile = true
+                                profileViewModel.isShowingEditProfile = true
                             }) {
                                 HStack {
                                     if let updatedAccount = profileViewModel.getAccountByID(account.id) {
@@ -120,7 +119,7 @@ public struct MainDocumentView: View {
                         Spacer()
                     }
                     
-                    if profileViewModel.isDeleteProfile || isShowingEditProfile {
+                    if profileViewModel.isDeleteProfile || profileViewModel.isShowingEditProfile {
                         Color("blackOpacity4").ignoresSafeArea()
                     }
                     
@@ -187,7 +186,7 @@ public struct MainDocumentView: View {
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             })
-            .fullScreenCover(isPresented: $isShowingEditProfile) {
+            .fullScreenCover(isPresented: $profileViewModel.isShowingEditProfile) {
                 AddProfileView(account: account, isEditing: true)
                     .onAppear {
                         profileViewModel.username = account.username

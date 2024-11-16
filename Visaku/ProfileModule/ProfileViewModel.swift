@@ -29,6 +29,7 @@ public class ProfileViewModel {
     var isUploadImageForOthers: Bool = false
     var isFormFilling: Bool = false
     var navigateToMainDocuments: Bool = false
+    var isShowingEditProfile: Bool = false
     
     var selectedFileURL: URL?
     var selectedImage: UIImage?
