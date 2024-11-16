@@ -22,10 +22,10 @@ struct AddProfileView: View {
         
         GeometryReader { proxy in
             ZStack {
-                Color.black.opacity(0.75)
-                    .ignoresSafeArea()
+                Color.clear.ignoresSafeArea()
+                    .contentShape(Rectangle())
                     .onTapGesture {
-                        dismiss()
+                        profileViewModel.isAddingProfile.toggle()
                     }
                 
                 VStack {
@@ -65,6 +65,7 @@ struct AddProfileView: View {
                 .padding()
                 .frame(width: proxy.size.width, height: 144, alignment: .topTrailing)
             }
+            .frame(height: proxy.size.height, alignment: .center)
         }
         .ignoresSafeArea(.keyboard)
     }

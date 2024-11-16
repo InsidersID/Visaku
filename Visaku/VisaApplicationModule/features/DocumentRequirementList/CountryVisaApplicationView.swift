@@ -17,9 +17,8 @@ public struct CountryVisaApplicationView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = CountryVisaApplicationViewModel()
+    @StateObject var viewModel = CountryVisaApplicationViewModel()
     @State private var isShowPrintSheet = false
-    @State private var isIdentity = false
     @State private var isItinerary = false
     @State private var isFormApplication = false
     
@@ -58,7 +57,7 @@ public struct CountryVisaApplicationView: View {
 //                .toolbar { backButton }
                 .onAppear { viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries) }
                 .onChange(of: viewModel.completionPercentage) { completionHandler($0) }
-                .sheet(isPresented: $isIdentity) { ProfileView() }
+                .sheet(isPresented: $viewModel.isIdentity) { ProfileView(isSelectProfile: true).environmentObject(viewModel) }
                 .sheet(isPresented: $isItinerary) { ItineraryListSheet() }
                 .sheet(isPresented: $isShowPrintSheet) { printSheet }
                 .fullScreenCover(isPresented: $isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
@@ -91,9 +90,24 @@ public struct CountryVisaApplicationView: View {
     
     private var documentCards: some View {
         VStack {
-            DocumentCard(height: 82, document: "Identitas", status: .undone)
+            if viewModel.selectedIdentity == nil {
+                DocumentCard(height: 82, document: "Identitas", status: .undone)
+                    .padding(.horizontal)
+                    .onTapGesture { viewModel.isIdentity.toggle() }
+            } else {
+                CardContainer(cornerRadius: 24) {
+                    HStack {
+                        Text(viewModel.selectedIdentity?.username ?? "Error")
+                            .font(.custom("Inter-SemiBold", size: 16))
+                        
+                        Spacer()
+                    }
+                    .frame(height: 47)
+                }
                 .padding(.horizontal)
-                .onTapGesture { isIdentity.toggle() }
+                .contentShape(Rectangle())
+                .onTapGesture { viewModel.isIdentity.toggle() }
+            }
             
             DocumentRequirementsList().environmentObject(viewModel)
             

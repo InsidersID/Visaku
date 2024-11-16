@@ -28,7 +28,7 @@ public struct MainDocumentView: View {
     public var body: some View {
         @Bindable var profileViewModel = profileViewModel
         
-        NavigationView {
+        NavigationStack {
             GeometryReader { proxy in
                 ZStack {
                     VStack {
@@ -101,9 +101,8 @@ public struct MainDocumentView: View {
                                 DocumentCard(height: proxy.size.height*102/798, document: "Foto", status: .undone)
                             }
                             
-                            NavigationLink {
-                                AddOnInformationView()
-                                    .navigationBarBackButtonHidden()
+                            Button {
+                                profileViewModel.isFormFilling.toggle()
                             } label: {
                                 DocumentCard(height: proxy.size.height*102/798, document: "Informasi tambahan", status: .undone)
                             }
@@ -191,6 +190,9 @@ public struct MainDocumentView: View {
                         profileViewModel.username = account.username
                     }
             }
+            .fullScreenCover(isPresented: $profileViewModel.isFormFilling) {
+                AdditionalInformationView(account: account)
+            }
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Profil")
@@ -218,7 +220,7 @@ extension Notification.Name {
     static let accountImageUpdated = Notification.Name("accountImageUpdated")
 }
 
-//#Preview {
-//    MainDocumentView(name: "Iqbal", accountId: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
-//        .environment(ProfileViewModel())
-//}
+#Preview {
+    MainDocumentView(name: "Iqbal", accountId: "1")
+        .environment(ProfileViewModel())
+}
