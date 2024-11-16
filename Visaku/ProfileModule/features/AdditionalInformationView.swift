@@ -120,7 +120,7 @@ struct AdditionalInformationView: View {
         .navigationTitle("Informasi Tambahan")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
                     dismiss()
                 }) {
@@ -280,5 +280,7 @@ public struct ExpandableRadioButton: View {
 
 
 #Preview {
-    AdditionalInformationView(account: .init(id: UUID().uuidString, username: "", image: Data()))
+    NavigationStack {
+        AdditionalInformationView(account: .init(id: UUID().uuidString, username: "", image: Data()))
+    }
 }

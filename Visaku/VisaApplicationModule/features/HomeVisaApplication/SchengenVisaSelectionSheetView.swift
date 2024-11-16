@@ -76,11 +76,11 @@ struct SchengenVisaSelectionSheetView: View {
                     }
                 }
             }
+            .onDisappear {
+                viewModel.countries.removeAll()
+            }
             .onChange(of: viewModel.areAllCountriesFilledAndVisaTypeIsEmpty) {
                 viewModel.showContinueSheet = true
-            }
-            .onDisappear {
-                viewModel.countries = []
             }
             .sheet(isPresented: $viewModel.showContinueSheet) {
                 VStack {
