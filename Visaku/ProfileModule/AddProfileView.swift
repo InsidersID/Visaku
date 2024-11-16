@@ -25,7 +25,11 @@ struct AddProfileView: View {
                 Color.clear.ignoresSafeArea()
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        profileViewModel.isAddingProfile.toggle()
+                        if isEditing {
+                            dismiss()
+                        } else {
+                            profileViewModel.isAddingProfile = false
+                        }
                     }
                 
                 VStack {
@@ -56,9 +60,11 @@ struct AddProfileView: View {
                             await profileViewModel.updateAccountUsername(account, newUsername: profileViewModel.username)
                         } else {
                             await profileViewModel.saveAccount()
+                            profileViewModel.isAddingProfile = false
+                            profileViewModel.selectedAccount = profileViewModel.getAccountByID("")
+                            profileViewModel.navigateToMainDocuments = true
                         }
                     }
-                    profileViewModel.isAddingProfile = false
                     dismiss()
                 }
                 .disabled(profileViewModel.username.isEmpty)

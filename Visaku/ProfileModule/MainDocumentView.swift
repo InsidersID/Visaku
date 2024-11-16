@@ -122,17 +122,6 @@ public struct MainDocumentView: View {
                     if profileViewModel.isDeleteProfile || profileViewModel.isShowingEditProfile {
                         Color("blackOpacity4").ignoresSafeArea()
                     }
-                    
-                    if profileViewModel.isDeleteProfile {
-                        CustomAlert(title: "Hapus profil?", caption: "Jika dokumen dihapus, semua data akan hilang secara otomatis.", button1: "Hapus", button2: "Batal") {
-                            Task {
-                                await profileViewModel.deleteAccount(account)
-                                profileViewModel.isDeleteProfile.toggle()
-                            }
-                        } action2: {
-                            profileViewModel.isDeleteProfile.toggle()
-                        }
-                    }
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: .accountImageUpdated)) { notification in
@@ -188,10 +177,23 @@ public struct MainDocumentView: View {
             })
             .fullScreenCover(isPresented: $profileViewModel.isShowingEditProfile) {
                 AddProfileView(account: account, isEditing: true)
+                    .clearModalBackground()
                     .onAppear {
                         profileViewModel.username = account.username
                     }
             }
+            .fullScreenCover(isPresented: $profileViewModel.isDeleteProfile, content: {
+                CustomAlert(title: "Hapus profil?", caption: "Jika dokumen dihapus, semua data akan hilang secara otomatis.", button1: "Hapus", button2: "Batal") {
+                    Task {
+                        await profileViewModel.deleteAccount(account)
+                        profileViewModel.isDeleteProfile = false
+                        dismiss()
+                    }
+                } action2: {
+                    profileViewModel.isDeleteProfile = false
+                }
+                .clearModalBackground()
+            })
             .fullScreenCover(isPresented: $profileViewModel.isFormFilling) {
                 AdditionalInformationView(account: account)
             }
