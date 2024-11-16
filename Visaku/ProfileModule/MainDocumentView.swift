@@ -101,9 +101,8 @@ public struct MainDocumentView: View {
                                 DocumentCard(height: proxy.size.height*102/798, document: "Foto", status: .undone)
                             }
                             
-                            NavigationLink {
-                                AddOnInformationView()
-                                    .navigationBarBackButtonHidden()
+                            Button {
+                                profileViewModel.isFormFilling.toggle()
                             } label: {
                                 DocumentCard(height: proxy.size.height*102/798, document: "Informasi tambahan", status: .undone)
                             }
@@ -190,6 +189,10 @@ public struct MainDocumentView: View {
                     .onAppear {
                         profileViewModel.username = account.username
                     }
+            }
+            .fullScreenCover(isPresented: $profileViewModel.isFormFilling) {
+                AdditionalInformationView(account: account)
+                    .navigationBarBackButtonHidden()
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {

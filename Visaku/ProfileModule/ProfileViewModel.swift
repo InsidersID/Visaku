@@ -18,16 +18,17 @@ public class ProfileViewModel {
     var navigateToMainDocuments: Bool = false
     var selectedAccount: AccountEntity?
     var selectedDocument: Document?
+    
     var isScanKTP: Bool = false
     var isScanPaspor: Bool = false
     var isScanFoto: Bool = false
-    var uploadDocument: Document?
     var isUploadFile: Bool = false
-    
     var isUploadImageForKTP: Bool = false
     var isUploadImageForPassport: Bool = false
     var isUploadImageForFoto: Bool = false
     var isUploadImageForOthers: Bool = false
+    var isFormFilling: Bool = false
+    var uploadDocument: Document?
     
     var selectedFileURL: URL?
     var selectedImage: UIImage?
