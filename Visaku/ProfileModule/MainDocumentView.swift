@@ -14,6 +14,9 @@ public struct MainDocumentView: View {
     @State private var scanResult: UIImage?
     @State private var isShowingEditProfile = false
     
+    @State private var showKTPPreviewSheet = false
+    @State private var coordinator = KTPPreviewCoordinator()
+    
     public var accountId: String
     
     public init(name: String, accountId: String) {
@@ -141,6 +144,14 @@ public struct MainDocumentView: View {
                     }
                 }
             }
+            .onReceive(NotificationCenter.default.publisher(for: .triggerKTPUpload)) { _ in
+                showKTPPreviewSheet = true
+            }
+            .sheet(isPresented: $showKTPPreviewSheet) {
+                KTPPreviewSheet(account: account, origin: .imagePicker, coordinator: coordinator)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+            }
             .sheet(item: $profileViewModel.selectedDocument, content: { document in
                 DocumentDetailsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
@@ -149,11 +160,6 @@ public struct MainDocumentView: View {
                 UploadDocumentsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
             })
-            .sheet(isPresented: $profileViewModel.isUploadImageForKTP) {
-                KTPPreviewSheet(account: account, origin: .imagePicker)
-                    .presentationDetents([.medium, .large])
-                    .presentationDragIndicator(.visible)
-            }
             .sheet(isPresented: $profileViewModel.isUploadImageForPassport, content: {
                 PassportPreviewSheet(account: account, origin: .imagePicker)
                     .presentationDetents([.medium, .large])
@@ -170,7 +176,7 @@ public struct MainDocumentView: View {
                     .presentationDragIndicator(.visible)
             })
             .sheet(isPresented: $profileViewModel.isScanKTP, content: {
-                KTPPreviewSheet(account: account, origin: .cameraScanner)
+                KTPPreviewSheet(account: account, origin: .cameraScanner, coordinator: coordinator)
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
                     .environment(profileViewModel)
@@ -216,7 +222,11 @@ public struct MainDocumentView: View {
 
 extension Notification.Name {
     static let accountImageUpdated = Notification.Name("accountImageUpdated")
+    
+    static let triggerKTPUpload = Notification.Name("triggerKTPUpload")
 }
+
+
 
 //#Preview {
 //    MainDocumentView(name: "Iqbal", accountId: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))

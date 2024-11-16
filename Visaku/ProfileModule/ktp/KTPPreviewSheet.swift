@@ -3,15 +3,17 @@ import UIComponentModule
 import RepositoryModule
 
 public struct KTPPreviewSheet: View {
-    @Environment(\.dismiss) var dismiss
+    @ObservedObject var coordinator: KTPPreviewCoordinator
     @ObservedObject var ktpPreviewViewModel: KTPPreviewViewModel
     @Environment(ProfileViewModel.self) var profileViewModel
     
+    @Environment(\.dismiss) var dismiss
     var origin: KTPPreviewOrigin
     
-    public init(account: AccountEntity, selectedImage: UIImage? = nil, origin: KTPPreviewOrigin) {
+    public init(account: AccountEntity, selectedImage: UIImage? = nil, origin: KTPPreviewOrigin, coordinator: KTPPreviewCoordinator) {
         self.ktpPreviewViewModel = KTPPreviewViewModel(account: account)
         self.origin = origin
+        self.coordinator = coordinator
         
         if let unwrappedImage = selectedImage {
             self.ktpPreviewViewModel.ktpImage = unwrappedImage
@@ -26,7 +28,7 @@ public struct KTPPreviewSheet: View {
                     KTPImageView(ktpImage: ktpPreviewViewModel.ktpImage)
                     Divider()
                     KTPDetailsView(ktpPreviewViewModel: ktpPreviewViewModel)
-                    SaveDeleteButtonsView(ktpPreviewViewModel: ktpPreviewViewModel)
+                    SaveDeleteButtonsView(ktpPreviewViewModel: ktpPreviewViewModel, coordinator: coordinator)
                 }
                 .padding(.bottom, 16)
                 .frame(maxWidth: .infinity)
@@ -35,36 +37,53 @@ public struct KTPPreviewSheet: View {
                 VNDocumentCameraViewControllerRepresentable(scanResult: $ktpPreviewViewModel.ktpImage)
                     .ignoresSafeArea()
             }
-            .sheet(isPresented: Binding(
-                get: { profileViewModel.isUploadImageForKTP },
-                set: { profileViewModel.isUploadImageForKTP = $0 }
-            )) {
+            .sheet(isPresented: $coordinator.isImagePickerVisible) {
                 ImagePicker(selectedImage: Binding(
                     get: { ktpPreviewViewModel.ktpImage.map { IdentifiableImage(id: UUID(), image: $0) } },
                     set: { newImage in
-                        if let newImage = newImage {
-                            ktpPreviewViewModel.ktpImage = newImage.image
+                        guard let newImage = newImage else { return }
+
+                        ktpPreviewViewModel.ktpImage = newImage.image
+                        coordinator.isProcessingInProgress = true
+
+                        Task {
+                            await ktpPreviewViewModel.processCapturedImage(newImage.image)
+                            DispatchQueue.main.async {
+                                coordinator.isProcessingInProgress = false
+                                coordinator.isImagePickerVisible = false // Dismiss only the picker
+                            }
                         }
                     }
                 ), documentType: .ktp)
-                    .onDisappear {
-                        handleOnDisappear()
-                    }
             }
             .onAppear {
-                ktpPreviewViewModel.isCameraOpen = (origin == .cameraScanner)
+                if origin == .imagePicker && !coordinator.isImagePickerVisible {
+                    coordinator.isImagePickerVisible = true
+                } else if origin == .cameraScanner {
+                    ktpPreviewViewModel.isCameraOpen = true
+                }
             }
             .onChange(of: ktpPreviewViewModel.ktpImage) { _, newValue in
-                if let unwrappedImage = newValue {
-                    ktpPreviewViewModel.processCapturedImage(unwrappedImage)
-                } else {
-                    print("No image to process")
-                }
+                  guard let unwrappedImage = newValue, !coordinator.isProcessingInProgress else { return }
+
+                  coordinator.isProcessingInProgress = true
+                  Task {
+                      await ktpPreviewViewModel.processCapturedImage(unwrappedImage)
+                      DispatchQueue.main.async {
+                          coordinator.isProcessingInProgress = false
+                      }
+                  }
+              }
+            .onChange(of: coordinator.isKTPPreviewSheetVisible) { _, newValue in
+                print("KTPPreviewSheet visibility: \(newValue)")
+            }
+            .onChange(of: coordinator.isImagePickerVisible) { _, newValue in
+                print("ImagePicker visibility: \(newValue)")
             }
             .navigationTitle("KTP")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(trailing: Button(action: {
-                dismiss()
+                coordinator.isKTPPreviewSheetVisible = false
             }) {
                 Image(systemName: "x.circle")
                     .font(.title)
@@ -72,14 +91,7 @@ public struct KTPPreviewSheet: View {
             })
         }
     }
-    
-    private func handleOnDisappear() {
-        if let unwrappedImage = ktpPreviewViewModel.ktpImage {
-             Task {
-                 ktpPreviewViewModel.processCapturedImage(unwrappedImage)
-             }
-         }
-    }
+
 }
 
 struct KTPImageView: View {
@@ -153,6 +165,7 @@ struct KTPDetailsView: View {
 struct SaveDeleteButtonsView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var ktpPreviewViewModel: KTPPreviewViewModel
+    @ObservedObject var coordinator: KTPPreviewCoordinator
     
     var body: some View {
         VStack {
@@ -169,7 +182,7 @@ struct SaveDeleteButtonsView: View {
                     Task {
                         await ktpPreviewViewModel.saveIdentityCard()
                     }
-                    dismiss()
+                    coordinator.isKTPPreviewSheetVisible = false
                 }
             }
 

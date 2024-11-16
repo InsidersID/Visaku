@@ -27,6 +27,9 @@ public class ProfileViewModel {
     var isUploadImageForFoto: Bool = false
     var isUploadImageForOthers: Bool = false
     
+    var isImagePickerPresented: Bool = false
+    var isKTPPreviewSheetPresented: Bool = false
+    
     var selectedFileURL: URL?
     var selectedImage: UIImage?
     var accountID: String?
@@ -133,6 +136,12 @@ public class ProfileViewModel {
             }
         } catch {
             self.error = CustomError(error.localizedDescription)
+        }
+    }
+    
+    func triggerKTPUpload() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            NotificationCenter.default.post(name: .triggerKTPUpload, object: nil)
         }
     }
 }
