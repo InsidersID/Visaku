@@ -19,6 +19,12 @@ public class ProfileViewModel {
     var isDeleteProfile: Bool = false
     var isLoading: Bool = false
     var isError: Bool = false
+    var username: String = ""
+    var navigateToMainDocuments: Bool = false
+    var selectedAccount: AccountEntity?
+    var selectedDocument: Document?
+    var uploadDocument: Document?
+  
     var isScanKTP: Bool = false
     var isScanPaspor: Bool = false
     var isScanFoto: Bool = false
@@ -30,6 +36,9 @@ public class ProfileViewModel {
     var isFormFilling: Bool = false
     var navigateToMainDocuments: Bool = false
     var isShowingEditProfile: Bool = false
+    
+    var isImagePickerPresented: Bool = false
+    var isKTPPreviewSheetPresented: Bool = false
     
     var selectedFileURL: URL?
     var selectedImage: UIImage?

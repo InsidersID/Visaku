@@ -13,6 +13,8 @@ public struct MainDocumentView: View {
     @Environment(ProfileViewModel.self) var profileViewModel
     @State private var scanResult: UIImage?
     
+    @State private var showKTPPreviewSheet = false
+    
     public var accountId: String
     
     public init(name: String, accountId: String) {
@@ -131,6 +133,7 @@ public struct MainDocumentView: View {
                     }
                 }
             }
+
             .sheet(item: $profileViewModel.selectedDocument, content: { document in
                 DocumentDetailsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
