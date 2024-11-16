@@ -218,7 +218,7 @@ extension Notification.Name {
     static let accountImageUpdated = Notification.Name("accountImageUpdated")
 }
 
-//#Preview {
-//    MainDocumentView(name: "Iqbal", accountId: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
-//        .environment(ProfileViewModel())
-//}
+#Preview {
+    MainDocumentView(name: "Iqbal", accountId: "1")
+        .environment(ProfileViewModel())
+}
