@@ -25,6 +25,9 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     }
     
     // Form data properties
+    @Published var isIdentity: Bool = false
+    @Published var selectedIdentity: AccountEntity?
+    
     @Published var hasOtherResidence: String? = ""
     @Published var residenceType: String = ""
     @Published var residenceNumber: String = ""

@@ -5,6 +5,7 @@ import UIComponentModule
 public struct ProfileView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var profileViewModel = ProfileViewModel()
+    @EnvironmentObject var visaViewModel: CountryVisaApplicationViewModel
     public var isSelectProfile: Bool
     
     public init(isSelectProfile: Bool = false) {
@@ -17,19 +18,17 @@ public struct ProfileView: View {
                 LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20){
                     if let accounts = profileViewModel.accounts {
                         ForEach(accounts, id: \.id) { account in
-                            if isSelectProfile {
-                                Button {
-                                    dismiss()
-                                } label: {
-                                    ProfileCard(name: account.username, imageData: account.image)
-                                }
-                            } else {
-                                Button {
+                            Button {
+                                if isSelectProfile {
+                                    visaViewModel.selectedIdentity = account
+                                    print(visaViewModel.selectedIdentity?.username ?? "error selecting identity")
+                                    visaViewModel.isIdentity.toggle()
+                                } else {
                                     profileViewModel.selectedAccount = account
                                     profileViewModel.navigateToMainDocuments = true
-                                } label: {
-                                    ProfileCard(name: account.username, isAddProfile: false, imageData: account.image)
                                 }
+                            } label: {
+                                ProfileCard(name: account.username, isAddProfile: false, imageData: account.image)
                             }
                         }
                     }
