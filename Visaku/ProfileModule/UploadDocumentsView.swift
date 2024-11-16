@@ -9,7 +9,6 @@ struct UploadDocumentsView: View {
     @StateObject public var account: AccountEntity
     @State public var status: DocumentStatus
     
-    
     public init (document: String, account: AccountEntity? = nil, status: DocumentStatus = .undone) {
         self.document = document
         self._account = StateObject(wrappedValue: account ?? AccountEntity(id: "", username: "", image: Data()))
@@ -49,21 +48,24 @@ struct UploadDocumentsView: View {
             
             HStack {
                 Button {
-                    switch document {
-                    case "KTP":
-                        print("KTP Upload")
-                        profileViewModel.isUploadImageForKTP = true
-                    case "Paspor":
-                        print("Passport Upload")
-                        profileViewModel.isUploadImageForPassport = true
-                    case "Foto":
-                        print("Photo Upload")
-                        profileViewModel.isUploadImageForFoto = true
-                    default:
-                        print("Others Upload")
-                        profileViewModel.isUploadImageForOthers = true
-                    }
-                    dismiss()
+                    DispatchQueue.main.async {
+                            switch document {
+                            case "KTP":
+                                print("KTP Upload")
+                                profileViewModel.isUploadImageForKTP = true
+                            case "Paspor":
+                                print("Passport Upload")
+                                profileViewModel.isUploadImageForPassport = true
+                            case "Foto":
+                                print("Photo Upload")
+                                profileViewModel.isUploadImageForFoto = true
+                            default:
+                                print("Others Upload")
+                                profileViewModel.isUploadImageForOthers = true
+                            }
+                        }
+
+                   dismiss()
                 } label: {
                     ZStack {
                         Image(systemName: "circle.fill")

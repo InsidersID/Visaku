@@ -30,6 +30,9 @@ public class ProfileViewModel {
     var isFormFilling: Bool = false
     var uploadDocument: Document?
     
+    var isImagePickerPresented: Bool = false
+    var isKTPPreviewSheetPresented: Bool = false
+    
     var selectedFileURL: URL?
     var selectedImage: UIImage?
     var accountID: String?

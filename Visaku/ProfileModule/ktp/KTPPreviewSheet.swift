@@ -3,10 +3,10 @@ import UIComponentModule
 import RepositoryModule
 
 public struct KTPPreviewSheet: View {
-    @Environment(\.dismiss) var dismiss
     @ObservedObject var ktpPreviewViewModel: KTPPreviewViewModel
     @Environment(ProfileViewModel.self) var profileViewModel
     
+    @Environment(\.dismiss) var dismiss
     var origin: KTPPreviewOrigin
     
     public init(account: AccountEntity, selectedImage: UIImage? = nil, origin: KTPPreviewOrigin) {
@@ -20,6 +20,8 @@ public struct KTPPreviewSheet: View {
     }
     
     public var body: some View {
+        @Bindable var profileViewModel = profileViewModel
+        
         NavigationStack {
             ScrollView(.vertical, showsIndicators: true) {
                 VStack {
@@ -35,32 +37,34 @@ public struct KTPPreviewSheet: View {
                 VNDocumentCameraViewControllerRepresentable(scanResult: $ktpPreviewViewModel.ktpImage)
                     .ignoresSafeArea()
             }
-            .sheet(isPresented: Binding(
-                get: { profileViewModel.isUploadImageForKTP },
-                set: { profileViewModel.isUploadImageForKTP = $0 }
-            )) {
-                ImagePicker(selectedImage: Binding(
-                    get: { ktpPreviewViewModel.ktpImage.map { IdentifiableImage(id: UUID(), image: $0) } },
-                    set: { newImage in
-                        if let newImage = newImage {
-                            ktpPreviewViewModel.ktpImage = newImage.image
-                        }
-                    }
-                ), documentType: .ktp)
-                    .onDisappear {
-                        handleOnDisappear()
-                    }
+            .sheet(isPresented: $profileViewModel.isUploadImageForKTP) {
+                ImagePicker(selectedImage: $ktpPreviewViewModel.ktpImage)
+            }
+            .sheet(isPresented: $ktpPreviewViewModel.isImagePickerOpen) {
+                ImagePicker(selectedImage: $ktpPreviewViewModel.ktpImage)
             }
             .onAppear {
-                ktpPreviewViewModel.isCameraOpen = (origin == .cameraScanner)
-            }
-            .onChange(of: ktpPreviewViewModel.ktpImage) { _, newValue in
-                if let unwrappedImage = newValue {
-                    ktpPreviewViewModel.processCapturedImage(unwrappedImage)
-                } else {
-                    print("No image to process")
+                if origin == .imagePicker {
+                    if ktpPreviewViewModel.ktpImage == nil {
+                        print("image picker is open")
+                        ktpPreviewViewModel.isImagePickerOpen = true
+                    }
+                } else if origin == .cameraScanner {
+                    if ktpPreviewViewModel.ktpImage == nil {
+                        ktpPreviewViewModel.isCameraOpen = true
+                    }
                 }
             }
+            .onChange(of: ktpPreviewViewModel.ktpImage) { oldValue, newValue in
+                guard let unwrappedImage = newValue else {
+                    return
+                }
+
+                print("Starting image processing...")
+                Task {
+                    await ktpPreviewViewModel.processCapturedImage(unwrappedImage)
+                }
+              }
             .navigationTitle("KTP")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(trailing: Button(action: {
@@ -72,14 +76,7 @@ public struct KTPPreviewSheet: View {
             })
         }
     }
-    
-    private func handleOnDisappear() {
-        if let unwrappedImage = ktpPreviewViewModel.ktpImage {
-             Task {
-                 ktpPreviewViewModel.processCapturedImage(unwrappedImage)
-             }
-         }
-    }
+
 }
 
 struct KTPImageView: View {
@@ -96,12 +93,12 @@ struct KTPImageView: View {
             } else {
                 RoundedRectangle(cornerRadius: 24)
                     .fill(Color.gray)
-                    .frame(width: 200, height: 200)
+                    .frame(height: 200)
                     .overlay {
                         VStack {
                             Image(systemName: "dock.rectangle")
                                 .resizable()
-                                .frame(width: 64, height: 64)
+                                .frame(width: 96, height: 64)
                                 .foregroundStyle(.white)
                                 .padding()
                                 
@@ -112,6 +109,7 @@ struct KTPImageView: View {
                                 .padding()
                         }
                     }
+                    .padding()
                 
 
             }

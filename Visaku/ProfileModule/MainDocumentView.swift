@@ -14,6 +14,8 @@ public struct MainDocumentView: View {
     @State private var scanResult: UIImage?
     @State private var isShowingEditProfile = false
     
+    @State private var showKTPPreviewSheet = false
+    
     public var accountId: String
     
     public init(name: String, accountId: String) {
@@ -140,6 +142,7 @@ public struct MainDocumentView: View {
                     }
                 }
             }
+
             .sheet(item: $profileViewModel.selectedDocument, content: { document in
                 DocumentDetailsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
@@ -224,3 +227,9 @@ extension Notification.Name {
     MainDocumentView(name: "Iqbal", accountId: "1")
         .environment(ProfileViewModel())
 }
+
+
+//#Preview {
+//    MainDocumentView(name: "Iqbal", accountId: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
+//        .environment(ProfileViewModel())
+//}
