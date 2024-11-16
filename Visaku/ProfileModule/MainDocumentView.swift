@@ -28,7 +28,7 @@ public struct MainDocumentView: View {
     public var body: some View {
         @Bindable var profileViewModel = profileViewModel
         
-        NavigationView {
+        NavigationStack {
             GeometryReader { proxy in
                 ZStack {
                     VStack {
@@ -192,7 +192,6 @@ public struct MainDocumentView: View {
             }
             .fullScreenCover(isPresented: $profileViewModel.isFormFilling) {
                 AdditionalInformationView(account: account)
-                    .navigationBarBackButtonHidden()
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
