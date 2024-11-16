@@ -15,10 +15,12 @@ public class ProfileViewModel {
     var isLoading: Bool = false
     var isError: Bool = false
     var username: String = ""
+    var navigateToMainDocuments: Bool = false
+    var selectedAccount: AccountEntity?
+    var selectedDocument: Document?
     var isScanKTP: Bool = false
     var isScanPaspor: Bool = false
     var isScanFoto: Bool = false
-    var selectedDocument: Document?
     var uploadDocument: Document?
     var isUploadFile: Bool = false
     

@@ -4,7 +4,7 @@ import UIComponentModule
 
 public struct ProfileView: View {
     @Environment(\.dismiss) private var dismiss
-    @State public var profileViewModel: ProfileViewModel = ProfileViewModel()
+    @State private var profileViewModel = ProfileViewModel()
     public var isSelectProfile: Bool
     
     public init(isSelectProfile: Bool = false) {
@@ -12,8 +12,6 @@ public struct ProfileView: View {
     }
     
     public var body: some View {
-        @Bindable var profileViewModel =  profileViewModel
-
         NavigationStack {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible())], spacing: 20){
@@ -26,17 +24,16 @@ public struct ProfileView: View {
                                     ProfileCard(name: account.username, imageData: account.image)
                                 }
                             } else {
-                                NavigationLink {
-                                    MainDocumentView(name: account.username, accountId: account.id)
-                                        .navigationBarBackButtonHidden()
-                                        .environment(profileViewModel)
+                                Button {
+                                    profileViewModel.selectedAccount = account
+                                    profileViewModel.navigateToMainDocuments = true
                                 } label: {
                                     ProfileCard(name: account.username, isAddProfile: false, imageData: account.image)
                                 }
                             }
                         }
                     }
-                    if isSelectProfile {} else {
+                    if !isSelectProfile {
                         Button {
                             profileViewModel.isAddingProfile = true
                         } label: {
@@ -61,6 +58,13 @@ public struct ProfileView: View {
                     .environment(profileViewModel)
                     .clearModalBackground()
             })
+            .navigationDestination(isPresented: $profileViewModel.navigateToMainDocuments) {
+                if let account = profileViewModel.selectedAccount {
+                    MainDocumentView(name: account.username, accountId: account.id)
+                        .navigationBarBackButtonHidden()
+                        .environment(profileViewModel)
+                }
+            }
         }
     }
 }
@@ -69,4 +73,3 @@ public struct ProfileView: View {
     ProfileView()
         .background(.gray)
 }
-
