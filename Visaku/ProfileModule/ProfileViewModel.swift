@@ -8,17 +8,17 @@ public class ProfileViewModel {
     
     static let shared = ProfileViewModel()
     
+    var username: String = ""
     private var accountUseCase: AccountUseCaseProtocol = AccountUseCase.make()
     var accounts: [AccountEntity]?
+    var selectedAccount: AccountEntity?
+    var selectedDocument: Document?
+    var uploadDocument: Document?
+    
     var isAddingProfile: Bool = false
     var isDeleteProfile: Bool = false
     var isLoading: Bool = false
     var isError: Bool = false
-    var username: String = ""
-    var navigateToMainDocuments: Bool = false
-    var selectedAccount: AccountEntity?
-    var selectedDocument: Document?
-    
     var isScanKTP: Bool = false
     var isScanPaspor: Bool = false
     var isScanFoto: Bool = false
@@ -28,7 +28,7 @@ public class ProfileViewModel {
     var isUploadImageForFoto: Bool = false
     var isUploadImageForOthers: Bool = false
     var isFormFilling: Bool = false
-    var uploadDocument: Document?
+    var navigateToMainDocuments: Bool = false
     
     var selectedFileURL: URL?
     var selectedImage: UIImage?
