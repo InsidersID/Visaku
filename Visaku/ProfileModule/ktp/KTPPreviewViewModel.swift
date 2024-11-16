@@ -34,18 +34,16 @@ public class KTPPreviewViewModel: ObservableObject {
     
     //Navigation
     @Published var isCameraOpen: Bool = false
+    @Published var isImagePickerOpen: Bool = false
     
     //Data
     @Published var identityCard: IdentityCardEntity
     @StateObject var account: AccountEntity
     @Published var ktpImage: UIImage?
     
-    @Published var isProcessingData: Bool = false
-    
     //State View
     @Published var saveIdentityCardState: SaveIdentityCardState = .idle
     @Published var deleteIdentityCardState: DeleteIdentityCardState = .idle
-    
     
     init(account: AccountEntity? = nil) {
         self._account = StateObject(wrappedValue: account ?? AccountEntity(id: "", username: "", image: Data()))
@@ -155,9 +153,7 @@ public class KTPPreviewViewModel: ObservableObject {
         
         request.recognitionLevel = VNRequestTextRecognitionLevel.accurate
         let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
-        
-        isProcessingData = true
-        print("Is processing data: \(isProcessingData)")
+    
         
         do {
             try handler.perform([request])
@@ -174,9 +170,6 @@ public class KTPPreviewViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.identityCard = extractedData
                 self.ktpImage = image
-                print("Extracted image: \(image)")
-                self.isProcessingData = false
-                print("Is processing data: \(self.isProcessingData)")
 //                self.isCameraOpen = false
             }
         }

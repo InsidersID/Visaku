@@ -138,11 +138,5 @@ public class ProfileViewModel {
             self.error = CustomError(error.localizedDescription)
         }
     }
-    
-    func triggerKTPUpload() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            NotificationCenter.default.post(name: .triggerKTPUpload, object: nil)
-        }
-    }
 }
 

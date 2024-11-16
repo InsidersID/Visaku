@@ -52,7 +52,7 @@ struct UploadDocumentsView: View {
                             switch document {
                             case "KTP":
                                 print("KTP Upload")
-                                profileViewModel.triggerKTPUpload()
+                                profileViewModel.isUploadImageForKTP = true
                             case "Paspor":
                                 print("Passport Upload")
                                 profileViewModel.isUploadImageForPassport = true
