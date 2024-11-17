@@ -11,6 +11,7 @@ import UIComponentModule
 
 public struct PDFPreviewSheet: View {
     @StateObject var viewModel = CountryVisaApplicationViewModel()
+    @Environment(\.dismiss) private var dismiss
     
     public var body: some View {
         VStack {
@@ -28,8 +29,10 @@ public struct PDFPreviewSheet: View {
                     .padding()
                 
                 CustomButton(text: "Unduh PDF", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
-                    PDFDownload.shared.downloadPDF()
-                    viewModel.isShowPreviewVisaApplicationForm = false
+                    PDFDownload.shared.downloadPDF {
+                        viewModel.isShowPreviewVisaApplicationForm = false
+                        dismiss()
+                    }
                 }
             } else {
                 RoundedRectangle(cornerRadius: 24)
