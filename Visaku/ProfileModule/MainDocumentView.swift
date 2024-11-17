@@ -67,8 +67,7 @@ public struct MainDocumentView: View {
                                 HStack {
                                     if let updatedAccount = profileViewModel.getAccountByID(account.id) {
                                         Text(updatedAccount.username)
-                                            .font(Font.custom("Inter", size: 20))
-                                            .fontWeight(.semibold)
+                                            .font(Font.custom("Inter-SemiBold", size: 20))
                                             .foregroundStyle(.black)
                                         
                                         Image(systemName: "pencil")
@@ -205,7 +204,6 @@ public struct MainDocumentView: View {
                     Text("Profil")
                         .foregroundStyle(profileViewModel.isDeleteProfile ? .white.opacity(0.25) : .white)
                         .font(Font.custom("Inter-SemiBold", size: 24))
-                        .fontWeight(.semibold)
                 }
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
@@ -220,6 +218,7 @@ public struct MainDocumentView: View {
                 }
             }
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 

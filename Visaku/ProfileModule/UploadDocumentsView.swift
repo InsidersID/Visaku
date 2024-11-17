@@ -18,7 +18,7 @@ struct UploadDocumentsView: View {
     var body: some View {
         VStack {
             Text(document)
-                .font(Font.custom("Inter", size: 16))
+                .font(Font.custom("Inter-Regular", size: 16))
                 .padding(.vertical)
                 .padding(.bottom)
             
@@ -37,7 +37,7 @@ struct UploadDocumentsView: View {
                     }
                     
                     Text("Upload file (.pdf)")
-                        .font(Font.custom("Inter", size: 16))
+                        .font(Font.custom("Inter-Regular", size: 16))
                         .foregroundStyle(.black)
                 }
                 
@@ -77,7 +77,7 @@ struct UploadDocumentsView: View {
                     }
                     
                     Text("Upload gambar (.jpg)")
-                        .font(Font.custom("Inter", size: 16))
+                        .font(Font.custom("Inter-Regular", size: 16))
                         .foregroundStyle(.black)
                 }
                 
