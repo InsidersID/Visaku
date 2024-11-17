@@ -31,12 +31,7 @@ enum TabbedItems: Int, CaseIterable{
 }
 
 struct TabBarView: View {
-    
     @State var selectedTab = 0
-    
-    init() {
-        UITabBar.appearance().barTintColor = UIColor.init(Color.white)
-    }
     
     var body: some View {
         
