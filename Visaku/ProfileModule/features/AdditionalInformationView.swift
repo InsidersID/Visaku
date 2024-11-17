@@ -52,8 +52,7 @@ struct AdditionalInformationView: View {
                     .frame(height: 200)
                 
                 Text("Informasi personal")
-                    .font(.title3)
-                    .fontWeight(.bold)
+                    .font(.custom("Inter-SemiBold", size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 ExpandableRadioButton(
@@ -74,8 +73,7 @@ struct AdditionalInformationView: View {
                 FormField(title: "Kebangsaan anda saat lahir (Opsional)", text: $additionalInformationViewModel.additionalInformation.bornNationality)
                 
                 Text("Alamat rumah")
-                    .font(.title3)
-                    .fontWeight(.bold)
+                    .font(.custom("Inter-SemiBold", size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 FormField(title: "Kode Pos Rumah saat ini", text: $additionalInformationViewModel.additionalInformation.addressPostalCode)
@@ -91,8 +89,7 @@ struct AdditionalInformationView: View {
                 FormField(title: "Alamat email aktif", text: $additionalInformationViewModel.additionalInformation.addressEmail)
                 
                 Text("Pekerjaan")
-                    .font(.title3)
-                    .fontWeight(.bold)
+                    .font(.custom("Inter-SemiBold", size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 CardContainer(cornerRadius: 12) {
@@ -182,8 +179,12 @@ struct FormField: View {
                 if isExpanded {
                     HStack {
                         Text(title)
+                            .font(.custom("Inter-Regular", size: 17))
+                            .foregroundStyle(Color.blackOpacity3)
                         Spacer()
                         Image(systemName: "chevron.up")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.blackOpacity3)
                     }
                     .onTapGesture {
                         isExpanded = false
@@ -202,8 +203,11 @@ struct FormField: View {
                 } else {
                     HStack {
                         Text(title)
+                            .font(.custom("Inter-Regular", size: 17))
+                            .foregroundStyle(Color.blackOpacity3)
                         Spacer()
                         Image(systemName: "chevron.down")
+                            .fontWeight(.semibold)
                     }
                     
                     Text(text)
@@ -230,7 +234,8 @@ struct RadioButton: View {
                     .foregroundColor(isSelected ? .blue : .gray)
                     .padding(.vertical, 0)
                 Text(label)
-                    .foregroundColor(.black)
+                    .font(.custom("Inter-Medium", size: 16))
+                    .foregroundStyle(Color.blackOpacity4)
             }
         }
         .buttonStyle(PlainButtonStyle())
@@ -249,9 +254,12 @@ public struct ExpandableRadioButton: View {
             VStack(spacing: 16) {
                 HStack {
                     Text(title)
-                        .foregroundStyle(.secondary)
+                        .font(.custom("Inter-Regular", size: 17))
+                        .foregroundStyle(Color.blackOpacity3)
                     Spacer()
                     Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Color.blackOpacity3)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .onTapGesture {
