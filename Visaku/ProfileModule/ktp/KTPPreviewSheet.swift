@@ -99,12 +99,12 @@ struct KTPImageView: View {
                             Image(systemName: "dock.rectangle")
                                 .resizable()
                                 .frame(width: 96, height: 64)
-                                .foregroundStyle(.white)
+                                .foregroundStyle(Color.white)
                                 .padding()
                                 
                             Text("Gambarmu belum ada... \n Mungkin kamera akan segera diaktifkan.")
                                 .font(.custom("Inter", size: 16))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(Color.white)
                                 .multilineTextAlignment(.center)
                                 .padding()
                         }

@@ -50,7 +50,7 @@ struct AddProfileView: View {
                 .frame(height: 144, alignment: .center)
                 .background(
                     RoundedRectangle(cornerRadius: 24)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color("white"))
                 )
                 
                 CustomButton( text: isEditing ? "Ganti profil" : "Buat profil", textColor: profileViewModel.username.isEmpty ? .white : .primary5, color: profileViewModel.username.isEmpty ? Color(red: 0.71, green: 0.71, blue: 0.71) : Color(red: 0.7, green: 0.91, blue: 0.95), buttonWidth: 64, buttonHeight: 30, font: "Inter-SemiBold", fontSize: 12, cornerRadius: 16, paddingHorizontal: 0, paddingVertical: 0) {

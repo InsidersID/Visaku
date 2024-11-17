@@ -19,14 +19,14 @@ struct VisaApplicationHeader: View {
                         Text("Mau traveling \nke mana?")
                             .font(.custom("Inter-Bold", size: 24))
                             .bold()
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Color.stayWhite)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.top, 20)
                             .padding(.horizontal)
                             .lineLimit(nil)
                             .fixedSize(horizontal: false, vertical: true)
                         Text("Yuk, ajukan visamu\nsekarang.")
-                            .font(.custom("Inter-Regular", size: 16))  .foregroundStyle(.white)
+                            .font(.custom("Inter-Regular", size: 16))  .foregroundStyle(Color.stayWhite)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
                             .padding(.top, 8)
@@ -34,7 +34,7 @@ struct VisaApplicationHeader: View {
                             .fixedSize(horizontal: false, vertical: true)
                     }
                 }
-                CustomButton(text: "Mulai pengajuan", textColor: Color(.primary5), color: .white, font: "Inter-Medium", fontSize: 17, cornerRadius: 16, paddingVertical: 12) {
+                CustomButton(text: "Mulai pengajuan", textColor: Color(.primary5), color: .stayWhite, font: "Inter-Medium", fontSize: 17, cornerRadius: 16, paddingVertical: 12) {
                     viewModel.isShowChooseCountrySheet = true
                 }
                 .padding(.vertical, 10)

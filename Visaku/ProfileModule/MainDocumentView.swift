@@ -52,7 +52,7 @@ public struct MainDocumentView: View {
                                         .scaledToFill()
                                         .frame(width: 86, height: 86)
                                         .clipShape(Circle())
-                                        .overlay(Circle().stroke(.white, lineWidth: 2))
+                                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
                                 } else {
                                     Circle()
                                         .foregroundStyle(Color(red: 0.85, green: 0.85, blue: 0.85))
@@ -68,9 +68,10 @@ public struct MainDocumentView: View {
                                     if let updatedAccount = profileViewModel.getAccountByID(account.id) {
                                         Text(updatedAccount.username)
                                             .font(Font.custom("Inter-SemiBold", size: 20))
-                                            .foregroundStyle(.black)
+                                            .foregroundStyle(Color.black)
                                         
                                         Image(systemName: "pencil")
+                                            .foregroundStyle(Color.black)
                                     }
                                 }
                             }
@@ -111,11 +112,13 @@ public struct MainDocumentView: View {
                         
                         Spacer()
                         
-                        Button("Hapus Profil", role: .destructive){
+                        Button(role: .destructive) {
                             profileViewModel.isDeleteProfile.toggle()
+                        } label: {
+                            Text("Hapus Profil")
+                                .font(.custom("Inter-SemiBold", size: 17))
+                                .foregroundStyle(Color.danger5)
                         }
-                        .font(Font.system(size: 17))
-                        .fontWeight(.semibold)
                         
                         Spacer()
                     }
@@ -202,7 +205,7 @@ public struct MainDocumentView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Profil")
-                        .foregroundStyle(profileViewModel.isDeleteProfile ? .white.opacity(0.25) : .white)
+                        .foregroundStyle(profileViewModel.isDeleteProfile ? Color.white.opacity(0.25) : Color.white)
                         .font(Font.custom("Inter-SemiBold", size: 24))
                 }
                 ToolbarItem(placement: .topBarLeading) {
@@ -212,7 +215,7 @@ public struct MainDocumentView: View {
                         Image(systemName: "chevron.left.circle")
                             .resizable()
                             .frame(width: 40, height: 40)
-                            .foregroundStyle(profileViewModel.isDeleteProfile ? .white.opacity(0.25) : .white)
+                            .foregroundStyle(profileViewModel.isDeleteProfile ? Color.white.opacity(0.25) : Color.white)
                             .fontWeight(.light)
                     }
                 }

@@ -59,14 +59,14 @@ struct DocumentActions: View {
                         Image(systemName: "square.and.arrow.up")
                             .resizable()
                             .frame(width: 11, height: 13)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Color.white)
                             .fontWeight(.bold)
                             .offset(x: 0, y: -1)
                     }
                     
                     Text("Upload dari device")
                         .font(Font.custom("Inter-Regular", size: 16))
-                        .foregroundStyle(.black)
+                        .foregroundStyle(Color.black)
                 }
                 
                 
@@ -99,14 +99,14 @@ struct DocumentActions: View {
                         Image(systemName: "camera")
                             .resizable()
                             .frame(width: 14, height: 12)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Color.white)
                             .fontWeight(.bold)
                             .offset(x: 0, y: -1)
                     }
                     
                     Text(document == "Foto" ? "Ambil foto" : "Scan dokumen")
                         .font(Font.custom("Inter-Regular", size: 16))
-                        .foregroundStyle(.black)
+                        .foregroundStyle(Color.black)
                 }
                 
                 Spacer()
@@ -126,13 +126,13 @@ struct DocumentActions: View {
                         Image(systemName: "eye")
                             .resizable()
                             .frame(width: 14, height: 11)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Color.white)
                             .fontWeight(.bold)
                     }
                     
                     Text("Lihat ketentuan")
                         .font(Font.custom("Inter-Regular", size: 16))
-                        .foregroundStyle(.black)
+                        .foregroundStyle(Color.black)
                 }
                 
                 Spacer()
