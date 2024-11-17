@@ -6,7 +6,6 @@ public struct DocumentDetailsView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(ProfileViewModel.self) var profileViewModel
     public var document: String
-    @State private var isUpload: Bool = false
     @State private var isSeeDetails: Bool = false
     @StateObject public var account: AccountEntity
     @State public var status: DocumentStatus
@@ -27,7 +26,7 @@ public struct DocumentDetailsView: View {
                         .padding(.top)
                         .padding(.vertical)
                     
-                    if !isUpload && !isSeeDetails {
+                    if !isSeeDetails {
                         VStack {
                             HStack {
                                 Button {
@@ -124,42 +123,6 @@ public struct DocumentDetailsView: View {
                         }
                         .padding()
                         
-                    } else if isUpload {
-                        VStack {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 18)
-                                    .stroke(.black.opacity(0.25), style: StrokeStyle(lineWidth: 1, dash: [6, 6]))
-                                    .padding()
-                                    .frame(width: proxy.size.width, height: proxy.size.width*0.9)
-                                
-                                VStack {
-                                    ZStack {
-                                        Circle()
-                                            .fill(.clear)
-                                            .stroke(.secondary)
-                                            .frame(width: proxy.size.width*0.1)
-                                        
-                                        Image(systemName: "document.fill")
-                                            .foregroundStyle(Color(red: 0, green: 0.55, blue: 0.85))
-                                    }
-                                    
-                                    Text("Klik untuk upload PDF")
-                                        .font(Font.custom("Inter-SemiBold", size: 16))
-                                        .foregroundStyle(Color(red: 0, green: 0.55, blue: 0.85))
-                                    
-                                    Text("(Max. file size: 25 MB)")
-                                        .font(Font.custom("Inter-Medium", size: 13))
-                                        .foregroundStyle(Color("blackOpacity3"))
-                                }
-                            }
-                            
-                            CustomButton(text: "Browse dokumen", color: Color(red: 0, green: 0.55, blue: 0.85), buttonHeight: 50) {
-                                isUpload = false
-                                status = .done
-                                dismiss()
-                            }
-                            .padding()
-                        }
                     } else {
                         VStack {
                             Image(document == "Foto" ? "photo_checker" : "documents_folder")
@@ -186,7 +149,7 @@ public struct DocumentDetailsView: View {
                 .frame(width: proxy.size.width, alignment: .center)
             }
         }
-        .presentationDetents([.fraction(isUpload || isSeeDetails ? 0.7 : 0.3)])
+        .presentationDetents([.fraction(isSeeDetails ? 0.7 : 0.3)])
     }
 }
 
