@@ -23,7 +23,7 @@ public struct DocumentDetailsView: View {
             GeometryReader { proxy in
                 VStack {
                     Text(document)
-                        .font(Font.custom("Inter", size: 16))
+                        .font(Font.custom("Inter-SemiBold", size: 16))
                         .padding(.top)
                         .padding(.vertical)
                     
@@ -34,12 +34,21 @@ public struct DocumentDetailsView: View {
                                     profileViewModel.uploadDocument = .init(name: document)
                                     dismiss()
                                 } label: {
-                                    Image(systemName: "square.and.arrow.up.circle.fill")
-                                        .imageScale(.large)
-                                        .foregroundStyle(.blue)
+                                    ZStack {
+                                        Circle()
+                                            .frame(width: 22)
+                                            .foregroundStyle(Color.primary5)
+                                        
+                                        Image(systemName: "square.and.arrow.up")
+                                            .resizable()
+                                            .frame(width: 11, height: 13)
+                                            .foregroundStyle(.white)
+                                            .fontWeight(.bold)
+                                            .offset(x: 0, y: -1)
+                                    }
                                     
                                     Text("Upload dari device")
-                                        .font(Font.custom("Inter", size: 16))
+                                        .font(Font.custom("Inter-Regular", size: 16))
                                         .foregroundStyle(.black)
                                 }
                                 
@@ -47,6 +56,7 @@ public struct DocumentDetailsView: View {
                                 Spacer()
                             }
                             .padding(.horizontal)
+                            .padding(.bottom)
                             
                             HStack {
                                 Button {
@@ -65,36 +75,46 @@ public struct DocumentDetailsView: View {
                                     }
                                 } label: {
                                     ZStack {
-                                        Image(systemName: "circle.fill")
-                                            .imageScale(.large)
-                                            .foregroundStyle(.blue)
+                                        Circle()
+                                            .frame(width: 22)
+                                            .foregroundStyle(Color.primary5)
+                                        
                                         Image(systemName: "camera")
-                                            .imageScale(.small)
+                                            .resizable()
+                                            .frame(width: 14, height: 12)
                                             .foregroundStyle(.white)
+                                            .fontWeight(.bold)
+                                            .offset(x: 0, y: -1)
                                     }
                                     
                                     Text(document == "Foto" ? "Ambil foto" : "Scan dokumen")
-                                        .font(Font.custom("Inter", size: 16))
+                                        .font(Font.custom("Inter-Regular", size: 16))
                                         .foregroundStyle(.black)
                                 }
-                                
-                                
                                 
                                 Spacer()
                             }
                             .padding(.horizontal)
-                            .padding(.vertical)
+                            .padding(.bottom)
                             
                             HStack {
                                 Button {
                                     isSeeDetails = true
                                 } label: {
-                                    Image(systemName: "eye.circle.fill")
-                                        .imageScale(.large)
-                                        .foregroundStyle(.blue)
+                                    ZStack {
+                                        Circle()
+                                            .frame(width: 22)
+                                            .foregroundStyle(Color.primary5)
+                                        
+                                        Image(systemName: "eye")
+                                            .resizable()
+                                            .frame(width: 14, height: 11)
+                                            .foregroundStyle(.white)
+                                            .fontWeight(.bold)
+                                    }
                                     
                                     Text("Lihat ketentuan")
-                                        .font(Font.custom("Inter", size: 16))
+                                        .font(Font.custom("Inter-Regular", size: 16))
                                         .foregroundStyle(.black)
                                 }
                                 
@@ -124,14 +144,12 @@ public struct DocumentDetailsView: View {
                                     }
                                     
                                     Text("Klik untuk upload PDF")
-                                        .font(Font.custom("Inter", size: 16))
-                                        .fontWeight(.semibold)
+                                        .font(Font.custom("Inter-SemiBold", size: 16))
                                         .foregroundStyle(Color(red: 0, green: 0.55, blue: 0.85))
                                     
                                     Text("(Max. file size: 25 MB)")
-                                        .font(Font.custom("Inter", size: 13))
-                                        .fontWeight(.medium)
-                                        .foregroundStyle(.secondary)
+                                        .font(Font.custom("Inter-Medium", size: 13))
+                                        .foregroundStyle(Color("blackOpacity3"))
                                 }
                             }
                             
@@ -154,7 +172,7 @@ public struct DocumentDetailsView: View {
                                 .multilineTextAlignment(.center)
                                 .padding()
                             
-                            CustomButton(text: document == "Paspor" && passportDetailsIndex == 1 ? "Selanjutnya" : "OK", color: .blue) {
+                            CustomButton(text: document == "Paspor" && passportDetailsIndex == 1 ? "Selanjutnya" : "OK", color: .primary5) {
                                 if document == "Paspor" && passportDetailsIndex == 1 {
                                     passportDetailsIndex += 1
                                 } else {
