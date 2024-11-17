@@ -54,6 +54,7 @@ struct AdditionalInformationView: View {
                 Text("Informasi personal")
                     .font(.custom("Inter-SemiBold", size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 12)
                 
                 ExpandableRadioButton(
                     title: "Apakah ada nama lahir yang berbeda? (Opsional)",
@@ -75,6 +76,7 @@ struct AdditionalInformationView: View {
                 Text("Alamat rumah")
                     .font(.custom("Inter-SemiBold", size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 12)
                 
                 FormField(title: "Kode Pos Rumah saat ini", text: $additionalInformationViewModel.additionalInformation.addressPostalCode)
                 
@@ -138,7 +140,7 @@ struct AdditionalInformationView: View {
                 
                 
             }
-            .padding()
+            .padding(20)
             .frame(maxWidth: .infinity)
         }
         .frame(maxWidth: .infinity)
@@ -216,6 +218,7 @@ struct FormField: View {
                 }
             }
         }
+        .padding(.bottom, 12)
         .onTapGesture {
             isExpanded = true
         }
@@ -287,6 +290,7 @@ public struct ExpandableRadioButton: View {
                 }
             }
         }
+        .padding(.bottom, 12)
     }
 
     public var selectedOption: String {
