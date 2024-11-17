@@ -35,7 +35,7 @@ struct TabBarView: View {
     @State var selectedTab = 0
     
     init() {
-        UITabBar.appearance().barTintColor = .white
+        UITabBar.appearance().barTintColor = UIColor.init(Color.white)
     }
     
     var body: some View {
@@ -74,15 +74,15 @@ extension TabBarView {
                 if isActive {
                     Circle()
                         .frame(width: 30, height: 30)
-                        .foregroundStyle(.blue)
+                        .foregroundStyle(Color.primary5)
                 }
                 Image(systemName: imageName)
                     .frame(width: 30, height: 30)
-                    .foregroundStyle(isActive ? .white : .blue)
+                    .foregroundStyle(isActive ? Color.white : Color.primary5)
             }
             Text(title)
                 .font(.system(size: 14))
-                .foregroundStyle(.blue)
+                .foregroundStyle(Color.primary5)
         }
         .padding(.bottom, 20)
     }
