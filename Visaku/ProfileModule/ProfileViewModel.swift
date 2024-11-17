@@ -31,6 +31,8 @@ public class ProfileViewModel {
     var isFormFilling: Bool = false
     var navigateToMainDocuments: Bool = false
     var isShowingEditProfile: Bool = false
+    var isSeeDetails: Bool = false
+    var passportDetailsIndex: Int = 1
     
     var isImagePickerPresented: Bool = false
     var isKTPPreviewSheetPresented: Bool = false

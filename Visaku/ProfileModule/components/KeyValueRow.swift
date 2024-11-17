@@ -9,20 +9,21 @@ struct KeyValueRow: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(key)
-                    .font(.body)
-                    .bold()
-                    .foregroundColor(.gray)
+                    .font(.custom("Inter-Semibold", size: 15))
+                    .foregroundStyle(Color.blackOpacity3)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             VStack(alignment: .leading) {
                 if isEditing {
                     TextField(key, text: $value)
-                        .bold()
+                        .font(.custom("Inter-Semibold", size: 15))
+                        .foregroundStyle(Color.blackOpacity5)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                 } else {
                     Text(value)
+                        .font(.custom("Inter-Semibold", size: 15))
+                        .foregroundStyle(Color.blackOpacity5)
                         .padding(.horizontal, 6)
-                        .bold()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
