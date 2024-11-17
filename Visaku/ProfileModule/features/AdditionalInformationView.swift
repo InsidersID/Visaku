@@ -18,6 +18,33 @@ struct AdditionalInformationView: View {
         
         ScrollView {
             VStack(alignment: .center) {
+                GeometryReader { proxy in
+                    HStack {
+                        Spacer()
+                        
+                        Text("Informasi tambahan")
+                            .font(.custom("Inter-SemiBold", size: 24))
+                            .padding(.trailing)
+                        
+//                        Spacer()
+//                            .frame(width: proxy.size.width*0.23)
+                        
+                        Button(action: {
+                            dismiss()
+                        }) {
+                            Image(systemName: "xmark")
+                                .font(.headline)
+                                .foregroundColor(.blackOpacity5)
+                                .frame(width: 40, height: 40)
+                                .background(
+                                    Circle()
+                                        .stroke(Color.blackOpacity2, lineWidth: 2)
+                                )
+                        }
+                    }
+                }
+                .frame(height: 44)
+                
                 Image("form_aset")
                     .resizable()
                     .scaledToFit()
@@ -116,19 +143,6 @@ struct AdditionalInformationView: View {
             }
             .padding()
             .frame(maxWidth: .infinity)
-        }
-        .navigationTitle("Informasi Tambahan")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
-                    dismiss()
-                }) {
-                    Image(systemName: "x.circle")
-                        .font(.headline)
-                        .foregroundColor(.gray)
-                }
-            }
         }
         .frame(maxWidth: .infinity)
         .sheet(isPresented: $additionalInformationViewModel.showJobSheet) {
