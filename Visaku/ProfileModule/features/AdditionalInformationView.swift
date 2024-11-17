@@ -93,23 +93,26 @@ struct AdditionalInformationView: View {
                 Text("Pekerjaan")
                     .font(.custom("Inter-SemiBold", size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 12)
                 
-                CardContainer(cornerRadius: 12) {
-                    VStack(spacing: 16) {
-                        HStack {
-                            Text("Pekerjaan saat ini")
-                            Spacer()
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Text(additionalInformationViewModel.additionalInformation.selectedJob.isEmpty ?  "Jawaban": additionalInformationViewModel.additionalInformation.selectedJob)
-                            .fontWeight(.bold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                }
-                .onTapGesture {
-                    additionalInformationViewModel.showJobSheet.toggle()
-                }
+//                CardContainer(cornerRadius: 12) {
+//                    VStack(spacing: 16) {
+//                        HStack {
+//                            Text("Pekerjaan saat ini")
+//                            Spacer()
+//                        }
+//                        .frame(maxWidth: .infinity, alignment: .leading)
+//                        
+//                        Text(additionalInformationViewModel.additionalInformation.selectedJob.isEmpty ?  "Jawaban": additionalInformationViewModel.additionalInformation.selectedJob)
+//                            .fontWeight(.bold)
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+//                    }
+//                }
+//                .onTapGesture {
+//                    additionalInformationViewModel.showJobSheet.toggle()
+//                }
+                
+                FormField(title: "Pekerjaan saat ini", text: $additionalInformationViewModel.additionalInformation.selectedJob)
                 
                 FormField(title: "Nama perusahaan atau institusi", text: $additionalInformationViewModel.additionalInformation.companyName)
                 FormField(title: "Alamat lengkap perusahaan", text: $additionalInformationViewModel.additionalInformation.companyAddress)
