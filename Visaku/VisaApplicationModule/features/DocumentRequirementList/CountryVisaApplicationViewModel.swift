@@ -102,6 +102,17 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     @Published var euFamilyDocumentNumber: String = ""
     @Published var euFamilyRelation: String? = ""
     
+    // Application view navigation
+    @Published var showConfirmationButton: Bool = false
+    @Published var isShowPrintDownloadButton: Bool = false
+    @Published var isShowConfirmation: Bool = false
+    @Published var isItinerary: Bool = false
+    @Published var isFormApplication: Bool = false
+    
+    @Published var isShowPrintVisaApplicationForm: Bool = false
+    @Published var isShowPreviewVisaApplicationForm: Bool = false
+    @Published var isShowJSONDownload: Bool = false
+    
     public func saveTripData(visaType: String, countrySelected: String, countries: [CountryData]) {
         guard trip == nil else { return }
         var newTrip = TripEntity(id: UUID().uuidString, visaType: visaType, country: countrySelected, contries: countries)

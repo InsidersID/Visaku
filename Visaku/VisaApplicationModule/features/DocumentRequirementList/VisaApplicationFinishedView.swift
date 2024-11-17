@@ -3,6 +3,9 @@ import UIComponentModule
 import RiveRuntime
 
 struct VisaApplicationFinishedView: View {
+    @StateObject var viewModel = CountryVisaApplicationViewModel()
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         GeometryReader { proxy in
             ZStack {
@@ -34,7 +37,9 @@ struct VisaApplicationFinishedView: View {
                     Divider()
                     
                     CustomButton(text: "Selesai", textColor: .white, color: .primary5, font: "Inter-SemiBold") {
-                        
+                        viewModel.showConfirmationButton = false
+                        viewModel.isShowPrintDownloadButton = true
+                        dismiss()
                     }
                     .padding(.horizontal)
                     .padding(.bottom)
