@@ -220,6 +220,7 @@ public struct MainDocumentView: View {
                 }
             }
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 
