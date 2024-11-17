@@ -275,15 +275,12 @@ public struct ExpandableRadioButton: View {
                 
                 if isExpanded {
                     VStack(alignment: .leading) {
-                        Divider()
-                        RadioButton(label: options[0], isSelected: selection == true) {
-                            selection = true
-                            isExpanded = false
-                        }
-                        Divider()
-                        RadioButton(label: options[1], isSelected: selection == false) {
-                            selection = false
-                            isExpanded = false
+                        ForEach(options, id: \.self) { option in
+                            Divider()
+                            RadioButton(label: option, isSelected: selection == true) {
+                                selection = true
+                                isExpanded = false
+                            }
                         }
                     }
                 } else {
