@@ -131,14 +131,15 @@ public struct DocumentDetailsView: View {
                                 .padding()
                             
                             Text(document != "Paspor" ? "Yuk, ambil foto terbaikmu untuk pengajuan visa. Tenang, ada guide untuk pengambilan fotonya." : passportDetailsIndex == 1 ? "Jangan lupa bawa 1 paspor dan fotokopi yang berlaku minimal 3 bulan setelah tinggal di Schengen (6 bulan untuk Spanyol)" : "Selain itu, paspor harus memiliki 2 halaman kosong, diterbitkan dalam 10 tahun terakhir, dan ditandatangani.")
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(Color("blackOpacity3"))
                                 .multilineTextAlignment(.center)
                                 .padding()
                             
-                            CustomButton(text: document == "Paspor" && passportDetailsIndex == 1 ? "Selanjutnya" : "OK", color: .primary5) {
+                            CustomButton(text: document == "Paspor" && passportDetailsIndex == 1 ? "Selanjutnya" : "OK", color: document == "Paspor" && passportDetailsIndex == 1 ? Color("primary5Opacity4") : .primary5) {
                                 if document == "Paspor" && passportDetailsIndex == 1 {
                                     passportDetailsIndex += 1
                                 } else {
+                                    passportDetailsIndex = 1
                                     isSeeDetails = false
                                 }
                             }

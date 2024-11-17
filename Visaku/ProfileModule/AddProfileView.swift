@@ -39,8 +39,7 @@ struct AddProfileView: View {
                     TextField("Masukkan namamu", text: $profileViewModel.username)
                         .multilineTextAlignment(.center)
                         .textInputAutocapitalization(.words)
-                        .font(Font.custom("Inter", size: 16))
-                        .fontWeight(.semibold)
+                        .font(Font.custom("Inter-SemiBold", size: 16))
                         .onAppear {
                             profileViewModel.username = account.username
                         }
