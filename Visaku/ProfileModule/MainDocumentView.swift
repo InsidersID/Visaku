@@ -12,7 +12,6 @@ public struct MainDocumentView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(ProfileViewModel.self) var profileViewModel
     @State private var scanResult: UIImage?
-    @State private var isShowingEditProfile = false
     
     @State private var showKTPPreviewSheet = false
     
@@ -34,7 +33,7 @@ public struct MainDocumentView: View {
             GeometryReader { proxy in
                 ZStack {
                     VStack {
-                        Color(red: 0.2, green: 0.64, blue: 0.88)
+                        Color.primary4
                             .frame(height: proxy.size.height * 0.3)
                             .ignoresSafeArea()
                         
@@ -63,13 +62,12 @@ public struct MainDocumentView: View {
                             }
                             
                             Button(action: {
-                                isShowingEditProfile = true
+                                profileViewModel.isShowingEditProfile = true
                             }) {
                                 HStack {
                                     if let updatedAccount = profileViewModel.getAccountByID(account.id) {
                                         Text(updatedAccount.username)
-                                            .font(Font.custom("Inter", size: 20))
-                                            .fontWeight(.semibold)
+                                            .font(Font.custom("Inter-SemiBold", size: 20))
                                             .foregroundStyle(.black)
                                         
                                         Image(systemName: "pencil")
@@ -122,16 +120,8 @@ public struct MainDocumentView: View {
                         Spacer()
                     }
                     
-                    if profileViewModel.isDeleteProfile {
-                        CustomAlert(title: "Hapus profil?", caption: "Jika dokumen dihapus, semua data akan hilang secara otomatis.", button1: "Hapus", button2: "Batal") {
-                            Task {
-                                await profileViewModel.deleteAccount(account)
-                                profileViewModel.isDeleteProfile.toggle()
-                            }
-                        } action2: {
-                            profileViewModel.isDeleteProfile.toggle()
-                        }
-
+                    if profileViewModel.isDeleteProfile || profileViewModel.isShowingEditProfile {
+                        Color("blackOpacity4").ignoresSafeArea()
                     }
                 }
             }
@@ -187,21 +177,33 @@ public struct MainDocumentView: View {
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
             })
-            .fullScreenCover(isPresented: $isShowingEditProfile) {
+            .fullScreenCover(isPresented: $profileViewModel.isShowingEditProfile) {
                 AddProfileView(account: account, isEditing: true)
+                    .clearModalBackground()
                     .onAppear {
                         profileViewModel.username = account.username
                     }
             }
+            .fullScreenCover(isPresented: $profileViewModel.isDeleteProfile, content: {
+                CustomAlert(title: "Hapus profil?", caption: "Jika dokumen dihapus, semua data akan hilang secara otomatis.", button1: "Hapus", button2: "Batal") {
+                    Task {
+                        await profileViewModel.deleteAccount(account)
+                        profileViewModel.isDeleteProfile = false
+                        dismiss()
+                    }
+                } action2: {
+                    profileViewModel.isDeleteProfile = false
+                }
+                .clearModalBackground()
+            })
             .fullScreenCover(isPresented: $profileViewModel.isFormFilling) {
                 AdditionalInformationView(account: account)
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Profil")
-                        .foregroundStyle(.white)
+                        .foregroundStyle(profileViewModel.isDeleteProfile ? .white.opacity(0.25) : .white)
                         .font(Font.custom("Inter-SemiBold", size: 24))
-                        .fontWeight(.semibold)
                 }
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
@@ -210,12 +212,13 @@ public struct MainDocumentView: View {
                         Image(systemName: "chevron.left.circle")
                             .resizable()
                             .frame(width: 40, height: 40)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(profileViewModel.isDeleteProfile ? .white.opacity(0.25) : .white)
                             .fontWeight(.light)
                     }
                 }
             }
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 
@@ -227,9 +230,3 @@ extension Notification.Name {
     MainDocumentView(name: "Iqbal", accountId: "1")
         .environment(ProfileViewModel())
 }
-
-
-//#Preview {
-//    MainDocumentView(name: "Iqbal", accountId: AccountEntity(id: "1", username: "IqbalGanteng", image: Data()))
-//        .environment(ProfileViewModel())
-//}

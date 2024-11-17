@@ -25,7 +25,11 @@ struct AddProfileView: View {
                 Color.clear.ignoresSafeArea()
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        profileViewModel.isAddingProfile.toggle()
+                        if isEditing {
+                            dismiss()
+                        } else {
+                            profileViewModel.isAddingProfile = false
+                        }
                     }
                 
                 VStack {
@@ -35,8 +39,7 @@ struct AddProfileView: View {
                     TextField("Masukkan namamu", text: $profileViewModel.username)
                         .multilineTextAlignment(.center)
                         .textInputAutocapitalization(.words)
-                        .font(Font.custom("Inter", size: 16))
-                        .fontWeight(.semibold)
+                        .font(Font.custom("Inter-SemiBold", size: 16))
                         .onAppear {
                             profileViewModel.username = account.username
                         }
@@ -56,9 +59,11 @@ struct AddProfileView: View {
                             await profileViewModel.updateAccountUsername(account, newUsername: profileViewModel.username)
                         } else {
                             await profileViewModel.saveAccount()
+                            profileViewModel.isAddingProfile = false
+                            profileViewModel.selectedAccount = profileViewModel.getAccountByID("")
+                            profileViewModel.navigateToMainDocuments = true
                         }
                     }
-                    profileViewModel.isAddingProfile = false
                     dismiss()
                 }
                 .disabled(profileViewModel.username.isEmpty)

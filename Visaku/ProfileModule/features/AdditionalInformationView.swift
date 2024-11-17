@@ -24,7 +24,7 @@ struct AdditionalInformationView: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: 200)
                 
-                Text("Informasi Personal")
+                Text("Informasi personal")
                     .font(.title3)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -46,7 +46,7 @@ struct AdditionalInformationView: View {
                 
                 FormField(title: "Kebangsaan anda saat lahir (Opsional)", text: $additionalInformationViewModel.additionalInformation.bornNationality)
                 
-                Text("Alamat Rumah")
+                Text("Alamat rumah")
                     .font(.title3)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -133,7 +133,7 @@ struct AdditionalInformationView: View {
         .frame(maxWidth: .infinity)
         .sheet(isPresented: $additionalInformationViewModel.showJobSheet) {
             VStack(alignment: .leading) {
-                Text("Pilih Pekerjaan")
+                Text("Pilih pekerjaan")
                     .font(.headline)
                     .padding()
                 
