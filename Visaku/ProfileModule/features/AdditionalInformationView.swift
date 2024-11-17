@@ -3,7 +3,7 @@ import UIComponentModule
 import RepositoryModule
 
 struct AdditionalInformationView: View {
-    @State private var hasDifferentBirthName: Bool? = nil
+    @State private var hasDifferentBirthName: String? = nil
     @Environment(\.dismiss) var dismiss
 //    @Environment(ProfileViewModel.self) var profileViewModel
     @State var additionalInformationViewModel: AdditionalInformationViewModel
@@ -62,7 +62,7 @@ struct AdditionalInformationView: View {
                     selection: $hasDifferentBirthName
                 )
                 
-                if hasDifferentBirthName ?? false {
+                if hasDifferentBirthName == "Ya" {
                     FormField(
                         title: "Nama lahir yang berbeda",
                         text: $additionalInformationViewModel.additionalInformation.bornName
@@ -232,13 +232,12 @@ struct RadioButton: View {
     let label: String
     let isSelected: Bool
     let action: () -> Void
-    
+
     var body: some View {
         Button(action: action) {
             HStack {
                 Image(systemName: isSelected ? "largecircle.fill.circle" : "circle")
                     .foregroundColor(isSelected ? .blue : .gray)
-                    .padding(.vertical, 0)
                 Text(label)
                     .font(.custom("Inter-Medium", size: 16))
                     .foregroundStyle(Color.blackOpacity4)
@@ -251,13 +250,14 @@ struct RadioButton: View {
 public struct ExpandableRadioButton: View {
     let title: String
     let options: [String]
-    @Binding var selection: Bool?
+    @Binding var selection: String?
 
     @State private var isExpanded: Bool = true
 
     public var body: some View {
         CardContainer(cornerRadius: 12) {
             VStack(spacing: 16) {
+                // Header with Expand/Collapse Toggle
                 HStack {
                     Text(title)
                         .font(.custom("Inter-Regular", size: 17))
@@ -272,38 +272,31 @@ public struct ExpandableRadioButton: View {
                     isExpanded.toggle()
                 }
                 
-                
                 if isExpanded {
                     VStack(alignment: .leading) {
                         ForEach(options, id: \.self) { option in
                             Divider()
-                            RadioButton(label: option, isSelected: selection == true) {
-                                selection = true
-                                isExpanded = false
-                            }
+                            RadioButton(
+                                label: option,
+                                isSelected: selection == option,
+                                action: {
+                                    selection = option
+                                    isExpanded = false
+                                }
+                            )
                         }
                     }
                 } else {
-                    Text(selectedOption)
-                        .fontWeight(.bold)
+                    Text(selection ?? "Pilihan")
+                        .font(.custom("Inter-SemiBold", size: 16))
+                        .foregroundStyle(Color.blackOpacity4)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }
         .padding(.bottom, 12)
     }
-
-    public var selectedOption: String {
-        if selection == true {
-            return options[0]
-        } else if selection == false {
-            return options[1]
-        } else {
-            return ""
-        }
-    }
 }
-
 
 #Preview {
     NavigationStack {
