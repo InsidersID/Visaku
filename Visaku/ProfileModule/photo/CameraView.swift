@@ -9,7 +9,6 @@ import UIKit
 import AVFoundation
 import CoreImage
 import Combine
-import Observation
 import SwiftUI
 
 class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate {
