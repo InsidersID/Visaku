@@ -10,6 +10,7 @@ import UIComponentModule
 
 struct DocumentDetailSheet: View {
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
     var title: String
     var description: String
     var body: some View {
@@ -24,8 +25,8 @@ struct DocumentDetailSheet: View {
                 .multilineTextAlignment(.center)
                 .padding()
             
-            CustomButton(text: "OK", color: Color.primary5) {
-                dismiss()
+            CustomButton(text: "OK", color: Color.primary5 , font: "Inter-SemiBold", fontSize: 16) {
+                viewModel.showDocumentDetail = false
             }
             .padding()
         }

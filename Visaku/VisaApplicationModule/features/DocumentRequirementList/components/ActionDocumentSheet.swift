@@ -10,7 +10,6 @@ import RepositoryModule
 
 struct ActionDocumentSheet: View {
     var documentType: VisaRequirement
-    @State private var showDocumentDetail = false
     @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
     
     @Binding var isMarked: Bool
@@ -22,60 +21,105 @@ struct ActionDocumentSheet: View {
                 .padding(24)
                 .frame(maxWidth: .infinity, alignment: Alignment(horizontal: .center, vertical: .top))
             
-            VStack(alignment: .leading, spacing: 24) {
-                Button(action: {
-                    isMarked.toggle()
-                }) {
+            if !viewModel.showDocumentDetail {
+                VStack(alignment: .leading, spacing: 24) {
+                    Button(action: {
+                        isMarked.toggle()
+                    }) {
+                        HStack {
+                            ZStack {
+                                Circle()
+                                    .frame(width: 22)
+                                    .foregroundStyle(isMarked ? Color.danger5 : Color.success6)
+                                
+                                Image(systemName: isMarked ? "xmark": "checkmark")
+                                    .imageScale(.small)
+                                    .foregroundStyle(Color.white)
+                                    .fontWeight(.bold)
+                                //                                .offset(x: 0, y: -1)
+                            }
+                            
+                            Text(isMarked ? "Tandai belum selesai": "Tandai selesai")
+                                .font(.custom("Inter-Regular", size: 16))
+                                .foregroundStyle(Color.black)
+                            
+                            Spacer()
+                        }
+                        .contentShape(Rectangle())
+                    }
+                    
                     HStack {
-                        Image(systemName: isMarked ? "x.circle.fill": "checkmark.circle.fill")
-                            .foregroundStyle(isMarked ? .red : .green)
+                        ZStack {
+                            Circle()
+                                .frame(width: 22)
+                                .foregroundStyle(Color.primary5)
+                            
+                            Image(systemName: "square.and.arrow.up")
+                                .resizable()
+                                .frame(width: 11, height: 13)
+                                .foregroundStyle(Color.white)
+                                .fontWeight(.bold)
+                                .offset(x: 0, y: -1)
+                        }
+                        
+                        Text("Upload dari device")
                             .font(.custom("Inter-Regular", size: 16))
                         
-                        Text(isMarked ? "Tandai belum selesai": "Tandai selesai")
-                            .font(.custom("Inter-Regular", size: 16))
-                            .foregroundStyle(.black)
+                        Spacer()
                     }
-                    .contentShape(Rectangle())
+                    
+                    HStack {
+                        ZStack {
+                            Circle()
+                                .frame(width: 22)
+                                .foregroundStyle(Color.primary5)
+                            
+                            Image(systemName: "camera")
+                                .resizable()
+                                .frame(width: 14, height: 12)
+                                .foregroundStyle(Color.white)
+                                .fontWeight(.bold)
+                                .offset(x: 0, y: -1)
+                        }
+                        
+                        Text("Scan dokumen")
+                            .font(.custom("Inter-Regular", size: 16))
+                        
+                        Spacer()
+                    }
+                    
+                    HStack {
+                        ZStack {
+                            Circle()
+                                .frame(width: 22)
+                                .foregroundStyle(Color.primary5)
+                            
+                            Image(systemName: "eye")
+                                .resizable()
+                                .frame(width: 14, height: 11)
+                                .foregroundStyle(Color.white)
+                                .fontWeight(.bold)
+                        }
+                        
+                        Text("Lihat ketentuan")
+                            .foregroundStyle(Color.blackOpacity5)
+                            .font(.custom("Inter-Regular", size: 16))
+                        
+                        Spacer()
+                    }
+                    .onTapGesture {
+                        viewModel.showDocumentDetail = true
+                    }
                 }
-                
-                HStack {
-                    Image(systemName: "square.and.arrow.up.circle.fill")
-                        .foregroundStyle(.blue)
-                        .font(.custom("Inter-Regular", size: 16))
-                    Text("Upload dari device")
-                        .font(.custom("Inter-Regular", size: 16))
-                }
-                
-                HStack {
-                    Image(systemName: "camera.circle.fill")
-                        .foregroundStyle(.blue)
-                        .font(.custom("Inter-Regular", size: 16))
-                    Text("Scan dokumen")
-                        .font(.custom("Inter-Regular", size: 16))
-                }
-                
-                HStack {
-                    Image(systemName: "eye.circle.fill")
-                        .foregroundStyle(.blue)
-                        .font(.custom("Inter-Regular", size: 16))
-                    Text("Lihat ketentuan")
-                        .foregroundStyle(.black)
-                        .font(.custom("Inter-Regular", size: 16))
-                }
-                .onTapGesture {
-                    showDocumentDetail = true
-                }
+                .padding(.bottom, 20)
+            } else {
+                DocumentDetailSheet(
+                    title: documentType.displayName, description: documentType.description
+                )
+                .environmentObject(viewModel)
             }
-            .padding(.bottom, 20)
         }
         .padding()
-        .sheet(isPresented: $showDocumentDetail) {
-            DocumentDetailSheet(
-                title: documentType.displayName, description: documentType.description
-            )
-            .presentationDetents(.init([.medium]))
-            .presentationDragIndicator(.visible)
-        }
         .onChange(of: isMarked) { newValue in
             Task {
                 await viewModel.updateDocumentMark(for: documentType, to: newValue)
