@@ -76,8 +76,13 @@ struct ApplicationSection: View {
                     if let visaHistoryUncompleted = viewModel.tripUncompleteList{
                         ForEach(visaHistoryUncompleted) { trip in
                             let tripData = TripDataUIModel(from: trip)
-                            VisaApplicationCard(visaType: tripData.visaType, country: tripData.country, countries: tripData.countries, visaProgressPercentage: tripData.percentage, visaProgressColor: .red, createdAt: tripData.date) {
-                                
+                            NavigationLink {
+                                CountryVisaApplicationView(trip: trip)
+                                    .navigationBarBackButtonHidden()
+                            } label: {
+                                VisaApplicationCard(visaType: tripData.visaType, country: tripData.country, countries: tripData.countries, visaProgressPercentage: tripData.percentage, visaProgressColor: .red, createdAt: tripData.date) {
+                                    
+                                }
                             }
                         }
                     }
