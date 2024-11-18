@@ -10,11 +10,10 @@ import SwiftUI
 
 class PDFDownload: NSObject, UIDocumentInteractionControllerDelegate {
     static let shared = PDFDownload()
+    private var documentController: UIDocumentInteractionController?
     
-    private override init() {
-        
-    }
-    
+    private override init() {}
+
     func downloadPDF(completion: @escaping () -> Void) {
         guard let pdfURL = Bundle.main.url(forResource: "visa_form", withExtension: "pdf") else {
             print("PDF file not found")
@@ -28,10 +27,21 @@ class PDFDownload: NSObject, UIDocumentInteractionControllerDelegate {
 
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let rootVC = windowScene.windows.first?.rootViewController {
-            presentShareSheet(for: destinationURL, in: rootVC) {
-                print("Downloading PDF...")
-                print("PDF download completed")
-                completion()
+            if let presentedVC = rootVC.presentedViewController {
+                presentedVC.dismiss(animated: true) {
+                    self.presentShareSheet(for: destinationURL, in: rootVC) {
+                        print("Downloading PDF...")
+                        print("PDF download completed")
+                        completion()
+                    }
+                }
+            } else {
+                // Present share sheet directly if no other modal is presented
+                presentShareSheet(for: destinationURL, in: rootVC) {
+                    print("Downloading PDF...")
+                    print("PDF download completed")
+                    completion()
+                }
             }
         } else {
             print("Unable to present share sheet")
@@ -55,12 +65,14 @@ class PDFDownload: NSObject, UIDocumentInteractionControllerDelegate {
     }
 
     func presentShareSheet(for url: URL, in viewController: UIViewController, completion: @escaping () -> Void) {
-            let documentController = UIDocumentInteractionController(url: url)
-            documentController.delegate = self
-            documentController.presentOptionsMenu(from: viewController.view.bounds, in: viewController.view, animated: true)
-            
+        DispatchQueue.main.async {
+            self.documentController = UIDocumentInteractionController(url: url)
+            self.documentController?.delegate = self
+            self.documentController?.presentOpenInMenu(from: viewController.view.bounds, in: viewController.view, animated: true)
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 completion()
             }
         }
+    }
 }

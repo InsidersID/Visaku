@@ -10,11 +10,10 @@ import SwiftUI
 
 class JSONDownload: NSObject, UIDocumentInteractionControllerDelegate {
     static let shared = JSONDownload()
+    private var documentController: UIDocumentInteractionController?
     
-    private override init() {
-        
-    }
-    
+    private override init() {}
+
     func downloadJSON(completion: @escaping () -> Void) {
         guard let jsonURL = Bundle.main.url(forResource: "visa", withExtension: "json") else {
             print("JSON file not found")
@@ -28,10 +27,21 @@ class JSONDownload: NSObject, UIDocumentInteractionControllerDelegate {
 
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let rootVC = windowScene.windows.first?.rootViewController {
-            presentShareSheet(for: destinationURL, in: rootVC) {
-                print("Downloading JSON...")
-                print("JSON download completed")
-                completion()
+            if let presentedVC = rootVC.presentedViewController {
+                presentedVC.dismiss(animated: true) {
+                    self.presentShareSheet(for: destinationURL, in: rootVC) {
+                        print("Downloading JSON...")
+                        print("JSON download completed")
+                        completion()
+                    }
+                }
+            } else {
+                // Present share sheet directly if no other modal is presented
+                presentShareSheet(for: destinationURL, in: rootVC) {
+                    print("Downloading JSON...")
+                    print("JSON download completed")
+                    completion()
+                }
             }
         } else {
             print("Unable to present share sheet")
@@ -55,12 +65,14 @@ class JSONDownload: NSObject, UIDocumentInteractionControllerDelegate {
     }
 
     func presentShareSheet(for url: URL, in viewController: UIViewController, completion: @escaping () -> Void) {
-            let documentController = UIDocumentInteractionController(url: url)
-            documentController.delegate = self
-            documentController.presentOptionsMenu(from: viewController.view.bounds, in: viewController.view, animated: true)
-            
+        DispatchQueue.main.async {
+            self.documentController = UIDocumentInteractionController(url: url)
+            self.documentController?.delegate = self
+            self.documentController?.presentOpenInMenu(from: viewController.view.bounds, in: viewController.view, animated: true)
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 completion()
             }
         }
+    }
 }
