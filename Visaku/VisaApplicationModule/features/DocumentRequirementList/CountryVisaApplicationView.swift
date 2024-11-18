@@ -11,13 +11,36 @@ import RepositoryModule
 
 public struct CountryVisaApplicationView: View {
     
-    var countrySelected: String
-    var visaType: String
-    var countries: [CountryData]
+    var countrySelected: String?
+    var visaType: String?
+    var countries: [CountryData]?
+    
+    var trip: TripEntity?
+    
+    public init(
+        countrySelected: String? = nil,
+        visaType: String? = nil,
+        countries: [CountryData]? = nil,
+        trip: TripEntity? = nil
+    ) {
+        self.countrySelected = countrySelected
+        self.visaType = visaType
+        self.countries = countries
+
+        
+        
+        self._viewModel = StateObject(wrappedValue: CountryVisaApplicationViewModel(trip: trip))
+    }
     
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var viewModel: CountryVisaApplicationViewModel
+    @State private var isShowPrintSheet = false
+    @State private var isItinerary = false
+    @State private var isFormApplication = false
     @StateObject var viewModel = CountryVisaApplicationViewModel()
+    
+    
     
     public var body: some View {
         NavigationStack {
@@ -60,7 +83,12 @@ public struct CountryVisaApplicationView: View {
                         }
                     }
                 }
-                .onAppear { viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries) }
+//                .toolbar { backButton }
+                .onAppear {
+                    if let visaType = visaType, let countrySelected = countrySelected, let countries = countries {
+                        viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries)
+                    }
+                }
                 .onChange(of: viewModel.completionPercentage) { completionHandler($0) }
                 .onChange(of: viewModel.isShowConfirmation) { newValue in
                     if newValue {
@@ -89,6 +117,10 @@ public struct CountryVisaApplicationView: View {
                     viewModel.isShowPrintDownloadButton = true
                 }) { VisaApplicationFinishedView() }
                 .fullScreenCover(isPresented: $viewModel.isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
+                .sheet(isPresented: $isItinerary) { ItineraryListSheet() }
+                .sheet(isPresented: $isShowPrintSheet) { printSheet }
+                .fullScreenCover(isPresented: $isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
+                
                 NotificationCard()
                     .offset(x: 40)
                     .padding(.horizontal)
@@ -104,33 +136,61 @@ public struct CountryVisaApplicationView: View {
             } currentValueLabel: {
                 VStack {
                     Text("\(Int(viewModel.completionPercentage))%")
+                        .font(.custom("Inter-Bold", size: 64))
+                        .foregroundStyle(Color.primary5)
+                    
                     Text("Visa \(visaType) \(countrySelected)")
-                        .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
+                        .foregroundStyle(Color.blackOpacity5)
                         .font(.custom("Inter-Medium", size: 20))
                 }
-                .foregroundStyle(.blue)
                 .padding(.bottom, 50)
             }
-            .tint(.blue)
+            .tint(.primary5)
             .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
         }
     }
     
     private var documentCards: some View {
         VStack {
-            if viewModel.selectedIdentity == nil {
-                DocumentCard(height: 82, document: "Identitas", status: .undone)
-                    .padding(.horizontal)
-                    .onTapGesture { viewModel.isIdentity.toggle() }
-            } else {
+            if viewModel.trip?.account == nil {
                 CardContainer(cornerRadius: 24) {
                     HStack {
-                        Text(viewModel.selectedIdentity?.username ?? "Error")
+                        Text("Identitas")
                             .font(.custom("Inter-SemiBold", size: 16))
                         
                         Spacer()
+                        
+                        Image(systemName: "chevron.down")
+                            .fontWeight(.bold)
                     }
                     .frame(height: 47)
+                }
+                .padding(.horizontal)
+                .contentShape(Rectangle())
+                .onTapGesture { viewModel.isIdentity.toggle() }
+            } else {
+                CardContainer(cornerRadius: 24) {
+                    VStack {
+                        HStack {
+                            Text("Identitas")
+                                .font(.custom("Inter-Bold", size: 14))
+                                .foregroundStyle(Color.blackOpacity3)
+                                .padding(.bottom, 8)
+                            
+                            Spacer()
+                        }
+                        
+                        HStack {
+                            Text(viewModel.trip?.account?.username ?? "Error")
+                                .font(.custom("Inter-SemiBold", size: 16))
+                            
+                            Spacer()
+                            
+                            Image(systemName: "chevron.down")
+                                .fontWeight(.bold)
+                        }
+                    }
+                    .frame(height: 91)
                 }
                 .padding(.horizontal)
                 .contentShape(Rectangle())
