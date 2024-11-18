@@ -7,12 +7,22 @@
 
 import SwiftUI
 import PDFKit
+import RepositoryModule
 
-struct PDFPreviewConfirmationView: View {
+public struct PDFPreviewConfirmationView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var pdfDocument: PDFDocument?
+    @State var pdfDocument: PDFDocument?
     
-    var body: some View {
+    var trip: TripEntity?
+    
+    @StateObject private var pdfPreviewConfirmationViewModel: PDFPreviewConfirmationViewModel
+    
+    public init(trip: TripEntity?) {
+        self.trip = trip
+        _pdfPreviewConfirmationViewModel = StateObject(wrappedValue: PDFPreviewConfirmationViewModel())
+    }
+    
+    public var body: some View {
         VStack {
             if let pdfDocument = pdfDocument {
                 PDFPreviewView(pdfDocument: pdfDocument)
@@ -20,6 +30,9 @@ struct PDFPreviewConfirmationView: View {
         }
         .task {
             loadPDF()
+        }
+        .onAppear {
+            loadTripData()
         }
     }
     
@@ -35,25 +48,26 @@ struct PDFPreviewConfirmationView: View {
         // Define the dictionary of form field names and their corresponding values
         let applicantPhoto = UIImage(systemName: "square.and.arrow.up")
         
+        
         let sampleData: [String: Any] = [
-            "applicantSurname": "Doe",
-            "applicantSurnameAtBirth": "Smith",
-            "applicantFirstname": "John",
-            "applicantDateOfBirth": "1985-05-15",
-            "applicantPlaceOfBirth": "Los Angeles",
-            "applicantCountryOfBirth": "USA",
-            "applicantNationality": "American",
-            "applicantNationalityAtBirth": "American",
-            "applicantNationalityOther": "Canadian",
-            "applicantGenderM": true,
-            "applicantGenderF": false,
+            "applicantSurname": trip?.account?.identityCard?.name ?? "Name",
+            "applicantSurnameAtBirth": trip?.account?.identityCard?.name ?? "Surname at Birth",
+            "applicantFirstname": trip?.account?.identityCard?.name ?? "First Name",
+            "applicantDateOfBirth": trip?.account?.identityCard?.placeDateOfBirth ?? "Date of Birth",
+            "applicantPlaceOfBirth": trip?.account?.identityCard?.placeDateOfBirth ?? "Place of Birth",
+            "applicantCountryOfBirth": trip?.account?.identityCard?.placeDateOfBirth ?? "Date of Birth",
+            "applicantNationality": trip?.account?.identityCard?.nationality ?? "Nationality",
+            "applicantNationalityAtBirth": trip?.account?.identityCard?.countryBorn ?? "Nationality at Birth",
+            "applicantNationalityOther": "",
+            "applicantGenderM": trip?.account?.identityCard?.gender == .male ? true : false,
+            "applicantGenderF": trip?.account?.identityCard?.gender == .female ? true : false,
             "applicantGenderA": false,
-            "applicantMaritalCEL": true,
-            "applicantMaritalMAR": false,
+            "applicantMaritalCEL": trip?.account?.identityCard?.maritalStatus == .single ? true : false,
+            "applicantMaritalMAR": trip?.account?.identityCard?.maritalStatus == .married ? true : false,
             "applicantMaritalPAC": false,
             "applicantMaritalSEP": false,
-            "applicantMaritalDIV": false,
-            "applicantMaritalVEU": false,
+            "applicantMaritalDIV": trip?.account?.identityCard?.maritalStatus == .divorced ? true : false,
+            "applicantMaritalVEU": trip?.account?.identityCard?.maritalStatus == .widowed ? true : false,
             "applicantMaritalAUT": false,
             "applicantMaritalOther": false,
             "parental1Names": "Jane Doe",
@@ -69,17 +83,17 @@ struct PDFPreviewConfirmationView: View {
             "parental2AddressL4": "CA",
             "parental2AddressL5": "90001",
             "applicantIdCardNumber": "ID12345678",
-            "travelDocTypePO": "",
-            "travelDocTypePD": "",
-            "travelDocTypePSV": "Passport",
-            "travelDocTypePOF": "",
+            "travelDocTypePO": trip?.account?.passport?.passportType == .regular ? true : false,
+            "travelDocTypePD": trip?.account?.passport?.passportType == .diplomatic ? true : false,
+            "travelDocTypePSV": trip?.account?.passport?.passportType == .service ? true : false,
+            "travelDocTypePOF": trip?.account?.passport?.passportType == .regular ? true : false,
             "travelDocTypePSP": "",
             "travelDocTypeAUT": "",
             "travelDocTypeOther": "",
-            "travelDocNumber": "P12345678",
-            "travelDocDateOfIssue": "2020-01-01",
-            "travelDocValidUntil": "2030-01-01",
-            "travelDocCountries": "USA, Canada",
+            "travelDocNumber": trip?.account?.passport?.passportNo ?? "Passport Number"
+            "travelDocDateOfIssue": trip?.account?.passport?.issueDate ?? "Passport Issue Date"
+            "travelDocValidUntil": trip?.account?.passport?.expirationDate ?? "Passport Expiration Date"
+            "travelDocCountries": trip?.account?.passport?.passportIssuePlace ?? "Passport Place Type"
             "nationalFamilySurname": "Doe",
             "nationalFamilyFirstNames": "John",
             "nationalFamilyDateOfBirth": "1985-05-15",
@@ -93,25 +107,25 @@ struct PDFPreviewConfirmationView: View {
             "applicationNumber": "123456",
             "relationshipCON": "",
             "relationshipENF": "",
-            "relationshipPFI": "Son",
+            "relationshipPFI": "",
             "relationshipAAC": "",
             "relationshipPAC": "",
             "relationshipAUT": "",
-            "applicantAddressL1": "123 Elm Street",
-            "applicantAddressL2": "Apt 4B",
-            "applicantAddressL3": "Los Angeles",
-            "applicantAddressL4": "CA",
-            "applicantAddressL5": "90001",
-            "applicantAddressL6": "USA",
-            "applicantPhone": "+1 555 123 4567",
+            "applicantAddressL1": trip?.account?.identityCard?.address ?? "Address 1",
+            "applicantAddressL2": trip?.account?.additionalInformation?.addressCity ?? "Address 2",
+            "applicantAddressL3": trip?.account?.additionalInformation?.addressCountry ?? "Address 3",
+            "applicantAddressL4": trip?.account?.additionalInformation?.addressPostalCode ?? "Address 4",
+            "applicantAddressL5": "",
+            "applicantAddressL6": "",
+            "applicantPhone": trip?.account?.additionalInformation?.addressTelephone ?? "Phone Number",
             "applicantResidencePermitNo": "",
             "applicantResidencePermitYes": "Yes",
             "applicantResidencePermitNumber": "RP123456",
             "applicantResidencePermitValidUntil": "2025-12-31",
-            "applicantOccupation": "Software Engineer",
-            "applicantOccupationAddressL1": "456 Technology Drive",
-            "applicantOccupationAddressL2": "Suite 200",
-            "applicantOccupationAddressL3": "San Francisco",
+            "applicantOccupation": trip?.account?.identityCard?.job ?? "Occupation"
+            "applicantOccupationAddressL1": trip?.account?.additionalInformation?.companyAddress ?? "Occupation Address 1",
+            "applicantOccupationAddressL2": (trip?.account?.additionalInformation?.companyCity ?? "Company City") + ", " + (trip?.account?.additionalInformation?.companyCountry ?? "Company Country"),
+            "applicantOccupationAddressL3": (trip?.account?.additionalInformation?.companyTelephone ?? "Company Telephone") + ", " + (trip?.account?.additionalInformation?.companyPostalCode ?? "Company Postal Code"),
             "purposeTOUR": "Tourism",
             "purposeTRAV": "",
             "purposeVISF": "",
@@ -124,13 +138,13 @@ struct PDFPreviewConfirmationView: View {
             "purposeAUTR": "",
             "purposeOther": "",
             "purposeOfJourneyInfo": "Vacation",
-            "applicantDestinations": "France, Italy",
-            "applicantDestinationFirstEntry": "France",
+            "applicantDestinations": trip?.countries.map { $0.name }.joined(separator: ", ") ?? "Countries"
+            "applicantDestinationFirstEntry": trip?.countries.first?.name ?? "First country of entry"
             "entries1": "Single Entry",
             "entries2": "",
             "entriesM": "",
-            "dateOfArrival": "2024-06-15",
-            "dateOfDeparture": "2024-07-15",
+            "dateOfArrival": trip?.countries.first?.startDate ?? "Date of Arrival"
+            "dateOfDeparture": trip?.countries.last?.endDate ?? "Date of Departure"
             "hasFingerprintsFalse": "",
             "hasFingerprintsTrue": "True",
             "fingerprintsDate": "2023-01-15",
@@ -191,10 +205,17 @@ struct PDFPreviewConfirmationView: View {
                 }
             }
         }
-        
+    }
+    
+    private func loadTripData() {
+        guard let tripId = trip?.id else {
+            print("Error occurred when getting trip id")
+            return
+        }
+        pdfPreviewConfirmationViewModel.fetchAccountDataFromTrip(tripId)
     }
 }
 
 #Preview {
-    PDFPreviewConfirmationView()
+    PDFPreviewConfirmationView(trip: TripEntity(id: UUID().uuidString, visaType: "Turis", country: "Italy", contries: [CountryData(name: "Italy"), CountryData(name: "France")]))
 }
