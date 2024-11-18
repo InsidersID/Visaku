@@ -16,7 +16,6 @@ public struct CountryVisaApplicationView: View {
     var countries: [CountryData]?
     
     var trip: TripEntity?
-    var tripData: TripDataUIModel?
     
     public init(
         countrySelected: String? = nil,
@@ -27,7 +26,6 @@ public struct CountryVisaApplicationView: View {
         self.countrySelected = countrySelected
         self.visaType = visaType
         self._viewModel = StateObject(wrappedValue: CountryVisaApplicationViewModel(trip: trip))
-        self.tripData = TripDataUIModel(from: trip ?? TripEntity(id: "1", visaType: "turis", country: "Italia", contries: [CountryData(name: "Italia")]))
     }
     
     @Environment(\.colorScheme) var colorScheme
@@ -147,7 +145,7 @@ public struct CountryVisaApplicationView: View {
                         .font(.custom("Inter-Bold", size: 64))
                         .foregroundStyle(Color.primary5)
                     
-                    Text("Visa \(tripData?.visaType ?? "TypeError") \(tripData?.country ?? "CountryError")")
+                    Text("Visa \(visaType ?? "TypeError") \(countrySelected ?? "CountryError")")
                         .foregroundStyle(Color.blackOpacity5)
                         .font(.custom("Inter-Medium", size: 20))
                 }
