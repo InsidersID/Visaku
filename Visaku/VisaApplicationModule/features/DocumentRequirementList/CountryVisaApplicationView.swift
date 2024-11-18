@@ -236,6 +236,7 @@ public struct CountryVisaApplicationView: View {
         CustomButton(text: "Unduh JSON form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16                     ) {
             viewModel.isShowJSONDownload = true
         }
+        .padding(.horizontal)
         .padding(.bottom)
     }
     
@@ -317,14 +318,12 @@ struct DocumentSheet: View {
     var documentType: VisaRequirement
     @Binding var isMarked: Bool
     @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
-    @Environment(ProfileViewModel.self) var profileViewModel
     
     var body: some View {
         Group {
             if documentType.requiresUpload {
                 ActionDocumentSheet(documentType: documentType, isMarked: $isMarked)
                     .environmentObject(viewModel)
-                    .environment(profileViewModel)
             } else {
                 MarkOnlyDocumentSheet(documentType: documentType, isMarked: $isMarked)
                     .environmentObject(viewModel)
