@@ -85,13 +85,13 @@ struct ActionDocumentSheet: View {
     }
 }
 
-//#Preview {
-//    @Previewable @State var isMarked: Bool = false
-//    let mockViewModel = CountryVisaApplicationViewModel()
-//
-//    ActionDocumentSheet(
-//        documentType: .asuransiKesehatanPerjalanan,
-//        isMarked: $isMarked
-//    )
-//    .environmentObject(mockViewModel)
-//}
+#Preview {
+    @Previewable @State var isMarked: Bool = false
+    let mockViewModel = CountryVisaApplicationViewModel()
+
+    ActionDocumentSheet(
+        documentType: .init(type: .asuransiKesehatanPerjalanan, displayName: "nama", description: "deskripsi", requiresUpload: false, isOptionalUpload: false),
+        isMarked: $isMarked
+    )
+    .environmentObject(mockViewModel)
+}
