@@ -193,7 +193,7 @@ struct DocumentRequirementsList: View {
                         height: 115,
                         document: document.displayName,
                         status: document.isMarked ? .done : .undone,
-                        requiresMarkOnly: document.requiresUpload
+                        requiresMarkOnly: !document.requiresUpload
                     )
                     .onTapGesture {
                         selectedDocumentIndex = index
