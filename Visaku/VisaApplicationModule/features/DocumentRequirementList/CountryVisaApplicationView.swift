@@ -295,6 +295,7 @@ struct DocumentRequirementsList: View {
                         status: document.isMarked ? .done : .undone,
                         requiresMarkOnly: !document.requiresUpload
                     )
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         selectedDocumentIndex = index
                     }
