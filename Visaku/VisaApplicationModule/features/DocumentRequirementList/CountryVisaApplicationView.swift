@@ -38,9 +38,6 @@ public struct CountryVisaApplicationView: View {
     @State private var isShowPrintSheet = false
     @State private var isItinerary = false
     @State private var isFormApplication = false
-    @StateObject var viewModel = CountryVisaApplicationViewModel()
-    
-    
     
     public var body: some View {
         NavigationStack {
@@ -118,7 +115,6 @@ public struct CountryVisaApplicationView: View {
                 }) { VisaApplicationFinishedView() }
                 .fullScreenCover(isPresented: $viewModel.isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
                 .sheet(isPresented: $isItinerary) { ItineraryListSheet() }
-                .sheet(isPresented: $isShowPrintSheet) { printSheet }
                 .fullScreenCover(isPresented: $isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
                 
                 NotificationCard()
