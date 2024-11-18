@@ -9,7 +9,7 @@ struct VisaApplicationFinishedView: View {
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                Color(red: 0.8, green: 0.91, blue: 0.97).ignoresSafeArea()
+                Color.tertiary3.ignoresSafeArea()
                 
                 RiveViewModel(fileName: "Clouds").view()
                     .offset(x:0, y:-90)
