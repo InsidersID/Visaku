@@ -153,35 +153,35 @@ public struct CountryVisaApplicationView: View {
     
     private var cancelButton: some View {
         CustomButton(text: "Batalkan Pengajuan", textColor: .danger4, color: .clear, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {}
-            .padding()
+            .padding(.horizontal)
     }
     
     private var confirmationButton: some View {
         CustomButton(text: "Konfirmasi", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {
             viewModel.isPresentingConfirmationView = true
         }
-            .padding()
+        .padding(.bottom)
     }
     
     private var printButton: some View {
         CustomButton(text: "Print semua", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {
             viewModel.isShowPreviewVisaApplicationForm = true
         }
-        .padding()
+        .padding(.horizontal)
     }
     
     private var downloadPDFButton: some View {
         CustomButton(text: "Unduh PDF form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {
             viewModel.isShowPreviewVisaApplicationForm = true
         }
-        .padding()
+        .padding(.horizontal)
     }
     
     private var downloadJSONButton: some View {
         CustomButton(text: "Unduh JSON form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8                     ) {
             viewModel.isShowJSONDownload = true
         }
-        .padding()
+        .padding(.bottom)
     }
     
     private var backButton: some ToolbarContent {

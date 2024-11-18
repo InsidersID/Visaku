@@ -18,7 +18,6 @@ public struct PDFPreviewSheet: View {
             Text("Tinjauan PDF")
                 .font(Font.custom("Inter", size: 16))
                 .padding(.vertical)
-                .padding(.bottom)
             
             if let pdfURL = Bundle.main.url(forResource: "visa_form", withExtension: "pdf") {
                 PDFPreviewView(pdfURL: pdfURL)
@@ -34,7 +33,7 @@ public struct PDFPreviewSheet: View {
                         dismiss()
                     }
                 }
-                .padding()
+                .padding(.horizontal)
                 
                 CustomButton(text: "Unduh PDF", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     PDFDownload.shared.downloadPDF {
@@ -42,7 +41,7 @@ public struct PDFPreviewSheet: View {
                         dismiss()
                     }
                 }
-                .padding()
+                .padding(.bottom)
             } else {
                 RoundedRectangle(cornerRadius: 24)
                     .fill(Color.gray)
@@ -67,9 +66,9 @@ public struct PDFPreviewSheet: View {
                 CustomButton(text: "Tutup", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) { 
                     viewModel.isShowPreviewVisaApplicationForm = false
                 }
-                .padding()
+                .padding(.bottom)
             }
         }
-        .presentationDetents([.fraction(0.95)])
+        .presentationDetents([.fraction(0.98)])
     }
 }
