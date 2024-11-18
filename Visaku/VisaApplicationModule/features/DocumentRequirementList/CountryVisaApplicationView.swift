@@ -92,7 +92,7 @@ public struct CountryVisaApplicationView: View {
     
     private var documentCards: some View {
         VStack {
-            if viewModel.selectedIdentity == nil {
+            if viewModel.trip?.account == nil {
                 CardContainer(cornerRadius: 24) {
                     HStack {
                         Text("Identitas")
@@ -121,7 +121,7 @@ public struct CountryVisaApplicationView: View {
                         }
                         
                         HStack {
-                            Text(viewModel.selectedIdentity?.username ?? "Error")
+                            Text(viewModel.trip?.account?.username ?? "Error")
                                 .font(.custom("Inter-SemiBold", size: 16))
                             
                             Spacer()

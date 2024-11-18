@@ -21,8 +21,9 @@ public struct ProfileView: View {
                             ForEach(accounts, id: \.id) { account in
                                 Button {
                                     if isSelectProfile {
-                                        visaViewModel.selectedIdentity = account
-                                        print(visaViewModel.selectedIdentity?.username ?? "error selecting identity")
+                                        Task {
+                                            await visaViewModel.updateSelectedAccount(account: account)
+                                        }
                                         visaViewModel.isIdentity.toggle()
                                     } else {
                                         profileViewModel.selectedAccount = account
