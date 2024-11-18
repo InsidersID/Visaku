@@ -140,15 +140,45 @@ public class CountryVisaApplicationViewModel: ObservableObject {
         }
     }
     
+    func uploadDocument(documentType: VisaRequirement, payload: UploadPayload) async {
+        switch payload {
+        case .url(let url):
+            guard var trip = trip,
+                  let index = trip.visaRequirements?.firstIndex(where: { $0.type == documentType.type }) else {
+                return
+            }
+            trip.visaRequirements?[index].uploadPayload = .url(url)
+            do {
+                let isSuccess = try await tripUseCase.update(param: trip)
+                if isSuccess {
+                    self.trip = trip
+                }
+            } catch {
+                print("Failed to update trip: \(error.localizedDescription)")
+            }
+        case .data(let data):
+            guard var trip = trip,
+                  let index = trip.visaRequirements?.firstIndex(where: { $0.type == documentType.type }) else {
+                return
+            }
+            trip.visaRequirements?[index].uploadPayload = .data(data)
+            do {
+                let isSuccess = try await tripUseCase.update(param: trip)
+                if isSuccess {
+                    self.trip = trip
+                }
+            } catch {
+                print("Failed to update trip: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     func updateDocumentMark(for documentType: VisaRequirement, to isMarked: Bool) async {
         guard var trip = trip,
               let index = trip.visaRequirements?.firstIndex(where: { $0.type == documentType.type }) else {
             return
         }
-        print("Updating \(documentType.displayName) to \(isMarked)")
         trip.visaRequirements?[index].isMarked = isMarked
-        
-        print("Updated state: \(trip.visaRequirements?[index].isMarked ?? false)")
         do {
             let isSuccess = try await tripUseCase.update(param: trip)
             if isSuccess {
