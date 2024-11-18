@@ -8,6 +8,7 @@
 import SwiftUI
 import Foundation
 import UIComponentModule
+import PDFKit
 
 public struct PDFPreviewSheet: View {
     @StateObject var viewModel = CountryVisaApplicationViewModel()
@@ -21,12 +22,17 @@ public struct PDFPreviewSheet: View {
                 .padding(.bottom, 16)
             
             if let pdfURL = Bundle.main.url(forResource: "visa_form", withExtension: "pdf") {
-                PDFPreviewView(pdfURL: pdfURL)
-                    .frame(height: 500)
-                    .background(.gray.opacity(0.3))
-                    .cornerRadius(16)
-                    .edgesIgnoringSafeArea(.all)
-                    .padding()
+                if let pdfDocument = PDFDocument(url: pdfURL) {
+                    PDFPreviewView(pdfDocument: pdfDocument)
+                        .frame(height: 500)
+                        .background(.gray.opacity(0.3))
+                        .cornerRadius(16)
+                        .edgesIgnoringSafeArea(.all)
+                        .padding()
+                } else {
+                    Text("Failed to convert your PDF URL to PDF Document.")
+                }
+
                 
                 CustomButton(text: "Print PDF", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     PrintManager.shared.printFilledVisaApplicationForm {
