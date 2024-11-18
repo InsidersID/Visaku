@@ -26,13 +26,20 @@ struct MarkOnlyDocumentSheet: View {
                     isMarked.toggle()
                 }) {
                     HStack {
-                        Image(systemName: isMarked ? "x.circle.fill": "checkmark.circle.fill")
-                            .foregroundStyle(isMarked ? .red : .green)
-                            .font(.custom("Inter-Regular", size: 16))
+                        ZStack {
+                            Circle()
+                                .frame(width: 22)
+                                .foregroundStyle(isMarked ? Color.danger5 : Color.success6)
+                            
+                            Image(systemName: isMarked ? "xmark": "checkmark")
+                                .imageScale(.small)
+                                .foregroundStyle(Color.white)
+                                .fontWeight(.bold)
+                        }
                         
                         Text(isMarked ? "Tandai belum selesai" : "Tandai selesai")
                             .font(.custom("Inter-Regular", size: 16))
-                            .foregroundStyle(.black)
+                            .foregroundStyle(Color.black)
                     }
                     .contentShape(Rectangle())
                 }
@@ -41,11 +48,20 @@ struct MarkOnlyDocumentSheet: View {
                     showDocumentDetail = true
                 }) {
                     HStack {
-                        Image(systemName: "eye.circle.fill")
-                            .foregroundStyle(.blue)
-                            .font(.custom("Inter-Regular", size: 16))
+                        ZStack {
+                            Circle()
+                                .frame(width: 22)
+                                .foregroundStyle(Color.primary5)
+                            
+                            Image(systemName: "eye")
+                                .resizable()
+                                .frame(width: 14, height: 11)
+                                .foregroundStyle(Color.white)
+                                .fontWeight(.bold)
+                        }
+                        
                         Text("Lihat ketentuan")
-                            .foregroundStyle(.black)
+                            .foregroundStyle(Color.black)
                             .font(.custom("Inter-Regular", size: 16))
                     }
                 }
