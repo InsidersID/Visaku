@@ -3,13 +3,13 @@ import UIComponentModule
 import RiveRuntime
 
 struct VisaApplicationFinishedView: View {
-    @StateObject var viewModel = CountryVisaApplicationViewModel()
+    @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                Color(red: 0.8, green: 0.91, blue: 0.97).ignoresSafeArea()
+                Color.tertiary3.ignoresSafeArea()
                 
                 RiveViewModel(fileName: "Clouds").view()
                     .offset(x:0, y:-90)
@@ -24,24 +24,26 @@ struct VisaApplicationFinishedView: View {
                     
                     Text("Kamu sudah siap!")
                         .font(.custom("Inter-SemiBold", size: 24))
+                        .foregroundStyle(Color.blackOpacity5)
                         .padding(.bottom)
                     
                     Text("Dengan itinerary, kedutaan jadi tahu kamu punya tujuan jelas dan nggak berencana tinggal lebih lama dari yang diizinkan.")
                         .font(.custom("Inter-Regular", size: 15))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.blackOpacity3)
                         .padding(.horizontal)
                         .multilineTextAlignment(.center)
                     
                     Spacer()
                     
-                    Divider()
+                    Rectangle()
+                        .frame(width: .infinity, height: 1)
+                        .foregroundStyle(Color.blackOpacity1)
                     
                     CustomButton(text: "Selesai", textColor: .white, color: .primary5, font: "Inter-SemiBold") {
-                        viewModel.showConfirmationButton = false
-                        dismiss()
+                        viewModel.isPresentingConfirmationView = false
                     }
-                    .padding(.horizontal)
-                    .padding(.bottom)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 20)
                 }
                 
                 RiveViewModel(fileName: "PlaneAnimation").view()

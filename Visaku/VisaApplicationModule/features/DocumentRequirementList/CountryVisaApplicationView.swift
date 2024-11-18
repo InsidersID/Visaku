@@ -56,9 +56,20 @@ public struct CountryVisaApplicationView: View {
                         
                         if !viewModel.isShowConfirmation {
                             cancelButton
+                            Rectangle()
+                                .frame(width: .infinity, height: 1)
+                                .foregroundStyle(Color.blackOpacity1)
                         } else if !viewModel.isShowPrintDownloadButton {
+                            Rectangle()
+                                .frame(width: .infinity, height: 1)
+                                .foregroundStyle(Color.blackOpacity1)
+                                .padding(.vertical, 4)
                             confirmationButton
                         } else {
+                            Rectangle()
+                                .frame(width: .infinity, height: 1)
+                                .foregroundStyle(Color.blackOpacity1)
+                                .padding(.vertical, 4)
                             printButton
                             downloadPDFButton
                             downloadJSONButton
@@ -90,8 +101,8 @@ public struct CountryVisaApplicationView: View {
                         viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries)
                     }
                 }
-                .onChange(of: viewModel.completionPercentage) { completionHandler($0) }
-                .onChange(of: viewModel.isShowConfirmation) { newValue in
+                .onChange(of: viewModel.completionPercentage) { oldValue, newValue in completionHandler(newValue) }
+                .onChange(of: viewModel.isShowConfirmation) { oldValue, newValue in
                     if newValue {
                         print("isShowConfirmation is true")
                         
@@ -100,7 +111,7 @@ public struct CountryVisaApplicationView: View {
                         }
                     }
                 }
-                .onChange(of: viewModel.isShowPrintDownloadButton) { newValue in
+                .onChange(of: viewModel.isShowPrintDownloadButton) { oldValue, newValue in
                     if newValue {
                         print("isShowPrintDownloadButton is true, showing print/download buttons")
                     }
@@ -116,7 +127,7 @@ public struct CountryVisaApplicationView: View {
                     .presentationDragIndicator(.visible)
                 .fullScreenCover(isPresented: $viewModel.isPresentingConfirmationView, onDismiss: {
                     viewModel.isShowPrintDownloadButton = true
-                }) { VisaApplicationFinishedView() }
+                }) { VisaApplicationFinishedView().environmentObject(viewModel) }
                 .fullScreenCover(isPresented: $viewModel.isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
                 .sheet(isPresented: $isItinerary) { ItineraryListSheet() }
                 .fullScreenCover(isPresented: $isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
@@ -139,7 +150,7 @@ public struct CountryVisaApplicationView: View {
                         .font(.custom("Inter-Bold", size: 64))
                         .foregroundStyle(Color.primary5)
                     
-                    Text("Visa \(visaType) \(countrySelected)")
+                    Text("Visa \(visaType ?? "TypeError") \(countrySelected ?? "CountryError")")
                         .foregroundStyle(Color.blackOpacity5)
                         .font(.custom("Inter-Medium", size: 20))
                 }
@@ -166,6 +177,7 @@ public struct CountryVisaApplicationView: View {
                     .frame(height: 47)
                 }
                 .padding(.horizontal)
+                .padding(.bottom, 8)
                 .contentShape(Rectangle())
                 .onTapGesture { viewModel.isIdentity.toggle() }
             } else {
@@ -193,32 +205,36 @@ public struct CountryVisaApplicationView: View {
                     .frame(height: 91)
                 }
                 .padding(.horizontal)
+                .padding(.bottom, 8)
                 .contentShape(Rectangle())
                 .onTapGesture { viewModel.isIdentity.toggle() }
             }
             
             DocumentRequirementsList().environmentObject(viewModel)
+                .padding(.bottom, 8)
             
             DocumentCard(height: 114, document: "Itinerary", status: .undone)
                 .padding(.horizontal)
+                .padding(.bottom, 8)
                 .onTapGesture { viewModel.isItinerary.toggle() }
             
             NavigationLink(destination: ApplicationFormView().environmentObject(viewModel)) {
-                DocumentCard(height: 128, document: "Form Aplikasi", status: .undone)
+                DocumentCard(height: 128, document: "Form aplikasi", status: .undone)
                     .padding(.horizontal)
             }
         }
     }
     
     private var cancelButton: some View {
-        CustomButton(text: "Batalkan Pengajuan", textColor: .danger4, color: .clear, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {}
-            .padding(.horizontal)
+        CustomButton(text: "Batalkan Pengajuan", textColor: .danger4, color: .clear, font: "Inter-SemiBold", fontSize: 17) {}
+            .padding()
     }
     
     private var confirmationButton: some View {
-        CustomButton(text: "Konfirmasi", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16) {
+        CustomButton(text: "Konfirmasi", textColor: Color.stayWhite, color: .primary5, font: "Inter-SemiBold", fontSize: 17) {
             viewModel.isPresentingConfirmationView = true
         }
+        .padding(.horizontal)
         .padding(.bottom)
     }
     
@@ -268,7 +284,7 @@ struct DocumentRequirementsList: View {
     @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
 
     var body: some View {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
+        LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible())], spacing: 16) {
             if let visaRequirements = viewModel.trip?.visaRequirements {
                 ForEach(visaRequirements.indices, id: \.self) { index in
                     let document = visaRequirements[index]
@@ -333,7 +349,7 @@ struct DocumentSheet: View {
                     .environmentObject(viewModel)
             }
         }
-        .presentationDetents([.height(356)])
+        .presentationDetents(viewModel.showDocumentDetail ? [.height(554)] : [.height(356)])
         .presentationDragIndicator(.visible)
     }
 }

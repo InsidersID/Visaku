@@ -41,7 +41,6 @@ struct ActionDocumentSheet: View {
                                     .imageScale(.small)
                                     .foregroundStyle(Color.white)
                                     .fontWeight(.bold)
-                                //                                .offset(x: 0, y: -1)
                             }
                             
                             Text(isMarked ? "Tandai belum selesai": "Tandai selesai")
@@ -116,7 +115,6 @@ struct ActionDocumentSheet: View {
                         viewModel.showDocumentDetail = true
                     }
                 }
-                .padding(.bottom, 20)
             } else {
                 DocumentDetailSheet(
                     title: documentType.displayName, description: documentType.description
@@ -124,7 +122,8 @@ struct ActionDocumentSheet: View {
                 .environmentObject(viewModel)
             }
         }
-        .padding()
+        .padding(.top)
+        .padding(.horizontal)
         .sheet(isPresented: $filePickerPresented) {
             FilePicker(selectedFileURL: $fileURL)
         }
