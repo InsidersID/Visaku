@@ -21,6 +21,7 @@ struct CountrySelectionCard: View {
                 Text("\(countryData.name) \(flag)")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.custom("Inter-Bold", size: 20))
+                    .foregroundStyle(Color.blackOpacity5)
                 
                 VStack {
                     VisaTypeRow(visaType: $viewModel.visaType, isShowVisaTypeSheet: $viewModel.isShowVisaTypeSheet)
@@ -69,6 +70,7 @@ struct VisaTypeRow: View {
                         .font(.custom("Inter-Regular", size: 14))
                     Text("\(visaType == "" ? "" : "Visa \(visaType)")")
                         .font(.custom("Inter-SemiBold", size: 16))
+                        .foregroundStyle(Color.blackOpacity4)
                         .padding(.bottom, 10)
                         .padding(.top, 0.5)
                 }
