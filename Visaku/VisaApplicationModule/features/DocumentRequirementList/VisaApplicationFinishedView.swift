@@ -38,7 +38,6 @@ struct VisaApplicationFinishedView: View {
                     
                     CustomButton(text: "Selesai", textColor: .white, color: .primary5, font: "Inter-SemiBold") {
                         viewModel.showConfirmationButton = false
-                        viewModel.isShowPrintDownloadButton = true
                         dismiss()
                     }
                     .padding(.horizontal)

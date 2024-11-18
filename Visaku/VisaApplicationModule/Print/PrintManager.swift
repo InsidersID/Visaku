@@ -13,7 +13,7 @@ class PrintManager {
         
     }
     
-    func printFilledVisaApplicationForm() {
+    func printFilledVisaApplicationForm(completion: @escaping () -> Void) {
         guard let pdfURL = Bundle.main.url(forResource: "visa_form", withExtension: "pdf"),
               let pdfData = try? Data(contentsOf: pdfURL) else {
             print("Couldn't process or find a PDF visa application form...")

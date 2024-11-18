@@ -32,14 +32,12 @@ public struct CountryVisaApplicationView: View {
                         
                         if !viewModel.isShowConfirmation {
                             cancelButton
+                        } else if !viewModel.isShowPrintDownloadButton {
+                            confirmationButton
                         } else {
-                            if !viewModel.isShowPrintDownloadButton {
-                                confirmationButton
-                            } else {
-                                printButton
-                                downloadPDFButton
-                                downloadJSONButton
-                            }
+                            printButton
+                            downloadPDFButton
+                            downloadJSONButton
                         }
                     }
                 }
@@ -65,24 +63,32 @@ public struct CountryVisaApplicationView: View {
 //                .toolbar { backButton }
                 .onAppear { viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries) }
                 .onChange(of: viewModel.completionPercentage) { completionHandler($0) }
+                .onChange(of: viewModel.isShowConfirmation) { newValue in
+                    if newValue {
+                        print("isShowConfirmation is true")
+                        
+                        DispatchQueue.main.async {
+                            viewModel.showConfirmationButton = true
+                        }
+                    }
+                }
+                .onChange(of: viewModel.isShowPrintDownloadButton) { newValue in
+                    if newValue {
+                        print("isShowPrintDownloadButton is true, showing print/download buttons")
+                    }
+                }
                 .sheet(isPresented: $viewModel.isIdentity) { ProfileView(isSelectProfile: true).environmentObject(viewModel) }
+                    .presentationDragIndicator(.visible)
                 .sheet(isPresented: $viewModel.isItinerary) { ItineraryListSheet() }
-                .sheet(isPresented: $viewModel.isShowPrintVisaApplicationForm) {
-                    EmptyView()
-                        .onAppear {
-                            PrintManager.shared.printFilledVisaApplicationForm()
-                        }
-                }
-                .fullScreenCover(isPresented: $viewModel.isShowPreviewVisaApplicationForm) { PDFPreviewSheet() }
-                .sheet(isPresented: $viewModel.isShowJSONDownload) {
-                    EmptyView()
-                        .onAppear {
-                            JSONDownload.shared.downloadJSON {
-                                viewModel.isShowJSONDownload = false
-                            }
-                        }
-                }
-                .fullScreenCover(isPresented: $viewModel.showConfirmationButton) { VisaApplicationFinishedView() }
+                    .presentationDragIndicator(.visible)
+                .sheet(isPresented: $viewModel.isShowPreviewVisaApplicationForm) {
+                    PDFPreviewSheet() }
+                    .presentationDragIndicator(.visible)
+                .sheet(isPresented: $viewModel.isShowJSONDownload) { JSONPreviewSheet() }
+                    .presentationDragIndicator(.visible)
+                .fullScreenCover(isPresented: $viewModel.isPresentingConfirmationView, onDismiss: {
+                    viewModel.isShowPrintDownloadButton = true
+                }) { VisaApplicationFinishedView() }
                 .fullScreenCover(isPresented: $viewModel.isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
                 NotificationCard()
                     .offset(x: 40)
@@ -146,36 +152,36 @@ public struct CountryVisaApplicationView: View {
     }
     
     private var cancelButton: some View {
-        CustomButton(text: "Batalkan Pengajuan", textColor: .danger4, color: .clear, font: "Inter-SemiBold", fontSize: 17) {}
+        CustomButton(text: "Batalkan Pengajuan", textColor: .danger4, color: .clear, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {}
             .padding()
     }
     
     private var confirmationButton: some View {
-        CustomButton(text: "Konfirmasi", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17) {
-            viewModel.showConfirmationButton = true
+        CustomButton(text: "Konfirmasi", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {
+            viewModel.isPresentingConfirmationView = true
         }
             .padding()
     }
     
     private var printButton: some View {
-        CustomButton(text: "Print semua", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17) {
-            viewModel.isShowPrintVisaApplicationForm = true
+        CustomButton(text: "Print semua", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {
+            viewModel.isShowPreviewVisaApplicationForm = true
         }
-            .padding()
+        .padding()
     }
     
     private var downloadPDFButton: some View {
-        CustomButton(text: "Unduh PDF form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17) {
+        CustomButton(text: "Unduh PDF form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {
             viewModel.isShowPreviewVisaApplicationForm = true
         }
-            .padding()
+        .padding()
     }
     
     private var downloadJSONButton: some View {
-        CustomButton(text: "Unduh JSON form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17) {
+        CustomButton(text: "Unduh JSON form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8                     ) {
             viewModel.isShowJSONDownload = true
         }
-            .padding()
+        .padding()
     }
     
     private var backButton: some ToolbarContent {
