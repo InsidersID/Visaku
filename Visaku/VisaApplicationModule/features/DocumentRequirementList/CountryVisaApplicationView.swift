@@ -75,14 +75,16 @@ public struct CountryVisaApplicationView: View {
             } currentValueLabel: {
                 VStack {
                     Text("\(Int(viewModel.completionPercentage))%")
+                        .font(.custom("Inter-Bold", size: 64))
+                        .foregroundStyle(Color.primary5)
+                    
                     Text("Visa \(visaType) \(countrySelected)")
-                        .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
+                        .foregroundStyle(Color.blackOpacity5)
                         .font(.custom("Inter-Medium", size: 20))
                 }
-                .foregroundStyle(.blue)
                 .padding(.bottom, 50)
             }
-            .tint(.blue)
+            .tint(.primary5)
             .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
         }
     }
