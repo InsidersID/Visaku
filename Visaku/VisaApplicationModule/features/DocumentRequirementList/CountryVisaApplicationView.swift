@@ -42,12 +42,16 @@ public struct CountryVisaApplicationView: View {
     public var body: some View {
         NavigationStack {
             ZStack {
+                Color.clear.ignoresSafeArea()
                 ScrollView {
-                    Color.clear.ignoresSafeArea()
                     
                     VStack {
                         progressGauge
-                        Divider().padding(.bottom)
+                            .padding(.top)
+                        
+                        Divider()
+                            .padding(.bottom)
+                        
                         documentCards
                         
                         if !viewModel.isShowConfirmation {
@@ -142,7 +146,7 @@ public struct CountryVisaApplicationView: View {
                 .padding(.bottom, 50)
             }
             .tint(.primary5)
-            .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
+            .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 240))
         }
     }
     
@@ -272,7 +276,7 @@ struct DocumentRequirementsList: View {
                         height: 115,
                         document: document.displayName,
                         status: document.isMarked ? .done : .undone,
-                        requiresMarkOnly: document.requiresUpload
+                        requiresMarkOnly: !document.requiresUpload
                     )
                     .onTapGesture {
                         selectedDocumentIndex = index
