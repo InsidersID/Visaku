@@ -11,16 +11,35 @@ import RepositoryModule
 
 public struct CountryVisaApplicationView: View {
     
-    var countrySelected: String
-    var visaType: String
-    var countries: [CountryData]
+    var countrySelected: String?
+    var visaType: String?
+    var countries: [CountryData]?
+    
+    var trip: TripEntity?
+    
+    public init(
+        countrySelected: String? = nil,
+        visaType: String? = nil,
+        countries: [CountryData]? = nil,
+        trip: TripEntity? = nil
+    ) {
+        self.countrySelected = countrySelected
+        self.visaType = visaType
+        self.countries = countries
+
+        
+        
+        self._viewModel = StateObject(wrappedValue: CountryVisaApplicationViewModel(trip: trip))
+    }
     
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) private var dismiss
-    @StateObject var viewModel = CountryVisaApplicationViewModel()
+    @StateObject private var viewModel: CountryVisaApplicationViewModel
     @State private var isShowPrintSheet = false
     @State private var isItinerary = false
     @State private var isFormApplication = false
+    
+    
     
     public var body: some View {
         NavigationStack {
@@ -54,7 +73,12 @@ public struct CountryVisaApplicationView: View {
                         }
                     }
                 }
-                .onAppear { viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries) }
+//                .toolbar { backButton }
+                .onAppear {
+                    if let visaType = visaType, let countrySelected = countrySelected, let countries = countries {
+                        viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries)
+                    }
+                }
                 .onChange(of: viewModel.completionPercentage) { completionHandler($0) }
                 .sheet(isPresented: $viewModel.isIdentity) { ProfileView(isSelectProfile: true).environmentObject(viewModel) }
                 .sheet(isPresented: $isItinerary) { ItineraryListSheet() }

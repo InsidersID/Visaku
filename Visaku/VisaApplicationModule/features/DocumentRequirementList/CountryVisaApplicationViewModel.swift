@@ -15,6 +15,10 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     
     @Published var trip: TripEntity?
     
+    init(trip: TripEntity? = nil) {
+        self.trip = trip
+    }
+    
     var completionPercentage: Double {
         guard let requirements = trip?.visaRequirements else { return 0 }
         
