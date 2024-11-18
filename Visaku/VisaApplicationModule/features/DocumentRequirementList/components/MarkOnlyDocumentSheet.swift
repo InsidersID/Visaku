@@ -66,7 +66,7 @@ struct MarkOnlyDocumentSheet: View {
                     }
                 }
             }
-            .padding(.bottom, 20)
+//            .padding(.bottom, 20)
         }
         .padding()
         .sheet(isPresented: $showDocumentDetail) {
