@@ -219,7 +219,7 @@ public struct CountryVisaApplicationView: View {
         CustomButton(text: "Konfirmasi", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16) {
             viewModel.isPresentingConfirmationView = true
         }
-        .padding(.bottom)
+        .padding(.horizontal)
     }
     
     private var printButton: some View {
