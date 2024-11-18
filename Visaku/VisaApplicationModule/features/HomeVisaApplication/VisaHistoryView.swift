@@ -62,7 +62,6 @@ struct ApplicationSection: View {
         VStack(spacing: 12) {
             Text(title)
                 .font(.custom("Inter-SemiBold", size: 20))
-                .bold()
                 .opacity(0.5)
                 .frame(maxWidth: .infinity, alignment: .leading)
             if title == "Belum selesai" {
