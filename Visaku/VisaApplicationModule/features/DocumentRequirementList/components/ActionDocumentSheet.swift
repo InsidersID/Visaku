@@ -116,7 +116,9 @@ struct ActionDocumentSheet: View {
                         viewModel.showDocumentDetail = true
                     }
                 }
-                .padding(.bottom, 20)
+                
+//                Spacer()
+//                    .frame(height: 20)
             } else {
                 DocumentDetailSheet(
                     title: documentType.displayName, description: documentType.description
@@ -124,7 +126,8 @@ struct ActionDocumentSheet: View {
                 .environmentObject(viewModel)
             }
         }
-        .padding()
+        .padding(.top)
+        .padding(.horizontal)
         .sheet(isPresented: $filePickerPresented) {
             FilePicker(selectedFileURL: $fileURL)
         }

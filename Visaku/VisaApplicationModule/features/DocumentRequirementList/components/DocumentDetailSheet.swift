@@ -17,6 +17,7 @@ struct DocumentDetailSheet: View {
         VStack {
             Image("document")
                 .resizable()
+                .frame(width: .infinity)
                 .scaledToFit()
                 .padding()
             

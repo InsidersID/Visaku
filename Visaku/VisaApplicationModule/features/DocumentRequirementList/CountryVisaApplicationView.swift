@@ -333,7 +333,7 @@ struct DocumentSheet: View {
                     .environmentObject(viewModel)
             }
         }
-        .presentationDetents([.height(356)])
+        .presentationDetents(viewModel.showDocumentDetail ? [.height(554)] : [.height(356)])
         .presentationDragIndicator(.visible)
     }
 }
