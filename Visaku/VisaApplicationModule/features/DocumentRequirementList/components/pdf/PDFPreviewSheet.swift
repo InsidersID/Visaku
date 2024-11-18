@@ -17,7 +17,8 @@ public struct PDFPreviewSheet: View {
         VStack {
             Text("Tinjauan PDF")
                 .font(Font.custom("Inter", size: 16))
-                .padding(.vertical)
+                .padding(.top, 32)
+                .padding(.bottom, 16)
             
             if let pdfURL = Bundle.main.url(forResource: "visa_form", withExtension: "pdf") {
                 PDFPreviewView(pdfURL: pdfURL)
@@ -35,7 +36,7 @@ public struct PDFPreviewSheet: View {
                 }
                 .padding(.horizontal)
                 
-                CustomButton(text: "Unduh PDF", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                CustomButton(text: "Unduh PDF", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 8) {
                     PDFDownload.shared.downloadPDF {
                         viewModel.isShowPreviewVisaApplicationForm = false
                         dismiss()
