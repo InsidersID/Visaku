@@ -20,8 +20,7 @@ struct CountrySelectionCard: View {
                 let flag = Countries.schengenCountryFlags[countryData.name] ?? ""
                 Text("\(countryData.name) \(flag)")
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.title)
-                    .bold()
+                    .font(.custom("Inter-Bold", size: 20))
                 
                 VStack {
                     VisaTypeRow(visaType: $viewModel.visaType, isShowVisaTypeSheet: $viewModel.isShowVisaTypeSheet)
@@ -63,7 +62,7 @@ struct VisaTypeRow: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text("Jenis visa")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.blackOpacity3)
                         .font(.custom("Inter-Regular", size: 14))
                     Text("\(visaType == "" ? "" : "Visa \(visaType)")")
                         .font(.custom("Inter-SemiBold", size: 16))
@@ -74,6 +73,7 @@ struct VisaTypeRow: View {
                 Spacer()
                 
                 Image(systemName: "chevron.down")
+                    .foregroundStyle(Color.blackOpacity3)
             }
             .contentShape(Rectangle())
             .onTapGesture {
@@ -104,18 +104,18 @@ struct DateRow: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text(label)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.blackOpacity3)
                         .font(.custom("Inter-Regular", size: 14))
                     Text(date?.formatted(date: .abbreviated, time: .omitted) ?? "")
                         .font(.custom("Inter-SemiBold", size: 16))
                         .padding(.bottom, 10)
                         .padding(.top, 0.5)
-                        .bold()
                 }
                 
                 Spacer()
                 
                 Image(systemName: showCalendar ? "chevron.up" : "chevron.down")
+                    .foregroundStyle(Color.blackOpacity3)
             }
             .contentShape(Rectangle())
             .onTapGesture {
