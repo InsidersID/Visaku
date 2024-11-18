@@ -51,11 +51,14 @@ struct CountrySelectionSheetView: View {
                             onDismiss()
                         }) {
                             Image(systemName: "xmark")
-                                .font(.custom("Inter-SemiBold", size: 17))
-                                .padding(10)
-                                .background(Circle().fill(Color.white))
-                                .foregroundColor(.black)
-                                .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                                .imageScale(.medium)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.blackOpacity5)
+                                .frame(width: 40, height: 40)
+                                .background(
+                                    Circle()
+                                        .stroke(Color.blackOpacity2, lineWidth: 1)
+                                )
                         }
                     }
                 }
