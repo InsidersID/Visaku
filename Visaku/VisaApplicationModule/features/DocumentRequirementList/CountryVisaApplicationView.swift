@@ -11,13 +11,30 @@ import RepositoryModule
 
 public struct CountryVisaApplicationView: View {
     
-    var countrySelected: String
-    var visaType: String
-    var countries: [CountryData]
+    var countrySelected: String?
+    var visaType: String?
+    var countries: [CountryData]?
+    
+    var trip: TripEntity?
+    
+    public init(
+        countrySelected: String? = nil,
+        visaType: String? = nil,
+        countries: [CountryData]? = nil,
+        trip: TripEntity? = nil
+    ) {
+        self.countrySelected = countrySelected
+        self.visaType = visaType
+        self.countries = countries
+
+        
+        
+        self._viewModel = StateObject(wrappedValue: CountryVisaApplicationViewModel(trip: trip))
+    }
     
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) private var dismiss
-    @StateObject var viewModel = CountryVisaApplicationViewModel()
+    @StateObject private var viewModel: CountryVisaApplicationViewModel
     @State private var isShowPrintSheet = false
     @State private var isItinerary = false
     @State private var isFormApplication = false
@@ -36,7 +53,16 @@ public struct CountryVisaApplicationView: View {
                             .padding(.bottom)
                         
                         documentCards
-                        cancelButton
+                        
+                        if !viewModel.isShowConfirmation {
+                            cancelButton
+                        } else if !viewModel.isShowPrintDownloadButton {
+                            confirmationButton
+                        } else {
+                            printButton
+                            downloadPDFButton
+                            downloadJSONButton
+                        }
                     }
                 }
                 .navigationBarTitleDisplayMode(.inline)
@@ -58,11 +84,41 @@ public struct CountryVisaApplicationView: View {
                         }
                     }
                 }
-                .onAppear { viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries) }
+//                .toolbar { backButton }
+                .onAppear {
+                    if let visaType = visaType, let countrySelected = countrySelected, let countries = countries {
+                        viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries)
+                    }
+                }
                 .onChange(of: viewModel.completionPercentage) { completionHandler($0) }
+                .onChange(of: viewModel.isShowConfirmation) { newValue in
+                    if newValue {
+                        print("isShowConfirmation is true")
+                        
+                        DispatchQueue.main.async {
+                            viewModel.showConfirmationButton = true
+                        }
+                    }
+                }
+                .onChange(of: viewModel.isShowPrintDownloadButton) { newValue in
+                    if newValue {
+                        print("isShowPrintDownloadButton is true, showing print/download buttons")
+                    }
+                }
                 .sheet(isPresented: $viewModel.isIdentity) { ProfileView(isSelectProfile: true).environmentObject(viewModel) }
+                    .presentationDragIndicator(.visible)
+                .sheet(isPresented: $viewModel.isItinerary) { ItineraryListSheet() }
+                    .presentationDragIndicator(.visible)
+                .sheet(isPresented: $viewModel.isShowPreviewVisaApplicationForm) {
+                    PDFPreviewSheet() }
+                    .presentationDragIndicator(.visible)
+                .sheet(isPresented: $viewModel.isShowJSONDownload) { JSONPreviewSheet() }
+                    .presentationDragIndicator(.visible)
+                .fullScreenCover(isPresented: $viewModel.isPresentingConfirmationView, onDismiss: {
+                    viewModel.isShowPrintDownloadButton = true
+                }) { VisaApplicationFinishedView() }
+                .fullScreenCover(isPresented: $viewModel.isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
                 .sheet(isPresented: $isItinerary) { ItineraryListSheet() }
-                .sheet(isPresented: $isShowPrintSheet) { printSheet }
                 .fullScreenCover(isPresented: $isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
                 
                 NotificationCard()
@@ -145,7 +201,7 @@ public struct CountryVisaApplicationView: View {
             
             DocumentCard(height: 114, document: "Itinerary", status: .undone)
                 .padding(.horizontal)
-                .onTapGesture { isItinerary.toggle() }
+                .onTapGesture { viewModel.isItinerary.toggle() }
             
             NavigationLink(destination: ApplicationFormView().environmentObject(viewModel)) {
                 DocumentCard(height: 128, document: "Form Aplikasi", status: .undone)
@@ -155,8 +211,37 @@ public struct CountryVisaApplicationView: View {
     }
     
     private var cancelButton: some View {
-        CustomButton(text: "Batalkan Pengajuan", textColor: .danger4, color: .clear, font: "Inter-SemiBold", fontSize: 17) {}
-            .padding()
+        CustomButton(text: "Batalkan Pengajuan", textColor: .danger4, color: .clear, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {}
+            .padding(.horizontal)
+    }
+    
+    private var confirmationButton: some View {
+        CustomButton(text: "Konfirmasi", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16) {
+            viewModel.isPresentingConfirmationView = true
+        }
+        .padding(.bottom)
+    }
+    
+    private var printButton: some View {
+        CustomButton(text: "Print semua", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16) {
+            viewModel.isShowPreviewVisaApplicationForm = true
+        }
+        .padding(.horizontal)
+    }
+    
+    private var downloadPDFButton: some View {
+        CustomButton(text: "Unduh PDF form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16) {
+            viewModel.isShowPreviewVisaApplicationForm = true
+        }
+        .padding(.horizontal)
+    }
+    
+    private var downloadJSONButton: some View {
+        CustomButton(text: "Unduh JSON form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16                     ) {
+            viewModel.isShowJSONDownload = true
+        }
+        .padding(.horizontal)
+        .padding(.bottom)
     }
     
     private var backButton: some ToolbarContent {
@@ -169,14 +254,8 @@ public struct CountryVisaApplicationView: View {
     
     private func completionHandler(_ percentage: Double) {
         if percentage == 100 {
-            isShowPrintSheet = true
+            viewModel.isShowConfirmation = true
         }
-    }
-    
-    private var printSheet: some View {
-        CustomButton(text: "Print semua", color: .primary5, font: "Inter-SemiBold", fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {}
-            .padding()
-            .presentationDetents([.height(100)])
     }
 }
 

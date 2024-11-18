@@ -10,6 +10,10 @@ import RepositoryModule
 
 struct ActionDocumentSheet: View {
     var documentType: VisaRequirement
+    @State private var image: UIImage? = nil
+    @State private var fileURL: URL? = nil
+    @State private var cameraOpened: Bool = false
+    @State private var filePickerPresented: Bool = false
     @State private var showDocumentDetail = false
     @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
     
@@ -52,6 +56,8 @@ struct ActionDocumentSheet: View {
                         .font(.custom("Inter-Regular", size: 16))
                     Text("Scan dokumen")
                         .font(.custom("Inter-Regular", size: 16))
+                }.onTapGesture {
+                    cameraOpened.toggle()
                 }
                 
                 HStack {
@@ -69,6 +75,9 @@ struct ActionDocumentSheet: View {
             .padding(.bottom, 20)
         }
         .padding()
+        .sheet(isPresented: $filePickerPresented) {
+            FilePicker(selectedFileURL: $fileURL)
+        }
         .sheet(isPresented: $showDocumentDetail) {
             DocumentDetailSheet(
                 title: documentType.displayName, description: documentType.description
@@ -76,12 +85,42 @@ struct ActionDocumentSheet: View {
             .presentationDetents(.init([.medium]))
             .presentationDragIndicator(.visible)
         }
+        .fullScreenCover(isPresented: $cameraOpened) {
+            VNDocumentCameraViewControllerRepresentable(scanResult: $image)
+        }
+        .onChange(of: image) { newValue in
+            if let newImage = newValue {
+                handleImageUpload(image: newImage)
+            }
+        }
         .onChange(of: isMarked) { newValue in
             Task {
                 await viewModel.updateDocumentMark(for: documentType, to: newValue)
             }
         }
+        .onChange(of: fileURL) { newValue in
+            if let fileURL = newValue {
+                handleFileImport(result: fileURL)
+            }
+        }
         Spacer()
+    }
+    
+    private func handleFileImport(result: URL) {
+        fileURL = result
+        Task {
+            await viewModel.uploadDocument(documentType: documentType, payload: .url(result))
+        }
+        isMarked.toggle()
+    }
+    
+    // Handle image upload
+    private func handleImageUpload(image: UIImage) {
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else { return }
+        Task {
+            await viewModel.uploadDocument(documentType: documentType, payload: .data(imageData))
+        }
+        isMarked.toggle()
     }
 }
 

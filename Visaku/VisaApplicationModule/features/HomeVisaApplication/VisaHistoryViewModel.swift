@@ -19,6 +19,8 @@ public class VisaHistoryViewModel: ObservableObject {
     @Published var tripCompleteList: [TripEntity]?
     @Published var tripUncompleteList: [TripEntity]?
     
+    @Published var navigationToCountryVisaApplication: Bool = false
+    
     var hasData: Bool {
         (tripCompleteList?.isEmpty ?? true) == false || (tripUncompleteList?.isEmpty ?? true) == false
     }
