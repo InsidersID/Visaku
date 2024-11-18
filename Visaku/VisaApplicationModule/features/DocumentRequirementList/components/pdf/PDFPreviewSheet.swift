@@ -22,11 +22,19 @@ public struct PDFPreviewSheet: View {
             
             if let pdfURL = Bundle.main.url(forResource: "visa_form", withExtension: "pdf") {
                 PDFPreviewView(pdfURL: pdfURL)
-                    .frame(height: 800)
+                    .frame(height: 500)
                     .background(.gray.opacity(0.3))
                     .cornerRadius(16)
                     .edgesIgnoringSafeArea(.all)
                     .padding()
+                
+                CustomButton(text: "Print PDF", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    PrintManager.shared.printFilledVisaApplicationForm {
+                        viewModel.isShowPreviewVisaApplicationForm = false
+                        dismiss()
+                    }
+                }
+                .padding()
                 
                 CustomButton(text: "Unduh PDF", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     PDFDownload.shared.downloadPDF {
@@ -34,6 +42,7 @@ public struct PDFPreviewSheet: View {
                         dismiss()
                     }
                 }
+                .padding()
             } else {
                 RoundedRectangle(cornerRadius: 24)
                     .fill(Color.gray)
@@ -58,8 +67,9 @@ public struct PDFPreviewSheet: View {
                 CustomButton(text: "Tutup", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) { 
                     viewModel.isShowPreviewVisaApplicationForm = false
                 }
+                .padding()
             }
         }
-        .presentationDetents([.fraction(0.9)])
+        .presentationDetents([.fraction(0.95)])
     }
 }
