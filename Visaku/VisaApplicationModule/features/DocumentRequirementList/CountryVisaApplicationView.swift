@@ -56,9 +56,20 @@ public struct CountryVisaApplicationView: View {
                         
                         if !viewModel.isShowConfirmation {
                             cancelButton
+                            Rectangle()
+                                .frame(width: .infinity, height: 1)
+                                .foregroundStyle(Color.blackOpacity1)
                         } else if !viewModel.isShowPrintDownloadButton {
+                            Rectangle()
+                                .frame(width: .infinity, height: 1)
+                                .foregroundStyle(Color.blackOpacity1)
+                                .padding(.vertical, 4)
                             confirmationButton
                         } else {
+                            Rectangle()
+                                .frame(width: .infinity, height: 1)
+                                .foregroundStyle(Color.blackOpacity1)
+                                .padding(.vertical, 4)
                             printButton
                             downloadPDFButton
                             downloadJSONButton
@@ -212,7 +223,7 @@ public struct CountryVisaApplicationView: View {
     
     private var cancelButton: some View {
         CustomButton(text: "Batalkan Pengajuan", textColor: .danger4, color: .clear, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {}
-            .padding(.horizontal)
+            .padding()
     }
     
     private var confirmationButton: some View {
@@ -220,6 +231,7 @@ public struct CountryVisaApplicationView: View {
             viewModel.isPresentingConfirmationView = true
         }
         .padding(.horizontal)
+        .padding(.bottom)
     }
     
     private var printButton: some View {
