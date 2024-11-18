@@ -60,8 +60,8 @@ struct SchengenVisaSelectionSheetView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Penentuan visa Schengen")
-                        .font(.custom("Inter-SemiBold", size: 17))
-                        .bold()
+                        .font(.custom("Inter-SemiBold", size: 16))
+                        .foregroundStyle(Color.blackOpacity5)
                         
                 }
                 ToolbarItem(placement: .topBarTrailing) {
