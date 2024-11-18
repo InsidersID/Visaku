@@ -28,7 +28,7 @@ struct VisaTypeSheet: View {
                     }) {
                         Text("Visa \(type)")
                             .font(.custom("Inter-SemiBold", size: 17))
-                            .foregroundStyle(.black)
+                            .foregroundStyle(Color.blackOpacity5)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
                             .bold()
