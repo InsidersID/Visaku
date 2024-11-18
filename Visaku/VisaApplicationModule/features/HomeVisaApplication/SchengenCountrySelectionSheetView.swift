@@ -28,8 +28,8 @@ struct SchengenCountrySelectionSheetView: View {
                             viewModel.countries.append(CountryData(name: schengenCountry))
                         }) {
                             Text(schengenCountry)
-                                .font(.title3)
-                                .foregroundStyle(.black)
+                                .font(.custom("Inter-SemiBold", size: 17))
+                                .foregroundStyle(Color.blackOpacity5)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding()
                                 .bold()
