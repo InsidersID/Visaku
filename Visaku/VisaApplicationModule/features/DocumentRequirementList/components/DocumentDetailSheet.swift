@@ -10,26 +10,23 @@ import UIComponentModule
 
 struct DocumentDetailSheet: View {
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
     var title: String
     var description: String
     var body: some View {
         VStack {
-            Text(title)
-                .font(.headline)
-                .fontWeight(.medium)
-                .padding(.top, 24)
             Image("document")
                 .resizable()
                 .scaledToFit()
                 .padding()
             
             Text(description)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.blackOpacity3)
                 .multilineTextAlignment(.center)
                 .padding()
             
-            CustomButton(text: "OK", color: Color.primary5) {
-                dismiss()
+            CustomButton(text: "OK", color: Color.primary5 , font: "Inter-SemiBold", fontSize: 16) {
+                viewModel.showDocumentDetail = false
             }
             .padding()
         }

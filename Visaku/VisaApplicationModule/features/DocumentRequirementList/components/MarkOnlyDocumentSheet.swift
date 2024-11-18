@@ -74,7 +74,7 @@ struct MarkOnlyDocumentSheet: View {
     let mockViewModel = CountryVisaApplicationViewModel()
 
     ActionDocumentSheet(
-        documentType: VisaRequirement(type: .buktiKeuangan, displayName: "Tes", description: "Tes", requiresUpload: true, isOptionalUpload: true),
+        documentType: VisaRequirement(type: .buktiKeuangan, displayName: "Tes", description: "Tes", requiresUpload: false, isOptionalUpload: false),
         isMarked: $isMarked
     )
     .environmentObject(mockViewModel)
