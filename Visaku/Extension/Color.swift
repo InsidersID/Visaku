@@ -9,6 +9,8 @@ import Foundation
 import SwiftUICore
 
 extension Color {
+    static var black: Color = Color("blackOpacity5")
+    
     static var blackOpacity1: Color = Color("blackOpacity1")
     static var blackOpacity2: Color = Color("blackOpacity2")
     static var blackOpacity3: Color = Color("blackOpacity3")

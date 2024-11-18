@@ -10,9 +10,8 @@ struct KeyValueDropdownRow<T: RawRepresentable & CaseIterable & Hashable & Senda
         HStack {
             VStack(alignment: .leading) {
                 Text(key)
-                    .font(.body)
-                    .bold()
-                    .foregroundColor(.gray)
+                    .font(.custom("Inter-Semibold", size: 15))
+                    .foregroundStyle(Color.blackOpacity3)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             
@@ -21,13 +20,16 @@ struct KeyValueDropdownRow<T: RawRepresentable & CaseIterable & Hashable & Senda
                     Picker(selection: $selectedOption, label: Text(key)) {
                         ForEach(Array(T.allCases), id: \.self) { option in
                             Text(option.rawValue).tag(option)
+                                .font(.custom("Inter-Semibold", size: 15))
+                                .foregroundStyle(Color.blackOpacity5)
                         }
                     }
                     .pickerStyle(MenuPickerStyle()) // Dropdown style
                 } else {
                     Text(selectedOption.rawValue)
+                        .font(.custom("Inter-Semibold", size: 15))
+                        .foregroundStyle(Color.blackOpacity5)
                         .padding(.horizontal, 6)
-                        .bold()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
