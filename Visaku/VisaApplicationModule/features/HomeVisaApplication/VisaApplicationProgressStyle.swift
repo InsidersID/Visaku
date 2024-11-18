@@ -26,7 +26,13 @@ struct VisaApplicationProgressStyle: GaugeStyle {
             
             Circle()
                 .trim(from: 0, to: 0.75 * configuration.value)
-                .stroke(style: StrokeStyle(lineWidth: 16, lineCap: .round))
+                .stroke(
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color("primary5"), Color("primary6")]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                ),
+                style: StrokeStyle(lineWidth: 16, lineCap: .round))
                 .foregroundColor(.blue)
                 .rotationEffect(.degrees(135))
             

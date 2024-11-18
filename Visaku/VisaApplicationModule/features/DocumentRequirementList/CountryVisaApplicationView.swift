@@ -60,6 +60,7 @@ public struct CountryVisaApplicationView: View {
                 .sheet(isPresented: $isItinerary) { ItineraryListSheet() }
                 .sheet(isPresented: $isShowPrintSheet) { printSheet }
                 .fullScreenCover(isPresented: $isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
+                
                 NotificationCard()
                     .offset(x: 40)
                     .padding(.horizontal)
@@ -75,33 +76,61 @@ public struct CountryVisaApplicationView: View {
             } currentValueLabel: {
                 VStack {
                     Text("\(Int(viewModel.completionPercentage))%")
+                        .font(.custom("Inter-Bold", size: 64))
+                        .foregroundStyle(Color.primary5)
+                    
                     Text("Visa \(visaType) \(countrySelected)")
-                        .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
+                        .foregroundStyle(Color.blackOpacity5)
                         .font(.custom("Inter-Medium", size: 20))
                 }
-                .foregroundStyle(.blue)
                 .padding(.bottom, 50)
             }
-            .tint(.blue)
+            .tint(.primary5)
             .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
         }
     }
     
     private var documentCards: some View {
         VStack {
-            if viewModel.selectedIdentity == nil {
-                DocumentCard(height: 82, document: "Identitas", status: .undone)
-                    .padding(.horizontal)
-                    .onTapGesture { viewModel.isIdentity.toggle() }
-            } else {
+            if viewModel.trip?.account == nil {
                 CardContainer(cornerRadius: 24) {
                     HStack {
-                        Text(viewModel.selectedIdentity?.username ?? "Error")
+                        Text("Identitas")
                             .font(.custom("Inter-SemiBold", size: 16))
                         
                         Spacer()
+                        
+                        Image(systemName: "chevron.down")
+                            .fontWeight(.bold)
                     }
                     .frame(height: 47)
+                }
+                .padding(.horizontal)
+                .contentShape(Rectangle())
+                .onTapGesture { viewModel.isIdentity.toggle() }
+            } else {
+                CardContainer(cornerRadius: 24) {
+                    VStack {
+                        HStack {
+                            Text("Identitas")
+                                .font(.custom("Inter-Bold", size: 14))
+                                .foregroundStyle(Color.blackOpacity3)
+                                .padding(.bottom, 8)
+                            
+                            Spacer()
+                        }
+                        
+                        HStack {
+                            Text(viewModel.trip?.account?.username ?? "Error")
+                                .font(.custom("Inter-SemiBold", size: 16))
+                            
+                            Spacer()
+                            
+                            Image(systemName: "chevron.down")
+                                .fontWeight(.bold)
+                        }
+                    }
+                    .frame(height: 91)
                 }
                 .padding(.horizontal)
                 .contentShape(Rectangle())

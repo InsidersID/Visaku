@@ -26,7 +26,7 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     
     // Form data properties
     @Published var isIdentity: Bool = false
-    @Published var selectedIdentity: AccountEntity?
+//    @Published var selectedIdentity: AccounselectedAccounttEntity?
     
     @Published var hasOtherResidence: String? = ""
     @Published var residenceType: String = ""
@@ -135,6 +135,21 @@ public class CountryVisaApplicationViewModel: ObservableObject {
         
         print("Updated state: \(trip.visaRequirements?[index].isMarked ?? false)")
         do {
+            let isSuccess = try await tripUseCase.update(param: trip)
+            if isSuccess {
+                self.trip = trip
+            }
+        } catch {
+            print("Failed to update trip: \(error.localizedDescription)")
+        }
+    }
+    
+    func updateSelectedAccount(account : AccountEntity) async {
+        do {
+            guard var trip = trip else {
+                return
+            }
+            trip.account = account
             let isSuccess = try await tripUseCase.update(param: trip)
             if isSuccess {
                 self.trip = trip
