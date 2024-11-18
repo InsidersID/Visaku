@@ -84,7 +84,6 @@ public class VisaHistoryViewModel: ObservableObject {
         Task {
             do {
                 let data = try await fetchVisaHistory(isCompleted: true)
-                
                 DispatchQueue.main.async {
                     self.tripCompleteList = data
                     self.fetchVisaHistoryCompleted = .success
@@ -104,6 +103,7 @@ public class VisaHistoryViewModel: ObservableObject {
                 let data = try await fetchVisaHistory(isCompleted: false)
                 DispatchQueue.main.async {
                     self.tripUncompleteList = data
+                    print(data?.last)
                     self.fetchVisaHistoryUncompleted = .success
                 }
             } catch {

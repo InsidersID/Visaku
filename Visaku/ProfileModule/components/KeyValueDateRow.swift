@@ -9,9 +9,8 @@ struct KeyValueDateRow: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(key)
-                    .font(.body)
-                    .bold()
-                    .foregroundColor(.gray)
+                    .font(.custom("Inter-Semibold", size: 15))
+                    .foregroundStyle(Color.blackOpacity3)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             
@@ -22,8 +21,9 @@ struct KeyValueDateRow: View {
                         .labelsHidden()
                 } else {
                     Text(formattedDate(dateValue))
+                        .font(.custom("Inter-Semibold", size: 15))
+                        .foregroundStyle(Color.blackOpacity5)
                         .padding(.horizontal, 6)
-                        .bold()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)

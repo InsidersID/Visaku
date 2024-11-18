@@ -19,14 +19,12 @@ struct AddNewSchengenCountryCard: View {
             }, label: {
                 HStack {
                     Text("Tambah negara")
-                        .foregroundStyle(.secondary)
+                        .font(.custom("Inter-Regular", size: 16))
+                        .foregroundStyle(Color.blackOpacity3)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.vertical, 12)
-                    Image(systemName: "plus")
-                        .background(Circle().fill(Color.white))
-                        .padding(3)
-                        .foregroundStyle(.secondary)
-                        .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                    Image(systemName: "plus.circle")
+                        .foregroundStyle(Color.blackOpacity3)
                 }
             })
         }

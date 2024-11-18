@@ -29,6 +29,9 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     }
     
     // Form data properties
+    @Published var isIdentity: Bool = false
+//    @Published var selectedIdentity: AccounselectedAccounttEntity?
+    
     @Published var hasOtherResidence: String? = ""
     @Published var residenceType: String = ""
     @Published var residenceNumber: String = ""
@@ -106,17 +109,57 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     public func saveTripData(visaType: String, countrySelected: String, countries: [CountryData]) {
         guard trip == nil else { return }
         var newTrip = TripEntity(id: UUID().uuidString, visaType: visaType, country: countrySelected, contries: countries)
+        
         if let visaTypeEnum = VisaType(rawValue: visaType) {
             let requirementsForCountry = VisaGeneralTouristDocumentType.getRequirements(for: visaTypeEnum, in: countrySelected)
+            print("Fetched Requirements: \(String(describing: requirementsForCountry))")
             newTrip.visaRequirements = requirementsForCountry
         }
+        
         Task {
             let isSuccess = try await tripUseCase.save(param: newTrip)
             if isSuccess {
                 DispatchQueue.main.async {
+                    print("Trip saved successfully with id: \(newTrip.visaRequirements)")
                     self.trip = newTrip
                 }
+            } else {
+                print("Failed to save trip")
             }
+        }
+    }
+    
+    func updateDocumentMark(for documentType: VisaRequirement, to isMarked: Bool) async {
+        guard var trip = trip,
+              let index = trip.visaRequirements?.firstIndex(where: { $0.type == documentType.type }) else {
+            return
+        }
+        print("Updating \(documentType.displayName) to \(isMarked)")
+        trip.visaRequirements?[index].isMarked = isMarked
+        
+        print("Updated state: \(trip.visaRequirements?[index].isMarked ?? false)")
+        do {
+            let isSuccess = try await tripUseCase.update(param: trip)
+            if isSuccess {
+                self.trip = trip
+            }
+        } catch {
+            print("Failed to update trip: \(error.localizedDescription)")
+        }
+    }
+    
+    func updateSelectedAccount(account : AccountEntity) async {
+        do {
+            guard var trip = trip else {
+                return
+            }
+            trip.account = account
+            let isSuccess = try await tripUseCase.update(param: trip)
+            if isSuccess {
+                self.trip = trip
+            }
+        } catch {
+            print("Failed to update trip: \(error.localizedDescription)")
         }
     }
 }

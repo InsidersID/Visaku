@@ -24,7 +24,6 @@ struct MarkOnlyDocumentSheet: View {
             VStack(alignment: .leading, spacing: 24) {
                 Button(action: {
                     isMarked.toggle()
-                    print("isMarked toggled: \(isMarked)")
                 }) {
                     HStack {
                         Image(systemName: isMarked ? "x.circle.fill": "checkmark.circle.fill")
@@ -60,6 +59,11 @@ struct MarkOnlyDocumentSheet: View {
             )
             .presentationDetents(.init([.medium]))
             .presentationDragIndicator(.visible)
+        }
+        .onChange(of: isMarked) { newValue in
+            Task {
+                await viewModel.updateDocumentMark(for: documentType, to: newValue)
+            }
         }
         Spacer()
     }

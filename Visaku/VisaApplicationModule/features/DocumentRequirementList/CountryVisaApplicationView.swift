@@ -36,7 +36,6 @@ public struct CountryVisaApplicationView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CountryVisaApplicationViewModel
     @State private var isShowPrintSheet = false
-    @State private var isIdentity = false
     @State private var isItinerary = false
     @State private var isFormApplication = false
     
@@ -81,16 +80,17 @@ public struct CountryVisaApplicationView: View {
                     }
                 }
                 .onChange(of: viewModel.completionPercentage) { completionHandler($0) }
-                .sheet(isPresented: $isIdentity) { ProfileView() }
+                .sheet(isPresented: $viewModel.isIdentity) { ProfileView(isSelectProfile: true).environmentObject(viewModel) }
                 .sheet(isPresented: $isItinerary) { ItineraryListSheet() }
                 .sheet(isPresented: $isShowPrintSheet) { printSheet }
                 .fullScreenCover(isPresented: $isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
+                
                 NotificationCard()
                     .offset(x: 40)
                     .padding(.horizontal)
             }
         }
-
+        
     }
     
     private var progressGauge: some View {
@@ -100,23 +100,66 @@ public struct CountryVisaApplicationView: View {
             } currentValueLabel: {
                 VStack {
                     Text("\(Int(viewModel.completionPercentage))%")
+                        .font(.custom("Inter-Bold", size: 64))
+                        .foregroundStyle(Color.primary5)
+                    
                     Text("Visa \(visaType) \(countrySelected)")
-                        .foregroundStyle(colorScheme == .dark ? Color.white : Color.black)
+                        .foregroundStyle(Color.blackOpacity5)
                         .font(.custom("Inter-Medium", size: 20))
                 }
-                .foregroundStyle(.blue)
                 .padding(.bottom, 50)
             }
-            .tint(.blue)
+            .tint(.primary5)
             .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
         }
     }
     
     private var documentCards: some View {
         VStack {
-            DocumentCard(height: 82, document: "Identitas", status: .undone)
+            if viewModel.trip?.account == nil {
+                CardContainer(cornerRadius: 24) {
+                    HStack {
+                        Text("Identitas")
+                            .font(.custom("Inter-SemiBold", size: 16))
+                        
+                        Spacer()
+                        
+                        Image(systemName: "chevron.down")
+                            .fontWeight(.bold)
+                    }
+                    .frame(height: 47)
+                }
                 .padding(.horizontal)
-                .onTapGesture { isIdentity.toggle() }
+                .contentShape(Rectangle())
+                .onTapGesture { viewModel.isIdentity.toggle() }
+            } else {
+                CardContainer(cornerRadius: 24) {
+                    VStack {
+                        HStack {
+                            Text("Identitas")
+                                .font(.custom("Inter-Bold", size: 14))
+                                .foregroundStyle(Color.blackOpacity3)
+                                .padding(.bottom, 8)
+                            
+                            Spacer()
+                        }
+                        
+                        HStack {
+                            Text(viewModel.trip?.account?.username ?? "Error")
+                                .font(.custom("Inter-SemiBold", size: 16))
+                            
+                            Spacer()
+                            
+                            Image(systemName: "chevron.down")
+                                .fontWeight(.bold)
+                        }
+                    }
+                    .frame(height: 91)
+                }
+                .padding(.horizontal)
+                .contentShape(Rectangle())
+                .onTapGesture { viewModel.isIdentity.toggle() }
+            }
             
             DocumentRequirementsList().environmentObject(viewModel)
             
@@ -162,36 +205,57 @@ public struct CountryVisaApplicationView: View {
 }
 
 struct DocumentRequirementsList: View {
-    @State private var selectedDocument: VisaRequirement?
+    @State private var selectedDocumentIndex: Int?
     @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
-    
+
     var body: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
             if let visaRequirements = viewModel.trip?.visaRequirements {
                 ForEach(visaRequirements.indices, id: \.self) { index in
+                    let document = visaRequirements[index]
                     DocumentCard(
                         height: 115,
-                        document: visaRequirements[index].displayName,
-                        status: visaRequirements[index].isMarked ? .done : .undone,
-                        requiresMarkOnly: visaRequirements[index].requiresUpload
+                        document: document.displayName,
+                        status: document.isMarked ? .done : .undone,
+                        requiresMarkOnly: document.requiresUpload
                     )
-                    .onTapGesture { selectedDocument = visaRequirements[index] }
-                    .sheet(item: $selectedDocument) { document in
-                        DocumentSheet(documentType: document, isMarked: Binding(
-                            get: { document.isMarked },
-                            set: { newValue in
-                                if let index = visaRequirements.firstIndex(where: { $0.id == document.id }) {
-                                    viewModel.trip?.visaRequirements?[index].isMarked = newValue
-                                }
-                                selectedDocument = nil
-                            }
-                        ))
-                        .environmentObject(viewModel)
+                    .onTapGesture {
+                        selectedDocumentIndex = index
                     }
                 }
             }
         }
         .padding(.horizontal)
+        .sheet(item: selectedDocumentBinding) { document in
+            DocumentSheet(
+                documentType: document,
+                isMarked: Binding(
+                    get: { document.isMarked },
+                    set: { newValue in
+                        if let index = selectedDocumentIndex {
+                            viewModel.trip?.visaRequirements?[index].isMarked = newValue
+                        }
+                    }
+                )
+            )
+            .environmentObject(viewModel)
+        }
+    }
+
+    private var selectedDocumentBinding: Binding<VisaRequirement?> {
+        Binding<VisaRequirement?>(
+            get: {
+                guard let index = selectedDocumentIndex,
+                      let visaRequirements = viewModel.trip?.visaRequirements,
+                      index < visaRequirements.count else {
+                    return nil
+                }
+                return visaRequirements[index]
+            },
+            set: { _ in
+                selectedDocumentIndex = nil
+            }
+        )
     }
 }
 
@@ -204,12 +268,13 @@ struct DocumentSheet: View {
         Group {
             if documentType.requiresUpload {
                 ActionDocumentSheet(documentType: documentType, isMarked: $isMarked)
+                    .environmentObject(viewModel)
             } else {
                 MarkOnlyDocumentSheet(documentType: documentType, isMarked: $isMarked)
+                    .environmentObject(viewModel)
             }
         }
         .presentationDetents([.height(356)])
         .presentationDragIndicator(.visible)
-        .environmentObject(viewModel)
     }
 }

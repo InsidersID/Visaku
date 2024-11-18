@@ -4,9 +4,7 @@ import PhotosUI
 
 // Step 1: ImagePicker Struct
 struct ImagePicker: UIViewControllerRepresentable {
-    @Binding var selectedImage: IdentifiableImage?
-    var documentType: AllDocumentType
-    var onDocumentTypeSelected: ((AllDocumentType) -> Void)?
+    @Binding var selectedImage: UIImage?
 //    @Environment(\.presentationMode) var presentationMode
     
     // Step 2: Coordinator to handle user selection
@@ -19,8 +17,6 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
 
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-                picker.dismiss(animated: true)
-
                 guard let firstResult = results.first else {
                     print("No image selected")
                     return
@@ -34,10 +30,11 @@ struct ImagePicker: UIViewControllerRepresentable {
 
                     if let image = object as? UIImage {
                         DispatchQueue.main.async {
-                            self.parent.selectedImage = IdentifiableImage(image: image)
+                            self.parent.selectedImage = image
                         }
                     }
                 }
+                picker.dismiss(animated: true)
             }
         }
     

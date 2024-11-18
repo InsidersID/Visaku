@@ -3,7 +3,7 @@ import UIComponentModule
 import RepositoryModule
 
 struct AdditionalInformationView: View {
-    @State private var hasDifferentBirthName: Bool? = nil
+    @State private var hasDifferentBirthName: String? = nil
     @Environment(\.dismiss) var dismiss
 //    @Environment(ProfileViewModel.self) var profileViewModel
     @State var additionalInformationViewModel: AdditionalInformationViewModel
@@ -18,16 +18,44 @@ struct AdditionalInformationView: View {
         
         ScrollView {
             VStack(alignment: .center) {
+                GeometryReader { proxy in
+                    HStack {
+                        Spacer()
+                        
+                        Text("Informasi tambahan")
+                            .font(.custom("Inter-SemiBold", size: 24))
+                            .padding(.trailing)
+                        
+//                        Spacer()
+//                            .frame(width: proxy.size.width*0.23)
+                        
+                        Button(action: {
+                            dismiss()
+                        }) {
+                            Image(systemName: "xmark")
+                                .imageScale(.medium)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.blackOpacity5)
+                                .frame(width: 40, height: 40)
+                                .background(
+                                    Circle()
+                                        .stroke(Color.blackOpacity2, lineWidth: 1)
+                                )
+                        }
+                    }
+                }
+                .frame(height: 44)
+                
                 Image("form_aset")
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: .infinity)
                     .frame(height: 200)
                 
-                Text("Informasi Personal")
-                    .font(.title3)
-                    .fontWeight(.bold)
+                Text("Informasi personal")
+                    .font(.custom("Inter-SemiBold", size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 12)
                 
                 ExpandableRadioButton(
                     title: "Apakah ada nama lahir yang berbeda? (Opsional)",
@@ -35,7 +63,7 @@ struct AdditionalInformationView: View {
                     selection: $hasDifferentBirthName
                 )
                 
-                if hasDifferentBirthName ?? false {
+                if hasDifferentBirthName == "Ya" {
                     FormField(
                         title: "Nama lahir yang berbeda",
                         text: $additionalInformationViewModel.additionalInformation.bornName
@@ -46,10 +74,10 @@ struct AdditionalInformationView: View {
                 
                 FormField(title: "Kebangsaan anda saat lahir (Opsional)", text: $additionalInformationViewModel.additionalInformation.bornNationality)
                 
-                Text("Alamat Rumah")
-                    .font(.title3)
-                    .fontWeight(.bold)
+                Text("Alamat rumah")
+                    .font(.custom("Inter-SemiBold", size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 12)
                 
                 FormField(title: "Kode Pos Rumah saat ini", text: $additionalInformationViewModel.additionalInformation.addressPostalCode)
                 
@@ -64,26 +92,28 @@ struct AdditionalInformationView: View {
                 FormField(title: "Alamat email aktif", text: $additionalInformationViewModel.additionalInformation.addressEmail)
                 
                 Text("Pekerjaan")
-                    .font(.title3)
-                    .fontWeight(.bold)
+                    .font(.custom("Inter-SemiBold", size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 12)
                 
-                CardContainer(cornerRadius: 12) {
-                    VStack(spacing: 16) {
-                        HStack {
-                            Text("Pekerjaan saat ini")
-                            Spacer()
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Text(additionalInformationViewModel.additionalInformation.selectedJob.isEmpty ?  "Jawaban": additionalInformationViewModel.additionalInformation.selectedJob)
-                            .fontWeight(.bold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                }
-                .onTapGesture {
-                    additionalInformationViewModel.showJobSheet.toggle()
-                }
+//                CardContainer(cornerRadius: 12) {
+//                    VStack(spacing: 16) {
+//                        HStack {
+//                            Text("Pekerjaan saat ini")
+//                            Spacer()
+//                        }
+//                        .frame(maxWidth: .infinity, alignment: .leading)
+//                        
+//                        Text(additionalInformationViewModel.additionalInformation.selectedJob.isEmpty ?  "Jawaban": additionalInformationViewModel.additionalInformation.selectedJob)
+//                            .fontWeight(.bold)
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+//                    }
+//                }
+//                .onTapGesture {
+//                    additionalInformationViewModel.showJobSheet.toggle()
+//                }
+                
+                FormField(title: "Pekerjaan saat ini", text: $additionalInformationViewModel.additionalInformation.selectedJob)
                 
                 FormField(title: "Nama perusahaan atau institusi", text: $additionalInformationViewModel.additionalInformation.companyName)
                 FormField(title: "Alamat lengkap perusahaan", text: $additionalInformationViewModel.additionalInformation.companyAddress)
@@ -114,26 +144,13 @@ struct AdditionalInformationView: View {
                 
                 
             }
-            .padding()
+            .padding(20)
             .frame(maxWidth: .infinity)
-        }
-        .navigationTitle("Informasi Tambahan")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Button(action: {
-                    dismiss()
-                }) {
-                    Image(systemName: "x.circle")
-                        .font(.headline)
-                        .foregroundColor(.gray)
-                }
-            }
         }
         .frame(maxWidth: .infinity)
         .sheet(isPresented: $additionalInformationViewModel.showJobSheet) {
             VStack(alignment: .leading) {
-                Text("Pilih Pekerjaan")
+                Text("Pilih pekerjaan")
                     .font(.headline)
                     .padding()
                 
@@ -168,8 +185,12 @@ struct FormField: View {
                 if isExpanded {
                     HStack {
                         Text(title)
+                            .font(.custom("Inter-Regular", size: 17))
+                            .foregroundStyle(Color.blackOpacity3)
                         Spacer()
                         Image(systemName: "chevron.up")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.blackOpacity3)
                     }
                     .onTapGesture {
                         isExpanded = false
@@ -188,8 +209,11 @@ struct FormField: View {
                 } else {
                     HStack {
                         Text(title)
+                            .font(.custom("Inter-Regular", size: 17))
+                            .foregroundStyle(Color.blackOpacity3)
                         Spacer()
                         Image(systemName: "chevron.down")
+                            .fontWeight(.semibold)
                     }
                     
                     Text(text)
@@ -198,6 +222,7 @@ struct FormField: View {
                 }
             }
         }
+        .padding(.bottom, 12)
         .onTapGesture {
             isExpanded = true
         }
@@ -208,15 +233,15 @@ struct RadioButton: View {
     let label: String
     let isSelected: Bool
     let action: () -> Void
-    
+
     var body: some View {
         Button(action: action) {
             HStack {
                 Image(systemName: isSelected ? "largecircle.fill.circle" : "circle")
                     .foregroundColor(isSelected ? .blue : .gray)
-                    .padding(.vertical, 0)
                 Text(label)
-                    .foregroundColor(.black)
+                    .font(.custom("Inter-Medium", size: 16))
+                    .foregroundStyle(Color.blackOpacity4)
             }
         }
         .buttonStyle(PlainButtonStyle())
@@ -226,59 +251,56 @@ struct RadioButton: View {
 public struct ExpandableRadioButton: View {
     let title: String
     let options: [String]
-    @Binding var selection: Bool?
+    @Binding var selection: String?
 
     @State private var isExpanded: Bool = true
 
     public var body: some View {
         CardContainer(cornerRadius: 12) {
             VStack(spacing: 16) {
+                // Header with Expand/Collapse Toggle
                 HStack {
                     Text(title)
-                        .foregroundStyle(.secondary)
+                        .font(.custom("Inter-Regular", size: 17))
+                        .foregroundStyle(Color.blackOpacity3)
                     Spacer()
                     Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Color.blackOpacity3)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .onTapGesture {
                     isExpanded.toggle()
                 }
                 
-                
                 if isExpanded {
                     VStack(alignment: .leading) {
-                        Divider()
-                        RadioButton(label: options[0], isSelected: selection == true) {
-                            selection = true
-                            isExpanded = false
-                        }
-                        Divider()
-                        RadioButton(label: options[1], isSelected: selection == false) {
-                            selection = false
-                            isExpanded = false
+                        ForEach(options, id: \.self) { option in
+                            Divider()
+                            RadioButton(
+                                label: option,
+                                isSelected: selection == option,
+                                action: {
+                                    selection = option
+                                    isExpanded = false
+                                }
+                            )
                         }
                     }
                 } else {
-                    Text(selectedOption)
-                        .fontWeight(.bold)
+                    Text(selection ?? "Pilihan")
+                        .font(.custom("Inter-SemiBold", size: 16))
+                        .foregroundStyle(Color.blackOpacity4)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }
-    }
-
-    public var selectedOption: String {
-        if selection == true {
-            return options[0]
-        } else if selection == false {
-            return options[1]
-        } else {
-            return ""
-        }
+        .padding(.bottom, 12)
     }
 }
 
-
 #Preview {
-    AdditionalInformationView(account: .init(id: UUID().uuidString, username: "", image: Data()))
+    NavigationStack {
+        AdditionalInformationView(account: .init(id: UUID().uuidString, username: "", image: Data()))
+    }
 }

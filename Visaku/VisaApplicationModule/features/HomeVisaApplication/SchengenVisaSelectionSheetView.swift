@@ -24,24 +24,27 @@ struct SchengenVisaSelectionSheetView: View {
                         VStack(spacing: 8) {
                             Text("Kenapa visa Schengen harus ditentukan?")
                                 .font(.custom("Inter-Bold", size: 20))
-                                .bold()
+                                .foregroundStyle(Color.blackOpacity5)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .lineLimit(nil)
                                 .fixedSize(horizontal: false, vertical: true)
                             Text("Kamu bisa masuk menggunakan satu visa yang sama untuk beberapa negara Uni Eropa.")
-                                .font(.custom("Inter-Regular", size: 15))
+                                .font(.custom("Inter-Regular", size: 14))
+                                .foregroundStyle(Color.blackOpacity3)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .lineLimit(nil)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
                         
                     }
-                    .padding()
+                    .padding(.horizontal)
+                    
                     Divider()
+                    
                     VStack {
                         Text("Daftar negara terpilih")
                             .font(.custom("Inter-Bold", size: 19))
-                            .bold()
+                            .foregroundStyle(Color.blackOpacity5)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         ForEach($viewModel.countries.indices, id: \.self) { index in
                             CountrySelectionCard(countryData: $viewModel.countries[index])
@@ -59,8 +62,8 @@ struct SchengenVisaSelectionSheetView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Penentuan visa Schengen")
-                        .font(.custom("Inter-SemiBold", size: 17))
-                        .bold()
+                        .font(.custom("Inter-SemiBold", size: 16))
+                        .foregroundStyle(Color.blackOpacity5)
                         
                 }
                 ToolbarItem(placement: .topBarTrailing) {
@@ -68,20 +71,22 @@ struct SchengenVisaSelectionSheetView: View {
                         onDismiss()
                     }) {
                         Image(systemName: "xmark")
-                            .font(.custom("Inter-SemiBold", size: 17))
-                            .padding(10)
-                            .background(Circle().fill(Color.white))
-                            .foregroundColor(.black)
-                            .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                            .imageScale(.medium)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.blackOpacity5)
+                            .frame(width: 40, height: 40)
+                            .background(
+                                Circle()
+                                    .stroke(Color.blackOpacity2, lineWidth: 1)
+                            )
                     }
                 }
             }
+            .onDisappear {
+                viewModel.countries.removeAll()
+            }
             .onChange(of: viewModel.areAllCountriesFilledAndVisaTypeIsEmpty) {
                 viewModel.showContinueSheet = true
-            }
-            .onDisappear {
-                viewModel.countries = []
-                viewModel.visaType = ""
             }
             .sheet(isPresented: $viewModel.showContinueSheet) {
                 VStack {

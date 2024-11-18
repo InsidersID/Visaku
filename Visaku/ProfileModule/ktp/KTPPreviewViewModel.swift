@@ -25,25 +25,25 @@ public enum KTPPreviewOrigin: Equatable {
 }
 
 @MainActor
-class KTPPreviewViewModel: ObservableObject {
+public class KTPPreviewViewModel: ObservableObject {
     @MainActor
-    private var identityCardUseCase: IdentityCardUseCaseProtocol = IdentityCardUseCase.make()
+    var identityCardUseCase: IdentityCardUseCaseProtocol = IdentityCardUseCase.make()
     
     @MainActor
-    private var accountUseCase: AccountUseCaseProtocol = AccountUseCase.make()
+    var accountUseCase: AccountUseCaseProtocol = AccountUseCase.make()
     
     //Navigation
     @Published var isCameraOpen: Bool = false
+    @Published var isImagePickerOpen: Bool = false
     
     //Data
     @Published var identityCard: IdentityCardEntity
-    @StateObject public var account: AccountEntity
+    @StateObject var account: AccountEntity
     @Published var ktpImage: UIImage?
     
     //State View
     @Published var saveIdentityCardState: SaveIdentityCardState = .idle
     @Published var deleteIdentityCardState: DeleteIdentityCardState = .idle
-    
     
     init(account: AccountEntity? = nil) {
         self._account = StateObject(wrappedValue: account ?? AccountEntity(id: "", username: "", image: Data()))
@@ -126,6 +126,7 @@ class KTPPreviewViewModel: ObservableObject {
     }
     
     func processCapturedImage(_ image: UIImage) {
+        print("Processing image: \(image)")
         guard let ciImage = image.ciImage ?? CIImage(image: image) else {
             print("Failed to convert UIImage to CIImage")
             return
@@ -146,18 +147,18 @@ class KTPPreviewViewModel: ObservableObject {
             }
             
             DispatchQueue.main.async {
-                self.extractIdentityCardData(from: recognizedTextByPosition)
-                if let imageData = image.pngData() {
-                    self.identityCard.image = imageData
-                    self.ktpImage = image
-                } else {
-                    print("Failed to convert UIImage to Data")
+                if self.ktpImage != nil {
+                    self.extractIdentityCardData(from: recognizedTextByPosition)
+                    if self.ktpImage != image {
+                        self.ktpImage = image
+                    }
                 }
             }
         }
         
         request.recognitionLevel = VNRequestTextRecognitionLevel.accurate
         let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
+    
         
         do {
             try handler.perform([request])
@@ -167,6 +168,7 @@ class KTPPreviewViewModel: ObservableObject {
     }
     
     private func extractIdentityCardData(from recognizedTextByPosition: [(text: String, boundingBox: CGRect)]) {
+        print("Extracting identity card data.")
         if let image = ktpImage {
             let extractedData = self.identityCardUseCase.extractData(from: recognizedTextByPosition, image: image)
             
