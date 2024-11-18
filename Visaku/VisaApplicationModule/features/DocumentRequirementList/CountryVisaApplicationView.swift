@@ -177,6 +177,7 @@ public struct CountryVisaApplicationView: View {
                     .frame(height: 47)
                 }
                 .padding(.horizontal)
+                .padding(.bottom, 8)
                 .contentShape(Rectangle())
                 .onTapGesture { viewModel.isIdentity.toggle() }
             } else {
@@ -204,14 +205,17 @@ public struct CountryVisaApplicationView: View {
                     .frame(height: 91)
                 }
                 .padding(.horizontal)
+                .padding(.bottom, 8)
                 .contentShape(Rectangle())
                 .onTapGesture { viewModel.isIdentity.toggle() }
             }
             
             DocumentRequirementsList().environmentObject(viewModel)
+                .padding(.bottom, 8)
             
             DocumentCard(height: 114, document: "Itinerary", status: .undone)
                 .padding(.horizontal)
+                .padding(.bottom, 8)
                 .onTapGesture { viewModel.isItinerary.toggle() }
             
             NavigationLink(destination: ApplicationFormView().environmentObject(viewModel)) {
@@ -222,7 +226,7 @@ public struct CountryVisaApplicationView: View {
     }
     
     private var cancelButton: some View {
-        CustomButton(text: "Batalkan Pengajuan", textColor: .danger4, color: .clear, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {}
+        CustomButton(text: "Batalkan Pengajuan", textColor: .danger4, color: .clear, font: "Inter-SemiBold", fontSize: 17) {}
             .padding()
     }
     
@@ -280,7 +284,7 @@ struct DocumentRequirementsList: View {
     @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
 
     var body: some View {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
+        LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible())], spacing: 16) {
             if let visaRequirements = viewModel.trip?.visaRequirements {
                 ForEach(visaRequirements.indices, id: \.self) { index in
                     let document = visaRequirements[index]
