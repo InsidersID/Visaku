@@ -216,6 +216,7 @@ public struct CountryVisaApplicationView: View {
             DocumentCard(height: 114, document: "Itinerary", status: .undone)
                 .padding(.horizontal)
                 .padding(.bottom, 8)
+                .contentShape(Rectangle())
                 .onTapGesture { viewModel.isItinerary.toggle() }
             
             NavigationLink(destination: ApplicationFormView().environmentObject(viewModel)) {
