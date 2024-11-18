@@ -86,7 +86,9 @@ struct VisaTypeRow: View {
                     .environmentObject(viewModel)
             }
             
-            Divider()
+            Rectangle()
+                .frame(width: .infinity, height: 1)
+                .foregroundStyle(Color.blackOpacity2)
         }
     }
 }
@@ -122,7 +124,9 @@ struct DateRow: View {
                 showCalendar.toggle()
             }
             
-            Divider()
+            Rectangle()
+                .frame(width: .infinity, height: 1)
+                .foregroundStyle(Color.blackOpacity2)
         }
     }
 }
