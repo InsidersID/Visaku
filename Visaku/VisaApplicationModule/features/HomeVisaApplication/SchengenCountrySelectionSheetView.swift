@@ -40,7 +40,28 @@ struct SchengenCountrySelectionSheetView: View {
             }
             .searchable(text: $viewModel.countrySearchKeyword, prompt: "Cari negara")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Pilih negara")
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Pilih negara")
+                        .font(.custom("Inter-SemiBold", size: 16))
+                        .foregroundStyle(Color.blackOpacity5)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        Image(systemName: "xmark")
+                            .imageScale(.medium)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.blackOpacity5)
+                            .frame(width: 40, height: 40)
+                            .background(
+                                Circle()
+                                    .stroke(Color.blackOpacity2, lineWidth: 1)
+                            )
+                    }
+                }
+            }
             .presentationDetents([.large])
             .sheet(isPresented: $isAddNewSchengenCountry) {
                 SchengenVisaSelectionSheetView(
