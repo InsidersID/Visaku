@@ -35,12 +35,8 @@ struct VisaTypeSheet: View {
                     }
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Jenis visa")
-                        .font(.headline)
-                }
-            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Jenis visa")
             .padding(.horizontal)
             .padding(.bottom, 30)
         }
