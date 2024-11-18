@@ -31,8 +31,8 @@ struct CountrySelectionSheetView: View {
                             }
                         }) {
                             Text(country)
-                                .font(.title3)
-                                .foregroundStyle(.black)
+                                .font(.custom("Inter-SemiBold", size: 17))
+                                .foregroundStyle(Color.blackOpacity5)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding()
                                 .bold()
