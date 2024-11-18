@@ -15,6 +15,10 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     
     @Published var trip: TripEntity?
     
+    init(trip: TripEntity? = nil) {
+        self.trip = trip
+    }
+    
     var completionPercentage: Double {
         guard let requirements = trip?.visaRequirements else { return 0 }
         
@@ -103,6 +107,17 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     @Published var euFamilyDocumentNumber: String = ""
     @Published var euFamilyRelation: String? = ""
     
+    // Application view navigation
+    @Published var showConfirmationButton: Bool = false
+    @Published var isPresentingConfirmationView: Bool = false
+    @Published var isShowPrintDownloadButton: Bool = false
+    @Published var isShowConfirmation: Bool = false
+    @Published var isItinerary: Bool = false
+    @Published var isFormApplication: Bool = false
+    
+    @Published var isShowPreviewVisaApplicationForm: Bool = false
+    @Published var isShowJSONDownload: Bool = false
+    
     public func saveTripData(visaType: String, countrySelected: String, countries: [CountryData]) {
         guard trip == nil else { return }
         var newTrip = TripEntity(id: UUID().uuidString, visaType: visaType, country: countrySelected, contries: countries)
@@ -126,15 +141,45 @@ public class CountryVisaApplicationViewModel: ObservableObject {
         }
     }
     
+    func uploadDocument(documentType: VisaRequirement, payload: UploadPayload) async {
+        switch payload {
+        case .url(let url):
+            guard var trip = trip,
+                  let index = trip.visaRequirements?.firstIndex(where: { $0.type == documentType.type }) else {
+                return
+            }
+            trip.visaRequirements?[index].uploadPayload = .url(url)
+            do {
+                let isSuccess = try await tripUseCase.update(param: trip)
+                if isSuccess {
+                    self.trip = trip
+                }
+            } catch {
+                print("Failed to update trip: \(error.localizedDescription)")
+            }
+        case .data(let data):
+            guard var trip = trip,
+                  let index = trip.visaRequirements?.firstIndex(where: { $0.type == documentType.type }) else {
+                return
+            }
+            trip.visaRequirements?[index].uploadPayload = .data(data)
+            do {
+                let isSuccess = try await tripUseCase.update(param: trip)
+                if isSuccess {
+                    self.trip = trip
+                }
+            } catch {
+                print("Failed to update trip: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     func updateDocumentMark(for documentType: VisaRequirement, to isMarked: Bool) async {
         guard var trip = trip,
               let index = trip.visaRequirements?.firstIndex(where: { $0.type == documentType.type }) else {
             return
         }
-        print("Updating \(documentType.displayName) to \(isMarked)")
         trip.visaRequirements?[index].isMarked = isMarked
-        
-        print("Updated state: \(trip.visaRequirements?[index].isMarked ?? false)")
         do {
             let isSuccess = try await tripUseCase.update(param: trip)
             if isSuccess {
