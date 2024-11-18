@@ -16,7 +16,7 @@ struct VisaApplicationProgressStyle: GaugeStyle {
                 .trim(from: 0, to: 0.75)
                 .stroke(
                     LinearGradient(
-                        gradient: Gradient(colors: [Color("primary5").opacity(0.1), Color("primary6").opacity(0.1)]),
+                        gradient: Gradient(colors: [Color("primary5").opacity(0.2), Color("primary6").opacity(0.2)]),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 ),

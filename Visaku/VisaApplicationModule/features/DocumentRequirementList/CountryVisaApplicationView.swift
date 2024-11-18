@@ -25,8 +25,8 @@ public struct CountryVisaApplicationView: View {
     public var body: some View {
         NavigationStack {
             ZStack {
+                Color.clear.ignoresSafeArea()
                 ScrollView {
-                    Color.clear.ignoresSafeArea()
                     
                     VStack {
                         progressGauge
@@ -86,7 +86,7 @@ public struct CountryVisaApplicationView: View {
                 .padding(.bottom, 50)
             }
             .tint(.primary5)
-            .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 300))
+            .gaugeStyle(VisaApplicationProgressStyle(gaugeSize: 240))
         }
     }
     
