@@ -24,12 +24,13 @@ struct SchengenVisaSelectionSheetView: View {
                         VStack(spacing: 8) {
                             Text("Kenapa visa Schengen harus ditentukan?")
                                 .font(.custom("Inter-Bold", size: 20))
-                                .bold()
+                                .foregroundStyle(Color.blackOpacity5)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .lineLimit(nil)
                                 .fixedSize(horizontal: false, vertical: true)
                             Text("Kamu bisa masuk menggunakan satu visa yang sama untuk beberapa negara Uni Eropa.")
-                                .font(.custom("Inter-Regular", size: 15))
+                                .font(.custom("Inter-Regular", size: 14))
+                                .foregroundStyle(Color.blackOpacity3)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .lineLimit(nil)
                                 .fixedSize(horizontal: false, vertical: true)
@@ -41,7 +42,7 @@ struct SchengenVisaSelectionSheetView: View {
                     VStack {
                         Text("Daftar negara terpilih")
                             .font(.custom("Inter-Bold", size: 19))
-                            .bold()
+                            .foregroundStyle(Color.blackOpacity5)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         ForEach($viewModel.countries.indices, id: \.self) { index in
                             CountrySelectionCard(countryData: $viewModel.countries[index])
