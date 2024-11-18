@@ -42,6 +42,7 @@ public struct PDFPreviewSheet: View {
                         dismiss()
                     }
                 }
+                .padding(.horizontal)
                 .padding(.bottom)
             } else {
                 RoundedRectangle(cornerRadius: 24)
@@ -67,6 +68,7 @@ public struct PDFPreviewSheet: View {
                 CustomButton(text: "Tutup", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) { 
                     viewModel.isShowPreviewVisaApplicationForm = false
                 }
+                .padding(.horizontal)
                 .padding(.bottom)
             }
         }
