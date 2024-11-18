@@ -14,17 +14,13 @@ struct DocumentDetailSheet: View {
     var description: String
     var body: some View {
         VStack {
-            Text(title)
-                .font(.headline)
-                .fontWeight(.medium)
-                .padding(.top, 24)
             Image("document")
                 .resizable()
                 .scaledToFit()
                 .padding()
             
             Text(description)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.blackOpacity3)
                 .multilineTextAlignment(.center)
                 .padding()
             
