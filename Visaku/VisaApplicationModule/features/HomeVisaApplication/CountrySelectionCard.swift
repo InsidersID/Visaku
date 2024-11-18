@@ -20,16 +20,19 @@ struct CountrySelectionCard: View {
                 let flag = Countries.schengenCountryFlags[countryData.name] ?? ""
                 Text("\(countryData.name) \(flag)")
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.title)
-                    .bold()
+                    .font(.custom("Inter-Bold", size: 20))
+                    .foregroundStyle(Color.blackOpacity5)
                 
                 VStack {
                     VisaTypeRow(visaType: $viewModel.visaType, isShowVisaTypeSheet: $viewModel.isShowVisaTypeSheet)
+                        .padding(.bottom)
                     
                     DateRow(label: "Berangkat", showCalendar: $showCalendar, date: $countryData.startDate)
+                        .padding(.bottom)
                     
                     if showCalendar {
                         DatePickerCalendar(startDate: $countryData.startDate, endDate: $countryData.endDate)
+                            .padding(.bottom)
                     }
                     
                     DateRow(label: "Pulang", showCalendar: $showCalendar, date: $countryData.endDate)
@@ -63,10 +66,11 @@ struct VisaTypeRow: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text("Jenis visa")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.blackOpacity3)
                         .font(.custom("Inter-Regular", size: 14))
                     Text("\(visaType == "" ? "" : "Visa \(visaType)")")
                         .font(.custom("Inter-SemiBold", size: 16))
+                        .foregroundStyle(Color.blackOpacity4)
                         .padding(.bottom, 10)
                         .padding(.top, 0.5)
                 }
@@ -74,6 +78,7 @@ struct VisaTypeRow: View {
                 Spacer()
                 
                 Image(systemName: "chevron.down")
+                    .foregroundStyle(Color.blackOpacity3)
             }
             .contentShape(Rectangle())
             .onTapGesture {
@@ -86,7 +91,9 @@ struct VisaTypeRow: View {
                     .environmentObject(viewModel)
             }
             
-            Divider()
+            Rectangle()
+                .frame(width: .infinity, height: 1)
+                .foregroundStyle(Color.blackOpacity2)
         }
     }
 }
@@ -104,25 +111,28 @@ struct DateRow: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text(label)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.blackOpacity3)
                         .font(.custom("Inter-Regular", size: 14))
                     Text(date?.formatted(date: .abbreviated, time: .omitted) ?? "")
                         .font(.custom("Inter-SemiBold", size: 16))
+                        .foregroundStyle(Color.blackOpacity4)
                         .padding(.bottom, 10)
                         .padding(.top, 0.5)
-                        .bold()
                 }
                 
                 Spacer()
                 
                 Image(systemName: showCalendar ? "chevron.up" : "chevron.down")
+                    .foregroundStyle(Color.blackOpacity3)
             }
             .contentShape(Rectangle())
             .onTapGesture {
                 showCalendar.toggle()
             }
             
-            Divider()
+            Rectangle()
+                .frame(width: .infinity, height: 1)
+                .foregroundStyle(Color.blackOpacity2)
         }
     }
 }

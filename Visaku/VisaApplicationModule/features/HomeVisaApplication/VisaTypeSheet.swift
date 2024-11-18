@@ -28,19 +28,15 @@ struct VisaTypeSheet: View {
                     }) {
                         Text("Visa \(type)")
                             .font(.custom("Inter-SemiBold", size: 17))
-                            .foregroundStyle(.black)
+                            .foregroundStyle(Color.blackOpacity5)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
                             .bold()
                     }
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Jenis visa")
-                        .font(.headline)
-                }
-            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Jenis visa")
             .padding(.horizontal)
             .padding(.bottom, 30)
         }

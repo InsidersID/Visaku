@@ -16,11 +16,13 @@ struct ChoosenVisaSheetView: View {
             VStack(spacing: 8) {
                 Text("Visa yang kamu akan ajukan adalah")
                     .font(.custom("Inter-Regular", size: 14))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.blackOpacity3)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Text("Visa \(choosenVisaType) \(choosenCountry)")
+                
+                let flag = Countries.schengenCountryFlags[choosenCountry] ?? ""
+                Text("Visa \(choosenVisaType) \(choosenCountry) \(flag)")
                     .font(.custom("Inter-SemiBold", size: 20))
-                    .bold()
+                    .foregroundStyle(Color.blackOpacity5)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding()
