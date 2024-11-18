@@ -34,13 +34,15 @@ struct VisaApplicationFinishedView: View {
                     
                     Spacer()
                     
-                    Divider()
+                    Rectangle()
+                        .frame(width: .infinity, height: 1)
+                        .foregroundStyle(Color.blackOpacity1)
                     
                     CustomButton(text: "Selesai", textColor: .white, color: .primary5, font: "Inter-SemiBold") {
                         viewModel.isPresentingConfirmationView = false
                     }
-                    .padding(.horizontal)
-                    .padding(.bottom)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 20)
                 }
                 
                 RiveViewModel(fileName: "PlaneAnimation").view()
