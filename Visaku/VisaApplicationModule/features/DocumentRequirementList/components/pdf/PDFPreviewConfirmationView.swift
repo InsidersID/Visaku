@@ -25,7 +25,7 @@ public struct PDFPreviewConfirmationView: View {
     public var body: some View {
         VStack {
             if let pdfDocument = pdfDocument {
-                PDFPreviewView(pdfDocument: pdfDocument)
+                PDFPreviewWatchView(pdfDocument: pdfDocument)
             }
         }
         .task {
