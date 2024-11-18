@@ -175,6 +175,7 @@ struct ExpandableHeader: View {
             Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(Rectangle())
         .onTapGesture {
             isExpanded.toggle()
             onTap?()

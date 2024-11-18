@@ -46,11 +46,11 @@ struct DocumentActions: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Button {
-                    profileViewModel.uploadDocument = .init(name: document)
-                    dismiss()
-                } label: {
+            Button {
+                profileViewModel.uploadDocument = .init(name: document)
+                dismiss()
+            } label: {
+                HStack {
                     ZStack {
                         Circle()
                             .frame(width: 22)
@@ -67,30 +67,30 @@ struct DocumentActions: View {
                     Text("Upload dari device")
                         .font(Font.custom("Inter-Regular", size: 16))
                         .foregroundStyle(Color.black)
+                    
+                    Spacer()
                 }
-                
-                
-                Spacer()
             }
+            
             .padding(.horizontal)
             .padding(.bottom)
             
-            HStack {
-                Button {
+            Button {
+                dismiss()
+                switch document {
+                case "KTP":
+                    profileViewModel.isScanKTP = true
+                    
+                case "Paspor":
+                    profileViewModel.isScanPaspor = true
+                    
+                case "Foto":
+                    profileViewModel.isScanFoto = true
+                default:
                     dismiss()
-                    switch document {
-                    case "KTP":
-                        profileViewModel.isScanKTP = true
-                        
-                    case "Paspor":
-                        profileViewModel.isScanPaspor = true
-                        
-                    case "Foto":
-                        profileViewModel.isScanFoto = true
-                    default:
-                        dismiss()
-                    }
-                } label: {
+                }
+            } label: {
+                HStack {
                     ZStack {
                         Circle()
                             .frame(width: 22)
@@ -107,17 +107,17 @@ struct DocumentActions: View {
                     Text(document == "Foto" ? "Ambil foto" : "Scan dokumen")
                         .font(Font.custom("Inter-Regular", size: 16))
                         .foregroundStyle(Color.black)
+                    
+                    Spacer()
                 }
-                
-                Spacer()
             }
             .padding(.horizontal)
             .padding(.bottom)
             
-            HStack {
-                Button {
-                    profileViewModel.isSeeDetails = true
-                } label: {
+            Button {
+                profileViewModel.isSeeDetails = true
+            } label: {
+                HStack {
                     ZStack {
                         Circle()
                             .frame(width: 22)
@@ -133,9 +133,9 @@ struct DocumentActions: View {
                     Text("Lihat ketentuan")
                         .font(Font.custom("Inter-Regular", size: 16))
                         .foregroundStyle(Color.black)
+                    
+                    Spacer()
                 }
-                
-                Spacer()
             }
             .padding(.horizontal)
         }

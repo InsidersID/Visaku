@@ -49,7 +49,6 @@ struct ActionDocumentSheet: View {
                             
                             Spacer()
                         }
-                        .contentShape(Rectangle())
                     }
                     
                     HStack {
@@ -111,6 +110,7 @@ struct ActionDocumentSheet: View {
                         
                         Spacer()
                     }
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         viewModel.showDocumentDetail = true
                     }

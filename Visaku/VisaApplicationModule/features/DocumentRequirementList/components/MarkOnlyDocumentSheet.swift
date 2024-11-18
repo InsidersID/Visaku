@@ -41,8 +41,9 @@ struct MarkOnlyDocumentSheet: View {
                             Text(isMarked ? "Tandai belum selesai" : "Tandai selesai")
                                 .font(.custom("Inter-Regular", size: 16))
                                 .foregroundStyle(Color.black)
+                            
+                            Spacer()
                         }
-                        .contentShape(Rectangle())
                     }
                     
                     Button(action: {
@@ -64,6 +65,8 @@ struct MarkOnlyDocumentSheet: View {
                             Text("Lihat ketentuan")
                                 .foregroundStyle(Color.black)
                                 .font(.custom("Inter-Regular", size: 16))
+                            
+                            Spacer()
                         }
                     }
                 }
