@@ -30,7 +30,11 @@ public struct CountryVisaApplicationView: View {
                     
                     VStack {
                         progressGauge
-                        Divider().padding(.bottom)
+                            .padding(.top)
+                        
+                        Divider()
+                            .padding(.bottom)
+                        
                         documentCards
                         cancelButton
                     }
