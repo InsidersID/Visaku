@@ -219,7 +219,7 @@ public struct CountryVisaApplicationView: View {
                 .onTapGesture { viewModel.isItinerary.toggle() }
             
             NavigationLink(destination: ApplicationFormView().environmentObject(viewModel)) {
-                DocumentCard(height: 128, document: "Form Aplikasi", status: .undone)
+                DocumentCard(height: 128, document: "Form aplikasi", status: .undone)
                     .padding(.horizontal)
             }
         }
