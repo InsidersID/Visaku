@@ -10,9 +10,10 @@ import RepositoryModule
 
 struct ActionDocumentSheet: View {
     var documentType: VisaRequirement
-    @Binding var isMarked: Bool
     @State private var showDocumentDetail = false
     @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
+    
+    @Binding var isMarked: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -74,6 +75,11 @@ struct ActionDocumentSheet: View {
             )
             .presentationDetents(.init([.medium]))
             .presentationDragIndicator(.visible)
+        }
+        .onChange(of: isMarked) { newValue in
+            Task {
+                await viewModel.updateDocumentMark(for: documentType, to: newValue)
+            }
         }
         Spacer()
     }

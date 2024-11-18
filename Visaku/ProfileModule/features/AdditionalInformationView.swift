@@ -33,12 +33,13 @@ struct AdditionalInformationView: View {
                             dismiss()
                         }) {
                             Image(systemName: "xmark")
-                                .font(.headline)
+                                .imageScale(.medium)
+                                .fontWeight(.semibold)
                                 .foregroundColor(.blackOpacity5)
                                 .frame(width: 40, height: 40)
                                 .background(
                                     Circle()
-                                        .stroke(Color.blackOpacity2, lineWidth: 2)
+                                        .stroke(Color.blackOpacity2, lineWidth: 1)
                                 )
                         }
                     }

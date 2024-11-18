@@ -31,8 +31,8 @@ struct CountrySelectionSheetView: View {
                             }
                         }) {
                             Text(country)
-                                .font(.title3)
-                                .foregroundStyle(.black)
+                                .font(.custom("Inter-SemiBold", size: 17))
+                                .foregroundStyle(Color.blackOpacity5)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding()
                                 .bold()
@@ -44,18 +44,22 @@ struct CountrySelectionSheetView: View {
                 .toolbar {
                     ToolbarItem(placement: .principal) {
                         Text("Pilih negara")
-                            .font(.headline)
+                            .font(.custom("Inter-SemiBold", size: 16))
+                            .foregroundStyle(Color.blackOpacity5)
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: {
                             onDismiss()
                         }) {
                             Image(systemName: "xmark")
-                                .font(.custom("Inter-SemiBold", size: 17))
-                                .padding(10)
-                                .background(Circle().fill(Color.white))
-                                .foregroundColor(.black)
-                                .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                                .imageScale(.medium)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.blackOpacity5)
+                                .frame(width: 40, height: 40)
+                                .background(
+                                    Circle()
+                                        .stroke(Color.blackOpacity2, lineWidth: 1)
+                                )
                         }
                     }
                 }

@@ -62,7 +62,6 @@ struct ApplicationSection: View {
         VStack(spacing: 12) {
             Text(title)
                 .font(.custom("Inter-SemiBold", size: 20))
-                .bold()
                 .opacity(0.5)
                 .frame(maxWidth: .infinity, alignment: .leading)
             if title == "Belum selesai" {
@@ -78,7 +77,7 @@ struct ApplicationSection: View {
                         ForEach(visaHistoryUncompleted) { trip in
                             let tripData = TripDataUIModel(from: trip)
                             VisaApplicationCard(visaType: tripData.visaType, country: tripData.country, countries: tripData.countries, visaProgressPercentage: tripData.percentage, visaProgressColor: .red, createdAt: tripData.date) {
-                                print("trigger card")
+                                
                             }
                         }
                     }
