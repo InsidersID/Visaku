@@ -44,7 +44,8 @@ struct CountrySelectionSheetView: View {
                 .toolbar {
                     ToolbarItem(placement: .principal) {
                         Text("Pilih negara")
-                            .font(.headline)
+                            .font(.custom("Inter-SemiBold", size: 16))
+                            .foregroundStyle(Color.blackOpacity5)
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: {
