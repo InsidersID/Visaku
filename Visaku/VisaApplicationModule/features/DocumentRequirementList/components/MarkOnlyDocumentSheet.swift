@@ -89,8 +89,8 @@ struct MarkOnlyDocumentSheet: View {
     @Previewable @State var isMarked: Bool = false
     let mockViewModel = CountryVisaApplicationViewModel()
 
-    ActionDocumentSheet(
-        documentType: VisaRequirement(type: .buktiKeuangan, displayName: "Tes", description: "Tes", requiresUpload: false, isOptionalUpload: false),
+    MarkOnlyDocumentSheet(
+        documentType: VisaRequirement(type: .kartuKeluargaAsli, displayName: "Tes", description: "Tes", requiresUpload: false, isOptionalUpload: false),
         isMarked: $isMarked
     )
     .environmentObject(mockViewModel)
