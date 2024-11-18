@@ -74,14 +74,7 @@ struct MarkOnlyDocumentSheet: View {
                 .environmentObject(viewModel)
             }
         }
-        .padding()
-//        .sheet(isPresented: $showDocumentDetail) {
-//            DocumentDetailSheet(
-//                title: documentType.displayName, description: documentType.description
-//            )
-//            .presentationDetents(.init([.medium]))
-//            .presentationDragIndicator(.visible)
-//        }
+        .padding(.horizontal)
         .onChange(of: isMarked) { newValue in
             Task {
                 await viewModel.updateDocumentMark(for: documentType, to: newValue)

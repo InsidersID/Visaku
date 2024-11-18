@@ -41,7 +41,6 @@ struct ActionDocumentSheet: View {
                                     .imageScale(.small)
                                     .foregroundStyle(Color.white)
                                     .fontWeight(.bold)
-                                //                                .offset(x: 0, y: -1)
                             }
                             
                             Text(isMarked ? "Tandai belum selesai": "Tandai selesai")
@@ -116,9 +115,6 @@ struct ActionDocumentSheet: View {
                         viewModel.showDocumentDetail = true
                     }
                 }
-                
-//                Spacer()
-//                    .frame(height: 20)
             } else {
                 DocumentDetailSheet(
                     title: documentType.displayName, description: documentType.description
