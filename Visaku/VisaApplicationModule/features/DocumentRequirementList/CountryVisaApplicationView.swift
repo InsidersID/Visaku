@@ -156,28 +156,28 @@ public struct CountryVisaApplicationView: View {
     }
     
     private var confirmationButton: some View {
-        CustomButton(text: "Konfirmasi", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {
+        CustomButton(text: "Konfirmasi", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16) {
             viewModel.isPresentingConfirmationView = true
         }
         .padding(.bottom)
     }
     
     private var printButton: some View {
-        CustomButton(text: "Print semua", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {
+        CustomButton(text: "Print semua", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16) {
             viewModel.isShowPreviewVisaApplicationForm = true
         }
         .padding(.horizontal)
     }
     
     private var downloadPDFButton: some View {
-        CustomButton(text: "Unduh PDF form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8) {
+        CustomButton(text: "Unduh PDF form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16) {
             viewModel.isShowPreviewVisaApplicationForm = true
         }
         .padding(.horizontal)
     }
     
     private var downloadJSONButton: some View {
-        CustomButton(text: "Unduh JSON form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 8                     ) {
+        CustomButton(text: "Unduh JSON form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16                     ) {
             viewModel.isShowJSONDownload = true
         }
         .padding(.bottom)
@@ -261,12 +261,14 @@ struct DocumentSheet: View {
     var documentType: VisaRequirement
     @Binding var isMarked: Bool
     @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
+    @Environment(ProfileViewModel.self) var profileViewModel
     
     var body: some View {
         Group {
             if documentType.requiresUpload {
                 ActionDocumentSheet(documentType: documentType, isMarked: $isMarked)
                     .environmentObject(viewModel)
+                    .environment(profileViewModel)
             } else {
                 MarkOnlyDocumentSheet(documentType: documentType, isMarked: $isMarked)
                     .environmentObject(viewModel)
