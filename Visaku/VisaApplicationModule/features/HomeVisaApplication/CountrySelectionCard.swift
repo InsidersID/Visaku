@@ -110,6 +110,7 @@ struct DateRow: View {
                         .font(.custom("Inter-Regular", size: 14))
                     Text(date?.formatted(date: .abbreviated, time: .omitted) ?? "")
                         .font(.custom("Inter-SemiBold", size: 16))
+                        .foregroundStyle(Color.blackOpacity4)
                         .padding(.bottom, 10)
                         .padding(.top, 0.5)
                 }
