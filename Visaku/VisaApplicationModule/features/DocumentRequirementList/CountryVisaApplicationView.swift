@@ -25,6 +25,7 @@ public struct CountryVisaApplicationView: View {
     ) {
         self.countrySelected = countrySelected
         self.visaType = visaType
+        self.countries = countries
         self._viewModel = StateObject(wrappedValue: CountryVisaApplicationViewModel(trip: trip))
     }
     
