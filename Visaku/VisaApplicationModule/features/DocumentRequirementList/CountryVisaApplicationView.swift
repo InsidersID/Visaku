@@ -139,7 +139,7 @@ public struct CountryVisaApplicationView: View {
                         .font(.custom("Inter-Bold", size: 64))
                         .foregroundStyle(Color.primary5)
                     
-                    Text("Visa \(visaType) \(countrySelected)")
+                    Text("Visa \(visaType ?? "TypeError") \(countrySelected ?? "CountryError")")
                         .foregroundStyle(Color.blackOpacity5)
                         .font(.custom("Inter-Medium", size: 20))
                 }
