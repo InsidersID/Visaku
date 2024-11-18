@@ -90,10 +90,10 @@ public struct PDFPreviewConfirmationView: View {
             "travelDocTypePSP": "",
             "travelDocTypeAUT": "",
             "travelDocTypeOther": "",
-            "travelDocNumber": trip?.account?.passport?.passportNo ?? "Passport Number"
-            "travelDocDateOfIssue": trip?.account?.passport?.issueDate ?? "Passport Issue Date"
-            "travelDocValidUntil": trip?.account?.passport?.expirationDate ?? "Passport Expiration Date"
-            "travelDocCountries": trip?.account?.passport?.passportIssuePlace ?? "Passport Place Type"
+            "travelDocNumber": trip?.account?.passport?.passportNo ?? "Passport Number",
+            "travelDocDateOfIssue": trip?.account?.passport?.issueDate ?? "Passport Issue Date",
+            "travelDocValidUntil": trip?.account?.passport?.expirationDate ?? "Passport Expiration Date",
+            "travelDocCountries": trip?.account?.passport?.passportIssuePlace ?? "Passport Place Type",
             "nationalFamilySurname": "Doe",
             "nationalFamilyFirstNames": "John",
             "nationalFamilyDateOfBirth": "1985-05-15",
@@ -122,7 +122,7 @@ public struct PDFPreviewConfirmationView: View {
             "applicantResidencePermitYes": "Yes",
             "applicantResidencePermitNumber": "RP123456",
             "applicantResidencePermitValidUntil": "2025-12-31",
-            "applicantOccupation": trip?.account?.identityCard?.job ?? "Occupation"
+            "applicantOccupation": trip?.account?.identityCard?.job ?? "Occupation",
             "applicantOccupationAddressL1": trip?.account?.additionalInformation?.companyAddress ?? "Occupation Address 1",
             "applicantOccupationAddressL2": (trip?.account?.additionalInformation?.companyCity ?? "Company City") + ", " + (trip?.account?.additionalInformation?.companyCountry ?? "Company Country"),
             "applicantOccupationAddressL3": (trip?.account?.additionalInformation?.companyTelephone ?? "Company Telephone") + ", " + (trip?.account?.additionalInformation?.companyPostalCode ?? "Company Postal Code"),
@@ -138,13 +138,13 @@ public struct PDFPreviewConfirmationView: View {
             "purposeAUTR": "",
             "purposeOther": "",
             "purposeOfJourneyInfo": "Vacation",
-            "applicantDestinations": trip?.countries.map { $0.name }.joined(separator: ", ") ?? "Countries"
-            "applicantDestinationFirstEntry": trip?.countries.first?.name ?? "First country of entry"
+            "applicantDestinations": trip?.countries.map { $0.name }.joined(separator: ", ") ?? "Countries",
+            "applicantDestinationFirstEntry": trip?.countries.first?.name ?? "First country of entry",
             "entries1": "Single Entry",
             "entries2": "",
             "entriesM": "",
-            "dateOfArrival": trip?.countries.first?.startDate ?? "Date of Arrival"
-            "dateOfDeparture": trip?.countries.last?.endDate ?? "Date of Departure"
+            "dateOfArrival": trip?.countries.first?.startDate ?? "Date of Arrival",
+            "dateOfDeparture": trip?.countries.last?.endDate ?? "Date of Departure",
             "hasFingerprintsFalse": "",
             "hasFingerprintsTrue": "True",
             "fingerprintsDate": "2023-01-15",
