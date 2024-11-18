@@ -24,11 +24,12 @@ struct VisaApplicationFinishedView: View {
                     
                     Text("Kamu sudah siap!")
                         .font(.custom("Inter-SemiBold", size: 24))
+                        .foregroundStyle(Color.blackOpacity5)
                         .padding(.bottom)
                     
                     Text("Dengan itinerary, kedutaan jadi tahu kamu punya tujuan jelas dan nggak berencana tinggal lebih lama dari yang diizinkan.")
                         .font(.custom("Inter-Regular", size: 15))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.blackOpacity3)
                         .padding(.horizontal)
                         .multilineTextAlignment(.center)
                     
