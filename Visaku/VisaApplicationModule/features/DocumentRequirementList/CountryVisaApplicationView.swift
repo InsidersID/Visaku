@@ -101,8 +101,8 @@ public struct CountryVisaApplicationView: View {
                         viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries)
                     }
                 }
-                .onChange(of: viewModel.completionPercentage) { completionHandler($0) }
-                .onChange(of: viewModel.isShowConfirmation) { newValue in
+                .onChange(of: viewModel.completionPercentage) { oldValue, newValue in completionHandler(newValue) }
+                .onChange(of: viewModel.isShowConfirmation) { oldValue, newValue in
                     if newValue {
                         print("isShowConfirmation is true")
                         
@@ -111,7 +111,7 @@ public struct CountryVisaApplicationView: View {
                         }
                     }
                 }
-                .onChange(of: viewModel.isShowPrintDownloadButton) { newValue in
+                .onChange(of: viewModel.isShowPrintDownloadButton) { oldValue, newValue in
                     if newValue {
                         print("isShowPrintDownloadButton is true, showing print/download buttons")
                     }
