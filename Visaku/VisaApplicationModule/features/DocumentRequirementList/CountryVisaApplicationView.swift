@@ -127,7 +127,7 @@ public struct CountryVisaApplicationView: View {
                     .presentationDragIndicator(.visible)
                 .fullScreenCover(isPresented: $viewModel.isPresentingConfirmationView, onDismiss: {
                     viewModel.isShowPrintDownloadButton = true
-                }) { VisaApplicationFinishedView() }
+                }) { VisaApplicationFinishedView().environmentObject(viewModel) }
                 .fullScreenCover(isPresented: $viewModel.isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
                 .sheet(isPresented: $isItinerary) { ItineraryListSheet() }
                 .fullScreenCover(isPresented: $isFormApplication) { ApplicationFormView().environmentObject(viewModel) }

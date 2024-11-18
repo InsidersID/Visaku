@@ -3,7 +3,7 @@ import UIComponentModule
 import RiveRuntime
 
 struct VisaApplicationFinishedView: View {
-    @StateObject var viewModel = CountryVisaApplicationViewModel()
+    @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -37,8 +37,7 @@ struct VisaApplicationFinishedView: View {
                     Divider()
                     
                     CustomButton(text: "Selesai", textColor: .white, color: .primary5, font: "Inter-SemiBold") {
-                        viewModel.showConfirmationButton = false
-                        dismiss()
+                        viewModel.isPresentingConfirmationView = false
                     }
                     .padding(.horizontal)
                     .padding(.bottom)
