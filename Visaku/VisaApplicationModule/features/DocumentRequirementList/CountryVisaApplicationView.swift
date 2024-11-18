@@ -54,7 +54,6 @@ public struct CountryVisaApplicationView: View {
                         }
                     }
                 }
-//                .toolbar { backButton }
                 .onAppear { viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries) }
                 .onChange(of: viewModel.completionPercentage) { completionHandler($0) }
                 .sheet(isPresented: $viewModel.isIdentity) { ProfileView(isSelectProfile: true).environmentObject(viewModel) }
@@ -66,7 +65,7 @@ public struct CountryVisaApplicationView: View {
                     .padding(.horizontal)
             }
         }
-
+        
     }
     
     private var progressGauge: some View {
@@ -153,36 +152,57 @@ public struct CountryVisaApplicationView: View {
 }
 
 struct DocumentRequirementsList: View {
-    @State private var selectedDocument: VisaRequirement?
+    @State private var selectedDocumentIndex: Int?
     @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
-    
+
     var body: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
             if let visaRequirements = viewModel.trip?.visaRequirements {
                 ForEach(visaRequirements.indices, id: \.self) { index in
+                    let document = visaRequirements[index]
                     DocumentCard(
                         height: 115,
-                        document: visaRequirements[index].displayName,
-                        status: visaRequirements[index].isMarked ? .done : .undone,
-                        requiresMarkOnly: visaRequirements[index].requiresUpload
+                        document: document.displayName,
+                        status: document.isMarked ? .done : .undone,
+                        requiresMarkOnly: document.requiresUpload
                     )
-                    .onTapGesture { selectedDocument = visaRequirements[index] }
-                    .sheet(item: $selectedDocument) { document in
-                        DocumentSheet(documentType: document, isMarked: Binding(
-                            get: { document.isMarked },
-                            set: { newValue in
-                                if let index = visaRequirements.firstIndex(where: { $0.id == document.id }) {
-                                    viewModel.trip?.visaRequirements?[index].isMarked = newValue
-                                }
-                                selectedDocument = nil
-                            }
-                        ))
-                        .environmentObject(viewModel)
+                    .onTapGesture {
+                        selectedDocumentIndex = index
                     }
                 }
             }
         }
         .padding(.horizontal)
+        .sheet(item: selectedDocumentBinding) { document in
+            DocumentSheet(
+                documentType: document,
+                isMarked: Binding(
+                    get: { document.isMarked },
+                    set: { newValue in
+                        if let index = selectedDocumentIndex {
+                            viewModel.trip?.visaRequirements?[index].isMarked = newValue
+                        }
+                    }
+                )
+            )
+            .environmentObject(viewModel)
+        }
+    }
+
+    private var selectedDocumentBinding: Binding<VisaRequirement?> {
+        Binding<VisaRequirement?>(
+            get: {
+                guard let index = selectedDocumentIndex,
+                      let visaRequirements = viewModel.trip?.visaRequirements,
+                      index < visaRequirements.count else {
+                    return nil
+                }
+                return visaRequirements[index]
+            },
+            set: { _ in
+                selectedDocumentIndex = nil
+            }
+        )
     }
 }
 
@@ -195,12 +215,13 @@ struct DocumentSheet: View {
         Group {
             if documentType.requiresUpload {
                 ActionDocumentSheet(documentType: documentType, isMarked: $isMarked)
+                    .environmentObject(viewModel)
             } else {
                 MarkOnlyDocumentSheet(documentType: documentType, isMarked: $isMarked)
+                    .environmentObject(viewModel)
             }
         }
         .presentationDetents([.height(356)])
         .presentationDragIndicator(.visible)
-        .environmentObject(viewModel)
     }
 }
