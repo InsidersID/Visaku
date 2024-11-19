@@ -32,24 +32,7 @@ struct PrivacyPolicyView: View {
                     }
                     .padding(.bottom, 36)
                     
-                    HStack(alignment: .top) {
-                        Image(systemName: isAgree ?  "checkmark.rectangle.fill" : "rectangle")
-                            .resizable()
-                            .frame(width: 22, height: 22)
-                            .foregroundStyle(Color.primary5)
-                            .padding(.trailing, 8)
-                        
-                        VStack(alignment: .leading) {
-                            Text("Dengan menggunakan aplikasi Visaku, Anda menyetujui pengumpulan, penggunaan, dan pemrosesan data pribadi Anda sesuai dengan ketentuan dalam Kebijakan Privasi Visaku.")
-                                .font(.custom("Inter-Regular", size: 14))
-                                .foregroundStyle(Color.blackOpacity4)
-                                .lineSpacing(4)
-                        }
-                    }
-                    .padding(.bottom, 36)
-                    .onTapGesture {
-                        isAgree.toggle()
-                    }
+                    AgreementCheckbox
                     
                     CustomButton(text: "Terima dan lanjut", textColor: .stayWhite, color: isAgree ? .primary5 : .blackOpacity2, font: "Inter-SemiBold", fontSize: 16) {
                         agreementManager.setAgreed()
@@ -106,10 +89,10 @@ struct PrivacyPolicyView: View {
             Text("Kami mengumpulkan informasi yang diperlukan untuk menyediakan layanan di aplikasi Visaku, yang dapat dibagi menjadi dua kategori:")
                 .font(.custom("Inter-Regular", size: 14))
                 .foregroundStyle(Color.blackOpacity4)
-            Text("Data Identitas: Informasi yang diambil dari KTP, paspor, atau dokumen lain yang Anda unggah melalui aplikasi untuk pengisian otomatis formulir visa. Informasi ini dapat mencakup nama, tanggal lahir, nomor paspor, alamat, dan kewarganegaraan.")
+            Text("**Data Identitas**: Informasi yang diambil dari KTP, paspor, atau dokumen lain yang Anda unggah melalui aplikasi untuk pengisian otomatis formulir visa. Informasi ini dapat mencakup nama, tanggal lahir, nomor paspor, alamat, dan kewarganegaraan.")
                 .font(.custom("Inter-Regular", size: 14))
                 .foregroundStyle(Color.blackOpacity4)
-            Text("Data Penggunaan: Informasi teknis mengenai cara Anda menggunakan aplikasi, seperti fitur yang sering Anda gunakan, interaksi dengan antarmuka, serta preferensi Anda.")
+            Text("**Data Penggunaan**: Informasi teknis mengenai cara Anda menggunakan aplikasi, seperti fitur yang sering Anda gunakan, interaksi dengan antarmuka, serta preferensi Anda.")
                 .font(.custom("Inter-Regular", size: 14))
                 .foregroundStyle(Color.blackOpacity4)
                 .padding(.bottom)
@@ -147,13 +130,13 @@ struct PrivacyPolicyView: View {
             Text("Anda memiliki hak-hak berikut terkait data pribadi Anda:")
                 .font(.custom("Inter-Regular", size: 14))
                 .foregroundStyle(Color.blackOpacity4)
-            Text("Akses: Anda dapat melihat dan mengakses data yang telah Anda unggah dan simpan di aplikasi kapan saja.")
+            Text("**Akses**: Anda dapat melihat dan mengakses data yang telah Anda unggah dan simpan di aplikasi kapan saja.")
                 .font(.custom("Inter-Regular", size: 14))
                 .foregroundStyle(Color.blackOpacity4)
-            Text("Penghapusan: Anda dapat menghapus data pribadi yang tersimpan di perangkat Anda kapan saja.")
+            Text("**Penghapusan**: Anda dapat menghapus data pribadi yang tersimpan di perangkat Anda kapan saja.")
                 .font(.custom("Inter-Regular", size: 14))
                 .foregroundStyle(Color.blackOpacity4)
-            Text("Pembatasan: Anda dapat memilih untuk tidak menggunakan fitur AI Itinerary Generator jika tidak ingin alamat tempat tinggal Anda dikirimkan ke pihak ketiga.")
+            Text("**Pembatasan**: Anda dapat memilih untuk tidak menggunakan fitur AI Itinerary Generator jika tidak ingin alamat tempat tinggal Anda dikirimkan ke pihak ketiga.")
                 .font(.custom("Inter-Regular", size: 14))
                 .foregroundStyle(Color.blackOpacity4)
                 .padding(.bottom)
@@ -172,6 +155,43 @@ struct PrivacyPolicyView: View {
             Text("Jika Anda memiliki pertanyaan lebih lanjut mengenai Kebijakan Privasi ini atau ingin memahami lebih lanjut bagaimana data Anda digunakan, silakan hubungi kami melalui:")
                 .font(.custom("Inter-Regular", size: 14))
                 .foregroundStyle(Color.blackOpacity4)
+        }
+    }
+    
+    private var AgreementCheckbox: some View {
+        HStack(alignment: .top) {
+            Image(systemName: isAgree ?  "checkmark.rectangle.fill" : "rectangle")
+                .resizable()
+                .frame(width: 22, height: 22)
+                .foregroundStyle(Color.primary5)
+                .padding(.trailing, 8)
+            
+            VStack(alignment: .leading) {
+                (Text("Dengan menggunakan aplikasi Visaku, Anda menyetujui ")
+                    .foregroundStyle(Color.blackOpacity4)
+                + Text("**pengumpulan**")
+                    .foregroundStyle(Color.primary5)
+                + Text(", ")
+                    .foregroundStyle(Color.blackOpacity4)
+                + Text("**penggunaan**")
+                    .foregroundStyle(Color.primary5)
+                + Text(", dan ")
+                    .foregroundStyle(Color.blackOpacity4)
+                + Text("**pemrosesan data pribadi Anda**")
+                    .foregroundStyle(Color.primary5)
+                + Text(" sesuai dengan ketentuan dalam ")
+                    .foregroundStyle(Color.blackOpacity4)
+                + Text("**Kebijakan Privasi Visaku**")
+                    .foregroundStyle(Color.primary5)
+                + Text(".")
+                    .foregroundStyle(Color.blackOpacity4))
+            }
+            .font(.custom("Inter-Regular", size: 14))
+            .lineSpacing(4)
+        }
+        .padding(.bottom, 36)
+        .onTapGesture {
+            isAgree.toggle()
         }
     }
 }
