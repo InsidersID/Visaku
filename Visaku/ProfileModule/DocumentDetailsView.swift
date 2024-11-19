@@ -48,7 +48,7 @@ struct DocumentActions: View {
         VStack {
             Button {
                 profileViewModel.uploadDocument = .init(name: document)
-                dismiss()
+                profileViewModel.selectedDocument = nil
             } label: {
                 HStack {
                     ZStack {
@@ -76,7 +76,7 @@ struct DocumentActions: View {
             .padding(.bottom)
             
             Button {
-                dismiss()
+                profileViewModel.selectedDocument = nil
                 switch document {
                 case "KTP":
                     profileViewModel.isScanKTP = true

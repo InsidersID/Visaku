@@ -13,13 +13,12 @@ public struct VisaHistoryView: View {
     
     public var body: some View {
         NavigationStack {
+            VisaApplicationHeader()
+                .environmentObject(viewModel)
+            
             ScrollView {
                 VStack {
-                    VisaApplicationHeader()
-                        .environmentObject(viewModel)
-                    
                     if viewModel.hasData {
-                        
                         ApplicationSection(title: "Belum selesai")
                             .padding(.horizontal, 20)
                             .environmentObject(viewModel)
@@ -32,6 +31,8 @@ public struct VisaHistoryView: View {
                 }
             }
             .onAppear {
+                viewModel.visaType = ""
+                viewModel.countries.removeAll()
                 viewModel.fetchVisaHistoryInProgressData()
                 viewModel.fetchVisaHistoryCompletedData()
             }
