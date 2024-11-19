@@ -124,7 +124,7 @@ public struct MainDocumentView: View {
                     }
                     
                     if profileViewModel.isDeleteProfile || profileViewModel.isShowingEditProfile {
-                        Color("blackOpacity4").ignoresSafeArea()
+                        Color.blackOpacity3.ignoresSafeArea()
                     }
                 }
             }
@@ -205,7 +205,7 @@ public struct MainDocumentView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Profil")
-                        .foregroundStyle(profileViewModel.isDeleteProfile ? Color.white.opacity(0.25) : Color.white)
+                        .foregroundStyle(profileViewModel.isDeleteProfile || profileViewModel.isShowingEditProfile ? Color.white.opacity(0.25) : Color.white)
                         .font(Font.custom("Inter-SemiBold", size: 24))
                 }
                 ToolbarItem(placement: .topBarLeading) {
@@ -215,7 +215,7 @@ public struct MainDocumentView: View {
                         Image(systemName: "chevron.left.circle")
                             .resizable()
                             .frame(width: 40, height: 40)
-                            .foregroundStyle(profileViewModel.isDeleteProfile ? Color.white.opacity(0.25) : Color.white)
+                            .foregroundStyle(profileViewModel.isDeleteProfile || profileViewModel.isShowingEditProfile ? Color.white.opacity(0.25) : Color.white)
                             .fontWeight(.light)
                     }
                 }

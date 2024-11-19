@@ -68,8 +68,7 @@ public struct ProfileView: View {
                 }
                 
                 if profileViewModel.isAddingProfile {
-                    Color.black.opacity(0.75)
-                        .ignoresSafeArea()
+                    Color.blackOpacity3.ignoresSafeArea()
                 }
             }
         }
