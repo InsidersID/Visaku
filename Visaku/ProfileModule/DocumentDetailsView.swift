@@ -35,7 +35,7 @@ public struct DocumentDetailsView: View {
                 .frame(width: proxy.size.width, alignment: .center)
             }
         }
-        .presentationDetents([.fraction(profileViewModel.isSeeDetails ? 0.7 : 0.3)])
+        .presentationDetents([.fraction(profileViewModel.isSeeDetails ? 0.7 : 0.35)])
     }
 }
 
@@ -47,8 +47,23 @@ struct DocumentActions: View {
     var body: some View {
         VStack {
             Button {
-                profileViewModel.uploadDocument = .init(name: document)
                 profileViewModel.selectedDocument = nil
+                DispatchQueue.main.async {
+                    switch document {
+                    case "KTP":
+                        print("KTP Upload")
+                        profileViewModel.isUploadImageForKTP = true
+                    case "Paspor":
+                        print("Passport Upload")
+                        profileViewModel.isUploadImageForPassport = true
+                    case "Foto":
+                        print("Photo Upload")
+                        profileViewModel.isUploadImageForFoto = true
+                    default:
+                        print("Others Upload")
+                        profileViewModel.isUploadImageForOthers = true
+                    }
+                }
             } label: {
                 HStack {
                     ZStack {
