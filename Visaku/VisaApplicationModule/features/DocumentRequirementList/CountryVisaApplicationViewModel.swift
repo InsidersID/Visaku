@@ -17,7 +17,6 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     
     init(trip: TripEntity? = nil) {
         self.trip = trip
-        print(trip)
     }
     
     var completionPercentage: Double {

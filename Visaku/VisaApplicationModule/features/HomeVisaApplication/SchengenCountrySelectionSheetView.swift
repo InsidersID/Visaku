@@ -16,7 +16,7 @@ struct SchengenCountrySelectionSheetView: View {
         NavigationView {
             ScrollView {
                 VStack {
-                    ForEach(Countries.schengenCountryList.filter { viewModel.countrySearchKeyword.isEmpty || $0.contains(viewModel.countrySearchKeyword) }, id: \.self) { schengenCountry in
+                    ForEach(viewModel.filteredSchengenCountries.filter { viewModel.countrySearchKeyword.isEmpty || $0.contains(viewModel.countrySearchKeyword) }, id: \.self) { schengenCountry in
                         Button(action: {
                             if (viewModel.countries.count >= 1) {
                                 isAddNewSchengenCountry = false
