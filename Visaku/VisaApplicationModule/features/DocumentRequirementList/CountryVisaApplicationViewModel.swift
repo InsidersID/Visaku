@@ -205,6 +205,19 @@ public class CountryVisaApplicationViewModel: ObservableObject {
             print("Failed to update trip: \(error.localizedDescription)")
         }
     }
+    
+    func deleteTrip() async {
+        if let tripId = trip?.id {
+            do {
+                let isSuccess = try await tripUseCase.delete(id: tripId)
+                if isSuccess {
+                    self.trip = nil
+                }
+            } catch {
+                print("Failed to delete trip: \(error.localizedDescription)")
+            }
+        }
+    }
 }
 
 //    enum ApplicationDocuments: Int, Identifiable {
