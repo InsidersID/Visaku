@@ -14,9 +14,9 @@ public struct VisaHistoryView: View {
     public var body: some View {
         NavigationStack {
             VStack {
-                VisaApplicationHeader()
-                    .environmentObject(viewModel)
                 ScrollView {
+                    VisaApplicationHeader()
+                        .environmentObject(viewModel)
                     VStack {
                         if viewModel.hasData {
                             ApplicationSection(title: "Belum selesai")
