@@ -5,6 +5,7 @@ struct PrivacyPolicyView: View {
     @Environment(\.dismiss) var dismiss
     @State var isAgree: Bool = false
     @State var navigateToTabBarView: Bool = false
+    private let agreementManager = AgreementManager()
     
     var body: some View {
         GeometryReader { proxy in
@@ -51,6 +52,7 @@ struct PrivacyPolicyView: View {
                     }
                     
                     CustomButton(text: "Terima dan lanjut", textColor: .stayWhite, color: isAgree ? .primary5 : .blackOpacity2, font: "Inter-SemiBold", fontSize: 16) {
+                        agreementManager.setAgreed()
                         navigateToTabBarView = true
                     }
                     .disabled(!isAgree)

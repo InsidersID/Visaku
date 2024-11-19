@@ -11,11 +11,11 @@ import RepositoryModule
 @main
 struct VisakuApp: App {
     
-    let manager = FirstTimeUseManager()
+    let manager = AgreementManager()
 
     var body: some Scene {
         WindowGroup {
-            if manager.checkAndSetFirstUse() {
+            if manager.checkAgreement() {
                 SplashScreen()
                     .task {
                         SwiftDataContextManager()

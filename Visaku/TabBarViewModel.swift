@@ -1,17 +1,13 @@
 import Foundation
 
-class FirstTimeUseManager {
-    private let userDefaultsKey = "isFirstTimeUse"
+class AgreementManager {
+    private let agreementKey = "userHasAgreed"
     
-    /// Checks and updates the first-use flag.
-    /// - Returns: true if it's the first use, false otherwise.
-    func checkAndSetFirstUse() -> Bool {
-        let isFirstTime = !UserDefaults.standard.bool(forKey: userDefaultsKey)
-        
-        if isFirstTime {
-            UserDefaults.standard.set(true, forKey: userDefaultsKey)
-        }
-        
-        return isFirstTime
+    func checkAgreement() -> Bool {
+        return !UserDefaults.standard.bool(forKey: agreementKey)
+    }
+    
+    func setAgreed() {
+        UserDefaults.standard.set(true, forKey: agreementKey)
     }
 }
