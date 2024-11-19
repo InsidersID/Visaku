@@ -17,6 +17,7 @@ enum fetchDataState {
 
 public struct TripDataUIModel: Identifiable {
     public let id: String
+    public let isCompleted: Bool
     public let visaType: String
     public let country: String
     public let countries: [String]
@@ -26,6 +27,7 @@ public struct TripDataUIModel: Identifiable {
     // Initialize with TripData
     public init(from trip: TripEntity) {
         self.id = trip.id
+        self.isCompleted = trip.isCompleted
         self.visaType = trip.visaType
         self.country = trip.country.capitalized
         self.countries = trip.countries.map { $0.name }
