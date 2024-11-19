@@ -13,44 +13,45 @@ public struct VisaHistoryView: View {
     
     public var body: some View {
         NavigationStack {
-            VisaApplicationHeader()
-                .environmentObject(viewModel)
-            
-            ScrollView {
-                VStack {
-                    if viewModel.hasData {
-                        ApplicationSection(title: "Belum selesai")
-                            .padding(.horizontal, 20)
-                            .environmentObject(viewModel)
-                        ApplicationSection(title: "Riwayat")
-                            .padding(.horizontal, 20)
-                            .environmentObject(viewModel)
-                    } else {
-                        EmptyStateView()
+            VStack {
+                VisaApplicationHeader()
+                    .environmentObject(viewModel)
+                ScrollView {
+                    VStack {
+                        if viewModel.hasData {
+                            ApplicationSection(title: "Belum selesai")
+                                .padding(.horizontal, 20)
+                                .environmentObject(viewModel)
+                            ApplicationSection(title: "Riwayat")
+                                .padding(.horizontal, 20)
+                                .environmentObject(viewModel)
+                        } else {
+                            EmptyStateView()
+                        }
                     }
                 }
-            }
-            .onAppear {
-                viewModel.visaType = ""
-                viewModel.countries.removeAll()
-                viewModel.fetchVisaHistoryInProgressData()
-                viewModel.fetchVisaHistoryCompletedData()
+                .onAppear {
+                    viewModel.visaType = ""
+                    viewModel.countries.removeAll()
+                    viewModel.fetchVisaHistoryInProgressData()
+                    viewModel.fetchVisaHistoryCompletedData()
+                }
+                .sheet(isPresented: $viewModel.isShowChooseCountrySheet) {
+                    CountrySelectionSheetView(
+                        onDismiss: {
+                            viewModel.isShowChooseCountrySheet = false
+                        }
+                    )
+                    .environmentObject(viewModel)
+                    .presentationDragIndicator(.visible)
+                    
+                }
+                .navigationDestination(isPresented: $viewModel.isShowCountryApplicationView) {
+                    CountryVisaApplicationView(countrySelected: viewModel.countryVisa, visaType: viewModel.visaType, countries: viewModel.countries)
+                        .navigationBarBackButtonHidden()
+                }
             }
             .ignoresSafeArea(edges: .all)
-            .sheet(isPresented: $viewModel.isShowChooseCountrySheet) {
-                CountrySelectionSheetView(
-                    onDismiss: {
-                        viewModel.isShowChooseCountrySheet = false
-                    }
-                )
-                .environmentObject(viewModel)
-                .presentationDragIndicator(.visible)
-                
-            }
-            .navigationDestination(isPresented: $viewModel.isShowCountryApplicationView) {
-                CountryVisaApplicationView(countrySelected: viewModel.countryVisa, visaType: viewModel.visaType, countries: viewModel.countries)
-                    .navigationBarBackButtonHidden()
-            }
         }
     }
 }
