@@ -122,7 +122,7 @@ public struct CountryVisaApplicationView: View {
                 .sheet(isPresented: $viewModel.isItinerary) { ItineraryListSheet() }
                     .presentationDragIndicator(.visible)
                 .sheet(isPresented: $viewModel.isShowPreviewVisaApplicationForm) {
-                    PDFPreviewSheet(trip: trip) }
+                    PDFPreviewSheet(trip: viewModel.trip) }
                     .presentationDragIndicator(.visible)
                 .sheet(isPresented: $viewModel.isShowJSONDownload) { JSONPreviewSheet() }
                     .presentationDragIndicator(.visible)
