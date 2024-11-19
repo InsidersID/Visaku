@@ -31,7 +31,7 @@ struct CountrySelectionCard: View {
                         .padding(.bottom)
                     
                     if showCalendar {
-                        DatePickerCalendar(startDate: $countryData.startDate, endDate: $countryData.endDate)
+                        DatePickerCalendar(startDate: $countryData.startDate, endDate: $countryData.endDate, excludedDateRanges: viewModel.excludedDateRanges)
                             .padding(.bottom)
                     }
                     

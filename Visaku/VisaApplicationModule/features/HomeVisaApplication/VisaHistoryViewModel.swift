@@ -21,6 +21,15 @@ public class VisaHistoryViewModel: ObservableObject {
     
     @Published var navigationToCountryVisaApplication: Bool = false
     
+    var excludedDateRanges: [(start: Date, end: Date)] {
+        countries.compactMap { country in
+            guard let startDate = country.startDate, let endDate = country.endDate else {
+                return nil
+            }
+            return (start: startDate, end: endDate)
+        }
+    }
+    
     var hasData: Bool {
         (tripCompleteList?.isEmpty ?? true) == false || (tripUncompleteList?.isEmpty ?? true) == false
     }
