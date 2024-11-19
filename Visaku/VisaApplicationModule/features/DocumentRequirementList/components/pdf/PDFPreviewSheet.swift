@@ -254,6 +254,7 @@ public struct PDFPreviewSheet: View {
             
             for annotation in page.annotations {
                 guard let fieldName = annotation.fieldName else { continue }
+                annotation.fontColor = .black
                 print(fieldName)
                 // Check if field exists in the dictionary and process based on field type
                  if let fieldValue = sampleData[fieldName] {
