@@ -107,14 +107,15 @@ public struct PDFPreviewSheet: View {
         // Define the dictionary of form field names and their corresponding values
         let applicantPhoto = UIImage(systemName: "square.and.arrow.up")
         
+        let placeDateOfBirth = Helper.parseIdentityData(trip?.account?.identityCard?.placeDateOfBirth ?? "JAKARTA, 01-01-1990")
         
         let sampleData: [String: Any] = [
             "applicantSurname": trip?.account?.identityCard?.name ?? "Name",
             "applicantSurnameAtBirth": trip?.account?.identityCard?.name ?? "Surname at Birth",
             "applicantFirstname": trip?.account?.identityCard?.name ?? "First Name",
-            "applicantDateOfBirth": trip?.account?.identityCard?.placeDateOfBirth ?? "Date of Birth",
-            "applicantPlaceOfBirth": trip?.account?.identityCard?.placeDateOfBirth ?? "Place of Birth",
-            "applicantCountryOfBirth": trip?.account?.identityCard?.placeDateOfBirth ?? "Date of Birth",
+            "applicantDateOfBirth": placeDateOfBirth?.dateOfBirth ?? "Date of Birth",
+            "applicantPlaceOfBirth": placeDateOfBirth?.placeOfBirth ?? "Place of Birth",
+            "applicantCountryOfBirth": trip?.account?.identityCard?.nationality ?? "Country of Birth",
             "applicantNationality": trip?.account?.identityCard?.nationality ?? "Nationality",
             "applicantNationalityAtBirth": trip?.account?.identityCard?.countryBorn ?? "Nationality at Birth",
             "applicantNationalityOther": "",
