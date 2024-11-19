@@ -32,33 +32,84 @@ enum TabbedItems: Int, CaseIterable{
 
 struct TabBarView: View {
     @State var selectedTab = 0
+    @State var viewModel = TabBarViewModel()
     
     var body: some View {
-        
-        GeometryReader { proxy in
-            ZStack {
-                TabView(selection: $selectedTab) {
-                    VisaHistoryView()
-                        .tag(0)
+        if viewModel.isUnlocked {
+            GeometryReader { proxy in
+                ZStack {
+                    TabView(selection: $selectedTab) {
+                        VisaHistoryView()
+                            .tag(0)
+                        
+                        ProfileView()
+                            .tag(1)
+                    }
                     
-                    ProfileView()
-                        .tag(1)
-                }
-                
-                ZStack{
-                    HStack(spacing: proxy.size.width*0.4){
-                        ForEach((TabbedItems.allCases), id: \.self){ item in
-                            CustomTabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))
-                                .onTapGesture {
-                                    selectedTab = item.rawValue
-                                }
+                    ZStack{
+                        HStack(spacing: proxy.size.width*0.4){
+                            ForEach((TabbedItems.allCases), id: \.self){ item in
+                                CustomTabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))
+                                    .onTapGesture {
+                                        selectedTab = item.rawValue
+                                    }
+                            }
                         }
                     }
+                    .frame(width: proxy.size.width, height: proxy.size.height, alignment: .bottom)
                 }
-                .frame(width: proxy.size.width, height: proxy.size.height, alignment: .bottom)
             }
+            .ignoresSafeArea()
+        } else {
+            idleView
+                .onTapGesture {
+                    viewModel.authenticate()
+                }
         }
-        .ignoresSafeArea()
+    }
+    
+    private var idleView: some View {
+        VStack {
+            GeometryReader { proxy in
+                ZStack {
+                    Color.tertiary7.ignoresSafeArea()
+                    
+                    Circle()
+                        .frame(width: 400)
+                        .foregroundStyle(Color.primary3)
+                        .position(x: 119, y: 743)
+                    
+                    VStack {
+                        Spacer()
+                        
+                        Image("personPlane")
+                            .resizable()
+                            .scaledToFit()
+                            .offset(x: 0, y: 20)
+                    }
+                    
+                    VStack {
+                        Image("logoVisaku")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 99)
+                        
+                        Text("Visaku")
+                            .font(.custom("Poppins-Bold", size: 32))
+                            .foregroundStyle(Color.tertiary1)
+                        
+                        Spacer()
+                            .frame(height: 420)
+                        
+                        Text("Buka perangkat")
+                            .font(.custom("Inter-Regular", size: 14))
+                            .foregroundStyle(Color.stayBlack)
+                    }
+                    .padding(.top, 80)
+                }
+            }
+            .ignoresSafeArea()
+        }
     }
 }
 
