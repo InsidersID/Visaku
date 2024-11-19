@@ -10,12 +10,22 @@ import RepositoryModule
 
 @main
 struct VisakuApp: App {
+    
+    let manager = FirstTimeUseManager()
+
     var body: some Scene {
         WindowGroup {
-            TabBarView()
-                .task {
-                    SwiftDataContextManager()
-                }
+            if manager.checkAndSetFirstUse() {
+                SplashScreen()
+                    .task {
+                        SwiftDataContextManager()
+                    }
+            } else {
+                TabBarView()
+                    .task {
+                        SwiftDataContextManager()
+                    }
+            }
         }
     }
 }
