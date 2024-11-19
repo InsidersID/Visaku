@@ -147,3 +147,7 @@ public class ProfileViewModel {
     }
 }
 
+struct IdentifiableImage: Identifiable, Equatable {
+    var id = UUID()
+    var image: UIImage
+}
