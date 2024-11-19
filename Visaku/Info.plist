@@ -27,6 +27,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Fitur kamera digunakan untuk mengambil dan memproses dokumenmu. Tenang saja, gambar dokumenmu tidak akan dikirim keluar dari perangkatmu.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Harap buka kunci perangkat untuk mengakses aplikasi</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter-Black.ttf</string>
