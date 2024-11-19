@@ -32,6 +32,8 @@ public struct VisaHistoryView: View {
                 }
             }
             .onAppear {
+                viewModel.visaType = ""
+                viewModel.countries.removeAll()
                 viewModel.fetchVisaHistoryInProgressData()
                 viewModel.fetchVisaHistoryCompletedData()
             }

@@ -127,24 +127,24 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     
     public func saveTripData(visaType: String, countrySelected: String, countries: [CountryData]) {
         guard trip == nil else { return }
-        var newTrip = TripEntity(id: UUID().uuidString, visaType: visaType, country: countrySelected, contries: countries)
-        
         if let visaTypeEnum = VisaType(rawValue: visaType) {
-            let requirementsForCountry = VisaGeneralTouristDocumentType.getRequirements(for: visaTypeEnum, in: countrySelected)
-            print("Fetched Requirements: \(String(describing: requirementsForCountry))")
-            newTrip.visaRequirements = requirementsForCountry
-        }
-        
-        Task {
-            let isSuccess = try await tripUseCase.save(param: newTrip)
-            if isSuccess {
-                DispatchQueue.main.async {
-                    print("Trip saved successfully with id: \(newTrip.visaRequirements)")
-                    self.trip = newTrip
-                    self.isNotificationVisible = true
+            Task {
+                var newTrip = TripEntity(id: UUID().uuidString, visaType: visaType, country: countrySelected, contries: countries)
+                
+                let requirementsForCountry = VisaGeneralTouristDocumentType.getRequirements(for: visaTypeEnum, in: countrySelected)
+                print("Fetched Requirements: \(String(describing: requirementsForCountry))")
+                newTrip.visaRequirements = requirementsForCountry
+                let isSuccess = try await tripUseCase.save(param: newTrip)
+                if isSuccess {
+                    DispatchQueue.main.async {
+                        print("Trip saved successfully with id: \(newTrip.visaRequirements)")
+                        self.trip = newTrip
+                        self.isNotificationVisible = true
+                    }
+                    try await tripUseCase.update(param: newTrip)
+                } else {
+                    print("Failed to save trip")
                 }
-            } else {
-                print("Failed to save trip")
             }
         }
     }
@@ -210,6 +210,19 @@ public class CountryVisaApplicationViewModel: ObservableObject {
             }
         } catch {
             print("Failed to update trip: \(error.localizedDescription)")
+        }
+    }
+    
+    func deleteTrip() async {
+        if let tripId = trip?.id {
+            do {
+                let isSuccess = try await tripUseCase.delete(id: tripId)
+                if isSuccess {
+                    self.trip = nil
+                }
+            } catch {
+                print("Failed to delete trip: \(error.localizedDescription)")
+            }
         }
     }
 }

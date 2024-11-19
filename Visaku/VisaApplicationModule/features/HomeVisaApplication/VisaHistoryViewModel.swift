@@ -27,6 +27,7 @@ public class VisaHistoryViewModel: ObservableObject {
     
     @Published var isShowChooseCountrySheet: Bool = false
     @Published var countries: [CountryData] = []
+    
     var countryVisa: String {
         guard let longestCountry = countries.max(by: { ($0.endDate?.timeIntervalSince($0.startDate ?? Date()) ?? 0) <
             ($1.endDate?.timeIntervalSince($1.startDate ?? Date()) ?? 0) })
@@ -35,6 +36,14 @@ public class VisaHistoryViewModel: ObservableObject {
         }
         return longestCountry.name
     }
+    
+    var filteredSchengenCountries: [String] {
+        Countries.schengenCountryList.filter { schengenCountry in
+            !countries.contains { $0.name == schengenCountry } &&
+            (countrySearchKeyword.isEmpty || schengenCountry.localizedCaseInsensitiveContains(countrySearchKeyword))
+        }
+    }
+    
     @Published var countryKeyword: String = ""
     @Published var isSchengenCountryChosen: Bool = false
     @Published var visaType: String = ""

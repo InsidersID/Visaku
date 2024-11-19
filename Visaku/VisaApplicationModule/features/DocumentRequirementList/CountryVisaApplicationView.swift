@@ -27,6 +27,11 @@ public struct CountryVisaApplicationView: View {
         self.countrySelected = countrySelected
         self.visaType = visaType
         self.countries = countries
+        if trip != nil {
+            self.visaType = trip?.visaType
+            self.countrySelected = trip?.country
+            self.countries = trip?.countries
+        }
         self._viewModel = StateObject(wrappedValue: CountryVisaApplicationViewModel(trip: trip))
     }
     
@@ -228,7 +233,13 @@ public struct CountryVisaApplicationView: View {
     }
     
     private var cancelButton: some View {
-        CustomButton(text: "Batalkan Pengajuan", textColor: .danger4, color: .clear, font: "Inter-SemiBold", fontSize: 17) {}
+        CustomButton(text: "Batalkan Pengajuan", textColor: .danger4, color: .clear, font: "Inter-SemiBold", fontSize: 17) {
+            Task {
+                await viewModel.deleteTrip()
+                dismiss()
+            }
+            
+        }
             .padding()
     }
     
