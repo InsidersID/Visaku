@@ -10,12 +10,22 @@ import RepositoryModule
 
 @main
 struct VisakuApp: App {
+    
+    let manager = AgreementManager()
+
     var body: some Scene {
         WindowGroup {
-            TabBarView()
-                .task {
-                    SwiftDataContextManager()
-                }
+            if manager.checkAgreement() {
+                SplashScreen()
+                    .task {
+                        SwiftDataContextManager()
+                    }
+            } else {
+                TabBarView()
+                    .task {
+                        SwiftDataContextManager()
+                    }
+            }
         }
     }
 }
