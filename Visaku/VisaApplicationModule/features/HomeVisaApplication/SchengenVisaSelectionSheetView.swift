@@ -69,6 +69,7 @@ struct SchengenVisaSelectionSheetView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         onDismiss()
+                        viewModel.countries.removeAll()
                     }) {
                         Image(systemName: "xmark")
                             .imageScale(.medium)
@@ -81,9 +82,6 @@ struct SchengenVisaSelectionSheetView: View {
                             )
                     }
                 }
-            }
-            .onDisappear {
-                viewModel.countries.removeAll()
             }
             .onChange(of: viewModel.areAllCountriesFilledAndVisaTypeIsEmpty) {
                 viewModel.showContinueSheet = true

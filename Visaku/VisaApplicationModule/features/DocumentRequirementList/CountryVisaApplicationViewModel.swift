@@ -17,6 +17,7 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     
     init(trip: TripEntity? = nil) {
         self.trip = trip
+        print(trip)
     }
     
     var completionPercentage: Double {
@@ -120,23 +121,23 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     
     public func saveTripData(visaType: String, countrySelected: String, countries: [CountryData]) {
         guard trip == nil else { return }
-        var newTrip = TripEntity(id: UUID().uuidString, visaType: visaType, country: countrySelected, contries: countries)
-        
         if let visaTypeEnum = VisaType(rawValue: visaType) {
-            let requirementsForCountry = VisaGeneralTouristDocumentType.getRequirements(for: visaTypeEnum, in: countrySelected)
-            print("Fetched Requirements: \(String(describing: requirementsForCountry))")
-            newTrip.visaRequirements = requirementsForCountry
-        }
-        
-        Task {
-            let isSuccess = try await tripUseCase.save(param: newTrip)
-            if isSuccess {
-                DispatchQueue.main.async {
-                    print("Trip saved successfully with id: \(newTrip.visaRequirements)")
-                    self.trip = newTrip
+            Task {
+                var newTrip = TripEntity(id: UUID().uuidString, visaType: visaType, country: countrySelected, contries: countries)
+                
+                let requirementsForCountry = VisaGeneralTouristDocumentType.getRequirements(for: visaTypeEnum, in: countrySelected)
+                print("Fetched Requirements: \(String(describing: requirementsForCountry))")
+                newTrip.visaRequirements = requirementsForCountry
+                let isSuccess = try await tripUseCase.save(param: newTrip)
+                if isSuccess {
+                    DispatchQueue.main.async {
+                        print("Trip saved successfully with id: \(newTrip.visaRequirements)")
+                        self.trip = newTrip
+                    }
+                    try await tripUseCase.update(param: newTrip)
+                } else {
+                    print("Failed to save trip")
                 }
-            } else {
-                print("Failed to save trip")
             }
         }
     }
