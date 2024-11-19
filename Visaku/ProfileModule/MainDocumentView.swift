@@ -135,7 +135,13 @@ public struct MainDocumentView: View {
                     }
                 }
             }
-
+            .onReceive(NotificationCenter.default.publisher(for: .accountUsernameUpdated)) { notification in
+                Task {
+                    if let updatedAccountID = notification.object as? String, updatedAccountID == account.id {
+                        await profileViewModel.fetchAccountByID(account.id)
+                    }
+                }
+            }
             .sheet(item: $profileViewModel.selectedDocument, content: { document in
                 DocumentDetailsView(document: document.name, account: account)
                     .presentationDragIndicator(.visible)
@@ -186,6 +192,9 @@ public struct MainDocumentView: View {
                     .onAppear {
                         profileViewModel.username = account.username
                     }
+                    .onDisappear {
+                        NotificationCenter.default.post(name: .accountImageUpdated, object: account.id)
+                    }
             }
             .fullScreenCover(isPresented: $profileViewModel.isDeleteProfile, content: {
                 CustomAlert(title: "Hapus profil?", caption: "Jika dokumen dihapus, semua data akan hilang secara otomatis.", button1: "Hapus", button2: "Batal") {
@@ -227,6 +236,7 @@ public struct MainDocumentView: View {
 
 extension Notification.Name {
     static let accountImageUpdated = Notification.Name("accountImageUpdated")
+    static let accountUsernameUpdated = Notification.Name("accountUsernameUpdated")
 }
 
 #Preview {
