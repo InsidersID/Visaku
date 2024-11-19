@@ -32,6 +32,7 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     @Published var isIdentity: Bool = false
 //    @Published var selectedIdentity: AccounselectedAccounttEntity?
     @Published var showDocumentDetail: Bool = false
+    @Published var isNotificationVisible: Bool = false
     
     @Published var hasOtherResidence: String? = ""
     @Published var residenceType: String = ""
@@ -118,6 +119,12 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     @Published var isShowPreviewVisaApplicationForm: Bool = false
     @Published var isShowJSONDownload: Bool = false
     
+    func startNotificationTimer() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.isNotificationVisible = false
+        }
+    }
+    
     public func saveTripData(visaType: String, countrySelected: String, countries: [CountryData]) {
         guard trip == nil else { return }
         var newTrip = TripEntity(id: UUID().uuidString, visaType: visaType, country: countrySelected, contries: countries)
@@ -134,6 +141,7 @@ public class CountryVisaApplicationViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     print("Trip saved successfully with id: \(newTrip.visaRequirements)")
                     self.trip = newTrip
+                    self.isNotificationVisible = true
                 }
             } else {
                 print("Failed to save trip")
