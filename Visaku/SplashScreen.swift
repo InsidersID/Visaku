@@ -54,7 +54,7 @@ struct SplashScreen: View {
             }
             .ignoresSafeArea()
             .navigationDestination(isPresented: $navigateToPrivacyPolicy) {
-                TabBarView()
+                PrivacyPolicyView()
                     .navigationBarBackButtonHidden()
             }
         }
