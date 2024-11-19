@@ -41,7 +41,7 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     
     @Published var mainTravelPurpose: String? = ""
     @Published var additionalTravelPurpose: String? = ""
-    
+    @Published var mainCountriesDestination: String = ""
     @Published var visaEntryCount: String? = ""
     @Published var stayDuration: String = ""
     
@@ -61,46 +61,58 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     @Published var arrivalDate: Date? = nil
     @Published var departureDate: Date? = nil
     
-    @Published var invitationType: String? = ""
+    @Published var invitationDetailsName: String = ""
+    @Published var invitationDetailsEmail: String = ""
+    @Published var invitationDetailsPhoneNumber: String = ""
+    @Published var invitationDetailsAddress: String = ""
+    @Published var invitationDetailsProvince: String = ""
+    @Published var invitationDetailsLastName: String = ""
+    @Published var invitationDetailsOfficePhoneNumber: String = ""
     
-    @Published var hotelName: String = ""
-    @Published var hotelAddress: String = ""
-    @Published var hotelPostalCode: String = ""
-    @Published var hotelCity: String = ""
-    @Published var hotelProvince: String = ""
-    @Published var hotelPhoneNumber: String = ""
-    @Published var hotelFaxNumber: String = ""
-    @Published var hotelEmail: String = ""
+//    @Published var invitationType: String? = ""
     
-    @Published var inviterFirstName: String = ""
-    @Published var inviterLastName: String = ""
-    @Published var inviterDOB: Date? = nil
-    @Published var inviterAddress: String = ""
-    @Published var inviterPostalCode: String = ""
-    @Published var inviterCity: String = ""
-    @Published var inviterProvince: String = ""
-    @Published var inviterPhoneNumber: String = ""
-    @Published var inviterFaxNumber: String = ""
-    @Published var inviterEmail: String = ""
+//    @Published var hotelName: String = ""
+//    @Published var hotelAddress: String = ""
+//    @Published var hotelPostalCode: String = ""
+//    @Published var hotelCity: String = ""
+//    @Published var hotelProvince: String = ""
+//    @Published var hotelPhoneNumber: String = ""
+//    @Published var hotelFaxNumber: String = ""
+//    @Published var hotelEmail: String = ""
+//    
+//    @Published var inviterFirstName: String = ""
+//    @Published var inviterLastName: String = ""
+//    @Published var inviterDOB: Date? = nil
+//    @Published var inviterAddress: String = ""
+//    @Published var inviterPostalCode: String = ""
+//    @Published var inviterCity: String = ""
+//    @Published var inviterProvince: String = ""
+//    @Published var inviterPhoneNumber: String = ""
+//    @Published var inviterFaxNumber: String = ""
+//    @Published var inviterEmail: String = ""
+//    
+//    @Published var companyName: String = ""
+//    @Published var companyAddress: String = ""
+//    @Published var companyPostalCode: String = ""
+//    @Published var companyCity: String = ""
+//    @Published var companyProvince: String = ""
+//    @Published var companyPhoneNumber: String = ""
+//    @Published var companyFaxNumber: String = ""
+//    @Published var companyEmail: String = ""
+//    @Published var companyRepresentativeFirstName: String = ""
+//    @Published var companyRepresentativeLastName: String = ""
+//    @Published var companyRepresentativeAddress: String = ""
+//    @Published var companyRepresentativePhoneNumber: String = ""
+//    @Published var companyRepresentativeFaxNumber: String = ""
+//    @Published var companyRepresentativeEmail: String = ""
     
-    @Published var companyName: String = ""
-    @Published var companyAddress: String = ""
-    @Published var companyPostalCode: String = ""
-    @Published var companyCity: String = ""
-    @Published var companyProvince: String = ""
-    @Published var companyPhoneNumber: String = ""
-    @Published var companyFaxNumber: String = ""
-    @Published var companyEmail: String = ""
-    @Published var companyRepresentativeFirstName: String = ""
-    @Published var companyRepresentativeLastName: String = ""
-    @Published var companyRepresentativeAddress: String = ""
-    @Published var companyRepresentativePhoneNumber: String = ""
-    @Published var companyRepresentativeFaxNumber: String = ""
-    @Published var companyRepresentativeEmail: String = ""
-    
+    @Published var isSponsored: String? = ""
     @Published var travelPayer: String? = ""
+    @Published var otherSponsor: String = ""
+
     @Published var livingCostForm: String? = ""
-    
+    @Published var otherLivingCostForm: String = ""
+
     @Published var euFamilyLastName: String = ""
     @Published var euFamilyFirstName: String = ""
     @Published var euFamilyBirthDate: Date? = nil
