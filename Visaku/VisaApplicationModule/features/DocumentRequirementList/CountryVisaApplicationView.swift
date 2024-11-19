@@ -14,6 +14,7 @@ public struct CountryVisaApplicationView: View {
     var countrySelected: String?
     var visaType: String?
     var countries: [CountryData]?
+    @State var isNotificationVisible: Bool = false
     
     var trip: TripEntity?
     
@@ -26,13 +27,11 @@ public struct CountryVisaApplicationView: View {
         self.countrySelected = countrySelected
         self.visaType = visaType
         self.countries = countries
-
         if trip != nil {
             self.visaType = trip?.visaType
             self.countrySelected = trip?.country
             self.countries = trip?.countries
         }
-        
         self._viewModel = StateObject(wrappedValue: CountryVisaApplicationViewModel(trip: trip))
     }
     
@@ -48,7 +47,6 @@ public struct CountryVisaApplicationView: View {
             ZStack {
                 Color.clear.ignoresSafeArea()
                 ScrollView {
-                    
                     VStack {
                         progressGauge
                             .padding(.top)
@@ -99,7 +97,6 @@ public struct CountryVisaApplicationView: View {
                         }
                     }
                 }
-//                .toolbar { backButton }
                 .onAppear {
                     if let visaType = visaType, let countrySelected = countrySelected, let countries = countries {
                         viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries)
@@ -136,9 +133,14 @@ public struct CountryVisaApplicationView: View {
                 .sheet(isPresented: $isItinerary) { ItineraryListSheet() }
                 .fullScreenCover(isPresented: $isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
                 
-                NotificationCard()
-                    .offset(x: 40)
-                    .padding(.horizontal)
+                if viewModel.isNotificationVisible {
+                    NotificationCard()
+                        .offset(x: 40)
+                        .padding(.horizontal)
+                        .onAppear {
+                            viewModel.startNotificationTimer()
+                        }
+                }
             }
         }
         
