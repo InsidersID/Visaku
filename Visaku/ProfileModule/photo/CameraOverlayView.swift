@@ -10,6 +10,7 @@ import SwiftUI
 struct CameraOverlayView: View {
     @Binding var goToCamera: Bool
     @ObservedObject var cameraState: CameraState
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack {
@@ -78,7 +79,7 @@ struct CameraOverlayView: View {
             if !cameraState.isCameraFeedReady {
                 HStack {
                     Text("Menunggu kamera diaktifkan... ")
-                        .foregroundStyle(.black)
+                        .foregroundStyle(colorScheme == .dark ? .white : .black)
                         .font(.system(size: 18, weight: .medium))
                     
                     Image(systemName: "hourglass")
@@ -88,19 +89,19 @@ struct CameraOverlayView: View {
                 if !cameraState.isFocused {
                     HStack {
                         Text("Kamera masih blur")
-                            .foregroundStyle(.red)
+                            .foregroundStyle(colorScheme == .dark ? .danger5 : .red)
                             .font(.system(size: 18, weight: .medium))
                     }
                 } else if cameraState.offset < -0.1 {
                     HStack {
                         Text("Cahaya terlalu gelap")
-                            .foregroundStyle(.red)
+                            .foregroundStyle(colorScheme == .dark ? .danger5 : .red)
                             .font(.system(size: 18, weight: .medium))
                     }
                 } else if cameraState.isTakingImage {
                     HStack {
                         Text("Gambar lagi diambil... ")
-                            .foregroundStyle(.black)
+                            .foregroundStyle(colorScheme == .dark ? .white : .black)
                             .font(.system(size: 18, weight: .medium))
                         
                         Image(systemName: "hourglass")
@@ -109,7 +110,7 @@ struct CameraOverlayView: View {
                 } else {
                     HStack {
                         Text("Foto sesuai")
-                            .foregroundStyle(.black)
+                            .foregroundStyle(colorScheme == .dark ? .white : .black)
                             .font(.system(size: 18, weight: .medium))
                         
                         Image(systemName: "checkmark.circle.fill")
