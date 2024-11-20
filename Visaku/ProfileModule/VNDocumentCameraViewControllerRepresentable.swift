@@ -31,11 +31,18 @@ struct VNDocumentCameraViewControllerRepresentable: UIViewControllerRepresentabl
         func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
             if scan.pageCount > 0 {
                 let firstImage = scan.imageOfPage(at: 0)
-                scanResult = firstImage
+                DispatchQueue.main.async {
+                    self.scanResult = firstImage
+                    controller.dismiss(animated: true, completion: nil)
+                }
+                print("Scan successful. Image captured: \(firstImage)")
             } else {
-                scanResult = nil
+                DispatchQueue.main.async {
+                    self.scanResult = nil
+                    controller.dismiss(animated: true, completion: nil)
+                }
+                print("Scan completed but no pages were captured.")
             }
-            controller.dismiss(animated: true, completion: nil)
         }
         
         // Tells the delegate that the user canceled out of the document scanner camera.
