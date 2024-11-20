@@ -9,7 +9,7 @@ import SwiftUI
 import UIComponentModule
 
 public struct VisaHistoryView: View {
-    @StateObject var viewModel: VisaHistoryViewModel = VisaHistoryViewModel()
+    @EnvironmentObject var viewModel: VisaHistoryViewModel
     
     public var body: some View {
         NavigationStack {
