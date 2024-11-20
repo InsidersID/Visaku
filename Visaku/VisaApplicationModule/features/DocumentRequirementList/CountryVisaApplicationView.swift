@@ -56,26 +56,34 @@ public struct CountryVisaApplicationView: View {
                         
                         documentCards
                         
-                        if !viewModel.isShowConfirmation {
+                        if let isCompleted = viewModel.trip?.isCompleted, !isCompleted, viewModel.completionPercentage < 100 {
                             cancelButton
                             Rectangle()
                                 .frame(width: .infinity, height: 1)
-                                .foregroundStyle(Color.blackOpacity1)
-                        } else if !viewModel.isShowPrintDownloadButton {
-                            Rectangle()
-                                .frame(width: .infinity, height: 1)
-                                .foregroundStyle(Color.blackOpacity1)
-                                .padding(.vertical, 4)
-                            confirmationButton
-                        } else {
-                            Rectangle()
-                                .frame(width: .infinity, height: 1)
-                                .foregroundStyle(Color.blackOpacity1)
-                                .padding(.vertical, 4)
+                                .foregroundStyle(Color.black.opacity(0.1))
+                        } else if viewModel.trip?.isCompleted == true {
                             printButton
                             downloadPDFButton
                             downloadJSONButton
+                        } else {
+                            confirmationButton
                         }
+                        
+//                        if !viewModel.isShowConfirmation {
+//                            
+//                        } else if !viewModel.isShowPrintDownloadButton {
+//                            Rectangle()
+//                                .frame(width: .infinity, height: 1)
+//                                .foregroundStyle(Color.blackOpacity1)
+//                                .padding(.vertical, 4)
+//                            confirmationButton
+//                        } else {
+//                            Rectangle()
+//                                .frame(width: .infinity, height: 1)
+//                                .foregroundStyle(Color.blackOpacity1)
+//                                .padding(.vertical, 4)
+//                            
+//                        }
                     }
                 }
                 .navigationBarTitleDisplayMode(.inline)
@@ -103,20 +111,6 @@ public struct CountryVisaApplicationView: View {
                     }
                 }
                 .onChange(of: viewModel.completionPercentage) { oldValue, newValue in completionHandler(newValue) }
-                .onChange(of: viewModel.isShowConfirmation) { oldValue, newValue in
-                    if newValue {
-                        print("isShowConfirmation is true")
-                        
-                        DispatchQueue.main.async {
-                            viewModel.showConfirmationButton = true
-                        }
-                    }
-                }
-                .onChange(of: viewModel.isShowPrintDownloadButton) { oldValue, newValue in
-                    if newValue {
-                        print("isShowPrintDownloadButton is true, showing print/download buttons")
-                    }
-                }
                 .sheet(isPresented: $viewModel.isIdentity) { ProfileView(isSelectProfile: true).environmentObject(viewModel) }
                     .presentationDragIndicator(.visible)
                 .sheet(isPresented: $viewModel.isItinerary) { ItineraryListSheet() }
@@ -126,9 +120,7 @@ public struct CountryVisaApplicationView: View {
                     .presentationDragIndicator(.visible)
                 .sheet(isPresented: $viewModel.isShowJSONDownload) { JSONPreviewSheet() }
                     .presentationDragIndicator(.visible)
-                .fullScreenCover(isPresented: $viewModel.isPresentingConfirmationView, onDismiss: {
-                    viewModel.isShowPrintDownloadButton = true
-                }) { VisaApplicationFinishedView().environmentObject(viewModel) }
+                .fullScreenCover(isPresented: $viewModel.isPresentingConfirmationView) { VisaApplicationFinishedView().environmentObject(viewModel) }
                 .fullScreenCover(isPresented: $viewModel.isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
                 .sheet(isPresented: $isItinerary) { ItineraryListSheet() }
                 .fullScreenCover(isPresented: $isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
@@ -245,7 +237,7 @@ public struct CountryVisaApplicationView: View {
     
     private var confirmationButton: some View {
         CustomButton(text: "Konfirmasi", textColor: Color.stayWhite, color: .primary5, font: "Inter-SemiBold", fontSize: 17) {
-            viewModel.isPresentingConfirmationView = true
+            viewModel.confirmationButtonTapped()
         }
         .padding(.horizontal)
         .padding(.bottom)

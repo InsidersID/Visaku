@@ -62,10 +62,6 @@ struct ApplicationSection: View {
     
     var body: some View {
         VStack(spacing: 12) {
-            Text(title)
-                .font(.custom("Inter-SemiBold", size: 20))
-                .opacity(0.5)
-                .frame(maxWidth: .infinity, alignment: .leading)
             if title == "Belum selesai" {
                 switch viewModel.fetchVisaHistoryUncompleted {
                 case .idle:
@@ -75,7 +71,11 @@ struct ApplicationSection: View {
                 case .error:
                     Text("Something wrong")
                 case .success:
-                    if let visaHistoryUncompleted = viewModel.tripUncompleteList{
+                    if let visaHistoryUncompleted = viewModel.tripUncompleteList, !visaHistoryUncompleted.isEmpty {
+                        Text(title)
+                            .font(.custom("Inter-SemiBold", size: 20))
+                            .opacity(0.5)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         ForEach(visaHistoryUncompleted) { trip in
                             let tripData = TripDataUIModel(from: trip)
                             NavigationLink {
@@ -87,9 +87,11 @@ struct ApplicationSection: View {
                                 }
                             }
                         }
+                    } else {
+                        EmptyView()
                     }
                 }
-            } else if title == "Selesai" {
+            } else if title == "Riwayat" {
                 switch viewModel.fetchVisaHistoryCompleted {
                 case .idle:
                     Text("Idle")
@@ -98,7 +100,11 @@ struct ApplicationSection: View {
                 case .error:
                     Text("Something wrong")
                 case .success:
-                    if let visaHistoryCompleted = viewModel.tripCompleteList{
+                    Text(title)
+                        .font(.custom("Inter-SemiBold", size: 20))
+                        .opacity(0.5)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if let visaHistoryCompleted = viewModel.tripCompleteList, !visaHistoryCompleted.isEmpty{
                         ForEach(visaHistoryCompleted) { trip in
                             let tripData = TripDataUIModel(from: trip)
                             NavigationLink {

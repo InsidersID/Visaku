@@ -121,9 +121,7 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     @Published var euFamilyRelation: String? = ""
     
     // Application view navigation
-    @Published var showConfirmationButton: Bool = false
     @Published var isPresentingConfirmationView: Bool = false
-    @Published var isShowPrintDownloadButton: Bool = false
     @Published var isShowConfirmation: Bool = false
     @Published var isItinerary: Bool = false
     @Published var isFormApplication: Bool = false
@@ -144,12 +142,10 @@ public class CountryVisaApplicationViewModel: ObservableObject {
                 var newTrip = TripEntity(id: UUID().uuidString, visaType: visaType, country: countrySelected, contries: countries)
                 
                 let requirementsForCountry = VisaGeneralTouristDocumentType.getRequirements(for: visaTypeEnum, in: countrySelected)
-                print("Fetched Requirements: \(String(describing: requirementsForCountry))")
                 newTrip.visaRequirements = requirementsForCountry
                 let isSuccess = try await tripUseCase.save(param: newTrip)
                 if isSuccess {
                     DispatchQueue.main.async {
-                        print("Trip saved successfully with id: \(newTrip.visaRequirements)")
                         self.trip = newTrip
                         self.isNotificationVisible = true
                     }
@@ -234,6 +230,21 @@ public class CountryVisaApplicationViewModel: ObservableObject {
                 }
             } catch {
                 print("Failed to delete trip: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func confirmationButtonTapped() {
+        Task {
+            do {
+                guard var trip else { return }
+                trip.isCompleted = true
+                let isSuccess = try await tripUseCase.update(param: trip)
+                if isSuccess {
+                    self.trip = trip
+                }
+            } catch {
+                print("Failed to confirmation trip: \(error.localizedDescription)")
             }
         }
     }
