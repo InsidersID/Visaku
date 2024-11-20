@@ -4,114 +4,129 @@
 //
 //  Created by hendra on 18/10/24.
 //
-
 import SwiftUI
 import UIComponentModule
-import UIKit
 
 struct ItineraryListSheet: View {
     @Environment(\.dismiss) var dismiss
-    
+    let itinerary: Itinerary
+    @State var displayButtonsOnSheet = true
+    var onDismiss: () -> Void
+
     var body: some View {
-        VStack {
-            ScrollView {
-                CardContainer(cornerRadius: 24) {
-                    
-                    VStack(alignment: .leading) {
-                        Text("Day 1")
-                            .font(.largeTitle)
-                            .bold()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                        Text("Sep 22, 2024")
-                            .bold()
-                        Text("Pagi")
-                        Text("\u{2022} Duomo di Milano")
-                        Text("\u{2022} Galleria Vittorio Emanuele II")
-                        Text("Siang")
-                        Text("\u{2022} Mercato del Duomo")
-                        Text("Sore")
-                        Text("\u{2022} Teatro alla Scala")
-                        Text("Malam")
-                        Text("\u{2022} Antica Trattoria della Pesa")
+        NavigationView {
+            ZStack {
+                VStack {
+                    ScrollView {
+                        VStack {
+                            ForEach(Array(itinerary.days.enumerated()), id: \.element.day) { index, day in
+                                CardContainer(cornerRadius: 24) {
+                                    VStack(alignment: .leading) {
+                                        HStack {
+                                            Text("\(day.day)")
+                                                .font(.largeTitle)
+                                                .bold()
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                            Spacer()
+                                            Image(systemName: "pencil")
+                                                .font(.system(size: 20))
+                                            
+                                        }
+                                        Text("\(day.date)")
+                                            .bold()
+                                            .padding(.bottom, 5)
+                                        Text("Morning")
+                                        ForEach(day.activities.morning, id: \.self) { activity in
+                                            Text("• \(activity)")
+                                        }
+                                        Text("Afternoon")
+                                        ForEach(day.activities.afternoon, id: \.self) { activity in
+                                            Text("• \(activity)")
+                                        }
+                                        Text("Evening")
+                                        ForEach(day.activities.evening, id: \.self) { activity in
+                                            Text("• \(activity)")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        Spacer()
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.bottom, 150)
                 }
-                
-                CardContainer(cornerRadius: 24) {
-                    VStack(alignment: .leading) {
-                        Text("Day 2")
-                            .font(.largeTitle)
-                            .bold()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                        Text("Sep 22, 2024")
-                            .bold()
-                        Text("Pagi")
-                        Text("\u{2022} Duomo di Milano")
-                        Text("\u{2022} Galleria Vittorio Emanuele II")
-                        Text("Siang")
-                        Text("\u{2022} Mercato del Duomo")
-                        Text("Sore")
-                        Text("\u{2022} Teatro alla Scala")
-                        Text("Malam")
-                        Text("\u{2022} Antica Trattoria della Pesa")
+                VStack {
+                    Spacer()
+                    VStack(spacing: 5) {
+                        CustomButton(text: "Simpan", color: .blue, fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
+                        }
+                        CustomButton(text: "Generate ulang", textColor: .blue, color: .white, fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
+                        }
+                        .padding(.bottom, 15)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .padding()
+                    .background(.white)
                 }
-                CardContainer(cornerRadius: 24) {
-                    VStack(alignment: .leading) {
-                        Text("Day 3")
-                            .font(.largeTitle)
-                            .bold()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                        Text("Sep 22, 2024")
-                            .bold()
-                        Text("Pagi")
-                        Text("\u{2022} Duomo di Milano")
-                        Text("\u{2022} Galleria Vittorio Emanuele II")
-                        Text("Siang")
-                        Text("\u{2022} Mercato del Duomo")
-                        Text("Sore")
-                        Text("\u{2022} Teatro alla Scala")
-                        Text("Malam")
-                        Text("\u{2022} Antica Trattoria della Pesa")
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding()
-                }
+                .ignoresSafeArea(.all)
             }
-            .background(LinearGradient(gradient: Gradient(colors: [Color(red: 0.85, green: 0.96, blue: 0.98), Color(red: 0.99, green: 0.99, blue: 0.97)]), startPoint: .top, endPoint: .bottom))
-            
-            VStack {
-                VStack(spacing: 8) {
-                    CustomButton(text: "Simpan PDF", color: .blue, fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
-                        // Save PDF
-                    }
-                    
-                    CustomButton(text: "Generate Ulang",textColor: .blue, color: .white, fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
-                        // Generate Ulang
-                    }
+            .navigationBarBackButtonHidden()
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Itinerary")
+                        .font(.system(size: 24))
+                        .bold()
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
-            }
-        }
-        .navigationTitle("Itinerary")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    dismiss()
-                }) {
-                    Image(systemName: "x.circle")
-                        .font(.title)
-                        .foregroundColor(.blue)
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 17))
+                            .padding(10)
+                            .background(Circle().fill(Color.white))
+                            .foregroundColor(.black)
+                            .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                    }
                 }
             }
         }
     }
 }
 
+
+
+
 #Preview {
-    ItineraryListSheet()
+    @Previewable @State var itinerary = Itinerary(days: [
+        Day(
+            day: "Monday",
+            date: "2024-11-18",
+            activities: Activities(
+                morning: ["Visit museum", "Have breakfast at café"],
+                afternoon: ["Lunch at Italian restaurant", "Go hiking in the nearby trails"],
+                evening: ["Dinner at rooftop restaurant", "Watch a movie"]
+            )
+        ),
+        Day(
+            day: "Tuesday",
+            date: "2024-11-19",
+            activities: Activities(
+                morning: ["Morning yoga session", "Visit local market"],
+                afternoon: ["Picnic in the park", "Attend art gallery exhibition"],
+                evening: ["Fine dining experience", "Stargazing event"]
+            )
+        ),
+        Day(
+            day: "Wednesday",
+            date: "2024-11-19",
+            activities: Activities(
+                morning: ["Morning yoga session", "Visit local market"],
+                afternoon: ["Picnic in the park", "Attend art gallery exhibition"],
+                evening: ["Fine dining experience", "Stargazing event"]
+            )
+        )
+    ])
+
+    ItineraryListSheet(itinerary: itinerary, onDismiss: {})
 }
