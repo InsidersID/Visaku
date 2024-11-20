@@ -243,6 +243,9 @@ public class CountryVisaApplicationViewModel: ObservableObject {
                 if isSuccess {
                     self.trip = trip
                 }
+                DispatchQueue.main.async {
+                    self.isPresentingConfirmationView = false
+                }
             } catch {
                 print("Failed to confirmation trip: \(error.localizedDescription)")
             }
