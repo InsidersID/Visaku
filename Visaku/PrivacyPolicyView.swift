@@ -100,10 +100,10 @@ struct PrivacyPolicyView: View {
                 .foregroundStyle(Color.blackOpacity4)
                 .padding(.bottom)
             
-            Text("1.⁠ ⁠Informasi yang Kami Kumpulkan")
+            Text("1.⁠ ⁠Informasi yang Dibutuhkan untuk Menjalankan Layanan dalam Aplikasi Visaku")
                 .font(.custom("Inter-Bold", size: 16))
                 .foregroundStyle(Color.blackOpacity4)
-            Text("Kami mengumpulkan informasi yang diperlukan untuk menyediakan layanan di aplikasi Visaku, yang dapat dibagi menjadi dua kategori:")
+            Text("Aplikasi Visaku mengumpulkan informasi yang diperlukan untuk menyediakan layanan, yang dapat dibagi menjadi dua kategori:")
                 .font(.custom("Inter-Regular", size: 14))
                 .foregroundStyle(Color.blackOpacity4)
             Text("Data Identitas: Informasi yang diambil dari KTP, paspor, atau dokumen lain yang Anda unggah melalui aplikasi untuk pengisian otomatis formulir visa. Informasi ini dapat mencakup nama, tanggal lahir, nomor paspor, alamat, dan kewarganegaraan.")
