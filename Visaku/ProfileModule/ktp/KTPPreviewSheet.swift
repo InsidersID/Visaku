@@ -9,6 +9,8 @@ public struct KTPPreviewSheet: View {
     @Environment(\.dismiss) var dismiss
     var origin: KTPPreviewOrigin
     
+    @State private var ktpImage: UIImage?
+    
     public init(account: AccountEntity, selectedImage: UIImage? = nil, origin: KTPPreviewOrigin) {
         self.ktpPreviewViewModel = KTPPreviewViewModel(account: account)
         self.origin = origin
@@ -34,9 +36,17 @@ public struct KTPPreviewSheet: View {
                 .frame(maxWidth: .infinity)
             }
             .fullScreenCover(isPresented: $ktpPreviewViewModel.isCameraOpen) {
-                VNDocumentCameraViewControllerRepresentable(scanResult: $ktpPreviewViewModel.ktpImage)
-                    .ignoresSafeArea()
+                VNDocumentCameraViewControllerRepresentable(scanResult: $testImage)
             }
+            .onChange(of: ktpImage) { newImage in
+                if let unwrappedImage = newImage {
+                    ktpPreviewViewModel.ktpImage = unwrappedImage
+                }
+            }
+//            .fullScreenCover(isPresented: $ktpPreviewViewModel.isCameraOpen) {
+//                VNDocumentCameraViewControllerRepresentable(scanResult: $ktpPreviewViewModel.ktpImage)
+//                    .ignoresSafeArea()
+//            }
             .sheet(isPresented: $profileViewModel.isUploadImageForKTP) {
                 ImagePicker(selectedImage: $ktpPreviewViewModel.ktpImage)
             }
