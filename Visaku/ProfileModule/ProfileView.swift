@@ -4,7 +4,7 @@ import UIComponentModule
 
 public struct ProfileView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var profileViewModel = ProfileViewModel()
+    @Environment(ProfileViewModel.self) var profileViewModel
     @EnvironmentObject var visaViewModel: CountryVisaApplicationViewModel
     public var isSelectProfile: Bool
     
@@ -13,6 +13,8 @@ public struct ProfileView: View {
     }
     
     public var body: some View {
+        @Bindable var profileViewModel = profileViewModel
+        
         NavigationStack {
             ZStack {
                 ScrollView {
@@ -59,17 +61,6 @@ public struct ProfileView: View {
                         .environment(profileViewModel)
                         .clearModalBackground()
                 })
-                .navigationDestination(isPresented: $profileViewModel.navigateToMainDocuments) {
-                    if let account = profileViewModel.selectedAccount {
-                        MainDocumentView(name: account.username, accountId: account.id)
-                            .navigationBarBackButtonHidden()
-                            .environment(profileViewModel)
-                    }
-                }
-                
-                if profileViewModel.isAddingProfile {
-                    Color.blackOpacity3.ignoresSafeArea()
-                }
             }
         }
     }

@@ -33,38 +33,55 @@ enum TabbedItems: Int, CaseIterable{
 struct TabBarView: View {
     @State var selectedTab = 0
     @State var viewModel = TabBarViewModel()
+    @State var profileViewModel = ProfileViewModel()
+    @StateObject var visaViewModel = VisaHistoryViewModel()
     
     var body: some View {
-        if viewModel.isUnlocked {
-            GeometryReader { proxy in
-                ZStack {
-                    TabView(selection: $selectedTab) {
-                        VisaHistoryView()
-                            .tag(0)
+        NavigationStack {
+            if viewModel.isUnlocked {
+                GeometryReader { proxy in
+                    ZStack {
+                        TabView(selection: $selectedTab) {
+                            VisaHistoryView()
+                                .tag(0)
+                                .environmentObject(visaViewModel)
+                            
+                            ProfileView()
+                                .tag(1)
+                                .environment(profileViewModel)
+                        }
                         
-                        ProfileView()
-                            .tag(1)
-                    }
-                    
-                    ZStack{
-                        HStack(spacing: proxy.size.width*0.4){
-                            ForEach((TabbedItems.allCases), id: \.self){ item in
-                                CustomTabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))
-                                    .onTapGesture {
-                                        selectedTab = item.rawValue
-                                    }
+                        ZStack{
+                            HStack(spacing: proxy.size.width*0.4){
+                                ForEach((TabbedItems.allCases), id: \.self){ item in
+                                    CustomTabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))
+                                        .onTapGesture {
+                                            selectedTab = item.rawValue
+                                        }
+                                }
                             }
                         }
+                        .frame(width: proxy.size.width, height: proxy.size.height, alignment: .bottom)
+                        
+                        if profileViewModel.isAddingProfile {
+                            Color.blackOpacity3.ignoresSafeArea()
+                        }
                     }
-                    .frame(width: proxy.size.width, height: proxy.size.height, alignment: .bottom)
                 }
+                .ignoresSafeArea()
+                .navigationDestination(isPresented: $profileViewModel.navigateToMainDocuments) {
+                    if let account = profileViewModel.selectedAccount {
+                        MainDocumentView(name: account.username, accountId: account.id)
+                            .navigationBarBackButtonHidden()
+                            .environment(profileViewModel)
+                    }
+                }
+            } else {
+                idleView
+                    .onTapGesture {
+                        viewModel.authenticate()
+                    }
             }
-            .ignoresSafeArea()
-        } else {
-            idleView
-                .onTapGesture {
-                    viewModel.authenticate()
-                }
         }
     }
     
@@ -108,7 +125,6 @@ struct TabBarView: View {
                     .padding(.top, 80)
                 }
             }
-            .ignoresSafeArea()
         }
     }
 }
