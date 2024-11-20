@@ -214,7 +214,7 @@ public struct MainDocumentView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Profil")
-                        .foregroundStyle(profileViewModel.isDeleteProfile || profileViewModel.isShowingEditProfile ? Color.white.opacity(0.25) : Color.white)
+                        .foregroundStyle(profileViewModel.isDeleteProfile || profileViewModel.isShowingEditProfile ? Color.stayWhite.opacity(0.25) : Color.stayWhite)
                         .font(Font.custom("Inter-SemiBold", size: 24))
                 }
                 ToolbarItem(placement: .topBarLeading) {
@@ -224,7 +224,7 @@ public struct MainDocumentView: View {
                         Image(systemName: "chevron.left.circle")
                             .resizable()
                             .frame(width: 40, height: 40)
-                            .foregroundStyle(profileViewModel.isDeleteProfile || profileViewModel.isShowingEditProfile ? Color.white.opacity(0.25) : Color.white)
+                            .foregroundStyle(profileViewModel.isDeleteProfile || profileViewModel.isShowingEditProfile ? Color.stayWhite.opacity(0.25) : Color.stayWhite)
                             .fontWeight(.light)
                     }
                 }

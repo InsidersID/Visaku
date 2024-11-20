@@ -121,7 +121,9 @@ public class VisaHistoryViewModel: ObservableObject {
                 let data = try await fetchVisaHistory(isCompleted: false)
                 DispatchQueue.main.async {
                     self.tripUncompleteList = data
-                    print(data?.last)
+                    if let data = data {
+                        print(data.isEmpty)
+                    }
                     self.fetchVisaHistoryUncompleted = .success
                 }
             } catch {
