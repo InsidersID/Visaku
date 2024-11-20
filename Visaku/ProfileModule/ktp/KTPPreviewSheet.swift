@@ -36,7 +36,7 @@ public struct KTPPreviewSheet: View {
                 .frame(maxWidth: .infinity)
             }
             .fullScreenCover(isPresented: $ktpPreviewViewModel.isCameraOpen) {
-                VNDocumentCameraViewControllerRepresentable(scanResult: $testImage)
+                VNDocumentCameraViewControllerRepresentable(scanResult: $ktpImage)
             }
             .onChange(of: ktpImage) { newImage in
                 if let unwrappedImage = newImage {
