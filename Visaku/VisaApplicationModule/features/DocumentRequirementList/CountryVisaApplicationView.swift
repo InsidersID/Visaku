@@ -39,7 +39,6 @@ public struct CountryVisaApplicationView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CountryVisaApplicationViewModel
     @State private var isShowPrintSheet = false
-    @State private var isItinerary = false
     @State private var isFormApplication = false
     
     public var body: some View {
@@ -59,7 +58,7 @@ public struct CountryVisaApplicationView: View {
                         if let isCompleted = viewModel.trip?.isCompleted, !isCompleted, viewModel.completionPercentage < 100 {
                             cancelButton
                             Rectangle()
-                                .frame(width: .infinity, height: 1)
+                                .frame(maxWidth: .infinity, maxHeight: 1)
                                 .foregroundStyle(Color.black.opacity(0.1))
                         } else if viewModel.trip?.isCompleted == true {
                             printButton
@@ -112,9 +111,11 @@ public struct CountryVisaApplicationView: View {
                 }
                 .onChange(of: viewModel.completionPercentage) { oldValue, newValue in completionHandler(newValue) }
                 .sheet(isPresented: $viewModel.isIdentity) { ProfileView(isSelectProfile: true).environmentObject(viewModel) }
-                    .presentationDragIndicator(.visible)
-                    .sheet(isPresented: $viewModel.isItinerary) { ItineraryDocumentSheet(handlePickedPDF: {_ in }) }
-                    .presentationDragIndicator(.visible)
+                .presentationDragIndicator(.visible)
+                .sheet(isPresented: $viewModel.isItinerary) {
+                    ItineraryActionSheet()
+                        .environmentObject(viewModel)
+                }
                 .sheet(isPresented: $viewModel.isShowPreviewVisaApplicationForm) {
                     PDFPreviewSheet(trip: viewModel.trip) }
                     .presentationDragIndicator(.visible)
@@ -122,7 +123,6 @@ public struct CountryVisaApplicationView: View {
                     .presentationDragIndicator(.visible)
                 .fullScreenCover(isPresented: $viewModel.isPresentingConfirmationView) { VisaApplicationFinishedView().environmentObject(viewModel) }
                 .fullScreenCover(isPresented: $viewModel.isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
-                .sheet(isPresented: $isItinerary) { ItineraryListSheet() }
                 .fullScreenCover(isPresented: $isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
                 
                 if viewModel.isNotificationVisible {
@@ -281,7 +281,7 @@ public struct CountryVisaApplicationView: View {
 }
 
 #Preview {
-    CountryVisaApplicationView(countrySelected: "Italia", visaType: "turis", countries: [.init(name: "Jerman", startDate: .now, endDate: .now)])
+    CountryVisaApplicationView(countrySelected: "Italia", visaType: "turis", countries: [.init(name: "Jerman", startDate: Date.now, endDate: Date.now)])
 }
 
 struct DocumentRequirementsList: View {

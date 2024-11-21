@@ -8,22 +8,25 @@
 import SwiftUI
 import OpenAI
 
-class ChatController: ObservableObject {
+class AIGeneratorController: ObservableObject {
     @Published var messages: [MessageModel] = []
 
     let openAI = OpenAI(apiToken: "secret")
     
-    init() {
-        
-    }
-    
-    func sendNewMessage(content: String) {
+    func sendNewMessage(content: String, completion: @escaping (String?) -> Void) {
         let userMessage = MessageModel(content: content, isUser: true)
         self.messages.append(userMessage)
-        getBotReply()
+        getBotReply { reply in
+            if let reply = reply {
+                completion(reply)
+            } else {
+                print("Failed to fetch reply.")
+                completion(nil)
+            }
+        }
     }
     
-    func getBotReply() {
+    func getBotReply(completion: @escaping (String?) -> Void) {
         let initialPrompt = """
         You are an itinerary generator that creates personalized travel plans in valid JSON format in bahasa indonesia. Given the following inputs: the country or city name, the hotel name, and the number of days for the trip, generate a complete daily itinerary. Each day includes a title (e.g., Day 1, Day 2), the date, and morning, afternoon, and night activities. For each activity, provide the place name, latitude, longitude, and a description of the activity, denotated by 1 to 6 words in bahasa indoensia. Your output must strictly follow this JSON structure without any additional text or characters:
         {
@@ -70,77 +73,15 @@ class ChatController: ObservableObject {
             switch result {
             case .success(let success):
                 guard let choice = success.choices.first else {
+                    completion(nil)
                     return
                 }
                 guard let message = choice.message.content?.string else { return }
-                DispatchQueue.main.async {
-                    self.messages.append(MessageModel(content: message, isUser: false))
-                }
+                completion(message)
             case .failure(let failure):
                 print(failure)
+                completion(nil)
             }
         }
     }
-}
-
-
-
-struct AIGenerator: View {
-    @StateObject var chatController: ChatController = .init()
-    @State var string: String = ""
-    var body: some View {
-        VStack {
-            ScrollView {
-                ForEach(chatController.messages) { message in
-                    MessageView(message: message)
-                        .padding(5)
-                }
-            }
-            Divider()
-            HStack {
-                TextField("Contoh: BSD 3 hari 24-26 nov 2024", text: self.$string, axis: .vertical)
-                    .padding(5)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(15)
-                Button {
-                    self.chatController.sendNewMessage(content: string)
-                    string = ""
-                } label: {
-                    Image(systemName: "paperplane")
-                }
-            }
-            .padding()
-        }
-    }
-}
-
-struct MessageView: View {
-    var message: MessageModel
-    var body: some View {
-        Group {
-            if message.isUser {
-                HStack {
-                    Spacer()
-                    Text(message.content)
-                        .padding()
-                        .background(Color.primary5)
-                        .foregroundColor(Color.white)
-                        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 20)))
-                }
-            } else {
-                HStack {
-                    Text(message.content)
-                        .padding()
-                        .background(Color.primary4)
-                        .foregroundColor(Color.white)
-                        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 20)))
-                    Spacer()
-                }
-            }
-        }
-    }
-}
-
-#Preview {
-    AIGenerator()
 }

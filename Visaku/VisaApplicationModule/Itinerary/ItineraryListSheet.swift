@@ -7,9 +7,13 @@
 
 import SwiftUI
 import UIComponentModule
+import OpenAI
 
 struct ItineraryListSheet: View {
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
+    @State var aiManager: AIGeneratorController = AIGeneratorController()
+//
     @State private var itinerary: Itinerary = Itinerary(days: [])
         
     var body: some View {
@@ -20,9 +24,6 @@ struct ItineraryListSheet: View {
                         VStack {
                             if itinerary.days.isEmpty {
                                 Text("Loading itinerary...")
-                                    .onAppear {
-                                        loadItinerary()
-                                    }
                             } else {
                                 ForEach(itinerary.days) { day in
                                     ItineraryCard(day: day)
@@ -30,6 +31,27 @@ struct ItineraryListSheet: View {
                             }
                         }
                         Spacer()
+                    }
+                    .onAppear {
+                        let countries = viewModel.trip?.countries ?? []
+                        let countriesWithHotels = countries.filter { !$0.hotels.isEmpty }
+                        let messageContent = countriesWithHotels.map { country in
+                            let hotelDetails = country.hotels.map { hotel in
+                                "- \(hotel.name): \(hotel.stayPeriod)"
+                            }.joined(separator: "\n")
+                            return """
+                                \(country.name):
+                                \(hotelDetails)
+                                """
+                        }.joined(separator: "\n\n")
+                        aiManager.sendNewMessage(content: messageContent) { response in
+                            if let response = response {
+                                print("AI Response : \(response)")
+                                loadItinerary(json: response)
+                            } else {
+                                print("Failed to fetch response.")
+                            }
+                        }
                     }
                     .padding(.horizontal)
                     .padding(.bottom, 150)
@@ -63,87 +85,22 @@ struct ItineraryListSheet: View {
         }
     }
     
-    func loadItinerary() {
-        let json = """
-            {
-                "days": [
-                    {
-                        "title": "Day 1",
-                        "date": "2024-11-18",
-                        "morning": {
-                            "placeName": "Central Park",
-                            "placeLatitude": 40.785091,
-                            "placeLongitude": -73.968285,
-                            "activity": "Morning jog and sightseeing"
-                        },
-                        "afternoon": {
-                            "placeName": "Metropolitan Museum of Art",
-                            "placeLatitude": 40.779437,
-                            "placeLongitude": -73.963244,
-                            "activity": "Explore the museum exhibits"
-                        },
-                        "night": {
-                            "placeName": "Top of the Rock",
-                            "placeLatitude": 40.759080,
-                            "placeLongitude": -73.978540,
-                            "activity": "Enjoy the city skyline views"
-                        }
-                    },
-                    {
-                        "title": "Day 2",
-                        "date": "2024-11-19",
-                        "morning": {
-                            "placeName": "Brooklyn Bridge",
-                            "placeLatitude": 40.706086,
-                            "placeLongitude": -73.996864,
-                            "activity": "Walk across the iconic bridge"
-                        },
-                        "afternoon": {
-                            "placeName": "DUMBO",
-                            "placeLatitude": 40.703316,
-                            "placeLongitude": -73.988145,
-                            "activity": "Lunch and shopping at DUMBO"
-                        },
-                        "night": {
-                            "placeName": "Broadway Theatre",
-                            "placeLatitude": 40.759011,
-                            "placeLongitude": -73.984472,
-                            "activity": "Watch a Broadway show"
-                        }
-                    },
-                    {
-                        "title": "Day 3",
-                        "date": "2024-11-19",
-                        "morning": {
-                            "placeName": "Brooklyn Bridge",
-                            "placeLatitude": 40.706086,
-                            "placeLongitude": -73.996864,
-                            "activity": "Walk across the iconic bridge"
-                        },
-                        "afternoon": {
-                            "placeName": "DUMBO",
-                            "placeLatitude": 40.703316,
-                            "placeLongitude": -73.988145,
-                            "activity": "Lunch and shopping at DUMBO"
-                        },
-                        "night": {
-                            "placeName": "Broadway Theatre",
-                            "placeLatitude": 40.759011,
-                            "placeLongitude": -73.984472,
-                            "activity": "Watch a Broadway show"
-                        }
-                    }
-                ]
+    func loadItinerary(json: String) {
+        guard let jsonData = json.data(using: .utf8) else {
+            print("Invalid JSON string.")
+            return
+        }
+
+        do {
+            let rawDictionary = try JSONDecoder().decode([String: Day].self, from: jsonData)
+            let sortedDays = Array(rawDictionary.values).sorted { $0.date < $1.date }
+            let decodedItinerary = Itinerary(days: sortedDays)
+            
+            DispatchQueue.main.async {
+                self.itinerary = decodedItinerary
             }
-            """
-        
-        if let jsonData = json.data(using: .utf8) {
-            do {
-                let decodedItinerary = try JSONDecoder().decode(Itinerary.self, from: jsonData)
-                itinerary = decodedItinerary
-            } catch {
-                print("Error decoding JSON: \(error)")
-            }
+        } catch {
+            print("Error decoding JSON: \(error)")
         }
     }
 }
