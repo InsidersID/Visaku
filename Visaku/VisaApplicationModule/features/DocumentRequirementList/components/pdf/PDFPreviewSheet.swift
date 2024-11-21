@@ -200,7 +200,7 @@ public struct PDFPreviewSheet: View {
             "purposeOfJourneyInfo": "Vacation",
             "applicantDestinations": trip?.countries.map { $0.name }.joined(separator: ", ") ?? "Countries",
             "applicantDestinationFirstEntry": trip?.countries.first?.name ?? "First country of entry",
-            "entries1": trip?.account?.additionalInformation?.
+            "entries1": "",
             "entries2": "",
             "entriesM": "",
             "dateOfArrival": trip?.countries.first?.startDate ?? "Date of Arrival",
