@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SplashScreen: View {
-    @State var navigateToPrivacyPolicy: Bool = false
+    @State var navigateToTabBar: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -41,12 +41,12 @@ struct SplashScreen: View {
                     }
                 }
                 .onTapGesture {
-                    self.navigateToPrivacyPolicy = true
+                    self.navigateToTabBar = true
                 }
             }
             .ignoresSafeArea()
-            .navigationDestination(isPresented: $navigateToPrivacyPolicy) {
-                PrivacyPolicyView()
+            .navigationDestination(isPresented: $navigateToTabBar) {
+                TabBarView()
                     .navigationBarBackButtonHidden()
             }
         }

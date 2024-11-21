@@ -15,17 +15,10 @@ struct VisakuApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if manager.checkAgreement() {
-                SplashScreen()
-                    .task {
-                        SwiftDataContextManager()
-                    }
-            } else {
-                TabBarView()
-                    .task {
-                        SwiftDataContextManager()
-                    }
-            }
+            TabBarView()
+                .task {
+                    SwiftDataContextManager()
+                }
         }
     }
 }

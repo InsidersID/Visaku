@@ -36,7 +36,11 @@ struct PrivacyPolicyView: View {
                     
                     CustomButton(text: "Terima dan lanjut", textColor: .stayWhite, color: isAgree ? .primary5 : .blackOpacity2, font: "Inter-SemiBold", fontSize: 16) {
                         agreementManager.setAgreed()
-                        navigateToTabBarView = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            navigateToTabBarView = true
+                            print("navigateToTabBarView set to true on the main thread")
+                            print("navigateToTabBarView set to true")
+                        }
                     }
                     .disabled(!isAgree)
                 }
