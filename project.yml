@@ -16,6 +16,9 @@ packages:
   RiveRuntime:
     url: https://github.com/rive-app/rive-ios
     from: '6.3.3'
+  OpenAI:
+    url: https://github.com/MacPaw/OpenAI
+    from: '0.3.0'
 
 targetTemplates:
   Module:
@@ -36,9 +39,9 @@ targets:
     info:
       path: Visaku/Info.plist
       properties:
-        CFBundleDisplayName: "Visaku"
-        CFBundleShortVersionString: "1.0.0"
-        CFBundleVersion: "1"
+        CFBundleDisplayName: 'Visaku'
+        CFBundleShortVersionString: '1.0.0'
+        CFBundleVersion: '1'
         UIAppFonts:
           - Inter-Black.ttf
           - Inter-BlackItalic.ttf
@@ -78,8 +81,6 @@ targets:
           - Poppins-ThinItalic.ttf
         UILaunchStoryboardName: 'LaunchScreen'
         NSCameraUsageDescription: 'Fitur kamera digunakan untuk mengambil dan memproses dokumenmu. Tenang saja, gambar dokumenmu tidak akan dikirim keluar dari perangkatmu.'
-        CFBundleDisplayName: 'Test'
-        CFBundleShortVersionString: '1.0.0'
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         NSAppTransportSecurity:
@@ -89,7 +90,7 @@ targets:
         TARGETED_DEVICE_FAMILY: 1
         PRODUCT_BUNDLE_IDENTIFIER: 'com.insiders.visaku'
         CURRENT_PROJECT_VERSION: 1
-        SUPPORTED_PLATFORMS: "iOS"
+        SUPPORTED_PLATFORMS: 'iOS'
     dependencies:
       - package: UIComponentModule
       - package: RepositoryModule
