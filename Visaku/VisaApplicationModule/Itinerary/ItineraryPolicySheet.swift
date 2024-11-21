@@ -9,7 +9,8 @@ import SwiftUI
 import UIComponentModule
 
 struct ItineraryPolicySheet: View {
-    
+    @Environment(\.dismiss) private var dismiss
+
     @State var state: Int = 1
     let policies = ["Dengan itinerary, kedutaan jadi tahu kamu punya tujuan jelas dan nggak berencana tinggal lebih lama dari yang diizinkan.", "Melalui Visaku, kamu bisa upload dokumen, scan dokumen, atau membuat dokumen itinerary dengan AI!"]
 
@@ -27,10 +28,13 @@ struct ItineraryPolicySheet: View {
                     .padding(.horizontal)
                     .multilineTextAlignment(.center)
                 CustomButton(text: state == 1 ? "Selanjutnya" : "OK", color: state == 1 ? Color(.primary4) : Color(.primary5), font: "Inter-SemiBold", fontSize: 17) {
-                    state = 2
+                    if state == 1 {
+                        state = 2
+                    } else {
+                        dismiss() 
+                    }
                 }
             }
-            .padding(.vertical)
             .padding(.horizontal, 24)
             .toolbar {
                 ToolbarItem(placement: .principal) {

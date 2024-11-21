@@ -27,7 +27,8 @@ struct VisaApplicationFinishedView: View {
                         .foregroundStyle(Color.blackOpacity5)
                         .padding(.bottom)
                     
-                    Text("Dengan itinerary, kedutaan jadi tahu kamu punya tujuan jelas dan nggak berencana tinggal lebih lama dari yang diizinkan.")
+                    Text("Semua dokumen sudah siap,\nkamu bisa print semua dokumen jika diperlukan.")
+                        .frame(width: 350)
                         .font(.custom("Inter-Regular", size: 15))
                         .foregroundStyle(Color.blackOpacity3)
                         .padding(.horizontal)
