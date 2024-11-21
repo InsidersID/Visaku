@@ -34,6 +34,14 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     @Published var showDocumentDetail: Bool = false
     @Published var isNotificationVisible: Bool = false
     
+    @Published var isApplicantUnder18: String? = ""
+    @Published var custodianFirstName: String = ""
+    @Published var custodianLastName: String = ""
+    @Published var custodianAddress: String = ""
+    @Published var custodianPhoneNumber: String = ""
+    @Published var custodianEmail: String = ""
+    @Published var custodianNationality: String = ""
+    
     @Published var hasOtherResidence: String? = ""
     @Published var residenceType: String = ""
     @Published var residenceNumber: String = ""
@@ -119,6 +127,11 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     @Published var euFamilyNationality: String = ""
     @Published var euFamilyDocumentNumber: String = ""
     @Published var euFamilyRelation: String? = ""
+    
+    @Published var isSelfApply: String? = ""
+    @Published var bookerName: String = ""
+    @Published var bookerEmailAndAddress: String = ""
+    @Published var bookerPhoneNumber: String = ""
     
     // Application view navigation
     @Published var isPresentingConfirmationView: Bool = false
