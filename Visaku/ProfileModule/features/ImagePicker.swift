@@ -17,11 +17,8 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
 
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-                guard let firstResult = results.first else {
-                    print("No image selected")
-                    return
-                }
-
+            if let firstResult = results.first {
+                // Load the selected image
                 firstResult.itemProvider.loadObject(ofClass: UIImage.self) { (object, error) in
                     if let error = error {
                         print("Failed to load image: \(error)")
@@ -34,7 +31,9 @@ struct ImagePicker: UIViewControllerRepresentable {
                         }
                     }
                 }
-                picker.dismiss(animated: true)
+            }
+            // Dismiss the picker, whether an image was selected or not
+            picker.dismiss(animated: true)
             }
         }
     
