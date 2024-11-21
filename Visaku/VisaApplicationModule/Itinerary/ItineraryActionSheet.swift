@@ -38,44 +38,44 @@ struct ItineraryActionSheet: View {
                     .onTapGesture {
                         aiItineraryGenerator.toggle()
                     }
-                    HStack {
-                        ZStack {
-                            Circle()
-                                .frame(width: 22)
-                                .foregroundStyle(Color.primary5)
-                            Image(systemName: "square.and.arrow.up")
-                                .font(.system(size: 14.5))
-                                .imageScale(.small)
-                                .foregroundStyle(Color.white)
-                                .fontWeight(.semibold)
-                        }
-                        Text("Upload dari device")
-                            .font(.custom("Inter-Regular", size: 16))
-                            .foregroundStyle(Color.black)
-                        
-                        Spacer()
-                    }
-                    .onTapGesture {
-                    }
-                    HStack {
-                        ZStack {
-                            Circle()
-                                .frame(width: 22)
-                                .foregroundStyle(Color.primary5)
-                            Image(systemName: "camera")
-                                .font(.system(size: 14.5))
-                                .imageScale(.small)
-                                .foregroundStyle(Color.white)
-                                .fontWeight(.semibold)
-                        }
-                        Text("Scan dokumen")
-                            .font(.custom("Inter-Regular", size: 16))
-                            .foregroundStyle(Color.black)
-                        
-                        Spacer()
-                    }
-                    .onTapGesture {
-                    }
+//                    HStack {
+//                        ZStack {
+//                            Circle()
+//                                .frame(width: 22)
+//                                .foregroundStyle(Color.primary5)
+//                            Image(systemName: "square.and.arrow.up")
+//                                .font(.system(size: 14.5))
+//                                .imageScale(.small)
+//                                .foregroundStyle(Color.white)
+//                                .fontWeight(.semibold)
+//                        }
+//                        Text("Upload dari device")
+//                            .font(.custom("Inter-Regular", size: 16))
+//                            .foregroundStyle(Color.black)
+//                        
+//                        Spacer()
+//                    }
+//                    .onTapGesture {
+//                    }
+//                    HStack {
+//                        ZStack {
+//                            Circle()
+//                                .frame(width: 22)
+//                                .foregroundStyle(Color.primary5)
+//                            Image(systemName: "camera")
+//                                .font(.system(size: 14.5))
+//                                .imageScale(.small)
+//                                .foregroundStyle(Color.white)
+//                                .fontWeight(.semibold)
+//                        }
+//                        Text("Scan dokumen")
+//                            .font(.custom("Inter-Regular", size: 16))
+//                            .foregroundStyle(Color.black)
+//                        
+//                        Spacer()
+//                    }
+//                    .onTapGesture {
+//                    }
                     HStack {
                         ZStack {
                             Circle()
