@@ -45,6 +45,7 @@ struct TabBarView: View {
                             VisaHistoryView()
                                 .tag(0)
                                 .environmentObject(visaViewModel)
+                                .environment(profileViewModel)
                             
                             ProfileView()
                                 .tag(1)
