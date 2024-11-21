@@ -46,49 +46,49 @@ struct DocumentActions: View {
     
     var body: some View {
         VStack {
-            Button {
-                profileViewModel.selectedDocument = nil
-                DispatchQueue.main.async {
-                    switch document {
-                    case "KTP":
-                        print("KTP Upload")
-                        profileViewModel.isUploadImageForKTP = true
-                    case "Paspor":
-                        print("Passport Upload")
-                        profileViewModel.isUploadImageForPassport = true
-                    case "Foto":
-                        print("Photo Upload")
-                        profileViewModel.isUploadImageForFoto = true
-                    default:
-                        print("Others Upload")
-                        profileViewModel.isUploadImageForOthers = true
-                    }
-                }
-            } label: {
-                HStack {
-                    ZStack {
-                        Circle()
-                            .frame(width: 22)
-                            .foregroundStyle(Color.primary5)
-                        
-                        Image(systemName: "square.and.arrow.up")
-                            .resizable()
-                            .frame(width: 11, height: 13)
-                            .foregroundStyle(Color.white)
-                            .fontWeight(.bold)
-                            .offset(x: 0, y: -1)
-                    }
-                    
-                    Text("Upload dari device")
-                        .font(Font.custom("Inter-Regular", size: 16))
-                        .foregroundStyle(Color.black)
-                    
-                    Spacer()
-                }
-            }
-            
-            .padding(.horizontal)
-            .padding(.bottom)
+//            Button {
+//                profileViewModel.selectedDocument = nil
+//                DispatchQueue.main.async {
+//                    switch document {
+//                    case "KTP":
+//                        print("KTP Upload")
+//                        profileViewModel.isUploadImageForKTP = true
+//                    case "Paspor":
+//                        print("Passport Upload")
+//                        profileViewModel.isUploadImageForPassport = true
+//                    case "Foto":
+//                        print("Photo Upload")
+//                        profileViewModel.isUploadImageForFoto = true
+//                    default:
+//                        print("Others Upload")
+//                        profileViewModel.isUploadImageForOthers = true
+//                    }
+//                }
+//            } label: {
+//                HStack {
+//                    ZStack {
+//                        Circle()
+//                            .frame(width: 22)
+//                            .foregroundStyle(Color.primary5)
+//                        
+//                        Image(systemName: "square.and.arrow.up")
+//                            .resizable()
+//                            .frame(width: 11, height: 13)
+//                            .foregroundStyle(Color.white)
+//                            .fontWeight(.bold)
+//                            .offset(x: 0, y: -1)
+//                    }
+//                    
+//                    Text("Upload dari device")
+//                        .font(Font.custom("Inter-Regular", size: 16))
+//                        .foregroundStyle(Color.black)
+//                    
+//                    Spacer()
+//                }
+//            }
+//            
+//            .padding(.horizontal)
+//            .padding(.bottom)
             
             Button {
                 profileViewModel.selectedDocument = nil
