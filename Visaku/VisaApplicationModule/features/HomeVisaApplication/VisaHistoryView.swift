@@ -10,8 +10,10 @@ import UIComponentModule
 
 public struct VisaHistoryView: View {
     @EnvironmentObject var viewModel: VisaHistoryViewModel
+    @Environment(ProfileViewModel.self) var profileViewModel
     
     public var body: some View {
+        @Bindable var profileViewModel = profileViewModel
         NavigationStack {
             VStack {
                 ScrollView {
@@ -22,9 +24,11 @@ public struct VisaHistoryView: View {
                             ApplicationSection(title: "Belum selesai")
                                 .padding(.horizontal, 20)
                                 .environmentObject(viewModel)
+                                .environment(profileViewModel)
                             ApplicationSection(title: "Riwayat")
                                 .padding(.horizontal, 20)
                                 .environmentObject(viewModel)
+                                .environment(profileViewModel)
                         } else {
                             EmptyStateView()
                         }
@@ -48,6 +52,7 @@ public struct VisaHistoryView: View {
                 }
                 .navigationDestination(isPresented: $viewModel.isShowCountryApplicationView) {
                     CountryVisaApplicationView(countrySelected: viewModel.countryVisa, visaType: viewModel.visaType, countries: viewModel.countries)
+                        .environment(profileViewModel)
                         .navigationBarBackButtonHidden()
                 }
             }
@@ -58,9 +63,11 @@ public struct VisaHistoryView: View {
 
 struct ApplicationSection: View {
     @EnvironmentObject var viewModel: VisaHistoryViewModel
+    @Environment(ProfileViewModel.self) var profileViewModel
     let title: String
     
     var body: some View {
+        @Bindable var profileViewModel = profileViewModel
         VStack(spacing: 12) {
             if title == "Belum selesai" {
                 switch viewModel.fetchVisaHistoryUncompleted {
@@ -80,6 +87,7 @@ struct ApplicationSection: View {
                             let tripData = TripDataUIModel(from: trip)
                             NavigationLink {
                                 CountryVisaApplicationView(trip: trip)
+                                    .environment(profileViewModel)
                                     .navigationBarBackButtonHidden()
                             } label: {
                                 VisaApplicationCard(isCompleted: tripData.isCompleted, visaType: tripData.visaType, country: tripData.country, countries: tripData.countries, visaProgressPercentage: tripData.percentage, visaProgressColor: .red, createdAt: tripData.date) {
@@ -109,6 +117,7 @@ struct ApplicationSection: View {
                             let tripData = TripDataUIModel(from: trip)
                             NavigationLink {
                                 CountryVisaApplicationView(trip: trip)
+                                    .environment(profileViewModel)
                                     .navigationBarBackButtonHidden()
                             } label: {
                                 VisaApplicationCard(isCompleted: tripData.isCompleted, visaType: tripData.visaType, country: tripData.country, countries: tripData.countries, visaProgressPercentage: tripData.percentage, visaProgressColor: .green, createdAt: tripData.date) {
