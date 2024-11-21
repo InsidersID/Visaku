@@ -51,6 +51,7 @@ struct ItineraryListSheet: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
+                            .fontWeight(.semibold)
                             .font(.system(size: 17))
                             .padding(10)
                             .background(Circle().fill(Color.white))
@@ -154,9 +155,11 @@ struct ButtonsView: View {
         VStack {
             Spacer()
             VStack {
-                CustomButton(text: "Simpan", color: .blue, fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
+                CustomButton(text: "Simpan", color: .blue, font: "Inter-SemiBold", fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
                 }
-                CustomButton(text: "Generate ulang", textColor: .blue, color: .white, fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
+                .font(.custom("Inter-SemiBold", size: 20))
+
+                CustomButton(text: "Generate ulang", textColor: .blue, color: .white, font: "Inter-SemiBold", fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
                 }
                 .padding(.bottom, 15)
             }
@@ -174,6 +177,7 @@ struct ItineraryCard: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("\(day.title)")
+                        .font(.custom("Inter-SemiBold", size: 20))
                         .font(.largeTitle)
                         .bold()
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -183,20 +187,21 @@ struct ItineraryCard: View {
                     
                 }
                 Text("\(day.date)")
+                    .font(.custom("Inter-SemiBold", size: 12))
                     .bold()
-                    .padding(.bottom, 5)
+                    .padding(.bottom, 2)
                 Text("Morning")
                 Text("• \(day.morning.placeName)")
-                
+                    .font(.custom("Inter-Regular", size: 15))
                 Text("Afternoon")
                 Text("• \(day.afternoon.placeName)")
-                
+                    .font(.custom("Inter-Regular", size: 15))
                 Text("Night")
                 Text("• \(day.night.placeName)")
-                
+                    .font(.custom("Inter-Regular", size: 15))
             }
         }
-
+        .padding(.vertical, 8)
     }
 }
 
