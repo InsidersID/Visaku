@@ -115,6 +115,8 @@ public struct CountryVisaApplicationView: View {
                 .sheet(isPresented: $viewModel.isItinerary) {
                     ItineraryActionSheet()
                         .environmentObject(viewModel)
+                        .presentationDetents([.height(350)])
+                        .presentationDragIndicator(.visible)
                 }
                 .sheet(isPresented: $viewModel.isShowPreviewVisaApplicationForm) {
                     PDFPreviewSheet(trip: viewModel.trip) }
