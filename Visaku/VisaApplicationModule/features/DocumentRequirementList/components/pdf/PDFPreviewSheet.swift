@@ -276,3 +276,8 @@ public struct PDFPreviewSheet: View {
         pdfPreviewConfirmationViewModel.fetchAccountDataFromTrip(tripId)
     }
 }
+
+#Preview {
+    @Previewable @State var trip: TripEntity = .init(id: UUID().uuidString, visaType: "turis", country: "Italy", contries: [.init(name: "Italy", startDate: Date.now, endDate: Date.now)])
+    PDFPreviewSheet(trip: trip)
+}
