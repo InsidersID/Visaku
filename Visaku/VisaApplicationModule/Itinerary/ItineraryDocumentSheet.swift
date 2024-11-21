@@ -11,7 +11,10 @@ import UIComponentModule
 struct ItineraryDocumentSheet: View {
     @Environment(\.dismiss) var dismiss
     @State private var showFileImporter = false
+    @State private var showItineraryPolicySheet = false
+
     var handlePickedPDF: (URL) -> Void
+    @State var isShowItineraryAccommodationSheet: Bool = false
     
     var body: some View {
         VStack {
@@ -51,11 +54,17 @@ struct ItineraryDocumentSheet: View {
             )
             
             VStack(spacing: 8) {
-                CustomButton(text: "Scan Dokumen", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                CustomButton(text: "Generate dengan AI", color: .blue, font: "Inter-Regular", fontSize: 16, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    isShowItineraryAccommodationSheet = true
+                }
+                CustomButton(text: "Upload dari device", color: .blue, font: "Inter-Regular", fontSize: 16, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    //Upload Document
+                }
+                CustomButton(text: "Scan Dokumen", color: .blue, font: "Inter-Regular", fontSize: 16, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     // Scanning Document
                 }
-                CustomButton(text: "Upload", textColor: .blue, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
-                    //Upload Document
+                CustomButton(text: "Lihat ketentuan", color: .blue, font: "Inter-Regular", fontSize: 16, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                    showItineraryPolicySheet = true
                 }
             }
             .padding()
@@ -71,6 +80,14 @@ struct ItineraryDocumentSheet: View {
                         .foregroundColor(.blue)
                 }
             }
+        }
+        .sheet(isPresented: $isShowItineraryAccommodationSheet) {
+            ItineraryAccommodationSheet()
+        }
+        .sheet(isPresented: $showItineraryPolicySheet) {
+            ItineraryPolicySheet()
+                .presentationDetents([.height(520)])
+                .presentationDragIndicator(.visible)
         }
     }
 }

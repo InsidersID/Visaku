@@ -113,7 +113,7 @@ public struct CountryVisaApplicationView: View {
                 .onChange(of: viewModel.completionPercentage) { oldValue, newValue in completionHandler(newValue) }
                 .sheet(isPresented: $viewModel.isIdentity) { ProfileView(isSelectProfile: true).environmentObject(viewModel) }
                     .presentationDragIndicator(.visible)
-                .sheet(isPresented: $viewModel.isItinerary) { ItineraryListSheet() }
+                    .sheet(isPresented: $viewModel.isItinerary) { ItineraryDocumentSheet(handlePickedPDF: {_ in }) }
                     .presentationDragIndicator(.visible)
                 .sheet(isPresented: $viewModel.isShowPreviewVisaApplicationForm) {
                     PDFPreviewSheet(trip: viewModel.trip) }
