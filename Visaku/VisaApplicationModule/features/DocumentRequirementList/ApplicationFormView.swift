@@ -20,7 +20,21 @@ struct ApplicationFormView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 250, height: 200)
-
+                    
+                    SectionView(
+                        title: "Informasi wali pemohon (jika pemohon dibawah 18 tahun)",
+                        content: {
+                            ExpandableSelection(title: "Apakah pemohon adalah anak dibawah umur 18 tahun?", options: ["Ya", "Tidak"], mode: .single, singleSelection: $viewModel.isApplicantUnder18, multipleSelection: .constant([]))
+                            if viewModel.hasOtherResidence == "Ya" {
+                                CustomFormField(title: "Nama depan wali", text: $viewModel.custodianFirstName)
+                                CustomFormField(title: "Nama belakang wali", text: $viewModel.custodianLastName)
+                                CustomFormField(title: "Alamat wali (jika berbeda dengan pemohon)", text: $viewModel.custodianAddress)
+                                CustomFormField(title: "Nomor telepon wali", text: $viewModel.custodianPhoneNumber, keyboardType: .namePhonePad)
+                                CustomFormField(title: "Alamat email wali", text: $viewModel.custodianEmail, keyboardType: .emailAddress)
+                                CustomFormField(title: "Kebangsaan wali", text: $viewModel.custodianNationality)
+                            }
+                        }
+                    )
                     SectionView(
                         title: "Tempat tinggal di negara selain negara yang menjadi kewarganegaraannya saat ini",
                         content: {
@@ -102,8 +116,21 @@ struct ApplicationFormView: View {
                             
                         }
                     )
+                    SectionView(
+                        title: "Informasi data diri pengisi form",
+                        content: {
+                            ExpandableSelection(title: "Apakah orang yang mengisi form ini sama dengan pemohon", options: ["Ya", "Tidak"], mode: .single, singleSelection: $viewModel.hasOtherResidence, multipleSelection: .constant([]))
+                            if viewModel.hasOtherResidence == "Tidak" {
+                                CustomFormField(title: "Nama pengisi form", text: $viewModel.euFamilyLastName)
+                                CustomFormField(title: "Alamat dan email pengisi form", text: $viewModel.euFamilyLastName)
+                                CustomFormField(title: "Nomor telepon pengisi form", text: $viewModel.euFamilyLastName, keyboardType: .namePhonePad)
+                                
+                            }
+                        }
+                    )
                 }
             }
+            .padding(.bottom, 40)
         }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -157,12 +184,12 @@ struct InvitationDetailsSection: View {
     var body: some View {
         Group {
             CustomFormField(title: "Nama belakang dan nama depan orang yang mengundang di Negara Anggota. Jika tidak berlaku, nama hotel atau akomodasi sementara di Negara Anggota", text: $viewModel.invitationDetailsName)
-            CustomFormField(title: "Alamat dan alamat email dari orang yang mengundang/hotel/akomodasi sementara", text: $viewModel.invitationDetailsEmail)
-            CustomFormField(title: "Nomor Telepon dari orang yang mengundang/hotel/akomodasi sementara", text: $viewModel.invitationDetailsPhoneNumber)
+            CustomFormField(title: "Alamat dan alamat email dari orang yang mengundang/hotel/akomodasi sementara", text: $viewModel.invitationDetailsEmail, keyboardType: .emailAddress)
+            CustomFormField(title: "Nomor Telepon dari orang yang mengundang/hotel/akomodasi sementara", text: $viewModel.invitationDetailsPhoneNumber, keyboardType: .namePhonePad)
             CustomFormField(title: "Nama dan alamat perusahaan/organisasi yang mengundang", text: $viewModel.invitationDetailsAddress)
             CustomFormField(title: "Provinsi hotel tempat Anda menginap", text: $viewModel.invitationDetailsProvince)
             CustomFormField(title: "⁠Nama belakang, nama depan, alamat, nomor telepon, dan alamat email orang yang dapat dihubungi di perusahaan/organisasi", text: $viewModel.invitationDetailsLastName)
-            CustomFormField(title: "Nomor telepon perusahaan/organisasi", text: $viewModel.invitationDetailsOfficePhoneNumber)
+            CustomFormField(title: "Nomor telepon perusahaan/organisasi", text: $viewModel.invitationDetailsOfficePhoneNumber, keyboardType: .namePhonePad)
         }
     }
 
@@ -224,15 +251,6 @@ struct InvitationDetailsSection: View {
 //            CustomFormField(title: "Email penanggung jawab", text: $viewModel.companyRepresentativeEmail)
 //        }
 //    }
-}
-
-extension Binding {
-    init(_ source: Binding<Value?>, replacingNilWith placeholder: Value) {
-        self.init(
-            get: { source.wrappedValue ?? placeholder },
-            set: { source.wrappedValue = $0 }
-        )
-    }
 }
 
 #Preview {
