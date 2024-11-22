@@ -98,8 +98,8 @@ public struct CountryVisaApplicationView: View {
                             Image(systemName: "chevron.backward")
                                 .font(.custom("Inter-SemiBold", size: 17))
                                 .padding(10)
-                                .background(Circle().fill(Color.white))
-                                .foregroundColor(.black)
+                                .background(Circle().fill(Color.clear))
+                                .foregroundColor(Color.black)
                                 .overlay(Circle().stroke(Color.gray, lineWidth: 1))
                         }
                     }
