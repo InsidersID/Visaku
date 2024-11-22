@@ -62,7 +62,7 @@ struct AddProfileView: View {
                             await profileViewModel.saveAccount()
                             profileViewModel.isAddingProfile = false
 //                            profileViewModel.selectedAccount = profileViewModel.getAccountByID(account.id)
-                            profileViewModel.navigateToMainDocuments = true
+//                            profileViewModel.navigateToMainDocuments = true
                         }
                     }
                     dismiss()
