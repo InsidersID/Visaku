@@ -46,7 +46,7 @@ public struct PassportPreviewSheet: View {
                         Image(systemName: "dock.rectangle")
                             .resizable()
                             .frame(height: 200)
-                            .background(Color.red)
+                            .background(ColorColor.danger5)
                             .cornerRadius(24)
                             .padding()
                     }
@@ -80,11 +80,11 @@ public struct PassportPreviewSheet: View {
                             ProgressView("Menyimpan...")
                                 .padding()
                         case .error:
-                            Text("Eror menyimpan paspormu").foregroundColor(.red)
+                            Text("Eror menyimpan paspormu").foregroundColor(Color.danger5)
                         case .success:
-                            Text("Paspormu sukses tersimpan").foregroundColor(.green)
+                            Text("Paspormu sukses tersimpan").foregroundColor(Color.success6)
                         case .idle:
-                            CustomButton(text: "Simpan", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                            CustomButton(text: "Simpan", color: Color.primary5, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                                 Task {
                                     await passportPreviewViewModel.savePassport()
                                 }
@@ -97,11 +97,11 @@ public struct PassportPreviewSheet: View {
                             ProgressView("Menghapus...")
                                 .padding()
                         case .error:
-                            Text("Eror menghapus paspor").foregroundColor(.red)
+                            Text("Eror menghapus paspor").foregroundColor(Color.danger5)
                         case .success:
-                            Text("Paspormu sukses terhapus").foregroundColor(.green)
+                            Text("Paspormu sukses terhapus").foregroundColor(Color.success6)
                         case .idle:
-                            CustomButton(text: "Hapus dokumen", textColor: .blue, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                            CustomButton(text: "Hapus dokumen", textColor: Color.primary5, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                                 Task {
                                     await passportPreviewViewModel.deletePassport()
                                 }
@@ -131,7 +131,7 @@ public struct PassportPreviewSheet: View {
             }) {
                 Image(systemName: "x.circle")
                     .font(.title)
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color.primary5)
             })
         }
     }

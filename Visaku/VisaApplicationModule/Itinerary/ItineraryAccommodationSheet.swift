@@ -72,7 +72,7 @@ struct ItineraryAccommodationSheet: View {
                 VStack {
                     Spacer()
                     VStack(spacing: 5) {
-                        CustomButton(text: "Buat Itinerary", color: .blue, fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
+                        CustomButton(text: "Buat Itinerary", color: Color.primary5, fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
                         }
                         .padding(.horizontal)
                         .padding(.bottom, 30)

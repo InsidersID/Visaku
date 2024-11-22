@@ -16,7 +16,7 @@ struct ApplyVisaCard: View {
                     HStack{
                         Image(systemName: "person.fill")
                             .font(.system(size: 26))
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(Color.primary5)
                         Spacer()
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Mau traveling ke mana?")
@@ -31,7 +31,7 @@ struct ApplyVisaCard: View {
                     .padding(.horizontal)
                 }
                 VStack {
-                    CustomButton(text: "Mulai pengajuan", color: .blue, fontSize: 18, cornerRadius: 10, paddingHorizontal: 80, paddingVertical: 18) {
+                    CustomButton(text: "Mulai pengajuan", color: Color.primary5, fontSize: 18, cornerRadius: 10, paddingHorizontal: 80, paddingVertical: 18) {
                         
                     }
                 }
