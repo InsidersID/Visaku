@@ -71,6 +71,7 @@ struct AiItineraryGeneratorSheet: View {
                                 }
                                 .foregroundColor(.blue)
                             }
+                            .foregroundColor(Color.primary5)
                         }
                     }
                 }

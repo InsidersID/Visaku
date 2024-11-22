@@ -75,15 +75,15 @@ public struct PhotoPreviewSheet: View {
                             ProgressView("Menyimpan...")
                                 .padding()
                         case .error:
-                            Text("Eror menyimpan gambar akunmu").foregroundColor(.red)
+                            Text("Eror menyimpan gambar akunmu").foregroundColor(Color.danger5)
                         case .success:
                             Text("Gambar akunmu berhasil disimpan")
-                                .foregroundColor(.green)
+                                .foregroundColor(Color.success6)
                                 .task {
                                 await photoPreviewViewModel.handleSuccess()
                             }
                         case .idle:
-                            CustomButton(text: "Simpan", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                            CustomButton(text: "Simpan", color: Color.primary5, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                                 Task {
                                     await photoPreviewViewModel.savePhoto()
                                     await ProfileViewModel.shared.fetchAccountByID(photoPreviewViewModel.account.id)
@@ -97,9 +97,9 @@ public struct PhotoPreviewSheet: View {
                             ProgressView("Menghapus...")
                                 .padding()
                         case .error:
-                            Text("Eror menghapus gambar akunmu").foregroundColor(.red)
+                            Text("Eror menghapus gambar akunmu").foregroundColor(Color.danger5)
                         case .success:
-                            Text("Gambar akunmu berhasil dihapus").foregroundColor(.green)
+                            Text("Gambar akunmu berhasil dihapus").foregroundColor(Color.success6)
                         case .idle:
                             CustomButton(text: "Foto ulang", textColor: .primary5, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                                 Task {
@@ -131,7 +131,7 @@ public struct PhotoPreviewSheet: View {
             }) {
                 Image(systemName: "x.circle")
                     .font(.title)
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color.primary5)
             })
             .fullScreenCover(isPresented: $photoPreviewViewModel.isCameraOpen, content: {
                 ZStack {

@@ -265,21 +265,21 @@ public struct CountryVisaApplicationView: View {
     }
     
     private var printButton: some View {
-        CustomButton(text: "Print semua", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16) {
+        CustomButton(text: "Print semua", textColor: .white, color: Color.primary5, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16) {
             viewModel.isShowPreviewVisaApplicationForm = true
         }
         .padding(.horizontal)
     }
     
     private var downloadPDFButton: some View {
-        CustomButton(text: "Unduh PDF form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16) {
+        CustomButton(text: "Unduh PDF form", textColor: .white, color: Color.primary5, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16) {
             viewModel.isShowPreviewVisaApplicationForm = true
         }
         .padding(.horizontal)
     }
     
     private var downloadJSONButton: some View {
-        CustomButton(text: "Unduh JSON form", textColor: .white, color: .blue, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16                     ) {
+        CustomButton(text: "Unduh JSON form", textColor: .white, color: Color.primary5, font: "Inter-SemiBold", fontSize: 17, paddingHorizontal: 16, paddingVertical: 16                     ) {
             viewModel.isShowJSONDownload = true
         }
         .padding(.horizontal)

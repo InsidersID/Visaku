@@ -28,14 +28,14 @@ public struct JSONPreviewSheet: View {
                 .multilineTextAlignment(.center)
             Spacer()
             
-            CustomButton(text: "Unduh", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+            CustomButton(text: "Unduh", color: Color.primary5, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                 JSONDownload.shared.downloadJSON {
                     viewModel.isShowJSONDownload = false
                 }
             }
             .padding()
             
-            CustomButton(text: "Tutup", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+            CustomButton(text: "Tutup", color: Color.primary5, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                 viewModel.isShowJSONDownload = false
                 dismiss()
             }

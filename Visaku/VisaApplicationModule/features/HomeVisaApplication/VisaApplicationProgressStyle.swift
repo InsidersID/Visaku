@@ -33,7 +33,7 @@ struct VisaApplicationProgressStyle: GaugeStyle {
                     endPoint: .bottomTrailing
                 ),
                 style: StrokeStyle(lineWidth: 16, lineCap: .round))
-                .foregroundColor(.blue)
+                .foregroundColor(Color.primary5)
                 .rotationEffect(.degrees(135))
             
             
