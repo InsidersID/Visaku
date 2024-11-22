@@ -5,11 +5,13 @@ import RepositoryModule
 struct AdditionalInformationView: View {
     @State private var hasDifferentBirthName: String? = nil
     @Environment(\.dismiss) var dismiss
-//    @Environment(ProfileViewModel.self) var profileViewModel
+    @Environment(ProfileViewModel.self) var profileViewModel
     @State var additionalInformationViewModel: AdditionalInformationViewModel
+    @StateObject public var account: AccountEntity
     
-    public init(account: AccountEntity) {
-        self.additionalInformationViewModel = AdditionalInformationViewModel(account: account)
+    public init(account: AccountEntity? = nil) {
+        self._account = StateObject(wrappedValue: account ?? AccountEntity(id: "", username: "", image: Data()))
+        self.additionalInformationViewModel = AdditionalInformationViewModel(account: account ?? AccountEntity(id: "", username: "", image: Data()))
     }
     
     
@@ -148,6 +150,13 @@ struct AdditionalInformationView: View {
             .frame(maxWidth: .infinity)
         }
         .frame(maxWidth: .infinity)
+        .onAppear {
+            profileViewModel.username = account.username
+        }
+        .onChange(of: profileViewModel.username) { newValue in
+            profileViewModel.username = newValue.capitalized
+            account.username = newValue.capitalized
+        }
         .sheet(isPresented: $additionalInformationViewModel.showJobSheet) {
             VStack(alignment: .leading) {
                 Text("Pilih pekerjaan")

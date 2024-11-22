@@ -189,12 +189,6 @@ public struct MainDocumentView: View {
             .fullScreenCover(isPresented: $profileViewModel.isShowingEditProfile) {
                 AddProfileView(account: account, isEditing: true)
                     .clearModalBackground()
-                    .onAppear {
-                        profileViewModel.username = account.username
-                    }
-                    .onDisappear {
-                        NotificationCenter.default.post(name: .accountImageUpdated, object: account.id)
-                    }
             }
             .fullScreenCover(isPresented: $profileViewModel.isDeleteProfile, content: {
                 CustomAlert(title: "Hapus profil?", caption: "Jika dokumen dihapus, semua data akan hilang secara otomatis.", button1: "Hapus", button2: "Batal") {
