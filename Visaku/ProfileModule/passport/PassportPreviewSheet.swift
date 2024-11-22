@@ -46,7 +46,7 @@ public struct PassportPreviewSheet: View {
                         Image(systemName: "dock.rectangle")
                             .resizable()
                             .frame(height: 200)
-                            .background(ColorColor.danger5)
+                            .background(Color.danger5)
                             .cornerRadius(24)
                             .padding()
                     }
