@@ -49,7 +49,7 @@ struct AiItineraryGeneratorSheet: View {
                                     }
                                 }) {
                                     Image(systemName: "trash")
-                                        .foregroundColor(.red)
+                                        .foregroundColor(Color.danger5)
                                 }
                             }
                             .padding(.vertical, 8)
@@ -62,7 +62,7 @@ struct AiItineraryGeneratorSheet: View {
                                 Image(systemName: "plus")
                                 Text("Add Hotel")
                             }
-                            .foregroundColor(.blue)
+                            .foregroundColor(Color.primary5)
                         }
                     }
                 }

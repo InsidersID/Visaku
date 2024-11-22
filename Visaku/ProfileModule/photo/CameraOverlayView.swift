@@ -89,13 +89,13 @@ struct CameraOverlayView: View {
                 if !cameraState.isFocused {
                     HStack {
                         Text("Kamera masih blur")
-                            .foregroundStyle(colorScheme == .dark ? Color.danger5 : .red)
+                            .foregroundStyle(colorScheme == .dark ? Color.danger5 : Color.danger5)
                             .font(.system(size: 18, weight: .medium))
                     }
                 } else if cameraState.offset < -0.1 {
                     HStack {
                         Text("Cahaya terlalu gelap")
-                            .foregroundStyle(colorScheme == .dark ? Color.danger5 : .red)
+                            .foregroundStyle(colorScheme == .dark ? Color.danger5 : Color.danger5)
                             .font(.system(size: 18, weight: .medium))
                     }
                 } else if cameraState.isTakingImage {
@@ -114,7 +114,7 @@ struct CameraOverlayView: View {
                             .font(.system(size: 18, weight: .medium))
                         
                         Image(systemName: "checkmark.circle.fill")
-                            .foregroundStyle(.green)
+                            .foregroundStyle(Color.success6)
                     }
                 }
                 }

@@ -30,7 +30,7 @@ struct UploadDocumentsView: View {
                     ZStack {
                         Image(systemName: "circle.fill")
                             .imageScale(.large)
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(Color.primary5)
                         Image(systemName: "document.fill")
                             .imageScale(.small)
                             .foregroundStyle(.white)
@@ -70,7 +70,7 @@ struct UploadDocumentsView: View {
                     ZStack {
                         Image(systemName: "circle.fill")
                             .imageScale(.large)
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(Color.primary5)
                         Image(systemName: "photo")
                             .imageScale(.small)
                             .foregroundStyle(.white)
@@ -94,7 +94,7 @@ struct UploadDocumentsView: View {
                     ZStack {
                         Image(systemName: "circle.fill")
                             .imageScale(.large)
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(Color.primary5)
                         Image(systemName: "xmark")
                             .imageScale(.small)
                             .foregroundStyle(.white)

@@ -131,9 +131,9 @@ struct AdditionalInformationView: View {
                     ProgressView("Saving...")
                         .padding()
                 case .error:
-                    Text("Error saving the Additional Information").foregroundColor(.red)
+                    Text("Error saving the Additional Information").foregroundColor(Color.danger5)
                 case .success:
-                    Text("Additional Information saved successfully").foregroundColor(.green)
+                    Text("Additional Information saved successfully").foregroundColor(Color.success6)
                 case .idle:
                     CustomButton(text: "Selanjutnya", color: Color.primary5) {
                         Task {
@@ -247,7 +247,7 @@ struct RadioButton: View {
         Button(action: action) {
             HStack {
                 Image(systemName: isSelected ? "largecircle.fill.circle" : "circle")
-                    .foregroundColor(isSelected ? .blue : .gray)
+                    .foregroundColor(isSelected ? Color.primary5 : .gray)
                 Text(label)
                     .font(.custom("Inter-Medium", size: 16))
                     .foregroundStyle(Color.blackOpacity4)

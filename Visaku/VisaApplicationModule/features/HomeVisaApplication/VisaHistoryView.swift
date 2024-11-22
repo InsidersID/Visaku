@@ -90,7 +90,7 @@ struct ApplicationSection: View {
                                     .environment(profileViewModel)
                                     .navigationBarBackButtonHidden()
                             } label: {
-                                VisaApplicationCard(isCompleted: tripData.isCompleted, visaType: tripData.visaType, country: tripData.country, countries: tripData.countries, visaProgressPercentage: tripData.percentage, visaProgressColor: .red, createdAt: tripData.date) {
+                                VisaApplicationCard(isCompleted: tripData.isCompleted, visaType: tripData.visaType, country: tripData.country, countries: tripData.countries, visaProgressPercentage: tripData.percentage, visaProgressColor: Color.danger5, createdAt: tripData.date) {
                                     
                                 }
                             }
@@ -120,7 +120,7 @@ struct ApplicationSection: View {
                                     .environment(profileViewModel)
                                     .navigationBarBackButtonHidden()
                             } label: {
-                                VisaApplicationCard(isCompleted: tripData.isCompleted, visaType: tripData.visaType, country: tripData.country, countries: tripData.countries, visaProgressPercentage: tripData.percentage, visaProgressColor: .green, createdAt: tripData.date) {
+                                VisaApplicationCard(isCompleted: tripData.isCompleted, visaType: tripData.visaType, country: tripData.country, countries: tripData.countries, visaProgressPercentage: tripData.percentage, visaProgressColor: Color.success6, createdAt: tripData.date) {
                                    
                                 }
                             }

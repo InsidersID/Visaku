@@ -246,7 +246,7 @@ struct SelectionButton: View {
         Button(action: action) {
             HStack {
                 Image(systemName: icon)
-                    .foregroundColor(icon == "circle" || icon == "square" ? .gray : .blue)
+                    .foregroundColor(icon == "circle" || icon == "square" ? .gray : Color.primary5)
                 Text(label)
                     .foregroundColor(.black)
             }

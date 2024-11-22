@@ -41,7 +41,7 @@ public struct PDFPreviewSheet: View {
                     .edgesIgnoringSafeArea(.all)
                     .padding()
                 
-                CustomButton(text: "Print PDF", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                CustomButton(text: "Print PDF", color: Color.primary5, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     PrintManager.shared.printFilledVisaApplicationForm {
                         viewModel.isShowPreviewVisaApplicationForm = false
                         dismiss()
@@ -49,7 +49,7 @@ public struct PDFPreviewSheet: View {
                 }
                 .padding(.horizontal)
                 
-                CustomButton(text: "Unduh PDF", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 8) {
+                CustomButton(text: "Unduh PDF", color: Color.primary5, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 8) {
                     PDFDownload.shared.downloadPDF {
                         viewModel.isShowPreviewVisaApplicationForm = false
                         dismiss()
@@ -79,7 +79,7 @@ public struct PDFPreviewSheet: View {
                     }
                     .padding()
                 
-                CustomButton(text: "Tutup", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) { 
+                CustomButton(text: "Tutup", color: Color.primary5, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) { 
                     viewModel.isShowPreviewVisaApplicationForm = false
                 }
                 .padding(.horizontal)
