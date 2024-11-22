@@ -13,11 +13,12 @@ struct ItineraryListSheet: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
     @State var aiManager: AIGeneratorController = AIGeneratorController()
-//
     @State private var itinerary: Itinerary = Itinerary(days: [])
-        
+    
+    @State var isTravelPreviewPDF: Bool = false
+    
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 VStack {
                     ScrollView {
@@ -57,7 +58,7 @@ struct ItineraryListSheet: View {
                     .padding(.bottom, 150)
                 }
                 VStack {
-                    ButtonsView()
+                    ButtonsView(isTravelPreviewPDF: $isTravelPreviewPDF)
                 }
                 .ignoresSafeArea(.all)
             }
@@ -82,7 +83,12 @@ struct ItineraryListSheet: View {
                     }
                 }
             }
+            .navigationDestination(isPresented: $isTravelPreviewPDF) {
+                TravelItineraryPdfPreview(itinerary: $itinerary)
+                    .environmentObject(viewModel)
+            }
         }
+        
     }
     
     func loadItinerary(json: String) {
@@ -90,7 +96,7 @@ struct ItineraryListSheet: View {
             print("Invalid JSON string.")
             return
         }
-
+        
         do {
             let rawDictionary = try JSONDecoder().decode([String: Day].self, from: jsonData)
             let sortedDays = Array(rawDictionary.values).sorted { $0.date < $1.date }
@@ -107,16 +113,18 @@ struct ItineraryListSheet: View {
 
 
 struct ButtonsView: View {
-    
+    @Binding var isTravelPreviewPDF: Bool
     var body: some View {
         VStack {
             Spacer()
             VStack {
-                CustomButton(text: "Simpan", color: .blue, font: "Inter-SemiBold", fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
+                CustomButton(text: "Preview PDF", color: .blue, font: "Inter-SemiBold", fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
+                    isTravelPreviewPDF.toggle()
                 }
                 .font(.custom("Inter-SemiBold", size: 20))
-
+                
                 CustomButton(text: "Generate ulang", textColor: .blue, color: .white, font: "Inter-SemiBold", fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
+                    isTravelPreviewPDF.toggle()
                 }
                 .padding(.bottom, 15)
             }
@@ -163,5 +171,7 @@ struct ItineraryCard: View {
 }
 
 #Preview {
+    @Previewable @ObservedObject var viewModel: CountryVisaApplicationViewModel = CountryVisaApplicationViewModel()
     ItineraryListSheet()
+        .environmentObject(viewModel)
 }
