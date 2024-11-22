@@ -118,12 +118,12 @@ struct ButtonsView: View {
         VStack {
             Spacer()
             VStack {
-                CustomButton(text: "Preview PDF", color: .blue, font: "Inter-SemiBold", fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
+                CustomButton(text: "Preview PDF", color: Color.primary5, font: "Inter-SemiBold", fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
                     isTravelPreviewPDF.toggle()
                 }
                 .font(.custom("Inter-SemiBold", size: 20))
                 
-                CustomButton(text: "Generate ulang", textColor: .blue, color: .white, font: "Inter-SemiBold", fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
+                CustomButton(text: "Generate ulang", textColor: Color.primary5, color: .white, font: "Inter-SemiBold", fontSize: 17, cornerRadius: 12, paddingHorizontal: 8, paddingVertical: 16) {
                     isTravelPreviewPDF.toggle()
                 }
                 .padding(.bottom, 15)

@@ -82,7 +82,7 @@ public struct KTPPreviewSheet: View {
             }) {
                 Image(systemName: "x.circle")
                     .font(.title)
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color.primary5)
             })
         }
     }
@@ -173,7 +173,7 @@ struct SaveDeleteButtonsView: View {
             case .success:
                 Text("KTP-mu sukses tersimpan").foregroundColor(.green)
             case .idle:
-                CustomButton(text: "Simpan", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                CustomButton(text: "Simpan", color: Color.primary5, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     Task {
                         await ktpPreviewViewModel.saveIdentityCard()
                     }
@@ -190,7 +190,7 @@ struct SaveDeleteButtonsView: View {
             case .success:
                 Text("KTP-mu sukses terhapus").foregroundColor(.green)
             case .idle:
-                CustomButton(text: "Hapus dokumen", textColor: .blue, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                CustomButton(text: "Hapus dokumen", textColor: Color.primary5, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     Task {
                         await ktpPreviewViewModel.deleteIdentityCard()
                     }

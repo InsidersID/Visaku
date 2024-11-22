@@ -83,7 +83,7 @@ public struct PhotoPreviewSheet: View {
                                 await photoPreviewViewModel.handleSuccess()
                             }
                         case .idle:
-                            CustomButton(text: "Simpan", color: .blue, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                            CustomButton(text: "Simpan", color: Color.primary5, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                                 Task {
                                     await photoPreviewViewModel.savePhoto()
                                     await ProfileViewModel.shared.fetchAccountByID(photoPreviewViewModel.account.id)
@@ -131,7 +131,7 @@ public struct PhotoPreviewSheet: View {
             }) {
                 Image(systemName: "x.circle")
                     .font(.title)
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color.primary5)
             })
             .fullScreenCover(isPresented: $photoPreviewViewModel.isCameraOpen, content: {
                 ZStack {

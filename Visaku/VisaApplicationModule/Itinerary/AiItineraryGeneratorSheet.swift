@@ -62,7 +62,7 @@ struct AiItineraryGeneratorSheet: View {
                                 Image(systemName: "plus")
                                 Text("Add Hotel")
                             }
-                            .foregroundColor(.blue)
+                            .foregroundColor(Color.primary5)
                         }
                     }
                 }

@@ -53,7 +53,7 @@ struct FilePickerView: View {
         VStack {
             if let selectedFileURL = selectedFileURL {
                 Text("Selected file: \(selectedFileURL.lastPathComponent)")
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color.primary5)
                     .padding()
             } else {
                 Text("No file selected")

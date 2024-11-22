@@ -54,16 +54,16 @@ struct ItineraryDocumentSheet: View {
             )
             
             VStack(spacing: 8) {
-                CustomButton(text: "Generate dengan AI", color: .blue, font: "Inter-Regular", fontSize: 16, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                CustomButton(text: "Generate dengan AI", color: Color.primary5, font: "Inter-Regular", fontSize: 16, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     isShowItineraryAccommodationSheet = true
                 }
-                CustomButton(text: "Upload dari device", color: .blue, font: "Inter-Regular", fontSize: 16, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                CustomButton(text: "Upload dari device", color: Color.primary5, font: "Inter-Regular", fontSize: 16, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     //Upload Document
                 }
-                CustomButton(text: "Scan Dokumen", color: .blue, font: "Inter-Regular", fontSize: 16, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                CustomButton(text: "Scan Dokumen", color: Color.primary5, font: "Inter-Regular", fontSize: 16, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     // Scanning Document
                 }
-                CustomButton(text: "Lihat ketentuan", color: .blue, font: "Inter-Regular", fontSize: 16, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
+                CustomButton(text: "Lihat ketentuan", color: Color.primary5, font: "Inter-Regular", fontSize: 16, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     showItineraryPolicySheet = true
                 }
             }
@@ -77,7 +77,7 @@ struct ItineraryDocumentSheet: View {
                 }) {
                     Image(systemName: "x.circle")
                         .font(.title)
-                        .foregroundColor(.blue)
+                        .foregroundColor(Color.primary5)
                 }
             }
         }

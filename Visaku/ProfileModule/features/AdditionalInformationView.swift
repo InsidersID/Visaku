@@ -247,7 +247,7 @@ struct RadioButton: View {
         Button(action: action) {
             HStack {
                 Image(systemName: isSelected ? "largecircle.fill.circle" : "circle")
-                    .foregroundColor(isSelected ? .blue : .gray)
+                    .foregroundColor(isSelected ? Color.primary5 : .gray)
                 Text(label)
                     .font(.custom("Inter-Medium", size: 16))
                     .foregroundStyle(Color.blackOpacity4)
