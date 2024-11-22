@@ -82,7 +82,7 @@ public struct PassportPreviewSheet: View {
                         case .error:
                             Text("Eror menyimpan paspormu").foregroundColor(.red)
                         case .success:
-                            Text("Paspormu sukses tersimpan").foregroundColor(.green)
+                            Text("Paspormu sukses tersimpan").foregroundColor(Color.success6)
                         case .idle:
                             CustomButton(text: "Simpan", color: Color.primary5, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                                 Task {
@@ -99,7 +99,7 @@ public struct PassportPreviewSheet: View {
                         case .error:
                             Text("Eror menghapus paspor").foregroundColor(.red)
                         case .success:
-                            Text("Paspormu sukses terhapus").foregroundColor(.green)
+                            Text("Paspormu sukses terhapus").foregroundColor(Color.success6)
                         case .idle:
                             CustomButton(text: "Hapus dokumen", textColor: Color.primary5, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                                 Task {

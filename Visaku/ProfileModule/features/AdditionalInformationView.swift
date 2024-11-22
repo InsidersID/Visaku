@@ -133,7 +133,7 @@ struct AdditionalInformationView: View {
                 case .error:
                     Text("Error saving the Additional Information").foregroundColor(.red)
                 case .success:
-                    Text("Additional Information saved successfully").foregroundColor(.green)
+                    Text("Additional Information saved successfully").foregroundColor(Color.success6)
                 case .idle:
                     CustomButton(text: "Selanjutnya", color: Color.primary5) {
                         Task {

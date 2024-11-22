@@ -171,7 +171,7 @@ struct SaveDeleteButtonsView: View {
             case .error:
                 Text("Eror menyimpan KTP-mu").foregroundColor(.red)
             case .success:
-                Text("KTP-mu sukses tersimpan").foregroundColor(.green)
+                Text("KTP-mu sukses tersimpan").foregroundColor(Color.success6)
             case .idle:
                 CustomButton(text: "Simpan", color: Color.primary5, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     Task {
@@ -188,7 +188,7 @@ struct SaveDeleteButtonsView: View {
             case .error:
                 Text("Eror menghapus KTP-mu").foregroundColor(.red)
             case .success:
-                Text("KTP-mu sukses terhapus").foregroundColor(.green)
+                Text("KTP-mu sukses terhapus").foregroundColor(Color.success6)
             case .idle:
                 CustomButton(text: "Hapus dokumen", textColor: Color.primary5, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                     Task {

@@ -114,7 +114,7 @@ struct CameraOverlayView: View {
                             .font(.system(size: 18, weight: .medium))
                         
                         Image(systemName: "checkmark.circle.fill")
-                            .foregroundStyle(.green)
+                            .foregroundStyle(Color.success6)
                     }
                 }
                 }

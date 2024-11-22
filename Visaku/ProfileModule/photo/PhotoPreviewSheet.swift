@@ -78,7 +78,7 @@ public struct PhotoPreviewSheet: View {
                             Text("Eror menyimpan gambar akunmu").foregroundColor(.red)
                         case .success:
                             Text("Gambar akunmu berhasil disimpan")
-                                .foregroundColor(.green)
+                                .foregroundColor(Color.success6)
                                 .task {
                                 await photoPreviewViewModel.handleSuccess()
                             }
@@ -99,7 +99,7 @@ public struct PhotoPreviewSheet: View {
                         case .error:
                             Text("Eror menghapus gambar akunmu").foregroundColor(.red)
                         case .success:
-                            Text("Gambar akunmu berhasil dihapus").foregroundColor(.green)
+                            Text("Gambar akunmu berhasil dihapus").foregroundColor(Color.success6)
                         case .idle:
                             CustomButton(text: "Foto ulang", textColor: .primary5, color: .white, fontSize: 17, cornerRadius: 14, paddingHorizontal: 16, paddingVertical: 16) {
                                 Task {
