@@ -25,8 +25,8 @@ struct SelectionSheet<Item: Hashable>: View {
                             isPresented = false
                         }) {
                             Text(itemText(item))
-                                .font(.title3)
-                                .foregroundStyle(.black)
+                                .font(.custom("Inter-SemiBold", size: 17))
+                                .foregroundStyle(Color.black)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding()
                                 .bold()
