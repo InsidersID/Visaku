@@ -91,41 +91,37 @@ struct TabBarView: View {
             GeometryReader { proxy in
                 ZStack {
                     Color.tertiary7.ignoresSafeArea()
-                    
-                    Circle()
-                        .frame(width: 400)
-                        .foregroundStyle(Color.primary3)
-                        .position(x: 119, y: 743)
-                    
                     VStack {
                         Spacer()
-                        
-                        Image("personPlane")
-                            .resizable()
-                            .scaledToFit()
-                            .offset(x: 0, y: 20)
-                    }
-                    
-                    VStack {
+                            .frame(height: proxy.size.height * 0.2 )
                         Image("logoVisaku")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 99)
-                        
+                            .frame(height: proxy.size.height * 0.11)
                         Text("Visaku")
                             .font(.custom("Poppins-Bold", size: 32))
                             .foregroundStyle(Color.tertiary1)
-                        
+                        ZStack {
+                            Circle()
+                                .frame(width: proxy.size.height * 0.5)
+                                .foregroundStyle(Color.primary3)
+                                .offset(x: proxy.size.width * -0.2, y: proxy.size.height * 0.16)
+                            Image("personPlane")
+                                .resizable()
+                                .scaledToFit()
+                                .ignoresSafeArea()
+                                .offset(x: 0, y: proxy.size.height * 0.02)
+                            VStack {
+                                Text("Buka perangkat")
+                                    .font(.custom("Inter-Bold", size: 14))
+                                    .foregroundStyle(Color.stayBlack)
+                            }.offset(x: 0, y: proxy.size.height * 0.18)
+                        }
                         Spacer()
-                            .frame(height: 420)
-                        
-                        Text("Buka perangkat")
-                            .font(.custom("Inter-Regular", size: 14))
-                            .foregroundStyle(Color.stayBlack)
                     }
-                    .padding(.top, 80)
                 }
             }
+            .ignoresSafeArea()
         }
     }
 }
@@ -149,6 +145,10 @@ extension TabBarView {
         }
         .padding(.bottom, 20)
     }
+}
+
+#Preview {
+    TabBarView()
 }
 
 #Preview {
