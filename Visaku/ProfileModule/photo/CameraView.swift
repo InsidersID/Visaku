@@ -83,7 +83,7 @@ class CameraView: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate
     func setupCamera() {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self,
-                let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
+                let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
                 let cameraInput = try? AVCaptureDeviceInput(device: camera) else {
                     print("Camera input couldn't be created.")
                     return
