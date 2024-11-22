@@ -45,6 +45,7 @@ struct AddProfileView: View {
                         }
                         .onChange(of: profileViewModel.username) { newValue in
                             profileViewModel.username = newValue.capitalized
+                            account.username = newValue.capitalized
                         }
                 }
                 .frame(height: 144, alignment: .center)
