@@ -72,5 +72,7 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Face ID digunakan untuk mengakses dokumen pribadi di aplikasi Visaku.</string>
 </dict>
 </plist>
