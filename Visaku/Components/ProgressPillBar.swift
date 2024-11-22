@@ -16,7 +16,7 @@ struct ProgressPillBar: View {
                 Rectangle()
                     .cornerRadius(25)
                     .frame(width: 70, height: 13)
-                    .foregroundStyle(i == currentPage ? .red : Color(" pillBarGrey"))
+                    .foregroundStyle(i == currentPage ? Color.danger5 : Color(" pillBarGrey"))
                 
             }
         }

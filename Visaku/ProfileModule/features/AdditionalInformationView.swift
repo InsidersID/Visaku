@@ -131,7 +131,7 @@ struct AdditionalInformationView: View {
                     ProgressView("Saving...")
                         .padding()
                 case .error:
-                    Text("Error saving the Additional Information").foregroundColor(.red)
+                    Text("Error saving the Additional Information").foregroundColor(Color.danger5)
                 case .success:
                     Text("Additional Information saved successfully").foregroundColor(Color.success6)
                 case .idle:

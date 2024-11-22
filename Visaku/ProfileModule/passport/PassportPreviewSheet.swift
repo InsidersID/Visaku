@@ -46,7 +46,7 @@ public struct PassportPreviewSheet: View {
                         Image(systemName: "dock.rectangle")
                             .resizable()
                             .frame(height: 200)
-                            .background(Color.red)
+                            .background(ColorColor.danger5)
                             .cornerRadius(24)
                             .padding()
                     }
@@ -80,7 +80,7 @@ public struct PassportPreviewSheet: View {
                             ProgressView("Menyimpan...")
                                 .padding()
                         case .error:
-                            Text("Eror menyimpan paspormu").foregroundColor(.red)
+                            Text("Eror menyimpan paspormu").foregroundColor(Color.danger5)
                         case .success:
                             Text("Paspormu sukses tersimpan").foregroundColor(Color.success6)
                         case .idle:
@@ -97,7 +97,7 @@ public struct PassportPreviewSheet: View {
                             ProgressView("Menghapus...")
                                 .padding()
                         case .error:
-                            Text("Eror menghapus paspor").foregroundColor(.red)
+                            Text("Eror menghapus paspor").foregroundColor(Color.danger5)
                         case .success:
                             Text("Paspormu sukses terhapus").foregroundColor(Color.success6)
                         case .idle:

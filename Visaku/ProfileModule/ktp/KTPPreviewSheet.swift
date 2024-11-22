@@ -169,7 +169,7 @@ struct SaveDeleteButtonsView: View {
                 ProgressView("Menyimpan...")
                     .padding()
             case .error:
-                Text("Eror menyimpan KTP-mu").foregroundColor(.red)
+                Text("Eror menyimpan KTP-mu").foregroundColor(Color.danger5)
             case .success:
                 Text("KTP-mu sukses tersimpan").foregroundColor(Color.success6)
             case .idle:
@@ -186,7 +186,7 @@ struct SaveDeleteButtonsView: View {
                 ProgressView("Menghapus...")
                     .padding()
             case .error:
-                Text("Eror menghapus KTP-mu").foregroundColor(.red)
+                Text("Eror menghapus KTP-mu").foregroundColor(Color.danger5)
             case .success:
                 Text("KTP-mu sukses terhapus").foregroundColor(Color.success6)
             case .idle:

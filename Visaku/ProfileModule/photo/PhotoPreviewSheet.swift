@@ -75,7 +75,7 @@ public struct PhotoPreviewSheet: View {
                             ProgressView("Menyimpan...")
                                 .padding()
                         case .error:
-                            Text("Eror menyimpan gambar akunmu").foregroundColor(.red)
+                            Text("Eror menyimpan gambar akunmu").foregroundColor(Color.danger5)
                         case .success:
                             Text("Gambar akunmu berhasil disimpan")
                                 .foregroundColor(Color.success6)
@@ -97,7 +97,7 @@ public struct PhotoPreviewSheet: View {
                             ProgressView("Menghapus...")
                                 .padding()
                         case .error:
-                            Text("Eror menghapus gambar akunmu").foregroundColor(.red)
+                            Text("Eror menghapus gambar akunmu").foregroundColor(Color.danger5)
                         case .success:
                             Text("Gambar akunmu berhasil dihapus").foregroundColor(Color.success6)
                         case .idle:
