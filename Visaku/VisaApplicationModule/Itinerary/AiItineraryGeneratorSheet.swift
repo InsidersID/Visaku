@@ -27,7 +27,7 @@ struct AiItineraryGeneratorSheet: View {
                                     .font(.headline)
                                 Spacer()
                                 Text(formatDateRange(startDate: country.startDate, endDate: country.endDate))
-                                                                .font(.subheadline)
+                                    .font(.subheadline)
                             }
                             
                             ForEach($country.hotels) { $hotel in
@@ -48,41 +48,42 @@ struct AiItineraryGeneratorSheet: View {
                                         if let index = country.hotels.firstIndex(where: { $0.id == hotel.id }) {
                                             country.hotels.remove(at: index)
                                         }
-                                  }) {
-                                      Image(systemName: "trash")
-                                          .foregroundColor(Color.danger5)
-                                  }
-                                .padding(.vertical, 8)
-                            }
-                            
-                            Button(action: {
-                                print("trigger")
+                                    }) {
+                                        Image(systemName: "trash")
+                                            .foregroundColor(Color.danger5)
+                                    }
+                                    .padding(.vertical, 8)
+                                }
+                                
+                                Button(action: {
+                                    print("trigger")
                                     let newHotel = Hotel(name: "", stayPeriod: "")
                                     if let countryIndex = countries.firstIndex(where: { $0.id == country.id }) {
                                         countries[countryIndex].hotels.append(newHotel)
                                         // Log for debugging
                                         print("Updated hotels: \(countries[countryIndex].hotels)")
                                     }
-                            }) {
-                                HStack {
-                                    Image(systemName: "plus")
-                                    Text("Add Hotel")
+                                }) {
+                                    HStack {
+                                        Image(systemName: "plus")
+                                        Text("Add Hotel")
+                                    }
+                                    .foregroundColor(Color.primary5)
                                 }
-                                .foregroundColor(Color.primary5)
                             }
                         }
                     }
+                    
+                    Spacer()
+                    CustomButton(text: "Buat itinerary", color: Color.primary5) {
+                        isItineraryListSheet.toggle()
+                    }
                 }
-                
-                Spacer()
-                CustomButton(text: "Buat itinerary", color: Color.primary5) {
-                    isItineraryListSheet.toggle()
+                .padding(.horizontal, 20)
+                .navigationDestination(isPresented: $isItineraryListSheet) {
+                    ItineraryListSheet()
+                        .environmentObject(viewModel)
                 }
-            }
-            .padding(.horizontal, 20)
-            .navigationDestination(isPresented: $isItineraryListSheet) {
-                ItineraryListSheet()
-                    .environmentObject(viewModel)
             }
         }
     }
@@ -103,6 +104,7 @@ struct AiItineraryGeneratorSheet: View {
     }
 }
 
+    
 #Preview {
     @Previewable @ObservedObject var viewModel: CountryVisaApplicationViewModel = .init()
     @Previewable @State var countries = [
