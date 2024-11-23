@@ -38,7 +38,7 @@ struct ItineraryListSheet: View {
                         let countriesWithHotels = countries.filter { !$0.hotels.isEmpty }
                         let messageContent = countriesWithHotels.map { country in
                             let hotelDetails = country.hotels.map { hotel in
-                                "- \(hotel.name): \(hotel.stayPeriod)"
+                                "- \(hotel.name): \(String(describing: hotel.startDate)) - \(String(describing: hotel.endDate))"
                             }.joined(separator: "\n")
                             return """
                                 \(country.name):
