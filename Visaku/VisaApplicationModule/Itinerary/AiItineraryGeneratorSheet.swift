@@ -48,11 +48,10 @@ struct AiItineraryGeneratorSheet: View {
                                         if let index = country.hotels.firstIndex(where: { $0.id == hotel.id }) {
                                             country.hotels.remove(at: index)
                                         }
-                                    }) {
-                                        Image(systemName: "trash")
-                                            .foregroundColor(.red)
-                                    }
-                                }
+                                  }) {
+                                      Image(systemName: "trash")
+                                          .foregroundColor(Color.danger5)
+                                  }
                                 .padding(.vertical, 8)
                             }
                             
@@ -69,7 +68,7 @@ struct AiItineraryGeneratorSheet: View {
                                     Image(systemName: "plus")
                                     Text("Add Hotel")
                                 }
-                                .foregroundColor(.blue)
+                                .foregroundColor(Color.primary5)
                             }
                         }
                     }
