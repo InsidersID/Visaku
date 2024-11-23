@@ -74,5 +74,9 @@
 	</array>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID digunakan untuk mengakses dokumen pribadi di aplikasi Visaku.</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
+	<key>OPENAI_API_KEY</key>
+	<string>$(OPENAI_API_KEY)</string>
 </dict>
 </plist>
