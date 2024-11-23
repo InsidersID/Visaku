@@ -15,12 +15,13 @@ struct Day: Identifiable, Codable {
     var id: UUID = UUID()
     var title: String
     var date: String
+    var city: String
     var morning: Activity
     var afternoon: Activity
     var night: Activity
 
     private enum CodingKeys: String, CodingKey {
-        case title, date, morning, afternoon, night
+        case title, date, city, morning, afternoon, night
     }
 }
 
