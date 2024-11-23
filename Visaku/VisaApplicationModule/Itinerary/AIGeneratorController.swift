@@ -10,8 +10,24 @@ import OpenAI
 
 class AIGeneratorController: ObservableObject {
     @Published var messages: [MessageModel] = []
+    
+    private let openAiKey: String
+    private let openAI: OpenAI
 
-    let openAI = OpenAI(apiToken: "secret")
+    init() {
+        let apiKeyProvider = APIKeyProvider()
+        if let apiKey = apiKeyProvider.apiKey {
+            print("Using API Key: \(apiKey)")
+            let openAIPlatform = OpenAI(apiToken: apiKey)
+            
+            self.openAiKey = apiKey
+            print("OpenAI API Key loaded successfully from Keychain")
+
+            self.openAI = openAIPlatform
+        } else {
+            fatalError("API Key is unavailable. Check configuration.")
+        }
+    }
     
     func sendNewMessage(content: String, completion: @escaping (String?) -> Void) {
         let userMessage = MessageModel(content: content, isUser: true)
