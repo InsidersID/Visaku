@@ -109,6 +109,25 @@ public struct CountryVisaApplicationView: View {
                         viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries)
                     }
                 }
+                .navigationDestination(isPresented: $viewModel.aiItineraryGenerator) {
+                    if let trip = viewModel.trip {
+                        AiItineraryGeneratorSheet(
+                            countries: Binding(
+                                get: { trip.countries },
+                                set: { newCountries in
+                                    viewModel.trip?.countries = newCountries
+                                    viewModel.trip = viewModel.trip
+                                }
+                            )
+                        )
+                        .environmentObject(viewModel)
+                        .navigationBarBackButtonHidden()
+                        .presentationDragIndicator(.visible)
+                    } else {
+                        Text("No trip data available.")
+                            .presentationDragIndicator(.visible)
+                    }
+                }
                 .onChange(of: viewModel.completionPercentage) { oldValue, newValue in completionHandler(newValue) }
                 .sheet(isPresented: $viewModel.isIdentity) { ProfileView(isSelectProfile: true).environmentObject(viewModel) }
                 .presentationDragIndicator(.visible)

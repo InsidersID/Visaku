@@ -33,6 +33,7 @@ public class CountryVisaApplicationViewModel: ObservableObject {
 //    @Published var selectedIdentity: AccounselectedAccounttEntity?
     @Published var showDocumentDetail: Bool = false
     @Published var isNotificationVisible: Bool = false
+    @Published var aiItineraryGenerator: Bool = false
     
     @Published var isApplicantUnder18: String? = ""
     @Published var custodianFirstName: String = ""
