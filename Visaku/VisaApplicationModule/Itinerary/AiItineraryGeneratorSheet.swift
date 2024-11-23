@@ -9,74 +9,81 @@ struct AiItineraryGeneratorSheet: View {
     @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("AI Itinerary Generator")
-                .frame(maxWidth: .infinity, alignment: .center)
-                .font(.title2)
-                .padding()
-            
-            Text("Daftar tempat tinggal")
-                .font(.headline)
-            
-            ForEach($countries) { $country in
-                CardContainer(cornerRadius: 18) {
-                    VStack(alignment: .leading, spacing: 12) {
-                        HStack {
-                            Text(country.name)
-                                .font(.headline)
-                            Spacer()
-                            Text(formatDateRange(startDate: country.startDate, endDate: country.endDate))
-                                                            .font(.subheadline)
-                        }
-                        
-                        ForEach($country.hotels) { $hotel in
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Hotel Name")
-                                    .font(.subheadline)
-                                TextField("Enter hotel name", text: $hotel.name)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                    .frame(maxWidth: .infinity)
-                                
-                                Text("Stay Period")
-                                    .font(.subheadline)
-                                TextField("Enter stay period", text: $hotel.stayPeriod)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                    .frame(maxWidth: .infinity)
-                                
-                                Button(action: {
-                                    if let index = country.hotels.firstIndex(where: { $0.id == hotel.id }) {
-                                        country.hotels.remove(at: index)
-                                    }
-                                }) {
-                                    Image(systemName: "trash")
-                                        .foregroundColor(Color.danger5)
-                                }
-                            }
-                            .padding(.vertical, 8)
-                        }
-                        
-                        Button(action: {
-                            country.hotels.append(Hotel(name: "", stayPeriod: ""))
-                        }) {
+        NavigationStack {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("AI Itinerary Generator")
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .font(.title2)
+                    .padding()
+                
+                Text("Daftar tempat tinggal")
+                    .font(.headline)
+                
+                ForEach($countries) { $country in
+                    CardContainer(cornerRadius: 18) {
+                        VStack(alignment: .leading, spacing: 12) {
                             HStack {
-                                Image(systemName: "plus")
-                                Text("Add Hotel")
+                                Text(country.name)
+                                    .font(.headline)
+                                Spacer()
+                                Text(formatDateRange(startDate: country.startDate, endDate: country.endDate))
+                                                                .font(.subheadline)
                             }
-                            .foregroundColor(Color.primary5)
+                            
+                            ForEach($country.hotels) { $hotel in
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Hotel Name")
+                                        .font(.subheadline)
+                                    TextField("Enter hotel name", text: $hotel.name)
+                                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                                        .frame(maxWidth: .infinity)
+                                    
+                                    Text("Stay Period")
+                                        .font(.subheadline)
+                                    TextField("Enter stay period", text: $hotel.stayPeriod)
+                                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                                        .frame(maxWidth: .infinity)
+                                    
+                                    Button(action: {
+                                        if let index = country.hotels.firstIndex(where: { $0.id == hotel.id }) {
+                                            country.hotels.remove(at: index)
+                                        }
+                                  }) {
+                                      Image(systemName: "trash")
+                                          .foregroundColor(Color.danger5)
+                                  }
+                                .padding(.vertical, 8)
+                            }
+                            
+                            Button(action: {
+                                print("trigger")
+                                    let newHotel = Hotel(name: "", stayPeriod: "")
+                                    if let countryIndex = countries.firstIndex(where: { $0.id == country.id }) {
+                                        countries[countryIndex].hotels.append(newHotel)
+                                        // Log for debugging
+                                        print("Updated hotels: \(countries[countryIndex].hotels)")
+                                    }
+                            }) {
+                                HStack {
+                                    Image(systemName: "plus")
+                                    Text("Add Hotel")
+                                }
+                                .foregroundColor(Color.primary5)
+                            }
                         }
                     }
                 }
+                
+                Spacer()
+                CustomButton(text: "Buat itinerary", color: Color.primary5) {
+                    isItineraryListSheet.toggle()
+                }
             }
-            
-            Spacer()
-            CustomButton(text: "Buat itinerary", color: Color.primary5) {
-                isItineraryListSheet.toggle()
+            .padding(.horizontal, 20)
+            .navigationDestination(isPresented: $isItineraryListSheet) {
+                ItineraryListSheet()
+                    .environmentObject(viewModel)
             }
-        }
-        .padding(.horizontal, 20)
-        .sheet(isPresented: $isItineraryListSheet) {
-            ItineraryListSheet()
-                .environmentObject(viewModel)
         }
     }
     
@@ -97,6 +104,7 @@ struct AiItineraryGeneratorSheet: View {
 }
 
 #Preview {
+    @Previewable @ObservedObject var viewModel: CountryVisaApplicationViewModel = .init()
     @Previewable @State var countries = [
         CountryData(
             name: "Italia",
@@ -109,4 +117,5 @@ struct AiItineraryGeneratorSheet: View {
         )
     ]
     AiItineraryGeneratorSheet(countries: $countries)
+        .environmentObject(viewModel)
 }
