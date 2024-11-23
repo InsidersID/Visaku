@@ -7,72 +7,79 @@ struct PrivacyPolicyView: View {
     @State var navigateToTabBarView: Bool = false
     private let agreementManager = AgreementManager()
     
+    var onPrivacyPolicyAccepted: () -> Void
+    
     var body: some View {
-        GeometryReader { proxy in
-            VStack {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Terakhir di-update 18/12/2024")
-                            .font(.custom("Inter-Medium", size: 16))
-                            .foregroundStyle(Color.blackOpacity3)
-                            .padding(.bottom)
+        NavigationStack {
+            GeometryReader { proxy in
+                VStack {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Terakhir di-update 18/12/2024")
+                                .font(.custom("Inter-Medium", size: 16))
+                                .foregroundStyle(Color.black.opacity(0.7))
+                                .padding(.bottom)
+                            
+                            PrivacyPolicy
+                                .lineSpacing(4)
+                        }
                         
-                        PrivacyPolicy
-                            .lineSpacing(4)
-                    }
-                    
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 12)
-                            .foregroundStyle(Color.blackOpacity1)
-                            .frame(width: .infinity, height: 37)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 12)
+                                .foregroundStyle(Color.black.opacity(0.1))
+                                .frame(width: .infinity, height: 37)
+                            
+                            Text("idservisa@gmail.com")
+                                .font(.custom("Inter-Bold", size: 14))
+                                .foregroundStyle(Color.black.opacity(0.7))
+                        }
+                        .padding(.bottom, 36)
                         
-                        Text("\("idservisa@gmail.com")")
-                            .font(.custom("Inter-Bold", size: 14))
-                            .foregroundStyle(Color.blackOpacity4)
+                        AgreementCheckbox
+                        
+                        CustomButton(
+                            text: "Terima dan lanjut",
+                            textColor: .white,
+                            color: isAgree ? .blue : .gray,
+                            font: "Inter-SemiBold",
+                            fontSize: 16
+                        ) {
+                            agreementManager.setAgreed()
+                            onPrivacyPolicyAccepted()
+                            withAnimation(.easeInOut) {
+                                navigateToTabBarView = true
+                            }
+                        }
+                        .disabled(!isAgree)
                     }
-                    .padding(.bottom, 36)
-                    
-                    AgreementCheckbox
-                    
-                    CustomButton(text: "Terima dan lanjut", textColor: .stayWhite, color: isAgree ? .primary5 : .blackOpacity2, font: "Inter-SemiBold", fontSize: 16) {
-                        agreementManager.setAgreed()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            navigateToTabBarView = true
-                            print("navigateToTabBarView set to true on the main thread")
-                            print("navigateToTabBarView set to true")
+                }
+                .padding(.horizontal, 20)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text("Kebijakan Privasi")
+                            .foregroundStyle(Color.black.opacity(0.7))
+                            .font(.custom("Inter-SemiBold", size: 24))
+                    }
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .resizable()
+                                .foregroundStyle(Color.black.opacity(0.7))
+                                .frame(width: 24, height: 24)
+                                .padding()
+                                .background(
+                                    Circle()
+                                        .stroke(Color.black.opacity(0.1), lineWidth: 1)
+                                )
                         }
                     }
-                    .disabled(!isAgree)
                 }
-            }
-            .padding(.horizontal, 20)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Kebijakan Privasi")
-                        .foregroundStyle(Color.blackOpacity5)
-                        .font(Font.custom("Inter-SemiBold", size: 24))
+                .navigationDestination(isPresented: $navigateToTabBarView) {
+                    TabBarView()
+                        .navigationBarBackButtonHidden(true)
                 }
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .resizable()
-                            .foregroundStyle(Color.blackOpacity5)
-                            .imageScale(.medium)
-                            .fontWeight(.semibold)
-                            .background(
-                                Circle()
-                                    .stroke(Color.blackOpacity2, lineWidth: 1)
-                                    .frame(width: 40, height: 40)
-                            )
-                    }
-                    .padding(.leading)
-                }
-            }
-            .navigationDestination(isPresented: $navigateToTabBarView) {
-                TabBarView()
-                    .navigationBarBackButtonHidden()
             }
         }
     }
@@ -164,31 +171,31 @@ struct PrivacyPolicyView: View {
     
     private var AgreementCheckbox: some View {
         HStack(alignment: .top) {
-            Image(systemName: isAgree ?  "checkmark.rectangle.fill" : "rectangle")
+            Image(systemName: isAgree ? "checkmark.rectangle.fill" : "rectangle")
                 .resizable()
                 .frame(width: 22, height: 22)
-                .foregroundStyle(Color.primary5)
+                .foregroundStyle(Color.blue)
                 .padding(.trailing, 8)
             
             VStack(alignment: .leading) {
                 (Text("Dengan menggunakan aplikasi Visaku, Anda menyetujui ")
-                    .foregroundStyle(Color.blackOpacity4)
+                    .foregroundStyle(Color.black.opacity(0.7))
                 + Text("**pengumpulan**")
-                    .foregroundStyle(Color.primary5)
+                    .foregroundStyle(Color.blue)
                 + Text(", ")
-                    .foregroundStyle(Color.blackOpacity4)
+                    .foregroundStyle(Color.black.opacity(0.7))
                 + Text("**penggunaan**")
-                    .foregroundStyle(Color.primary5)
+                    .foregroundStyle(Color.blue)
                 + Text(", dan ")
-                    .foregroundStyle(Color.blackOpacity4)
+                    .foregroundStyle(Color.black.opacity(0.7))
                 + Text("**pemrosesan data pribadi Anda**")
-                    .foregroundStyle(Color.primary5)
+                    .foregroundStyle(Color.blue)
                 + Text(" sesuai dengan ketentuan dalam ")
-                    .foregroundStyle(Color.blackOpacity4)
+                    .foregroundStyle(Color.black.opacity(0.7))
                 + Text("**Kebijakan Privasi Visaku**")
-                    .foregroundStyle(Color.primary5)
+                    .foregroundStyle(Color.blue)
                 + Text(".")
-                    .foregroundStyle(Color.blackOpacity4))
+                    .foregroundStyle(Color.black.opacity(0.7)))
             }
             .font(.custom("Inter-Regular", size: 14))
             .lineSpacing(4)
@@ -200,8 +207,8 @@ struct PrivacyPolicyView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        PrivacyPolicyView()
-    }
-}
+//#Preview {
+//    NavigationStack {
+////        PrivacyPolicyView(onPrivacyPolicyAccepted: true)
+//    }
+//}

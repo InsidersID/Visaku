@@ -10,15 +10,20 @@ import RepositoryModule
 
 @main
 struct VisakuApp: App {
-    
-    let manager = AgreementManager()
+    @State private var isFirstLaunch = !UserDefaults.standard.bool(forKey: "isFirstLaunch")
 
     var body: some Scene {
         WindowGroup {
-            TabBarView()
-                .task {
-                    SwiftDataContextManager()
+            NavigationStack {
+                if isFirstLaunch {
+                    SplashScreen(isFirstLaunch: $isFirstLaunch)
+                } else {
+                    TabBarView()
+                        .task {
+                            SwiftDataContextManager()
+                        }
                 }
+            }
         }
     }
 }
