@@ -45,7 +45,8 @@ class PassportPreviewViewModel: ObservableObject {
     @Published var passportImage: UIImage?
     
     //Navigation
-    @Published var isCameraOpen: Bool = true
+    @Published var isCameraOpen: Bool = false
+    @Published var isImagePickerOpen: Bool = false
     
     //State View
     @Published var savePassportState: SavePassportState = .idle
