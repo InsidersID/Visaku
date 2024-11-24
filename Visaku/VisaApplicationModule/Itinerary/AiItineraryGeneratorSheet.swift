@@ -153,10 +153,11 @@ struct HotelEntryView: View {
             startDate: Date(),
             endDate: Calendar.current.date(byAdding: .day, value: 4, to: Date()),
             hotels: [
-                Hotel(name: "Rome Hotel", stayPeriod: "Jun 22 2024 - Jun 24 2024"),
-                Hotel(name: "Venice Hotel", stayPeriod: "Jun 24 2024 - Jun 26 2024")
+                Hotel(name: "Rome Hotel"),
+                Hotel(name: "Venice Hotel")
             ]
         )
     ]
     AiItineraryGeneratorSheet(countries: $countries)
         .environmentObject(viewModel)
+}
