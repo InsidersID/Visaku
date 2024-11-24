@@ -37,3 +37,6 @@ xcuserdata/
 # Carthage
 Carthage/Checkouts
 Carthage/Build
+
+# Secrets & Sensitive Infos
+*.xcconfig

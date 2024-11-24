@@ -49,7 +49,6 @@ struct TravelItineraryPdfPreview: View {
         let screenWidth = UIScreen.main.bounds.width
         let pageHeight = UIScreen.main.bounds.height
         let pdfRenderer = UIGraphicsPDFRenderer(bounds: CGRect(x: 0, y: 0, width: screenWidth, height: pageHeight))
-
         let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("travelItinerary.pdf")
         
         do {
@@ -181,6 +180,7 @@ struct CardItineraryDetail: View {
         .border(Color.black, width: 1)
     }
 }
+
 struct VerticalRotationModifier: ViewModifier {
     @State private var contentSize = CGSize.zero
     let rotation: VerticalRotationType

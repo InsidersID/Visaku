@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct SplashScreen: View {
-    @State var navigateToTabBar: Bool = false
+    @State var navigateToPrivacyPolicy: Bool = false
+    @Binding var isFirstLaunch: Bool
     
     var body: some View {
         NavigationStack {
@@ -41,12 +42,15 @@ struct SplashScreen: View {
                     }
                 }
                 .onTapGesture {
-                    self.navigateToTabBar = true
+                    self.navigateToPrivacyPolicy = true
                 }
             }
             .ignoresSafeArea()
-            .navigationDestination(isPresented: $navigateToTabBar) {
-                TabBarView()
+            .navigationDestination(isPresented: $navigateToPrivacyPolicy) {
+                PrivacyPolicyView {
+                     isFirstLaunch = false
+                     UserDefaults.standard.set(true, forKey: "isFirstLaunch")
+                 }
                     .navigationBarBackButtonHidden()
             }
         }
@@ -54,5 +58,5 @@ struct SplashScreen: View {
 }
 
 #Preview {
-    SplashScreen()
+    SplashScreen(navigateToPrivacyPolicy: false, isFirstLaunch: Binding.constant(false))
 }
