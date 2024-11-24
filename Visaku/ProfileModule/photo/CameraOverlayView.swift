@@ -98,7 +98,15 @@ struct CameraOverlayView: View {
                             .foregroundStyle(colorScheme == .dark ? Color.danger5 : Color.danger5)
                             .font(.system(size: 18, weight: .medium))
                     }
-                } else if cameraState.isTakingImage {
+                }
+                else if !cameraState.isHeadCentered {
+                    HStack {
+                        Text("Lihat ke depan...")
+                            .foregroundStyle(colorScheme == .dark ? Color.danger5 : Color.danger5)
+                            .font(.system(size: 18, weight: .medium))
+                    }
+                }
+                else if cameraState.isTakingImage {
                     HStack {
                         Text("Gambar lagi diambil... ")
                             .foregroundStyle(colorScheme == .dark ? .white : .black)

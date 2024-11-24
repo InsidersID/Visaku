@@ -13,7 +13,7 @@ class CameraState: ObservableObject {
     @Published var isFocused: Bool = true
     @Published var isCameraFeedReady: Bool = false
     @Published var shouldCaptureImage: Bool = false
-    
     @Published var isTakingImage: Bool = false
+    @Published var isHeadCentered: Bool = false
 }
 
