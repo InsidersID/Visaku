@@ -9,6 +9,8 @@ import SwiftUI
 import RepositoryModule
 
 struct ActionDocumentSheet: View {
+    @Environment(\.dismiss) var dismiss
+    
     var documentType: VisaRequirement
     @State private var image: UIImage? = nil
     @State private var fileURL: URL? = nil
@@ -34,6 +36,7 @@ struct ActionDocumentSheet: View {
                     // Toggle Marked Status
                     Button(action: {
                         isMarked.toggle()
+                        dismiss()
                     }) {
                         HStack {
                             ZStack {

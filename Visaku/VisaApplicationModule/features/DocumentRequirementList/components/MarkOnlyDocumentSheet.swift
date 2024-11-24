@@ -9,6 +9,7 @@ import SwiftUI
 import RepositoryModule
 
 struct MarkOnlyDocumentSheet: View {
+    @Environment(\.dismiss) var dismiss
     var documentType: VisaRequirement
     @Binding var isMarked: Bool
     @State private var showDocumentDetail = false
@@ -25,6 +26,7 @@ struct MarkOnlyDocumentSheet: View {
                 VStack(alignment: .leading, spacing: 24) {
                     Button(action: {
                         isMarked.toggle()
+                        dismiss()
                     }) {
                         HStack {
                             ZStack {
