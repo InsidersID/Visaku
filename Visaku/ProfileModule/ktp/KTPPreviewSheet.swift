@@ -22,12 +22,10 @@ public struct KTPPreviewSheet: View {
     }
     
     public var body: some View {
-        @Bindable var profileViewModel = profileViewModel
-        
         NavigationStack {
             ScrollView(.vertical, showsIndicators: true) {
                 VStack {
-                    KTPImageView(ktpImage: ktpPreviewViewModel.ktpImage)
+                    KTPImageView(ktpImage: ktpImage)
                     Divider()
                     KTPDetailsView(ktpPreviewViewModel: ktpPreviewViewModel)
                     SaveDeleteButtonsView(ktpPreviewViewModel: ktpPreviewViewModel)
@@ -35,49 +33,34 @@ public struct KTPPreviewSheet: View {
                 .padding(.bottom, 16)
                 .frame(maxWidth: .infinity)
             }
-            .fullScreenCover(isPresented: $ktpPreviewViewModel.isCameraOpen) {
-                VNDocumentCameraViewControllerRepresentable(scanResult: $ktpImage)
+            .onAppear {
+                print("KTPPreviewSheet appeared with origin: \(origin)")
+                if origin == .imagePicker && ktpImage == nil {
+                    ktpPreviewViewModel.isImagePickerOpen = true
+                } else if origin == .cameraScanner && ktpImage == nil {
+                    ktpPreviewViewModel.isCameraOpen = true
+                }
+            }
+            .onChange(of: ktpPreviewViewModel.ktpImage) { _, newValue in
+                guard let image = newValue else { return }
+                print("Processing image in onChange...")
+                Task {
+                    await ktpPreviewViewModel.processCapturedImage(image)
+                }
             }
             .onChange(of: ktpImage) { newImage in
                 if let unwrappedImage = newImage {
                     ktpPreviewViewModel.ktpImage = unwrappedImage
                 }
             }
-//            .fullScreenCover(isPresented: $ktpPreviewViewModel.isCameraOpen) {
-//                VNDocumentCameraViewControllerRepresentable(scanResult: $ktpPreviewViewModel.ktpImage)
-//                    .ignoresSafeArea()
-//            }
-            .sheet(isPresented: $profileViewModel.isUploadImageForKTP) {
-                ImagePicker(selectedImage: $ktpPreviewViewModel.ktpImage)
+            .fullScreenCover(isPresented: $ktpPreviewViewModel.isCameraOpen) {
+                VNDocumentCameraViewControllerRepresentable(scanResult: $ktpImage)
+                    .ignoresSafeArea()
             }
-            .sheet(isPresented: $ktpPreviewViewModel.isImagePickerOpen) {
-                ImagePicker(selectedImage: $ktpPreviewViewModel.ktpImage)
-            }
-            .onAppear {
-                if origin == .imagePicker {
-                    if ktpPreviewViewModel.ktpImage == nil {
-                        print("image picker is open")
-                        ktpPreviewViewModel.isImagePickerOpen = true
-                    }
-                } else if origin == .cameraScanner {
-                    if ktpPreviewViewModel.ktpImage == nil {
-                        ktpPreviewViewModel.isCameraOpen = true
-                    }
-                }
-            }
-            .onChange(of: ktpPreviewViewModel.ktpImage) { oldValue, newValue in
-                guard let unwrappedImage = newValue else {
-                    return
-                }
-
-                print("Starting image processing...")
-                Task {
-                    await ktpPreviewViewModel.processCapturedImage(unwrappedImage)
-                }
-              }
             .navigationTitle("KTP")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(trailing: Button(action: {
+                print("Dismiss button tapped")
                 dismiss()
             }) {
                 Image(systemName: "x.circle")
@@ -88,6 +71,13 @@ public struct KTPPreviewSheet: View {
     }
 
 }
+
+//            .sheet(isPresented: $profileViewModel.isUploadImageForKTP) {
+//                ImagePicker(selectedImage: $ktpPreviewViewModel.ktpImage)
+//            }
+//            .sheet(isPresented: $ktpPreviewViewModel.isImagePickerOpen) {
+//                ImagePicker(selectedImage: $ktpPreviewViewModel.ktpImage)
+//            }
 
 struct KTPImageView: View {
     var ktpImage: UIImage?
