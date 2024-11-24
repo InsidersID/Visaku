@@ -67,7 +67,7 @@ struct CountryCardView: View {
                     Text(country.name)
                         .font(.headline)
                     Spacer()
-                    Text(formatDateRange(startDate: country.startDate, endDate: country.endDate))
+                    Text(Date.formatDateRange(startDate: country.startDate, endDate: country.endDate))
                         .font(.subheadline)
                 }
 
@@ -88,18 +88,6 @@ struct CountryCardView: View {
                     .foregroundColor(Color.primary5)
                 }
             }
-        }
-    }
-
-    private func formatDateRange(startDate: Date?, endDate: Date?) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-
-        if let start = startDate, let end = endDate {
-            return "\(formatter.string(from: start)) - \(formatter.string(from: end))"
-        } else {
-            return "No date range"
         }
     }
 }

@@ -65,6 +65,8 @@ struct TravelItineraryPdfPreview: View {
                 }
             }
             
+            viewModel.saveItinerary(file: tempURL)
+            
             let documentPicker = UIDocumentPickerViewController(forExporting: [tempURL], asCopy: true)
             if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                let rootViewController = scene.windows.first?.rootViewController {
@@ -82,29 +84,30 @@ struct TravelItineraryPdfPreview: View {
         Day(
             title: "Day 1",
             date: "2024-11-22",
-            city: "Milan", morning: Activity(placeName: "Milan Airport", placeLatitude: 45.4654, placeLongitude: 9.1865, activity: "Arrival & hotel check-in"),
-            afternoon: Activity(placeName: "Duomo di Milano", placeLatitude: 45.4641, placeLongitude: 9.1919, activity: "Visit Duomo Cathedral"),
-            night: Activity(placeName: "Navigli District", placeLatitude: 45.4384, placeLongitude: 9.1711, activity: "Dinner in Navigli")
+            city: "Milan", morning: Activity(placeName: "Milan Airport", placeLatitude: "45.4654", placeLongitude: "9.1865", activity: "Arrival & hotel check-in"),
+            afternoon: Activity(placeName: "Duomo di Milano", placeLatitude: "45.4641", placeLongitude: "9.1919", activity: "Visit Duomo Cathedral"),
+            night: Activity(placeName: "Navigli District", placeLatitude: "45.4384", placeLongitude: "9.1711", activity: "Dinner in Navigli")
         ),
         Day(
             title: "Day 2",
             date: "2024-11-23",
-            city: "Roma", morning: Activity(placeName: "Sforza Castle", placeLatitude: 45.4707, placeLongitude: 9.1795, activity: "Visit Sforza Castle"),
-            afternoon: Activity(placeName: "Brera District", placeLatitude: 45.4706, placeLongitude: 9.1852, activity: "Explore Brera Art District"),
-            night: Activity(placeName: "La Scala", placeLatitude: 45.4669, placeLongitude: 9.1903, activity: "Watch a performance at La Scala Opera House")
+            city: "Roma", morning: Activity(placeName: "Sforza Castle", placeLatitude: "45.4707", placeLongitude: "9.1795", activity: "Visit Sforza Castle"),
+            afternoon: Activity(placeName: "Brera District", placeLatitude: "45.4706", placeLongitude: "9.1852", activity: "Explore Brera Art District"),
+            night: Activity(placeName: "La Scala", placeLatitude: "45.4669", placeLongitude: "9.1903", activity: "Watch a performance at La Scala Opera House")
         ),
         Day(
             title: "Day 3",
             date: "2024-11-24",
-            city: "San Marino", morning: Activity(placeName: "Santa Maria delle Grazie", placeLatitude: 45.4665, placeLongitude: 9.1802, activity: "Visit The Last Supper painting"),
-            afternoon: Activity(placeName: "Galleria Vittorio Emanuele II", placeLatitude: 45.4700, placeLongitude: 9.1900, activity: "Shopping at Galleria Vittorio Emanuele II"),
-            night: Activity(placeName: "Piazza del Duomo", placeLatitude: 45.4641, placeLongitude: 9.1919, activity: "Evening stroll around Piazza del Duomo")
+            city: "San Marino", morning: Activity(placeName: "Santa Maria delle Grazie", placeLatitude: "45.4665", placeLongitude: "9.1802", activity: "Visit The Last Supper painting"),
+            afternoon: Activity(placeName: "Galleria Vittorio Emanuele II", placeLatitude: "45.4700", placeLongitude: "9.1900", activity: "Shopping at Galleria Vittorio Emanuele II"),
+            night: Activity(placeName: "Piazza del Duomo", placeLatitude: "45.4641", placeLongitude: "9.1919", activity: "Evening stroll around Piazza del Duomo")
         )
     ])
     TravelItineraryPdfPreview(itinerary: $itinerary)
 }
 
 struct ExportableItineraryView: View {
+    @EnvironmentObject var viewModel: CountryVisaApplicationViewModel
     @Binding var itinerary: Itinerary
     
     var body: some View {
@@ -118,12 +121,12 @@ struct ExportableItineraryView: View {
                 
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Flight#: T6ED (Reservation Manila to Milan)")
+                        Text("Flight#: T6ED (Reservation Jakarta to Milan)")
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("FULL NAME: ")
-                        Text("PASSPORT NUMBER: ")
+                        Text("FULL NAME: \(String(describing: viewModel.trip?.account?.identityCard?.name))")
+                        Text("PASSPORT NUMBER: \(String(describing: viewModel.trip?.account?.passport?.passportNo))")
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -160,17 +163,17 @@ struct CardItineraryDetail: View {
                 HStack(alignment: .top) {
                     Text("MORNING: ")
                         .frame(minWidth: 112, alignment: .leading)
-                    Text(day.morning.activity)
+                    Text("\(day.morning.activity) - \(day.morning.placeName)")
                 }
                 HStack(alignment: .top) {
                     Text("AFTERNOON: ")
                         .frame(minWidth: 112, alignment: .leading)
-                    Text(day.afternoon.activity)
+                    Text("\(day.afternoon.activity) - \(day.afternoon.placeName)")
                 }
                 HStack(alignment: .top) {
                     Text("EVENING: ")
                         .frame(minWidth: 112, alignment: .leading)
-                    Text(day.night.activity)
+                    Text("\(day.night.activity) - \(day.night.placeName)")
                 }
             }
             .frame(width: 300)

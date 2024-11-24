@@ -44,7 +44,7 @@ class AIGeneratorController: ObservableObject {
     
     func getBotReply(completion: @escaping (String?) -> Void) {
         let initialPrompt = """
-        You are an itinerary generator that creates personalized travel plans in valid JSON format in english. Given the following inputs: city name, the hotel name, and the number of days for the trip, generate a complete daily itinerary. Each day includes a title (e.g., Day 1, Day 2), the date, and morning, afternoon, and night activities. For each activity, provide the place name, latitude, longitude, and a description of the activity, denotated by 1 to 6 words in bahasa indoensia. Your output must strictly follow this JSON structure without any additional text or characters:
+        You are an itinerary generator that creates personalized travel plans in valid JSON format in english. Given the following inputs: city name is the city of the activity not the country, the hotel name, and the number of days for the trip, generate a complete daily itinerary. Each day includes a title (e.g., Day 1, Day 2), the date, and morning, afternoon, and night activities. For each activity, provide the place name, latitude, longitude, and a description of the activity, denotated by 1 to 6 words in bahasa indoensia. Your output must strictly follow this JSON structure without any additional text or characters:
         {
           "day1": {
             "title": "Day 1",
@@ -52,20 +52,20 @@ class AIGeneratorController: ObservableObject {
             "city": "string",
             "morning": {
               "placeName": "string",
-              "placeLatitude": "float",
-              "placeLongitude": "float",
+              "placeLatitude": "string",
+              "placeLongitude": "string",
               "activity": "string"
             },
             "afternoon": {
               "placeName": "string",
-              "placeLatitude": "float",
-              "placeLongitude": "float",
+              "placeLatitude": "string",
+              "placeLongitude": "string",
               "activity": "string"
             },
             "night": {
               "placeName": "string",
-              "placeLatitude": "float",
-              "placeLongitude": "float",
+              "placeLatitude": "string",
+              "placeLongitude": "string",
               "activity": "string"
             }
           },

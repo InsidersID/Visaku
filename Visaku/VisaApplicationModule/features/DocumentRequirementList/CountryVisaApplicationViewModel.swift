@@ -12,6 +12,7 @@ enum TripState {
 @MainActor
 public class CountryVisaApplicationViewModel: ObservableObject {
     private var tripUseCase: TripUseCaseProtocol = TripUseCase.make()
+    private var itineraryUseCase: ItineraryUseCaseProtocol = ItineraryUseCase.make()
     
     @Published var trip: TripEntity?
     
@@ -274,6 +275,30 @@ public class CountryVisaApplicationViewModel: ObservableObject {
                 trip?.isCompleted = false
                 print("Failed to confirmation trip: \(error.localizedDescription)")
                 self.isConfirmationErrorNotificationVisible = true
+            }
+        }
+    }
+    
+    func saveItinerary(file: URL?) {
+        Task {
+            do {
+                let itinerary = ItineraryEntity(id: UUID().uuidString, file: file)
+                print("file location: \(file?.path)")
+                let isSuccess = try await itineraryUseCase.save(param: itinerary)
+                
+                if !isSuccess {
+                    print("Failed to save itinerary")
+                }
+                if let trip = self.trip {
+                    trip.itinerary = itinerary
+                    let isSuccessToUpdateTrip = try await tripUseCase.update(param: trip)
+                    
+                    if !isSuccessToUpdateTrip {
+                        print("Failed to update trip")
+                    }
+                }
+            } catch {
+                print("Error saving itinerary: \(error.localizedDescription)")
             }
         }
     }

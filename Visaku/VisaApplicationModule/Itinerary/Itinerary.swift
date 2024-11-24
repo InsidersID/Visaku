@@ -27,7 +27,7 @@ struct Day: Identifiable, Codable {
 
 struct Activity: Codable {
     var placeName: String
-    var placeLatitude: Double
-    var placeLongitude: Double
+    var placeLatitude: String
+    var placeLongitude: String
     var activity: String
 }
