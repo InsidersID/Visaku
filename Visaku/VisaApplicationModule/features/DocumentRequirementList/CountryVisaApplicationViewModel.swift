@@ -143,9 +143,17 @@ public class CountryVisaApplicationViewModel: ObservableObject {
     @Published var isShowPreviewVisaApplicationForm: Bool = false
     @Published var isShowJSONDownload: Bool = false
     
+    @Published var isConfirmationErrorNotificationVisible: Bool = false
+    
     func startNotificationTimer() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             self.isNotificationVisible = false
+        }
+    }
+    
+    func startConfirmationErrorNotificationTimer() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.isConfirmationErrorNotificationVisible = false
         }
     }
     
@@ -166,6 +174,7 @@ public class CountryVisaApplicationViewModel: ObservableObject {
                     try await tripUseCase.update(param: newTrip)
                 } else {
                     print("Failed to save trip")
+                    self.isConfirmationErrorNotificationVisible = true
                 }
             }
         }
@@ -243,6 +252,7 @@ public class CountryVisaApplicationViewModel: ObservableObject {
                     self.trip = nil
                 }
             } catch {
+                self.isConfirmationErrorNotificationVisible = true
                 print("Failed to delete trip: \(error.localizedDescription)")
             }
         }
@@ -261,7 +271,9 @@ public class CountryVisaApplicationViewModel: ObservableObject {
                     self.isPresentingConfirmationView = false
                 }
             } catch {
+                trip?.isCompleted = false
                 print("Failed to confirmation trip: \(error.localizedDescription)")
+                self.isConfirmationErrorNotificationVisible = true
             }
         }
     }

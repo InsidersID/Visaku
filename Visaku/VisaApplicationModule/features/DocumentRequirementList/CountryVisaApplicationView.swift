@@ -14,7 +14,6 @@ public struct CountryVisaApplicationView: View {
     var countrySelected: String?
     var visaType: String?
     var countries: [CountryData]?
-    @State var isNotificationVisible: Bool = false
     
     var trip: TripEntity?
     
@@ -44,7 +43,10 @@ public struct CountryVisaApplicationView: View {
     public var body: some View {
         NavigationStack {
             ZStack {
+                // This will hold the background layer
                 Color.clear.ignoresSafeArea()
+                
+                // Scrollable content inside the ZStack
                 ScrollView {
                     VStack {
                         progressGauge
@@ -67,96 +69,74 @@ public struct CountryVisaApplicationView: View {
                         } else {
                             confirmationButton
                         }
-                        
-//                        if !viewModel.isShowConfirmation {
-//                            
-//                        } else if !viewModel.isShowPrintDownloadButton {
-//                            Rectangle()
-//                                .frame(width: .infinity, height: 1)
-//                                .foregroundStyle(Color.blackOpacity1)
-//                                .padding(.vertical, 4)
-//                            confirmationButton
-//                        } else {
-//                            Rectangle()
-//                                .frame(width: .infinity, height: 1)
-//                                .foregroundStyle(Color.blackOpacity1)
-//                                .padding(.vertical, 4)
-//                            
-//                        }
                     }
                 }
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("Pengajuan")
-                            .font(.custom("Inter-SemiBold", size: 24))
-                    }
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button(action: {
-                            dismiss()
-                        }) {
-                            Image(systemName: "chevron.backward")
-                                .font(.custom("Inter-SemiBold", size: 17))
-                                .padding(10)
-                                .background(Circle().fill(Color.clear))
-                                .foregroundColor(Color.black)
-                                .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-                        }
-                    }
-                }
-                .onAppear {
-                    if let visaType = visaType, let countrySelected = countrySelected, let countries = countries {
-                        viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries)
-                    }
-                }
-                .navigationDestination(isPresented: $viewModel.aiItineraryGenerator) {
-                    if let trip = viewModel.trip {
-                        AiItineraryGeneratorSheet(
-                            countries: Binding(
-                                get: { trip.countries },
-                                set: { newCountries in
-                                    viewModel.trip?.countries = newCountries
-                                    viewModel.trip = viewModel.trip
-                                }
-                            )
-                        )
-                        .environmentObject(viewModel)
-                        .navigationBarBackButtonHidden()
-                        .presentationDragIndicator(.visible)
-                    } else {
-                        Text("No trip data available.")
-                            .presentationDragIndicator(.visible)
-                    }
-                }
-                .onChange(of: viewModel.completionPercentage) { oldValue, newValue in completionHandler(newValue) }
-                .sheet(isPresented: $viewModel.isIdentity) { ProfileView(isSelectProfile: true).environmentObject(viewModel) }
-                .presentationDragIndicator(.visible)
-                .sheet(isPresented: $viewModel.isItinerary) {
-                    ItineraryActionSheet()
-                        .environmentObject(viewModel)
-                        .presentationDetents([.height(220)])
-                        .presentationDragIndicator(.visible)
-                }
-                .sheet(isPresented: $viewModel.isShowPreviewVisaApplicationForm) {
-                    PDFPreviewSheet(trip: viewModel.trip) }
-                    .presentationDragIndicator(.visible)
-                .sheet(isPresented: $viewModel.isShowJSONDownload) { JSONPreviewSheet() }
-                    .presentationDragIndicator(.visible)
-                .fullScreenCover(isPresented: $viewModel.isPresentingConfirmationView) { VisaApplicationFinishedView().environmentObject(viewModel) }
-                .fullScreenCover(isPresented: $viewModel.isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
-                .fullScreenCover(isPresented: $isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
                 
-                if viewModel.isNotificationVisible {
-                    NotificationCard()
-                        .offset(x: 40)
-                        .padding(.horizontal)
-                        .onAppear {
-                            viewModel.startNotificationTimer()
-                        }
+                // Overlay notification view on top of the ScrollView and other content
+                NotificationShowView(viewModel: viewModel)
+                    .zIndex(1)  // Ensures it is displayed above other views
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Pengajuan")
+                        .font(.custom("Inter-SemiBold", size: 24))
+                }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        Image(systemName: "chevron.backward")
+                            .font(.custom("Inter-SemiBold", size: 17))
+                            .padding(10)
+                            .background(Circle().fill(Color.clear))
+                            .foregroundColor(Color.black)
+                            .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                    }
                 }
             }
+            .onAppear {
+                if let visaType = visaType, let countrySelected = countrySelected, let countries = countries {
+                    viewModel.saveTripData(visaType: visaType, countrySelected: countrySelected, countries: countries)
+                }
+            }
+            .navigationDestination(isPresented: $viewModel.aiItineraryGenerator) {
+                if let trip = viewModel.trip {
+                    AiItineraryGeneratorSheet(
+                        countries: Binding(
+                            get: { trip.countries },
+                            set: { newCountries in
+                                viewModel.trip?.countries = newCountries
+                                viewModel.trip = viewModel.trip
+                            }
+                        )
+                    )
+                    .environmentObject(viewModel)
+                    .navigationBarBackButtonHidden()
+                    .presentationDragIndicator(.visible)
+                } else {
+                    Text("No trip data available.")
+                        .presentationDragIndicator(.visible)
+                }
+            }
+            .onChange(of: viewModel.completionPercentage) { oldValue, newValue in completionHandler(newValue) }
+            .sheet(isPresented: $viewModel.isIdentity) { ProfileView(isSelectProfile: true).environmentObject(viewModel) }
+            .presentationDragIndicator(.visible)
+            .sheet(isPresented: $viewModel.isItinerary) {
+                ItineraryActionSheet()
+                    .environmentObject(viewModel)
+                    .presentationDetents([.height(220)])
+                    .presentationDragIndicator(.visible)
+            }
+            .sheet(isPresented: $viewModel.isShowPreviewVisaApplicationForm) {
+                PDFPreviewSheet(trip: viewModel.trip) }
+                .presentationDragIndicator(.visible)
+            .sheet(isPresented: $viewModel.isShowJSONDownload) { JSONPreviewSheet() }
+                .presentationDragIndicator(.visible)
+            .fullScreenCover(isPresented: $viewModel.isPresentingConfirmationView) { VisaApplicationFinishedView().environmentObject(viewModel) }
+            .fullScreenCover(isPresented: $viewModel.isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
+            .fullScreenCover(isPresented: $isFormApplication) { ApplicationFormView().environmentObject(viewModel) }
         }
-        
     }
     
     private var progressGauge: some View {
@@ -303,6 +283,30 @@ public struct CountryVisaApplicationView: View {
 
 #Preview {
     CountryVisaApplicationView(countrySelected: "Italia", visaType: "turis", countries: [.init(name: "Jerman", startDate: Date.now, endDate: Date.now)])
+}
+
+struct NotificationShowView: View {
+    @StateObject var viewModel: CountryVisaApplicationViewModel
+    
+    var body: some View {
+        if viewModel.isNotificationVisible {
+            NotificationCard(icon: "checkmark.circle", title: "Entry berhasil dibuat!", subtitle: "Pengajuan bisa dilihat di tab Visaku.", iconColor: Color.green)
+                .offset(x: 40)
+                .padding(.horizontal)
+                .onAppear {
+                    viewModel.startNotificationTimer()
+                }
+        }
+        
+        if viewModel.isConfirmationErrorNotificationVisible {
+            NotificationCard(icon: "exclamationmark.triangle.fill", title: "Tripmu kurang lengkap, nih!", subtitle: "Cek profilmu, yuk?", iconColor: Color.red)
+                .offset(x: 40)
+                .padding(.horizontal)
+                .onAppear {
+                    viewModel.startConfirmationErrorNotificationTimer()
+                }
+        }
+    }
 }
 
 struct DocumentRequirementsList: View {
