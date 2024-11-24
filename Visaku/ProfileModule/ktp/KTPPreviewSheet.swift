@@ -18,6 +18,8 @@ public struct KTPPreviewSheet: View {
         if let unwrappedImage = selectedImage {
             self.ktpPreviewViewModel.ktpImage = unwrappedImage
             self.ktpPreviewViewModel.processCapturedImage(unwrappedImage)
+        } else {
+            print("No image to process from ImagePicker, waiting for camera scan.")
         }
     }
     
