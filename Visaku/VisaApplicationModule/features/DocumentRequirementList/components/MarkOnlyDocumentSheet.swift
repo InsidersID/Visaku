@@ -25,7 +25,9 @@ struct MarkOnlyDocumentSheet: View {
             if !viewModel.showDocumentDetail {
                 VStack(alignment: .leading, spacing: 24) {
                     Button(action: {
-                        isMarked.toggle()
+                        Task {
+                                await viewModel.updateDocumentMark(for: documentType, to: !isMarked)
+                            }
                         dismiss()
                     }) {
                         HStack {
@@ -80,11 +82,11 @@ struct MarkOnlyDocumentSheet: View {
             }
         }
         .padding(.horizontal)
-        .onChange(of: isMarked) { newValue in
-            Task {
-                await viewModel.updateDocumentMark(for: documentType, to: newValue)
-            }
-        }
+//        .onChange(of: isMarked) { newValue in
+//            Task {
+//                await viewModel.updateDocumentMark(for: documentType, to: newValue)
+//            }
+//        }
         Spacer()
     }
 }

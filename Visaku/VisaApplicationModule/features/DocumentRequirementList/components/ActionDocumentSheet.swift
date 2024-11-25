@@ -35,7 +35,9 @@ struct ActionDocumentSheet: View {
                     
                     // Toggle Marked Status
                     Button(action: {
-                        isMarked.toggle()
+                        Task {
+                                await viewModel.updateDocumentMark(for: documentType, to: !isMarked)
+                            }
                         dismiss()
                     }) {
                         HStack {
@@ -117,11 +119,11 @@ struct ActionDocumentSheet: View {
                 handleImageUpload(image: newImage)
             }
         }
-        .onChange(of: isMarked) { newValue in
-            Task {
-                await viewModel.updateDocumentMark(for: documentType, to: newValue)
-            }
-        }
+//        .onChange(of: isMarked) { newValue in
+//            Task {
+//                await viewModel.updateDocumentMark(for: documentType, to: newValue)
+//            }
+//        }
         .onChange(of: fileURL) { newValue in
             if let fileURL = newValue {
                 handleFileImport(result: fileURL)
