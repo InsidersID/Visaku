@@ -53,14 +53,14 @@ extension VisaGeneralTouristDocumentType {
     }
 }
 
-let countrySpecificRequirements: [String: [VisaRequirement]] = [
-    "Italia": [
-        VisaRequirement(
-            type: .buktiKeuangan,
-            displayName: "Surat Keterangan Keuangan",
-            description: "Selain rekening koran, diperlukan surat referensi dari bank sebagai bukti tambahan mengenai stabilitas keuangan untuk mendukung pengajuan visa.",
-            requiresUpload: true,
-            isOptionalUpload: false
-        )
-    ],
+let countrySpecificRequirements: [String: [VisaRequirement]] = [:
+//    "Italia": [
+//        VisaRequirement(
+//            type: .buktiKeuangan,
+//            displayName: "Surat Keterangan Keuangan",
+//            description: "Selain rekening koran, diperlukan surat referensi dari bank sebagai bukti tambahan mengenai stabilitas keuangan untuk mendukung pengajuan visa.",
+//            requiresUpload: true,
+//            isOptionalUpload: false
+//        )
+//    ],
 ]
